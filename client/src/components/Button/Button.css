@@ -1,0 +1,68 @@
+.btn-save,
+.btn-buy,
+.btn-add,
+.btn-delete,
+.btn-back,
+.btn-cancel {
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+}
+
+.btn-save {
+    background-color: #007bff !important;
+    /* Azul */
+}
+
+.btn-buy {
+    background-color: #12f334 !important;
+    /* Verde brillante */
+}
+
+.btn-add {
+    background-color: #11c101 !important;
+    /* Verde toxico */
+}
+
+.btn-delete {
+    background-color: #dc3545 !important;
+    /* Rojo */
+}
+
+.btn-back {
+    background-color: #6c757d !important;
+    /* Gris */
+}
+
+.btn-cancel {
+    background-color: #ffc107 !important;
+    /* Amarillo */
+}
+
+/* Efecto hover */
+.btn-save:hover,
+.btn-buy:hover,
+.btn-add:hover,
+.btn-delete:hover,
+.btn-back:hover,
+.btn-cancel:hover {
+    filter: brightness(85%);
+    /* Reduce la luminosidad al pasar el mouse */
+}
+
+.btn-dashboard {
+    background-color: #2c5282;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-dashboard:hover {
+    background-color: #1a365d;
+}

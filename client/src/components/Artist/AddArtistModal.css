@@ -1,0 +1,53 @@
+AddArtistModal.css .modal {
+    display: none;
+    /* Por defecto, el modal está oculto */
+    position: fixed;
+    /* Permanece fijo en la pantalla */
+    z-index: 1;
+    /* Se muestra encima de todo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Ocupa todo el ancho de la pantalla */
+    height: 100%;
+    /* Ocupa toda la altura de la pantalla */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semi-transparente */
+    margin-top: 100px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    /* Color de fondo del modal */
+    margin: 5% auto;
+    /* Margen automático verticalmente y centrado horizontalmente */
+    border: 1px solid #888;
+    width: 80%;
+    /* Ancho del modal */
+    color: #0000
+}
+
+.close {
+    color: #aaa;
+    /* Color del botón de cierre */
+    float: right;
+    /* Posiciona el botón en la esquina superior derecha */
+    font-size: 28px;
+    /* Tamaño del icono de cierre */
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    /* Cambia el color al pasar el cursor sobre el botón */
+    text-decoration: none;
+    /* Elimina la subrayado al pasar el cursor sobre el botón */
+    cursor: pointer;
+    /* Cambia el cursor al puntero al pasar el cursor sobre el botón */
+}
+
+/* Clase para mostrar el modal */
+.modal.open {
+    display: block;
+}
