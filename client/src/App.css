@@ -1,0 +1,112 @@
+:root {
+    --primary-color: rgb(7, 81, 18);
+    --secondary-color: rgb(34, 15, 46);
+    --loader-color: #3498db;
+    --loader-bg: #f3f3f3;
+}
+
+/* Estilos generales para móviles pequeños (mobile-first) */
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+.App,
+.layout {
+    text-align: center;
+    background-image: linear-gradient(var(--primary-color), var(--secondary-color));
+    background-repeat: no-repeat;
+    background-blend-mode: darken;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-grow: 1;
+    width: 100%;
+    /* Por defecto ocupa todo el ancho en pantallas pequeñas */
+}
+
+.loader {
+    border: 16px solid var(--loader-bg);
+    /* Light grey */
+    border-top: 16px solid var(--loader-color);
+    /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    /* Ajustado para pantallas pequeñas */
+    height: 80px;
+    /* Ajustado para pantallas pequeñas */
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilos responsivos para dispositivos más grandes */
+
+/* Small devices (min-width: 640px) */
+@media only screen and (min-width: 640px) {
+
+    .App,
+    .layout {
+        width: 100%;
+    }
+
+    .loader {
+        width: 100px;
+        /* Ajuste del loader para pantallas más grandes */
+        height: 100px;
+    }
+}
+
+/* Medium devices (min-width: 768px) */
+@media only screen and (min-width: 768px) {
+    .loader {
+        width: 120px;
+        /* Tamaño original en pantallas medianas */
+        height: 120px;
+    }
+}
+
+/* Large devices (min-width: 992px) */
+@media only screen and (min-width: 992px) {
+
+    .App,
+    .layout {
+        width: 80%;
+        /* Ajuste del ancho para pantallas grandes */
+        margin: 0 auto;
+        /* Centrar el contenido */
+    }
+
+    .loader {
+        width: 140px;
+        /* Loader más grande para pantallas grandes */
+        height: 140px;
+    }
+}
+
+/* Extra large devices (min-width: 1200px) */
+@media only screen and (min-width: 1200px) {
+
+    .App,
+    .layout {
+        width: 70%;
+        /* Más margen para pantallas muy grandes */
+    }
+
+    .loader {
+        width: 160px;
+        /* Loader más grande */
+        height: 160px;
+    }
+}

@@ -1,0 +1,119 @@
+:root {
+    --primary-color: rgba(18, 46, 15, 1);
+}
+
+/* Estilos para teléfonos pequeños (vista por defecto) */
+.parallaxContainer {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.parallaxContent {
+    -webkit-backdrop-filter: blur(4px);
+    /* Soporte para Safari */
+    backdrop-filter: blur(4px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), var(--primary-color)), url(/img/header.jpg) !important;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.container {
+    margin: 0 10px;
+    /* Margen reducido para pantallas pequeñas */
+    padding: 150px 0 0;
+}
+
+.main {
+    height: -webkit-fill-available;
+}
+
+.logoMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Ajustes adicionales */
+}
+
+.titleMain,
+.text-3xl {
+    font-size: 1.25rem;
+    /* Tamaño de fuente más pequeño para pantallas pequeñas */
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .parallaxContent {
+        -webkit-backdrop-filter: blur(5px);
+        /* Soporte para Safari */
+        backdrop-filter: blur(5px);
+        /* Ajuste del desenfoque */
+    }
+
+    .titleMain,
+    .text-3xl {
+        font-size: 1.5rem;
+        /* Tamaño de fuente un poco más grande */
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .parallaxContent {
+        -webkit-backdrop-filter: blur(6px);
+        /* Soporte para Safari */
+        backdrop-filter: blur(6px);
+    }
+
+    .container {
+        margin: 0 15px;
+        /* Margen ajustado para pantallas medianas */
+        padding: 1rem;
+    }
+
+    .titleMain,
+    .text-3xl {
+        font-size: 2rem;
+        /* Tamaño de fuente más grande */
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .parallaxContent {
+        -webkit-backdrop-filter: blur(7px);
+        /* Soporte para Safari */
+        backdrop-filter: blur(7px);
+    }
+
+    .container {
+        margin: 0 20px;
+        /* Margen más grande para pantallas grandes */
+    }
+
+    .titleMain,
+    .text-3xl {
+        font-size: 2.5rem;
+        /* Tamaño de fuente mayor en pantallas grandes */
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .container {
+        margin: 0 auto;
+        /* Centrado con más espacio */
+    }
+
+    .titleMain,
+    .text-3xl {
+        font-size: 3rem;
+        /* Tamaño de fuente muy grande en pantallas grandes */
+    }
+}
