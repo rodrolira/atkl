@@ -10,18 +10,18 @@ dotenv.config()
 const createToken = (adminId) => {
   return jwt.sign({ adminId }, process.env.SECRET, { expiresIn: '1h' })
 }
-  export const createAdmin = async ({ username, email, password }) => {
-    try {
-      const newAdmin = await Admin.create({
-        username,
-        email,
-        password,
-      })
-      return newAdmin
-    } catch (error) {
-      throw new Error(`Error creating admin: ${error.message}`)
-    }
+export const createAdmin = async ({ username, email, password }) => {
+  try {
+    const newAdmin = await Admin.create({
+      username,
+      email,
+      password,
+    })
+    return newAdmin
+  } catch (error) {
+    throw new Error(`Error creating admin: ${error.message}`)
   }
+}
 
 export const findAdminByEmail = async (email) => {
   try {
@@ -57,8 +57,8 @@ export const loginAdmin = async (username, password) => {
       throw new Error('Invalid credentials')
     }
 
-const token = createToken(admin.id)
-console.log('Generated token:', token) // Verificar el token en el servidor
+    const token = createToken(admin.id)
+    console.log('Generated token:', token) // Verificar el token en el servidor
 
     return token
   } catch (error) {
