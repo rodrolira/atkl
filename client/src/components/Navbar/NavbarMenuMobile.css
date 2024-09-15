@@ -39,6 +39,22 @@
   justify-content: center;
 }
 
+.menu-item {
+  padding: 10px;
+  text-align: center;
+}
+
+.menu-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.menu-item-button {
+  display: block;
+  margin: 0 auto;
+}
+
 a.menu-link {
   height: 3.5vh;
   display: block;

@@ -49,14 +49,15 @@ const OtherPagesNavbarLinks = () => {
                 <ul className='items-center md:bg-transparent bg-gray-700 bg-opacity-75 font-semibold flex flex-col md:p-0 w-full sm:border md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700'>
                   {links.map(link => {
                     const showLink = link.authRequired
-                      // ? adminAuthenticated // Mostrar el enlace si el administrador está autenticado
-                      // : true
+                      ? adminAuthenticated // Mostrar el enlace si el administrador está autenticado
+                      : true
 
                     return (
                       showLink && (
                         <NavItem
                           key={link.to}
                           to={link.to}
+                          href={link.to}
                           text={language === 'en' ? link.text_en : link.text_es}
                           isActive={
                             activeItem === link.to ||
