@@ -1,7 +1,7 @@
 // AdminSignin.jsx
 
 import React, { useEffect } from 'react'; // Importa React y useEffect
-import { useLanguage } from '@/contexts/LanguageContext'; // Importa el hook useLanguage
+import { useLanguage } from '@/hooks/useLanguage';
 import {
   Box,
   Button,
@@ -9,13 +9,13 @@ import {
   colors,
   FormControlLabel,
   Typography,
+  Grid
 } from '@mui/material';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import CustomInput from '@/components/atoms/Input/CustomInput';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Logo from '@/components/atoms/Logo/Logo';
 
 function AdminSignin() {
@@ -51,11 +51,6 @@ function AdminSignin() {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <Grid
-        xs={12}
-        sm={12}
-        md={6}
-        lg={6}
-        xl={6}
         minHeight={550}
         sx={{
           boxShadow: {
@@ -65,12 +60,12 @@ function AdminSignin() {
             lg: '15px 2px 5px -5px',
             xl: '15px 2px 5px -5px',
           },
-          setBlockStart: {
-            xs: '0px',
-            sm: '0px',
-            md: '100px',
-            lg: '100px',
-            xl: '100px',
+          marginTop: {
+            xs: '50px',
+            sm: '50px',
+            md: '0px',
+            lg: '0px',
+            xl: '0px',
           },
         }}
       >
@@ -96,8 +91,8 @@ function AdminSignin() {
               <Box
                 sx={{
                   mt: '60px',
-                  inlineSize: '150px',
-                  blockSize: '150px',
+                  width: '150px', // Ancho fijo para mantener el tamaño del contenedor
+                  height: '150px', // Alto fijo
                   bgcolor: 'black',
                   borderRadius: '20px',
                   display: 'flex',
