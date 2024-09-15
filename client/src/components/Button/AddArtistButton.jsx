@@ -1,22 +1,34 @@
 import { useState } from 'react'
-// import AddArtistForm from '../pages/Artist/AddArtistForm' // Importa el formulario de agregar artista
+import AddArtistForm from '@/components/Artist/AddArtistForm' // Importa el formulario de agregar artista
+import Button from './Button'
+import { useTranslation } from 'react-i18next'
 
 const AddArtistButton = () => {
-    const [open, openChange] = useState(false)
+    const [open, setOpen] = useState(false)
+    const { t } = useTranslation()
+
     const functionOpenPopup = () => {
-        openChange(true)
+        setOpen(true)
     }
     const closePopup = () => {
-        openChange(false)
+        setOpen(false)
     }
 
     return (
         <>
-            {/* <AddArtistForm
-                onClick={functionOpenPopup}
-                open={open}
-                closePopup={closePopup}
-            /> */}
+            {/* Botón para abrir el popup */}
+            <Button onClick={functionOpenPopup} fontWeight='font-bold' colorClass='bg-[#24db13] text-[#051403]' >
+                {t('addArtist.title')}
+            </Button>
+
+            {/* Formulario para agregar artista */}
+            <AddArtistForm
+                open={open}          // Estado que controla si está abierto o no
+                closePopup={closePopup} // Función para cerrar el formulario
+                onArtistAdded={(newArtist) => {
+                    console.log("Nuevo artista agregado:", newArtist)
+                }}
+            />
         </>
     )
 }

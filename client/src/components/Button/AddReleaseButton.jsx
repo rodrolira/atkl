@@ -1,5 +1,6 @@
 import { useState } from 'react'
-// import AddReleaseForm from '../pages/Release/AddReleaseForm'
+import AddReleaseForm from '@/components/Release/AddReleaseForm'
+import Button from './Button'
 
 const AddReleaseButton = () => {
     const [open, openChange] = useState(false)
@@ -12,11 +13,14 @@ const AddReleaseButton = () => {
 
     return (
         <>
-            {/* <AddReleaseForm
-                onClick={functionOpenPopup}
+            <Button onClick={functionOpenPopup} fontWeight='font-bold' colorClass='bg-[#24db13] text-[#051403]' >
+                Add Release
+            </Button>
+
+            <AddReleaseForm
                 open={open}
                 closePopup={closePopup}
-            /> */}
+            />
         </>
     )
 }
