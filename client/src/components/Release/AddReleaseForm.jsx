@@ -17,22 +17,18 @@ import * as Yup from 'yup'
 import { useReleases } from '@/contexts/ReleaseContext'
 import { useArtists } from '@/contexts/ArtistContext'
 import { useGenres } from '@/contexts/GenreContext'
-import FileUploadRelease from '@/components/Upload/FileUploadComponent'
+import FileUploadRelease from '@/components/Upload/FileUploadRelease'
 // import { Button } from 'flowbite-react'
 import Button from '@/components/Button/Button'
 import { createReleaseRequest } from '@/app/api/releases'
 import { useTranslation } from 'react-i18next'
 
-const AddReleaseForm = ({ onReleaseAdded }) => {
+const AddReleaseForm = ({ open, closePopup, onReleaseAdded }) => {
     const { t } = useTranslation()
-    const [open, setOpen] = useState(false)
     const [error, setError] = useState(null)
     const { createRelease, fetchReleases } = useReleases()
     const { artists, fetchArtists } = useArtists()
     const { genres, fetchGenres } = useGenres()
-
-    const openPopup = () => setOpen(true)
-    const closePopup = () => setOpen(false)
 
     const onSubmit = async (values, actions) => {
         const formData = new FormData()
@@ -68,9 +64,6 @@ const AddReleaseForm = ({ onReleaseAdded }) => {
 
     return (
         <>
-            <Button onClick={openPopup} className='mx-auto' colorClass='bg-[#24db13] text-[#122e0f]' >
-            Add Release
-            </Button>
             <Dialog
                 open={open}
                 onClose={closePopup}

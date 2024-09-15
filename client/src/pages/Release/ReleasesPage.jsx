@@ -7,7 +7,7 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext'
 import Navbar from '@/components/Navbar/Navbar'
 
 // Importa ReleaseSection usando importación dinámica
-const ReleaseSection = React.lazy(() => import('@/components/Release/ReleasesSection'))
+const ReleaseSection = React.lazy(() => import('@/components/sections/ReleasesSection'))
 
 function ReleasesPage() {
     const { language } = useLanguage()

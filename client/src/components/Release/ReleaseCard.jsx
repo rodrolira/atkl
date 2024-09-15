@@ -19,6 +19,7 @@ import { useReleases } from '@/contexts/ReleaseContext'
 import { getReleaseRequest } from '@/app/api/releases'
 import { Link } from 'react-router-dom'
 import { Icon } from '@iconify/react'
+import ReleaseLinks from './ReleaseLinks'
 
 const ReleaseCard = ({ release, artist }) => {
     const [currentRelease, setCurrentRelease] = useState(release)
@@ -85,7 +86,7 @@ const ReleaseCard = ({ release, artist }) => {
                         ? (
                             currentRelease.artists.map(artist => (
                                 <Link to={`/artists/${artist.id}`} className='block relative' key={artist.id}>
-                                    <h3 className='text-lg lg:h-auto sm:h-min font-bold mt-2'>
+                                    <h3 className='xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2'>
                                         {artist.artist_name}
                                     </h3>
                                 </Link>
@@ -119,69 +120,8 @@ const ReleaseCard = ({ release, artist }) => {
                         </div>
                     )}
                 </div>
+                <ReleaseLinks release={currentRelease} />
 
-                <div className='flex flex-wrap justify-center space-x-2 my-4'>
-                    {currentRelease.bandcamp_link && (
-                        <Link
-                            to={currentRelease.bandcamp_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-teal-600'
-                        >
-                            <FontAwesomeIcon icon={faBandcamp} size='2x' />
-                        </Link>
-                    )}
-                    {currentRelease.spotify_link && (
-                        <Link
-                            to={currentRelease.spotify_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-green-400'
-                        >
-                            <FontAwesomeIcon icon={faSpotify} size='2x' />
-                        </Link>
-                    )}
-                    {currentRelease.apple_music_link && (
-                        <Link
-                            to={currentRelease.apple_music_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-purple-500'
-                        >
-                            <FontAwesomeIcon icon={faApple} size='2x' />
-                        </Link>
-                    )}
-                    {currentRelease.youtube_link && (
-                        <Link
-                            to={currentRelease.youtube_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-red-500'
-                        >
-                            <FontAwesomeIcon icon={faYoutube} size='2x' />
-                        </Link>
-                    )}
-                    {currentRelease.soundcloud_link && (
-                        <Link
-                            to={currentRelease.soundcloud_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-orange-500'
-                        >
-                            <FontAwesomeIcon icon={faSoundcloud} size='2x' className='hover:text-orange-500' />
-                        </Link>
-                    )}
-                    {currentRelease.beatport_link && (
-                        <Link
-                            to={currentRelease.beatport_link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-400 hover:text-green-500'
-                        >
-                            <Icon icon="simple-icons:beatport" width="2em" height="2em" />
-                        </Link>
-                    )}
-                </div>
                 <div className='my-2'>
                     {currentRelease.bandcamp_link && (
                         <Button href={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-green-500 hover:bg-green-600 text-black">
