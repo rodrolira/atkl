@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-
-import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
 import EditArtistModal from './EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
 import { getArtistRequest } from '@/app/api/artists';
 import { useArtist } from '@/hooks/useArtist';
+import { Button } from 'react-bootstrap';
 
 const ArtistCard = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState(artist);
@@ -75,12 +74,12 @@ const ArtistCard = ({ artist }) => {
           </Link>
 
           {adminAuthenticated && (
-            <div className="absolute right-2 top-2 flex z-10 space-x-2">
-              <Button aria-label="Edit Artist" onClick={openEditModal} className="!w-auto !inline">
+            <div className="absolute right-2 top-2 flex">
+              <Button className="!px-2" aria-label="Edit Artist" onClick={openEditModal}>
                 <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl" />
               </Button>
 
-              <Button onClick={handleDelete} aria-label="Delete Artist">
+              <Button className="!px-2" onClick={handleDelete} aria-label="Delete Artist">
                 <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl" />
               </Button>
             </div>

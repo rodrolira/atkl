@@ -15,21 +15,18 @@ import CloseIcon from '@mui/icons-material/Close'
 import Button from '@/components/Button/Button'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-// import { useArtists } from '../../../contexts/ArtistContext'
+import { useArtists } from '@/contexts/ArtistContext'
 import { useTranslation } from 'react-i18next'
 // import { Button } from 'flowbite-react'
 import FileUpload from '@/components/Upload/FileUpload';
 import { getRolesRequest } from '@/app/api/artists';
 
-const AddArtistForm = ({ onArtistAdded }) => {
+const AddArtistForm = ({ open, closePopup, onArtistAdded }) => {
     const { t } = useTranslation()
-    const [open, setOpen] = useState(false)
     const [roles, setRoles] = useState([])
     const [error, setError] = useState(null)
     const { createArtist } = useArtists()
 
-    const openPopup = () => setOpen(true)
-    const closePopup = () => setOpen(false)
 
     const onSubmit = async (values, actions) => {
         const formData = new FormData()
@@ -89,9 +86,6 @@ const AddArtistForm = ({ onArtistAdded }) => {
 
     return (
         <>
-            <Button onClick={openPopup} className='mx-auto' colorClass='bg-[#24db13] text-[#122e0f]' >
-                {t('addArtist.title')}
-            </Button>
             <Dialog
                 open={open}
                 onClose={closePopup}

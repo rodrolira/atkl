@@ -14,7 +14,7 @@ import { PropTypes } from 'prop-types';
 import { Icon } from '@iconify/react';
 
 const ArtistLinks = ({ artist }) => (
-  <div className='flex flex-wrap space-x-2 text-2xl justify-center p-2'>
+  <div className='flex flex-wrap space-x-2 text-2xl items-center justify-center p-2'>
     {artist.twitter_link && (
       <Link
         to={artist.twitter_link}
