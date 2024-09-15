@@ -16,7 +16,7 @@ const LanguageMenu = () => {
   }
 
   return (
-    <div className='relative max-[320px]:hidden z-50'>
+    <div className='relative z-50'>
       <div
         className='h-full'
         onMouseEnter={() => setMenuVisibility(true)}
@@ -37,7 +37,7 @@ const LanguageMenu = () => {
             }}
             title={selectedLanguage === 'en' ? 'US' : 'ES'}
           />
-          <span className='max-[320px]:hidden inline-block lg:text-sm md:text-xs'>
+          <span className='inline-block lg:text-sm md:text-xs'>
             {t('languageMenu.language')}
           </span>
         </button>
