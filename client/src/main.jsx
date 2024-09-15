@@ -9,21 +9,24 @@ import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
 import { ArtistProvider } from '@/contexts/ArtistContext';
 import { GenreProvider } from '@/contexts/GenreContext';
 import { ReleaseProvider } from '@/contexts/ReleaseContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <AppThemeProvider>
-      <AdminAuthProvider>
-      <ArtistProvider>
-      <ReleaseProvider>
-      <GenreProvider>
-        <App />
-        </GenreProvider>
-        </ReleaseProvider>
-        </ArtistProvider>
-        </AdminAuthProvider>
+        <LanguageProvider>
+          <AdminAuthProvider>
+            <ArtistProvider>
+              <ReleaseProvider>
+                <GenreProvider>
+                  <App />
+                </GenreProvider>
+              </ReleaseProvider>
+            </ArtistProvider>
+          </AdminAuthProvider>
+        </LanguageProvider>
       </AppThemeProvider>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode >
 );
