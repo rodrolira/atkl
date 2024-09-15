@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/emre-cil/viterjs-template#readme",
   "scripts": {
-    "dev": "vite",
+    "dev": "node --experimental-modules --es-module-specifier-resolution=node ./node_modules/vite/bin/vite.js",
     "start": "vite --open",
     "host": "vite --open --host",
     "build": "vite build",
@@ -79,7 +79,7 @@
     "postcss": "^8.4.45",
     "prettier": "^3.3.2",
     "tailwindcss": "^3.4.10",
-    "vite": "^5.3.2",
+    "vite": "^5.4.5",
     "vitest": "^1.6.0"
   }
 }

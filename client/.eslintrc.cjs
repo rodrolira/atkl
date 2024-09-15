@@ -40,7 +40,8 @@ module.exports = {
     'react/prop-types': 'off',
     'prettier/prettier': 'error',
     'jsx-a11y/anchor-is-valid': 'off',
-    'react-hooks/exhaustive-deps': 'off',
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'no-unused-expressions': [
