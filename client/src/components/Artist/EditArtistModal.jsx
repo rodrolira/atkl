@@ -6,9 +6,10 @@ import Button from '@/components/Button/Button'
 import FileUpload from '@/components/Upload/FileUpload';
 
 import { getArtistRequest, getRolesRequest } from '@/app/api/artists'
-// import { useArtists } from '../../../contexts/ArtistContext'
+import { useArtists } from '@/contexts/ArtistContext'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import Title from '../atoms/Title/Title'
 
 const validationSchema = Yup.object().shape({
     artist_name: Yup.string(),
@@ -107,7 +108,7 @@ function EditArtistModal({ id, onClose }) {
             >
                 {({ isSubmitting }) => (
                     <Form className='w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center'>
-                        <h2 className='text-2xl mb-4 font-bold'>Edit Artist</h2>
+                        <Title className='text-2xl text-black mb-4 font-bold'>Edit Artist</Title>
                         <div className='mb-4'>
                             <label
                                 htmlFor='artist_name'

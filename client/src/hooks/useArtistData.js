@@ -1,6 +1,6 @@
 // useArtistData.js
 import { useState, useEffect } from 'react'
-import { getArtistRequest } from '../api/artists'
+import { getArtistRequest } from '@/app/api/artists'
 
 export const useArtistData = (id) => {
     const [artist, setArtist] = useState(null)
