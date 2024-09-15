@@ -6,13 +6,13 @@ import { Icon } from '@iconify/react'
 
 const SocialMediaIcons = () => (
   <div className='flex gap-4 text-white sm:justify-center px-4'>
-    <Link to='https://www.instagram.com/atklrecords/' target='_blank' rel='noopener noreferrer'>
+    <Link to='https://www.instagram.com/atkl.records/' target='_blank' rel='noopener noreferrer'>
       <i><FontAwesomeIcon icon={faInstagram} size='2x' /></i>
     </Link>
-    <Link to='https://soundcloud.com/atklrecords' target='_blank' rel='noopener noreferrer'>
+    <Link to='https://soundcloud.com/atkl.records' target='_blank' rel='noopener noreferrer'>
       <i><FontAwesomeIcon icon={faSoundcloud} size='2x' /></i>
     </Link>
-    <Link to='https://www.bandcamp.com/atklrecords' target='_blank' rel='noopener noreferrer'>
+    <Link to='https://www.bandcamp.com/atkl.records' target='_blank' rel='noopener noreferrer'>
       <i><FontAwesomeIcon icon={faBandcamp} size='2x' /></i>
     </Link>
     <Link to='https://www.youtube.com/channel/UC-9-kyTW8ZkZNDHQyHvryaw' target='_blank' rel='noopener noreferrer'>

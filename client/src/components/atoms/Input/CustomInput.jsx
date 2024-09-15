@@ -73,12 +73,12 @@ const CustomInput = React.forwardRef(
                                         edge="end"
                                     >
                                         {showPassword
-? (
-                                            <VisibilityOff />
-                                        )
-: (
-                                            <Visibility />
-                                        )}
+                                            ? (
+                                                <VisibilityOff />
+                                            )
+                                            : (
+                                                <Visibility />
+                                            )}
                                     </IconButton>
                                 </InputAdornment>
                             )
