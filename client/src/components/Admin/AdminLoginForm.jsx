@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Unstable_Grid2 as Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import AdminSignin from './AdminSignin'
 import MainLayout from '../Template/MainLayout';
 
@@ -15,8 +15,8 @@ const AdminLoginForm = () => {
             lg: '60vw',
             xl: '60vw'
           },
-          margin: '100px',
-          marginRight: '0px'
+          margin: '0 auto',
+          marginTop: 10,
         }}
       >
         {/* GRID SYSTEM */}
