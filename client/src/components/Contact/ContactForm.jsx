@@ -34,7 +34,7 @@ const ContactForm = () => {
   return (
     <div>
       {formSubmitted && <div className="text-green-500">{t('form_sent_success')}</div>}
-      <div className="max-w-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
+      <div className="max-w-md mx-auto rounded sm:px-8 sm:pt-6 sm:pb-8 p-4 mb-4">
         <h2 className="text-2xl font-bold mb-4 text-center">{t('subscribe')}</h2>
         <p className="text-center mb-4">{t('subscribe_message')}</p>
         <form onSubmit={handleSubmit}>

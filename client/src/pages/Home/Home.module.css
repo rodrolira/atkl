@@ -27,7 +27,7 @@
 .container {
     margin: 0 10px;
     /* Margen reducido para pantallas pequeñas */
-    padding: 150px 0 0;
+    padding: 150px 0;
 }
 
 .main {
