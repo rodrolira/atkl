@@ -3,7 +3,7 @@ import NavItem from './NavItem'
 import { useLocation } from 'react-router-dom'
 import { useLanguage } from '@/hooks/useLanguage'
 import links from '@/utils/navbarLinks'
-// // import { useAdminAuth } from '../../contexts/AdminAuthContext'
+import { useAdminAuth } from '@/contexts/AdminAuthContext'
 
 
 const OtherPagesNavbarLinks = () => {
@@ -11,7 +11,7 @@ const OtherPagesNavbarLinks = () => {
   const [isNavbarOpen, setNavbarOpen] = useState(false)
   const location = useLocation()
   const [activeItem, setActiveItem] = useState(location.pathname)
-  // const { isAuthenticated: adminAuthenticated } = useAdminAuth()
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth()
 
   const handleItemClick = (to) => {
     setNavbarOpen(false)

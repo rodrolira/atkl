@@ -4,8 +4,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'; // Icono para agregar
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'; // Icono para agregar release
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Icono para salir (logout)
 import './CircularButtons.css'; // Importa los estilos para los botones circulares
-import AddArtistForm from '@/components/Artist/AddArtistForm';
-import AddReleaseForm from '@/components/Release/AddReleaseForm'; // Importa el formulario
+import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm';
+import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm'; // Importa el formulario
 import { useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 

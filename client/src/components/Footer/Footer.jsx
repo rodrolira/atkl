@@ -59,13 +59,13 @@ function Footer({ isAdminLogin }) {
 
     return (
         <footer className={`relative footer w-full ${footerClass}`}>
-            <div className='mx-auto w-full max-w-full 2xl:max-w-7xl border-t border-blue-gray-50'>
+            <div className='mx-auto w-full max-w-full 2xl:max-w-7xl border-t border-green-600'>
                 <div className='mx-auto grid w-full grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-4'>
                     {sitemap.map(({ title, links }, key) => (
                         <div key={key} className='w-full'>
                             <Typography
                                 variant='small'
-                                color='white'
+                                color='green'
                                 className='mb-4 font-bold uppercase opacity-50'
                             >
                                 {t(title)}
@@ -90,13 +90,13 @@ function Footer({ isAdminLogin }) {
                         </div>
                     ))}
                 </div>
-                <div className='flex w-full flex-col items-center justify-center border-t px-4 border-blue-gray-50 py-4 md:flex-row md:justify-between'>
+                <div className='flex w-full flex-col items-center justify-center border-t px-4 border-green-600 py-4 md:flex-row md:justify-between'>
                     <Typography
                         variant='small'
                         className='!mb-2 !ms-2 text-center font-normal text-white md:mb-0'
                     >
                         &copy; {currentYear}{' '}
-                        <Link to='https://material-tailwind.com/'>
+                        <Link to='https://material-tailwind.com/' className='hover:text-green-600'>
                             ATKL Records
                         </Link>
                         . {t('All Rights Reserved.')}

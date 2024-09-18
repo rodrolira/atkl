@@ -12,7 +12,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { useArtists } from '@/contexts/ArtistContext'; // Asegúrate de importar el contexto de artistas
 import { useEffect } from 'react'
 import { handleEditArtist, handleDeleteArtist } from '@/utils/artistActions';
-import EditArtistModal from '@/components/Artist/EditArtistModal'
+import EditArtistModal from '@/components/Artist/EditArtist/EditArtistModal'
 import { useReleases } from '@/contexts/ReleaseContext'
 
 

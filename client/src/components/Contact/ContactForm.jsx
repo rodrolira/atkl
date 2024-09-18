@@ -43,7 +43,7 @@ const ContactForm = () => {
               {t('name')}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               name="name"
@@ -58,7 +58,7 @@ const ContactForm = () => {
               {t('email')}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               name="email"
@@ -73,7 +73,7 @@ const ContactForm = () => {
               {t('description_optional')}
             </label>
             <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               name="description"
               value={formData.description}
@@ -82,7 +82,7 @@ const ContactForm = () => {
           </div>
           <div className="flex items-center justify-between mx-auto">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-purple-500 hover:bg-purple-700 text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               {t('submit')}

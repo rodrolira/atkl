@@ -14,12 +14,13 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useAdminAuth } from '@/contexts/AdminAuthContext'
 import Button from '@/components/Button/Button'
 import Modal from '@/components/Modal/Modal'
-import EditReleaseModal from './EditReleaseModal'
+import EditReleaseModal from './EditRelease/EditReleaseModal'
 import { useReleases } from '@/contexts/ReleaseContext'
 import { getReleaseRequest } from '@/app/api/releases'
 import { Link } from 'react-router-dom'
 import { Icon } from '@iconify/react'
 import ReleaseLinks from './ReleaseLinks'
+import BaseCard from '@/components/Layout/BaseCard'
 
 const ReleaseCard = ({ release, artist }) => {
     const [currentRelease, setCurrentRelease] = useState(release)
@@ -79,7 +80,7 @@ const ReleaseCard = ({ release, artist }) => {
 
     return (
         <>
-            <div className='max-w-sm w-full mx-auto text-center border text-white rounded-lg shadow bg-black border-gray-700'>
+            <BaseCard>
                 <div className='w-full rounded-t-lg overflow-hidden relative'>
                     <h3 className='text-xl font-bold mt-2'>{currentRelease.title}</h3>
                     {currentRelease.artists && currentRelease.artists.length > 0
@@ -98,7 +99,7 @@ const ReleaseCard = ({ release, artist }) => {
                     <img
                         src={`http://localhost:3000/${currentRelease.cover_image_url}`}
                         alt={currentRelease.title}
-                        className='w-full rounded-lg'
+                        className='w-full'
                     />
 
                     {adminAuthenticated && (
@@ -137,7 +138,7 @@ const ReleaseCard = ({ release, artist }) => {
                         />
                     </Modal>
                 )}
-            </div>
+            </BaseCard>
         </>
     )
 }
