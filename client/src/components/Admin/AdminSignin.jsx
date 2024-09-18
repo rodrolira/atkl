@@ -1,7 +1,6 @@
 // AdminSignin.jsx
 
 import React, { useEffect } from 'react'; // Importa React y useEffect
-import { useLanguage } from '@/hooks/useLanguage';
 import {
   Box,
   Button,
@@ -17,17 +16,18 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
+import {useTranslation} from 'react-i18next';
 
 function AdminSignin() {
-  const { language } = useLanguage(); // Usa el hook para obtener language
+  const { t } = useTranslation();
   // routing
   const navigate = useNavigate();
   const { signin, isAuthenticated, errors: signinErrors } = useAdminAuth(); // Obtener la función signin del contexto de autenticación de administradores
 
   // Define validation schema using Yup
   const validationSchema = Yup.object({
-    username: Yup.string().required('El nombre de usuario es requerido'),
-    password: Yup.string().required('La contraseña es requerida'),
+    username: Yup.string().required(t('validation.usernameRequired')),
+    password: Yup.string().required(t('validation.passwordRequired')),
   });
 
   // Validación del Form
@@ -49,7 +49,7 @@ function AdminSignin() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={<div>{t('loading')}</div>}>
       <Grid
         minHeight={550}
         sx={{
@@ -111,9 +111,7 @@ function AdminSignin() {
                 mt={7}
                 mb={3}
               >
-                {language === 'en'
-                  ? 'Admin Sign in'
-                  : 'Inicia Sesión de Administrador'}
+                {t('login.loginAdmin')}
               </Typography>
             </Box>
 
@@ -122,12 +120,8 @@ function AdminSignin() {
               <Box component="form" onSubmit={formik.handleSubmit}>
                 <CustomInput
                   type="text"
-                  label={language === 'en' ? 'Username' : 'Nombre de usuario'}
-                  placeholder={
-                    language === 'en'
-                      ? 'Enter your username...'
-                      : 'Ingrese su nombre de usuario...'
-                  }
+                  label={t('login.username')}
+                  placeholder={t('login.enterUsername')}
                   isIconActive={false}
                   text-align="center"
                   mx="auto"
@@ -145,12 +139,8 @@ function AdminSignin() {
                 ) : null}
 
                 <CustomInput
-                  label={language === 'en' ? 'Password' : 'Contraseña'}
-                  placeholder={
-                    language === 'en'
-                      ? 'Enter your password...'
-                      : 'Ingrese su contraseña...'
-                  }
+                  label={t('login.password')}
+                  placeholder={t('login.password')}
                   type="password"
                   isIconActive={true}
                   text-align="center"
@@ -187,7 +177,7 @@ function AdminSignin() {
                         name="rememberMe"
                       />
                     }
-                    label={language === 'en' ? 'Remember me' : 'Recuérdame'}
+                    label={t('login.rememberMe')}
                   />
                 </Box>
                 <Button
@@ -201,7 +191,7 @@ function AdminSignin() {
                   }}
                   value="Login"
                 >
-                  {language === 'en' ? 'Login' : 'Iniciar Sesión'}
+                  {t('login.login')}
                 </Button>
                 {signinErrors && signinErrors.length > 0 && (
                   <div>
