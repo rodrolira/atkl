@@ -9,7 +9,7 @@ import { getArtistRequest, getRolesRequest } from '@/app/api/artists'
 import { useArtists } from '@/contexts/ArtistContext'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import Title from '../atoms/Title/Title'
+import Title from '../../atoms/Title/Title'
 
 const validationSchema = Yup.object().shape({
     artist_name: Yup.string(),
@@ -108,14 +108,12 @@ function EditArtistModal({ id, onClose }) {
             >
                 {({ isSubmitting }) => (
                     <Form className='w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center'>
-                        <Title className='text-2xl text-black mb-4 font-bold'>Edit Artist</Title>
+                        <Title className='!text-3xl mb-4 font-bold text-center text-gray-700'>{t('edit_artist')}</Title>
                         <div className='mb-4'>
                             <label
                                 htmlFor='artist_name'
                                 className='block text-gray-700 font-bold mb-2'
-                            >
-                                Artist Name
-                            </label>
+                            >{t('artistName')}</label>
                             <Field
                                 type='text'
                                 id='artist_name'
@@ -134,10 +132,10 @@ function EditArtistModal({ id, onClose }) {
                         <div className='mb-4'>
                             <FileUpload />
                         </div>
-                        <FormControl fullWidth variant='outlined'>
-                            <InputLabel>{t('addArtist.selectRole')}</InputLabel>
-                            <Field as={Select} name='roleIds' multiple>
-                            {roles.map(role => (
+                        <FormControl className='!mb-4 !block' fullWidth variant='outlined'>
+                            <InputLabel className='!block !text-gray-700 !font-bold !mb-2'>{t('addArtist.selectRole')}</InputLabel>
+                            <Field className='!shadow !appearance-none !border !rounded !w-full !text-gray-700 !leading-tight !focus:!outline-none !focus:!shadow-outline' as={Select} name='roleIds' multiple>
+                                {roles.map(role => (
                                     <MenuItem key={role.id} value={role.id}>
                                         {role.label}
                                     </MenuItem>
@@ -264,28 +262,28 @@ function EditArtistModal({ id, onClose }) {
                                 className='text-red-500 text-sm mt-1'
                             />
                         </div>
-                        <div className='flex items-center justify-between'>
+                        <div className='flex items-center justify-around sm:justify-between w-full flex-wrap'>
                             <Link
                                 type='button'
                                 onClick={onClose} // Cambia a navigate para cerrar el modal
-                                className='btn btn-cancel'
+                                className='btn btn-cancel h-10 mt-2'
                             >
                                 Cancel
                             </Link>
                             <button
                                 type='submit'
-                                className='btn btn-save'
+                                className='btn btn-save h-10 mt-2'
                                 disabled={isSubmitting}
                             >
                                 Save
                             </button>
-                            <Button
+                            <button
                                 type='button'
-                                className='btn btn-delete'
+                                className='btn btn-delete h-10 mt-2'
                                 onClick={handleDelete}
                             >
                                 Delete
-                            </Button>
+                            </button>
                         </div>
                     </Form>
                 )}

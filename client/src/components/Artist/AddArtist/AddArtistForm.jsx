@@ -73,7 +73,7 @@ const AddArtistForm = ({ open, closePopup, onArtistAdded }) => {
             {({ field, form }) => (
                 <TextField
                     {...field}
-                    label={t(`addArtist.label.${label}`)}
+                    label={t(`label.${label}`)}
                     variant='outlined'
                     type={type}
                     autoComplete={autoComplete}
@@ -130,17 +130,17 @@ const AddArtistForm = ({ open, closePopup, onArtistAdded }) => {
                             apple_music_link: '',
                         }}
                         validationSchema={Yup.object().shape({
-                            artist_name: Yup.string().required(t('addArtist.validation.artistNameRequired')),
-                            username: Yup.string().required(t('addArtist.validation.usernameRequired')),
+                            artist_name: Yup.string().required(t('validation.artistNameRequired')),
+                            username: Yup.string().required(t('validation.usernameRequired')),
                             email: Yup.string()
-                                .email(t('addArtist.validation.invalidEmail'))
-                                .required(t('addArtist.validation.emailRequired')),
+                                .email(t('validation.invalidEmail'))
+                                .required(t('validation.emailRequired')),
                             password: Yup.string()
-                                .min(6, t('addArtist.validation.passwordMin'))
-                                .required(t('addArtist.validation.passwordRequired')),
+                                .min(6, t('validation.passwordMin'))
+                                .required(t('validation.passwordRequired')),
                             bio: Yup.string(),
                             image: Yup.mixed(),
-                            roleIds: Yup.array().of(Yup.string()).required(t('addArtist.validation.roleRequired')),
+                            roleIds: Yup.array().of(Yup.string()).required(t('validation.roleRequired')),
                             bandcamp_link: Yup.string(),
                             facebook_link: Yup.string(),
                             instagram_link: Yup.string(),
@@ -162,7 +162,7 @@ const AddArtistForm = ({ open, closePopup, onArtistAdded }) => {
                                     {renderField('password', 'password', 'password', 'current-password')}
                                     <FileUpload />
                                     <FormControl fullWidth variant='outlined'>
-                                        <InputLabel>{t('addArtist.selectRole')}</InputLabel>
+                                        <InputLabel className='w-full'>{t('addArtist.selectRole')}</InputLabel>
                                         <Field name='roleIds'>
                                             {({ field, form }) => (
                                                 <Select
