@@ -106,7 +106,7 @@ function EditArtist() {
                 >
                     {({ isSubmitting }) => (
                         <Form className='w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
-                            <h2 className='text-2xl mb-4 font-bold'>
+                            <h2 className='text-2xl text-center text-gray-700 mb-4 font-bold'>
                                 Edit Artist
                             </h2>
                             <div className='mb-4'>
