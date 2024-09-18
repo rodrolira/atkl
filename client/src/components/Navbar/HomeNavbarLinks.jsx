@@ -1,18 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import NavItem from './NavItem'
 import { useLanguage } from '@/hooks/useLanguage'
 import links from '@/utils/navbarLinks'
-// // import { useAdminAuth } from '../../contexts/AdminAuthContext'
+import { useAdminAuth } from '@/contexts/AdminAuthContext'
+import { useLocation } from 'react-router-dom';
 
 
 const HomeNavbarLinks = () => {
     const { language } = useLanguage()
-    // const { isAuthenticated: adminAuthenticated } = useAdminAuth()
+    const { isAuthenticated: adminAuthenticated } = useAdminAuth()
+    const location = useLocation();
 
-    const [activeItem, setActiveItem] = useState('/') // Inicialmente ningún ítem está activo
+    // Inicialmente activamos según la ruta actual
+    const [activeItem, setActiveItem] = useState(location.pathname === '/' ? '/' : '');
 
-    const handleItemClick = (id) => {
-        setActiveItem(id) // Actualiza el estado activo con la nueva ruta
+    const handleItemClick = (id, linkTo) => {
+        // Si hacemos clic en otro link que no es el home, desactivamos home
+        if (linkTo !== '/') {
+            setActiveItem(id); // Actualizamos con el ID de la sección
+        } else {
+            setActiveItem('/'); // Si es Home, mantenemos la ruta "/"
+        }
 
         // Scroll to section if it is an internal section
         if (id) {
@@ -22,6 +30,11 @@ const HomeNavbarLinks = () => {
             }
         }
     }
+
+    useEffect(() => {
+        // Actualiza el activeItem cuando cambia la ruta
+        setActiveItem(location.pathname === '/' ? '/' : '');
+    }, [location]);
 
     return (
         <div className="flex items-center h-full w-full justify-end">
@@ -46,10 +59,10 @@ const HomeNavbarLinks = () => {
                                         } // Usa el estado del idioma para determinar el texto del enlace
                                         isActive={
                                             activeItem === link.id ||
-                                            (link.id === 'main' &&
-                                                activeItem === '')
-                                        } // Verifica si el enlace es 'Home' y si el estado activo está vacío
-                                        onClick={() => handleItemClick(link.id)}
+                                            (link.to === '/' &&
+                                                activeItem === '/')
+                                        } // Activa el enlace 'Home' si estamos en '/'
+                                        onClick={() => handleItemClick(link.id, link.to)}
                                     />
                                 )
                             )

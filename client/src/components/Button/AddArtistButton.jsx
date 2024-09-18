@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import AddArtistForm from '@/components/Artist/AddArtistForm' // Importa el formulario de agregar artista
+import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm' // Importa el formulario de agregar artista
 import Button from './Button'
 import { useTranslation } from 'react-i18next'
 

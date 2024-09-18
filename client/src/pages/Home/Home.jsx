@@ -30,10 +30,10 @@ function Home() {
         <div className={`${styles.parallaxContainer} flex relative h-screen overflow-hidden`}>
           <div className={`${styles.parallaxContent} inset-0 bg-gradient-to-b from-transparent to-[#122e0f] backdrop-blur-md`}>
             {/* Contenido del encabezado aquí */}
-            <div className={`${styles.container}`}>
+            <div className={`${styles.container} h-full`}>
               <section
                 id="main"
-                className={`${styles.main} w-full flex flex-col justify-evenly`}>
+                className={`${styles.main} w-full flex flex-col justify-around`}>
                 <div>
                   <img
                     alt="main"

@@ -24,7 +24,7 @@ const LanguageMenu = () => {
       >
         <button
           type='button'
-          className='max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full px-4 py-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-gray-700 hover:text-white'
+          className='max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full px-4 py-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white'
         >
           <ReactCountryFlag
             className='max-[320px]:ms-[0.5rem]'
@@ -45,15 +45,15 @@ const LanguageMenu = () => {
         <div
           className={`${
             isMenuVisible ? 'block' : 'hidden'
-          } lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-gray-700 max-[320px]:ms-2`}
+          } lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-green-700 max-[320px]:ms-2`}
           role='menu'
         >
           <ul className='font-medium' role='none'>
             <li>
               <button
                 type='button'
-                className={`block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-gray-600 rounded-t-xl ${
-                  selectedLanguage === 'en' ? '!bg-gray-600' : ''
+                className={`block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-green-600 rounded-t-xl ${
+                  selectedLanguage === 'en' ? '!bg-green-600' : ''
                 }`}
                 onClick={() => handleChangeLanguage('en')}
               >
@@ -78,8 +78,8 @@ const LanguageMenu = () => {
             <li>
               <button
                 type='button'
-                className={`block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-gray-600 ${
-                  selectedLanguage === 'es' ? '!bg-gray-600' : ''
+                className={`block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-green-600 rounded-b-xl ${
+                  selectedLanguage === 'es' ? '!bg-green-600' : ''
                 }`}
                 onClick={() => handleChangeLanguage('es')}
               >

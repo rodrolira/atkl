@@ -48,13 +48,13 @@ function NavbarMenu() {
                                 </li>
                             </>
                         )}
-                        {!adminAuthenticated && (
+                        {adminAuthenticated && (
                         <li className='mx-1'>
                             <DemoButton />
                         </li>
                         )} 
                         <LanguageMenu />
-                        {adminAuthenticated && (
+                        {!adminAuthenticated && (
                             <li className='mx-1'>
                                 <AdminLogoutButton />
                             </li>

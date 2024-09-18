@@ -4,15 +4,16 @@
 import React, { useEffect } from 'react';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useReleases } from '@/contexts/ReleaseContext';
-import AddReleaseForm from '@/components/Release/AddReleaseForm';
+import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
 import ReleaseList from '@/components/Release/ReleaseList';
 import Title from '@/components/atoms/Title/Title';
-import { useLanguage } from '@/hooks/useLanguage';
+import {useTranslation} from 'react-i18next';
 
 function ReleasesSection() {
-  const { language } = useLanguage(); // Obtiene el estado del idioma desde el contexto
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { releases, fetchReleases, createRelease } = useReleases();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchReleases();
@@ -26,7 +27,7 @@ function ReleasesSection() {
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16" id="releases">
       <a href="/releases" className="mx-auto">
-        <Title>{language === 'en' ? 'Releases' : 'Lanzamientos'}</Title>
+        <Title>{t('releaseSection.title')}</Title>
       </a>
       {adminAuthenticated && (
         <AddReleaseForm onReleaseAdded={handleReleaseAdded} />

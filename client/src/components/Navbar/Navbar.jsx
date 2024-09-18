@@ -12,8 +12,8 @@ function Navbar() {
   return (
     <nav className={`${styles.navbarWrapper} shadow-lg h-20 lg:h-24 z-10`}>
       <div className="h-full flex items-center">
-        { adminAuthenticated  && (
-        <div className="top-0 left-0 xs:hidden sm:flex md:hidden h-full flex items-center w-full">
+        {!adminAuthenticated  && (
+        <div className="top-0 left-0 xs:hidden sm:flex md:hidden h-full flex items-center w-full ms-4 ">
         <AddArtistButton />
         <AddReleaseButton />
       </div>
@@ -21,13 +21,13 @@ function Navbar() {
         
         <div className="absolute top-0 right-0 h-full flex md:hidden items-center">
           <NavbarMenuMobile />
-          {adminAuthenticated && (
+          {!adminAuthenticated && (
           <AdminLogoutButton />
           )}
         </div>
 
         {/* Contenedor del logo que ocupa todo el ancho */}
-        <div className="justify-center hidden sm:flex h-full mx-2">
+        <div className={`${styles.navbarLogoWrapper} justify-center hidden sm:flex h-full mx-2 dark:invert`}>
           {/* <div className='w-full md:w-auto flex justify-center md:justify-start'> */}
           <Logo alt="Company Logo" />
           {/* </div> */}

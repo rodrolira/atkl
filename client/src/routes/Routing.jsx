@@ -9,8 +9,8 @@ import ReleasesPage from '@/pages/Release/ReleasesPage';
 import LoginAdminPage from '@/pages/Auth/LoginAdminPage';
 import AdminRoutes from './AdminRoutes';
 import AdminDashboard from '@/pages/Admin/AdminDashboard';
-import EditReleaseModal from '@/components/Release/EditReleaseModal';
-import EditArtist from '@/components/Artist/EditArtist';
+import EditReleaseModal from '@/components/Release/EditRelease/EditReleaseModal';
+import EditArtist from '@/components/Artist/EditArtist/EditArtist';
 import NotFound from '@/pages/NotFound';
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';

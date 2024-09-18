@@ -15,7 +15,7 @@ html {
 .App,
 .layout {
     text-align: center;
-    background-image: linear-gradient(var(--primary-color), var(--secondary-color));
+    background-color: black;
     background-repeat: no-repeat;
     background-blend-mode: darken;
     background-position: center;

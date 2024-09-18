@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import AddReleaseForm from '@/components/Release/AddReleaseForm'
+import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm'
 import Button from './Button'
 
 const AddReleaseButton = () => {

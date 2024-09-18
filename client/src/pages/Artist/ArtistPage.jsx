@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import Navbar from '@/components/Navbar/Navbar'
 import { useArtistData } from '@/hooks/useArtistData' // Hook personalizado
 import Modal from "@/components/Modal/Modal"
-import EditArtistModal from '@/components/Artist/EditArtistModal'
+import EditArtistModal from '@/components/Artist/EditArtist/EditArtistModal'
 import ArtistDetails from '@/components/Artist/ArtistDetails'
 import ArtistReleases from '@/components/Artist/ArtistReleases'
 import ArtistBio from '@/components/Artist/ArtistBio'
