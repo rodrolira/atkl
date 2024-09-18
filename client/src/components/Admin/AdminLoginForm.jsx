@@ -1,10 +1,12 @@
 import React from 'react'
 import { Box, Grid } from '@mui/material'
 import AdminSignin from './AdminSignin'
-import MainLayout from '../Template/MainLayout';
+import MainLayout from '@/components/Layout/MainLayout';
+import styles from '@/pages/Auth/Auth.module.css'
 
 const AdminLoginForm = () => {
   return (
+    <div className={styles.auth} >
     <MainLayout>
       <Box
         sx={{
@@ -31,6 +33,7 @@ const AdminLoginForm = () => {
         {/* GRID SYSTEM END */}
       </Box>
     </MainLayout>
+    </div>
   )
 }
 

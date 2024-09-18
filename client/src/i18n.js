@@ -30,10 +30,30 @@ i18n.use(initReactI18next).init({
         spotify_link: 'Spotify Link',
         beatport_link: 'Beatport Link',
         apple_music_link: 'Apple Music Link',
+        delete_confirmation: "Are you sure you want to delete the artist {{artistName}}?",
+        edit_artist: "Edit Artist",
+        delete_artist: "Delete Artist",
+        no_roles_assigned: "No roles assigned",
+        loading: "Loading...",
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
           language: 'EN'
+        },
+        validation: {
+          artistNameRequired: 'Artist name is required',
+          usernameRequired: 'Username is required',
+          emailRequired: 'Email is required',
+          invalidEmail: 'Invalid email address',
+          passwordRequired: 'Password is required',
+          passwordMin: 'Password must be at least 6 characters',
+          roleRequired: 'At least one role is required',
+        },
+        artistSection: {
+          title: 'Artists'
+        },
+        releaseSection: {
+          title: 'Releases'
         },
         aboutSection: {
           title: 'About',
@@ -62,12 +82,29 @@ i18n.use(initReactI18next).init({
           samplePacks: 'Sample Packs',
           rightsReserved: 'All Rights Reserved'
         },
+        label: {
+          artist_name: 'Artist Name',
+          username: 'Username',
+          password: 'Password',
+          email: 'Email',
+          bio: 'Bio',
+          role: 'Role',
+          dj: 'DJ',
+          producer: 'Producer'
+        },
         login: {
+          loginAdmin: 'Admin Sign in',
+          username: 'Username',
           email: 'Email Address',
           password: 'Password',
           login: 'Login',
           failed: 'Login failed. Please check your credentials and try again.',
           welcome: 'Welcome to ATKL Records',
+          forgotPassword: 'Forgot Password',
+          enterUsername: 'Enter Username',
+          enterEmail: 'Enter Email',
+          enterPassword: 'Enter Password',
+          rememberMe: 'Remember Me',
         },
         addArtist: {
           title: 'Add Artist',
@@ -76,25 +113,6 @@ i18n.use(initReactI18next).init({
           bio: 'Bio',
           selectRole: 'Select Role',
           role: {
-            role: 'Role',
-            dj: 'DJ',
-            producer: 'Producer'
-          },
-          validation: {
-            artistNameRequired: 'Artist name is required',
-            usernameRequired: 'Username is required',
-            emailRequired: 'Email is required',
-            invalidEmail: 'Invalid email address',
-            passwordRequired: 'Password is required',
-            passwordMin: 'Password must be at least 6 characters',
-            roleRequired: 'At least one role is required',
-          },
-          label: {
-            artist_name: 'Artist Name',
-            username: 'Username',
-            password: 'Password',
-            email: 'Email',
-            bio: 'Bio',
             role: 'Role',
             dj: 'DJ',
             producer: 'Producer'
@@ -129,10 +147,30 @@ i18n.use(initReactI18next).init({
         spotify_link: 'Enlace de Spotify',
         beatport_link: 'Enlace de Beatport',
         apple_music_link: 'Enlace de Apple Music',
+        delete_confirmation: "¿Estás seguro de que deseas eliminar al artista {{artistName}}?",
+        edit_artist: "Editar Artista",
+        delete_artist: "Eliminar Artista",
+        no_roles_assigned: "No hay roles asignados",
+        loading: "Cargando...",
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
           language: 'ES'
+        },
+        validation: {
+          artistNameRequired: 'El nombre del artista es requerido',
+          usernameRequired: 'El nombre de usuario es requerido',
+          emailRequired: 'El correo electrónico es requerido',
+          invalidEmail: 'Correo electrónico inválido',
+          passwordRequired: 'La contraseña es requerida',
+          passwordMin: 'La contraseña debe tener al menos 6 caracteres',
+          roleRequired: 'Se requiere al menos un rol',
+        },
+        artistSection: {
+          title: 'Artistas',
+        },
+        releaseSection: {
+          title: 'Lanzamientos',
         },
         aboutSection: {
           title: 'Acerca de',
@@ -161,12 +199,29 @@ i18n.use(initReactI18next).init({
           samplePacks: 'Paquetes de Muestras',
           rightsReserved: 'Todos los Derechos Reservados'
         },
+        label: {
+          artist_name: 'Nombre del Artista',
+          username: 'Nombre de Usuario',
+          password: 'Contraseña',
+          email: 'Correo electrónico',
+          bio: 'Bio',
+          role: 'Rol',
+          dj: 'DJ',
+          producer: 'Productor'
+        },
         login: {
+          loginAdmin: 'Inicia Sesión de Administrador',
+          username: 'Nombre de Usuario',
           email: 'Correo electrónico',
           password: 'Contraseña',
           login: 'Iniciar sesión',
           failed: 'Inicio de sesión fallido. Por favor, verifica tus credenciales y vuelve a intentarlo.',
           welcome: 'Bienvenido a ATKL Records',
+          forgotPassword: '¿Olvidaste tu contraseña?',
+          enterEmail: 'Introduce tu correo electrónico',
+          enterUsername: 'Introduce tu nombre de usuario',
+          enterPassword: 'Introduce tu contraseña',
+          rememberMe: 'Recordarme',
         },
         addArtist: {
           title: 'Agregar Artista',
@@ -179,30 +234,8 @@ i18n.use(initReactI18next).init({
             producer: 'Productor'
           },
           selectRole: 'Seleccionar Rol',
-          validation: {
-            artistNameRequired: 'El nombre del artista es requerido',
-            usernameRequired: 'El nombre de usuario es requerido',
-            emailRequired: 'El correo electrónico es requerido',
-            invalidEmail: 'Correo electrónico inválido',
-            passwordRequired: 'La contraseña es requerida',
-            passwordMin: 'La contraseña debe tener al menos 6 caracteres',
-            roleRequired: 'Se requiere al menos un rol',
-
-          },
-          label: {
-            artist_name: 'Nombre del Artista',
-            username: 'Nombre de Usuario',
-            password: 'Contraseña',
-            email: 'Correo electrónico',
-            bio: 'Bio',
-            role: 'Rol',
-            dj: 'DJ',
-            producer: 'Productor'
-          }
-        },
-
+        }
       }
-
     }
   },
   lng: 'en', // idioma por defecto
