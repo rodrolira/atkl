@@ -161,7 +161,14 @@ export const deleteArtist = async (req, res) => {
 
 export const getArtists = async (req, res) => {
   try {
-    const artists = await Artist.findAll()
+    const artists = await Artist.findAll({
+      include: {
+        model: Role,
+        as: 'Roles',
+        through:{attributes: []}
+      }
+    }
+    )
     res.status(200).json(artists)
   } catch (error) {
     res.status(500).json({ message: error.message })
