@@ -175,7 +175,7 @@ const AddArtistForm = ({ open, closePopup, onArtistAdded }) => {
                                                     renderValue={(selected) => selected.join(' / ')}
                                                 >
                                                     {roles.map((role) => (
-                                                        <MenuItem key={role.id} value={role.label}>
+                                                        <MenuItem key={role.id} value={role.id}>
                                                             {role.label}
                                                         </MenuItem>
                                                     ))}

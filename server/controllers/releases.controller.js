@@ -66,7 +66,13 @@ export const addRelease = async (req, res) => {
 export const getReleases = async (req, res) => {
   try {
     const releases = await Release.findAll({
-      include: [{ model: Artist, as: 'artists' }],
+      include: [
+        {
+          model: Artist,
+          as: 'artists',
+          attributes:['artist_name']
+        }
+      ],
     })
     res.status(200).json(releases)
   } catch (error) {
@@ -128,7 +134,7 @@ export const updateRelease = async (req, res) => {
       {
         title,
         release_date,
-          description,
+        description,
         genre_id,
         release_type,
         cover_image_url,
