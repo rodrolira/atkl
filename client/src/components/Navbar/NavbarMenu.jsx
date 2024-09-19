@@ -16,11 +16,11 @@ function NavbarMenu() {
     const { isAuthenticated: adminAuthenticated } = useAdminAuth()
 
     return (
-        <div className='xs:flex lg:block hidden xs:flex-row-reverse xs:flex-wrap items-center w-full'>
+        <div className='xs:flex lg:block hidden justify-start md:justify-end xs:flex-wrap items-center w-full'>
             <div className='flex items-center justify-end h-[50%] px-2'>
                 <div className='z-10 flex divide-y rounded-lg text-center '>
                     <ul
-                        className='py-2 text-sm hidden sm:flex text-white dark:text-white sm:font-normal'
+                        className='text-sm hidden sm:flex text-white dark:text-white sm:font-normal'
                         aria-labelledby='dropdownHoverButton'
                     >
                         {adminAuthenticated && (
@@ -48,13 +48,13 @@ function NavbarMenu() {
                                 </li>
                             </>
                         )}
-                        {adminAuthenticated && (
+                        {!adminAuthenticated && (
                         <li className='mx-1'>
                             <DemoButton />
                         </li>
                         )} 
                         <LanguageMenu />
-                        {!adminAuthenticated && (
+                        {adminAuthenticated && (
                             <li className='mx-1'>
                                 <AdminLogoutButton />
                             </li>
@@ -62,10 +62,9 @@ function NavbarMenu() {
                     </ul>
                 </div>
                 {adminAuthenticated && (
-                    <div className='sm:hidden'>
+                    <div className='xs:hidden'>
                         <AddArtistButtonMobile />
                         <AddReleaseButtonMobile />
-                        <AdminLogoutButtonMobile />
                     </div>
                 )}
             </div>

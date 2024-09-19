@@ -38,7 +38,7 @@ const ProfileImage = () => (
 
 const Sidebar = ({ isOpen, onClose }) => (
   <div
-    className={`fixed inset-y-0 left-0 bg-[#122e0f] p-4 transition-transform transform ${isOpen ? 'translate-x-0 z-50' : '-translate-x-full'
+    className={`fixed inset-y-0 left-0 bg-[#122e0f] p-4 mt-24 w-[20%] transition-transform transform ${isOpen ? 'translate-x-0 z-50' : '-translate-x-full'
       } md:translate-x-0 md:relative md:flex md:h-full md:min-h-[700px] md:flex-col md:justify-between`}
   >
     <button
@@ -47,7 +47,7 @@ const Sidebar = ({ isOpen, onClose }) => (
     >
       <FiMenu />
     </button>
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 absolute">
       <div className="flex gap-3">
         <ProfileImage />
         <div className="flex flex-col">
@@ -95,7 +95,7 @@ const Table = ({ rows, onEdit, onDelete }) => (
           <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
             Email
           </th>
-          <th className="px-4 py-3 text-left w-60 text-[#8bd685] text-sm font-medium leading-normal">
+          <th className="px-4 py-3 text-right text-[#8bd685] w-[400px] text-sm font-medium leading-normal">
             Actions
           </th>
         </tr>
@@ -103,14 +103,14 @@ const Table = ({ rows, onEdit, onDelete }) => (
       <tbody>
         {rows.map((row, index) => (
           <tr className="border-t border-t-[#2e7728]" key={index}>
-            <td className="h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
+            <td className="h-[72px] px-4 py-2 text-left w-[400px] text-white text-sm font-normal leading-normal">
               {row.artist_name}
             </td>
-            <td className="h-[72px] px-4 py-2 w-[400px] text-[#8bd685] text-sm font-normal leading-normal">
+            <td className="h-[72px] px-4 py-2 text-left w-[400px] text-[#8bd685] text-sm font-normal leading-normal">
               {row.email}
             </td>
-            <td className="px-4 py-2 text-[#8bd685] text-sm font-normal leading-normal">
-              <div className="flex space-x-2">
+            <td className="px-4 py-2 text-right w-[400px] text-[#8bd685] text-sm font-normal leading-normal">
+              <div className="flex space-x-2 justify-end">
                 <button
                   className='text-xl mx-2 text-yellow-400 hover:text-yellow-500'
                   onClick={() => onEdit(row)}
@@ -181,8 +181,9 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-[#122e0f] dark group/design-root overflow-x-hidden">
-      <Navbar onMenuClick={toggleSidebar} />
+    <>
+          <Navbar onMenuClick={toggleSidebar} />
+    <div className="relative flex size-full min-h-screen bg-[#122e0f] dark group/design-root overflow-x-hidden">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex flex-1 justify-center mt-16 py-5 px-6">
         <div className="layout-content-container flex flex-col items-center w-[80%] sm:w-full">
@@ -218,6 +219,7 @@ const AdminDashboard = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
