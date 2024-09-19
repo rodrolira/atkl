@@ -35,15 +35,16 @@ export const AdminAuthProvider = ({ children }) => {
         checkLogin()
     }, [])
 
-    const verifyToken = async () => {
+    const verifyToken = async (token) => { // Añadido parametro token
         try {
-            const res = await verifyAdminTokenRequest()
+            const res = await verifyAdminTokenRequest(token) // Pasar el token a la solicitud
             setIsAuthenticated(true)
             setUser(res.data.admin)
         } catch (error) {
             console.log('Admin verification failed:', error)
             setIsAuthenticated(false)
             setUser(null)
+            setErrors([error.response?.data?.message || 'Error verifying token' ])
         } finally {
             setLoading(false)
         }

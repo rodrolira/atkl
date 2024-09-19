@@ -12,7 +12,7 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 // Botón para agregar artista
 export const AddArtistButton = () => {
     const [open, setOpen] = useState(false);
-    const { adminAuthenticated } = useAdminAuth()
+    const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
     const openPopup = () => setOpen(true)
     const closePopup = () => setOpen(false)
@@ -20,7 +20,7 @@ export const AddArtistButton = () => {
     return (
         <>
             {/* Botón circular */}
-            {!adminAuthenticated && (
+            {adminAuthenticated && (
                 <IconButton onClick={openPopup} open={open} className="circular-button">
                     <PersonAddIcon fontSize="large" className="button-icon" />
                     {/* Formulario emergente */}
@@ -43,7 +43,7 @@ export const AddArtistButton = () => {
 // Botón para agregar release
 export const AddReleaseButton = () => {
     const [open, setOpen] = useState(false);
-    const { adminAuthenticated } = useAdminAuth();
+    const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
     const functionOpenPopup = () => {
         setOpen(true);
@@ -56,7 +56,7 @@ export const AddReleaseButton = () => {
     return (
         <>
             {/* Botón circular */}
-            {!adminAuthenticated && (
+            {adminAuthenticated && (
                 <IconButton onClick={functionOpenPopup} className="circular-button">
                     <LibraryMusicIcon fontSize="large" className="button-icon" />
                 </IconButton>
@@ -70,7 +70,7 @@ export const AddReleaseButton = () => {
 
 // Botón para salir (logout)
 export const AdminLogoutButton = () => {
-    const { signout, adminAuthenticated } = useAdminAuth(); // Utiliza tu función de cerrar sesión
+    const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -80,7 +80,7 @@ export const AdminLogoutButton = () => {
 
     return (
         <>
-            {!adminAuthenticated && (
+            {adminAuthenticated && (
                 <IconButton onClick={handleLogout} className="circular-button">
                     <ExitToAppIcon fontSize="large" className="button-icon" />
                 </IconButton>

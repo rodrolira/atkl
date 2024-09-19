@@ -12,7 +12,7 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 function NavbarMenuMobile() {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const { adminAuthenticated } = useAdminAuth();
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -21,8 +21,8 @@ function NavbarMenuMobile() {
   return (
     <>
       <div className="flex">
-        {adminAuthenticated && (
-          <div>
+        {!adminAuthenticated && (
+          <div className='hidden'>
             <DemoButton />
           </div>
         )}

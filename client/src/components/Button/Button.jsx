@@ -9,7 +9,7 @@ const Button = ({ href, onClick, children, text, colorClass, fontWeight='font-no
             <a
                 href={href}
                 rel='noopener noreferrer'
-                className={`flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 text-sm leading-normal tracking-[0.015em] ${colorClass} ${fontWeight}`}
+                className={`flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 lg:h-10 px-4 text-sm leading-normal tracking-[0.015em] ${colorClass} ${fontWeight}`}
             >
                 <span className="truncate">{text || children}</span>
             </a>
@@ -17,7 +17,7 @@ const Button = ({ href, onClick, children, text, colorClass, fontWeight='font-no
 : (
             <button
                 onClick={onClick}
-                className={`flex  max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 text-sm leading-normal tracking-[0.015em] ${colorClass} ${fontWeight}`}
+                className={`flex  max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 lg:h-10 px-4 text-sm leading-normal tracking-[0.015em] ${colorClass} ${fontWeight}`}
             >
                 <span className="truncate">{text || children}</span>
             </button>

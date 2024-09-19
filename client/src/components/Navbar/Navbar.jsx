@@ -7,31 +7,33 @@ import { AddArtistButton, AddReleaseButton, AdminLogoutButton } from '@/componen
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 function Navbar() {
-  const { adminAuthenticated } = useAdminAuth();
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
   return (
-    <nav className={`${styles.navbarWrapper} shadow-lg h-20 lg:h-24 z-10`}>
+    <nav className={`${styles.navbarWrapper} shadow-lg h-20 lg:h-24 z-10 py-1`}>
       <div className="h-full flex items-center">
-        {!adminAuthenticated  && (
-        <div className="top-0 left-0 xs:hidden sm:flex md:hidden h-full flex items-center w-full ms-4 ">
-        <AddArtistButton />
-        <AddReleaseButton />
-      </div>
-        )}
-        
-        <div className="absolute top-0 right-0 h-full flex md:hidden items-center">
-          <NavbarMenuMobile />
-          {!adminAuthenticated && (
-          <AdminLogoutButton />
-          )}
-        </div>
-
         {/* Contenedor del logo que ocupa todo el ancho */}
-        <div className={`${styles.navbarLogoWrapper} justify-center hidden sm:flex h-full mx-2 dark:invert`}>
+        <div className={`${styles.navbarLogoWrapper} justify-center flex w-[50%] h-full ms-2 sm:mx-2 dark:invert`}>
           {/* <div className='w-full md:w-auto flex justify-center md:justify-start'> */}
           <Logo alt="Company Logo" />
           {/* </div> */}
         </div>
+        <div className="h-full w-full flex md:hidden flex-col items-end">
+          {adminAuthenticated && (
+            <div className="h-full flex md:hidden w-full justify-end xs:justify-start items-center">
+              <AddArtistButton />
+              <AddReleaseButton />
+              <div className='relative xs:absolute right-0'>
+              <AdminLogoutButton />
+              </div>
+            </div>
+          )}
+
+          <div className="xs:absolute top-0 right-0 xs:right-10 h-full flex md:hidden items-center">
+            <NavbarMenuMobile />
+          </div>
+        </div>
+
 
         {/* Menú de navegación (para pantallas grandes) */}
         <NavbarMenu />
