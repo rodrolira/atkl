@@ -15,13 +15,13 @@ function Home() {
 
 
   useEffect(() => {
-    if (location.state && location.state.scrollToDemos) {
-      const demosSection = document.getElementById('demos')
+    if (location.state?.scrollToDemos) {
+      const demosSection = document.getElementById('demo')
       if (demosSection) {
         demosSection.scrollIntoView({ behavior: 'smooth' })
       }
     }
-  }, [location])
+  }, [location.state])
 
   return (
     <>

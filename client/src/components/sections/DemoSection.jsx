@@ -4,7 +4,7 @@ import Title from '@/components/atoms/Title/Title';
 
 function DemosSection() {
   return (
-    <section id="demos">
+    <section id="demo">
       <div className="container mx-auto p-4 sm:p-16">
         <Title>Demos</Title>
         <div className="iframe-container h-full sm:h-[20%]">
