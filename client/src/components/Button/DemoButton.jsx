@@ -12,15 +12,8 @@ const DemoButton = () => {
     const handleButtonClick = () => {
         if (location.pathname !== '/') {
             navigate('/', { state: { scrollToDemos: true } })
-
-            setTimeout(() => {
-                const demosSection = document.getElementById('demos')
-                if (demosSection) {
-                    demosSection.scrollIntoView({ behavior: 'smooth' })
-                }
-            }, 100)
         } else {
-            const demosSection = document.getElementById('demos')
+            const demosSection = document.getElementById('demo')
             if (demosSection) {
                 demosSection.scrollIntoView({ behavior: 'smooth' })
             }
