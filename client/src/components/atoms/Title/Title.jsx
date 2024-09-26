@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-function Title ({ children, className }) {
+function Title ({ children, className = 'text-white' }) {
   return (
 
     <h2 className={`text-4xl mx-auto font-bold my-4 sm:mt-12 text-center ${className}`}>
@@ -12,10 +12,6 @@ function Title ({ children, className }) {
 Title.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string
-}
-
-Title.defaultProps = {
-  className: 'text-white'
 }
 
 export default Title

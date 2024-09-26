@@ -85,8 +85,8 @@ const ReleaseCard = ({ release, artist }) => {
                     <h3 className='text-xl font-bold mt-2'>{currentRelease.title}</h3>
                     {currentRelease.artists && currentRelease.artists.length > 0
                         ? (
-                            currentRelease.artists.map(artist => (
-                                <Link to={`/artists/${artist.id}`} className='block relative' key={artist.id}>
+                            currentRelease.artists.map((artist, index) => (
+                                <Link to={`/artists/${artist.id || index}`} className='block relative' key={artist.id || index}>
                                     <h3 className='xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2'>
                                         {artist.artist_name}
                                     </h3>
