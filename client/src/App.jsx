@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { supabase } from './utils/supabase'
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import Routing from './routes/Routing';

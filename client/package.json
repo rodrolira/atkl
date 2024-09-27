@@ -49,6 +49,7 @@
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@reduxjs/toolkit": "^2.2.6",
+    "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.7.2",
     "flowbite-react": "^0.10.1",
     "formik": "^2.4.6",
