@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import NavItem from './NavItem'
-import { useLanguage } from '@/hooks/useLanguage'
+import { useTranslation } from 'react-i18next' // Importamos useTranslation de i18next
 import links from '@/utils/navbarLinks'
 import { useAdminAuth } from '@/contexts/AdminAuthContext'
 import { useLocation } from 'react-router-dom';
 
-
 const HomeNavbarLinks = () => {
-    const { language } = useLanguage()
-    const { isAuthenticated: adminAuthenticated } = useAdminAuth()
+    const { t } = useTranslation(); // Usamos el hook useTranslation
+    const { isAuthenticated: adminAuthenticated } = useAdminAuth();
     const location = useLocation();
 
     // Inicialmente activamos según la ruta actual
-    const [activeItem, setActiveItem] = useState(location.pathname === '/' ? '/' : '');
+    const [activeItem, setActiveItem] = useState(location.pathname);
 
     const handleItemClick = (id, linkTo) => {
         // Si hacemos clic en otro link que no es el home, desactivamos home
-        if (linkTo !== '/') {
-            setActiveItem(id); // Actualizamos con el ID de la sección
-        } else {
-            setActiveItem('/'); // Si es Home, mantenemos la ruta "/"
-        }
+        setActiveItem(linkTo); // Actualizamos el enlace activo
 
-        // Scroll to section if it is an internal section
+        // Hacemos scroll a la sección si es un enlace interno (sección)
         if (id) {
-            const section = document.getElementById(id)
+            const section = document.getElementById(id);
             if (section) {
-                section.scrollIntoView({ behavior: 'smooth' })
+                section.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }
+    };
 
     useEffect(() => {
-        // Actualiza el activeItem cuando cambia la ruta
-        setActiveItem(location.pathname === '/' ? '/' : '');
+        // Actualiza el `activeItem` cuando cambia la ruta
+        setActiveItem(location.pathname);
     }, [location]);
 
     return (
@@ -44,7 +39,7 @@ const HomeNavbarLinks = () => {
                         {links.map((link) => {
                             const showLink = link.authRequired
                                 ? adminAuthenticated // Muestra el enlace si el admin está autenticado
-                                : true
+                                : true;
 
                             return (
                                 showLink && (
@@ -52,26 +47,20 @@ const HomeNavbarLinks = () => {
                                         key={link.to}
                                         to={link.id} // Pasa solo el ID del enlace
                                         href={link.to}
-                                        text={
-                                            language === 'en'
-                                                ? link.text_en
-                                                : link.text_es
-                                        } // Usa el estado del idioma para determinar el texto del enlace
+                                        text={t(`navbar.${link.id}`)} // Usa `t` para la traducción basada en las claves
                                         isActive={
-                                            activeItem === link.id ||
-                                            (link.to === '/' &&
-                                                activeItem === '/')
-                                        } // Activa el enlace 'Home' si estamos en '/'
+                                            activeItem === link.to // Verifica si el enlace está activo
+                                        } 
                                         onClick={() => handleItemClick(link.id, link.to)}
                                     />
                                 )
-                            )
+                            );
                         })}
                     </ul>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default HomeNavbarLinks
+export default HomeNavbarLinks;

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import NavItem from './NavItem'
 import { useLocation } from 'react-router-dom'
-import { useLanguage } from '@/hooks/useLanguage'
+import { useTranslation } from 'react-i18next' // Importamos useTranslation
 import links from '@/utils/navbarLinks'
 import { useAdminAuth } from '@/contexts/AdminAuthContext'
 
-
 const OtherPagesNavbarLinks = () => {
-  const { language } = useLanguage()
+  const { t } = useTranslation() // Usamos el hook de traducción
   const [isNavbarOpen, setNavbarOpen] = useState(false)
   const location = useLocation()
   const [activeItem, setActiveItem] = useState(location.pathname)
@@ -58,7 +57,7 @@ const OtherPagesNavbarLinks = () => {
                           key={link.to}
                           to={link.to}
                           href={link.to}
-                          text={language === 'en' ? link.text_en : link.text_es}
+                          text={t(`navbar.${link.id}`)} // Usamos la función t para traducir los textos
                           isActive={
                             activeItem === link.to ||
                             (link.to === '/' && activeItem === '')
