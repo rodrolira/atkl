@@ -4,7 +4,7 @@ function Logo({ isAdminSignin }) {
   return (
     <a 
       href='/' 
-      className={`flex justify-center items-center w-full h-full ${
+      className={`flex md:justify-start justify-center items-center w-full h-full ${
         isAdminSignin ? 'admin-signin' : ''
       }`}
     >

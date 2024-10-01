@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
-import { useLanguage } from '@/hooks/useLanguage'
 import Navbar from '@/components/Navbar/Navbar';
 import styles from './Home.module.css'
 import ArtistsSection from '@/components/sections/ArtistsSection';
@@ -8,11 +7,11 @@ import ReleasesSection from '@/components/sections/ReleasesSection';
 import AboutSection from '@/components/sections/AboutSection';
 import DemosSection from '@/components/sections/DemoSection';
 import ContactSection from '@/components/sections/ContactSection';
+import { useTranslation } from 'react-i18next'
 
 function Home() {
-  const { language } = useLanguage() // Obtiene el estado del idioma desde el contexto
-  const location = useLocation()
-
+  const { t } = useTranslation(); // Hook de traducción
+  const location = useLocation();
 
   useEffect(() => {
     if (location.state?.scrollToDemos) {
@@ -21,7 +20,7 @@ function Home() {
         demosSection.scrollIntoView({ behavior: 'smooth' })
       }
     }
-  }, [location.state])
+  }, [location.state]);
 
   return (
     <>
@@ -42,15 +41,12 @@ function Home() {
                   />
                 </div>
                 <div className="text-center mx-auto w-full text-white flex flex-col lg:mb-24">
+                  {/* Usamos el hook `t` para la traducción */}
                   <h1 className="font-extrabold mx-auto text-center lg:text-5xl text-3xl">
-                    {language === 'en'
-                      ? 'HARD TECHNO IS LIFE'
-                      : 'HARD TECHNO IS LIFE'}
+                    {t('homeHeader.title')} {/* Traducción de "HARD TECHNO IS LIFE" */}
                   </h1>
-                  <h2 className="text-xl lg:text-3xl ">
-                    {language === 'en'
-                      ? 'LABEL'
-                      : 'SELLO DISCOGRÁFICO'}
+                  <h2 className="text-xl lg:text-3xl">
+                    {t('homeHeader.subtitle')} {/* Traducción de "LABEL" o "SELLO DISCOGRÁFICO" */}
                   </h2>
                 </div>
               </section>
