@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useTranslation } from 'react-i18next'; // Importamos useTranslation
 import LanguageMenu from '@/components/Language/LanguageMenu';
 import links from '@/utils/navbarLinks'; // Importa el array de links
 import './NavbarMenuMobile.css'; // Estilos
@@ -10,7 +10,7 @@ import DemoButton from '../Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 function NavbarMenuMobile() {
-  const { language } = useLanguage();
+  const { t } = useTranslation(); // Usamos el hook de traducción
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
@@ -50,7 +50,7 @@ function NavbarMenuMobile() {
                 {links.map((link) => (
                   <li key={link.id}>
                     <a href={link.to} className="menu-link">
-                      {language === 'en' ? link.text_en : link.text_es}
+                      {t(`navbar.${link.id}`)} {/* Usamos t() para obtener la traducción */}
                     </a>
                     <hr />
                   </li>
