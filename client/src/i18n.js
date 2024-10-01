@@ -40,6 +40,27 @@ i18n.use(initReactI18next).init({
           spanish: 'ES',
           language: 'EN'
         },
+        navbar: {
+          home: 'Home',
+          artists: 'Artists',
+          releases: 'Releases',
+          about: 'About',
+          contact: 'Contact',
+          demo: 'Demo',
+          services: 'Services',
+          login: 'Login',
+          register: 'Register',
+          logout: 'Logout',
+          admin: 'Admin',
+          profile: 'Profile',
+          settings: 'Settings',
+          myProfile: 'My Profile',
+          myArtists: 'My artists',
+          myReleases: 'My releases',
+          myReleasesSection: 'My releases',
+          myProfileSection: 'My profile', 
+          mySettingsSection: 'My settings',
+        },
         validation: {
           artistNameRequired: 'Artist name is required',
           usernameRequired: 'Username is required',
@@ -48,6 +69,10 @@ i18n.use(initReactI18next).init({
           passwordRequired: 'Password is required',
           passwordMin: 'Password must be at least 6 characters',
           roleRequired: 'At least one role is required',
+        },
+        homeHeader: {
+          title: 'HARD TECHNO IS LIFE',
+          subtitle: 'LABEL',
         },
         artistSection: {
           title: 'Artists'
@@ -157,6 +182,27 @@ i18n.use(initReactI18next).init({
           spanish: 'ES',
           language: 'ES'
         },
+        navbar: {
+          home: 'Inicio',
+          artists: 'Artistas',
+          releases: 'Lanzamientos',
+          about: 'Acerca de',
+          contact: 'Contacto',
+          demo: 'Demo',
+          services: 'Servicios',
+          login: 'Iniciar sesión',
+          signup: 'Registrarse',
+          logout: 'Cerrar sesión',
+          admin: 'Administrador',
+          profile: 'Perfil',
+          settings: 'Configuraciones',
+          myProfile: 'Mi perfil',
+          myArtists: 'Mis artistas',
+          myReleases: 'Mis lanzamientos',
+          myReleasesSection: 'Mis lanzamientos',
+          myProfileSection: 'Mi perfil', 
+          mySettingsSection: 'Mis configuraciones',
+        },
         validation: {
           artistNameRequired: 'El nombre del artista es requerido',
           usernameRequired: 'El nombre de usuario es requerido',
@@ -165,6 +211,10 @@ i18n.use(initReactI18next).init({
           passwordRequired: 'La contraseña es requerida',
           passwordMin: 'La contraseña debe tener al menos 6 caracteres',
           roleRequired: 'Se requiere al menos un rol',
+        },
+        homeHeader: {
+          title: 'HARD TECHNO IS LIFE',
+          subtitle: 'SELLO DISCOGRÁFICO',
         },
         artistSection: {
           title: 'Artistas',
