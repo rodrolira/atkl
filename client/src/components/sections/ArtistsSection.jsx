@@ -9,7 +9,6 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-
 function ArtistsSection() {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { artists, fetchArtists, createArtist } = useArtists();

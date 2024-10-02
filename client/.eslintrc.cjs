@@ -1,3 +1,4 @@
+  // .eslintrc.cjs
 module.exports = {
   extends: [
     'airbnb',

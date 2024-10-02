@@ -18,19 +18,19 @@ const FileUploadComponent = ({ name, labelKey }) => {
         {t(labelKey)}
       </FormLabel>
       <div className="w-full">
-      <FormControl
-        name={name}
-        type="file"
-        className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        onChange={(event) => {
-          setFieldValue(name, event.currentTarget.files[0]);
-        }}
-        isInvalid={isInvalid}
-        isValid={isValid}
-      />
-      {isInvalid && (
-        <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>
-      )}
+        <FormControl
+          name={name}
+          type="file"
+          className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          onChange={(event) => {
+            setFieldValue(name, event.currentTarget.files[0]);
+          }}
+          isInvalid={isInvalid}
+          isValid={isValid}
+        />
+        {isInvalid && (
+          <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>
+        )}
       </div>
     </FormGroup>
   );

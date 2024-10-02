@@ -28,5 +28,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </LanguageProvider>
       </AppThemeProvider>
     </Provider>
-  </React.StrictMode >
+  </React.StrictMode>,
 );

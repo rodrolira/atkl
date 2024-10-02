@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [selectedReleases, setSelectedReleases] = useState([]);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { artists, fetchArtists, setArtists } = useArtists();
   const { releases, fetchReleases, setReleases } = useReleases();
 
@@ -37,13 +37,15 @@ const AdminDashboard = () => {
     fetchData();
   }, [fetchArtists, fetchReleases]);
 
-  const toggleSidebar = useCallback(() => setSidebarOpen(prev => !prev), []);
+  const toggleSidebar = useCallback(() => setSidebarOpen((prev) => !prev), []);
 
   const handleDeleteArtist = async (artistId) => {
     if (window.confirm('Are you sure you want to delete this artist?')) {
       try {
         await deleteArtistRequest(artistId); // Elimina el artista desde la API
-        setArtists(prevArtists => prevArtists.filter(artist => artist.id !== artistId)); // Actualiza la lista localmente
+        setArtists((prevArtists) =>
+          prevArtists.filter((artist) => artist.id !== artistId),
+        ); // Actualiza la lista localmente
       } catch (error) {
         setError('Failed to delete artist. Please try again.');
       }
@@ -74,7 +76,7 @@ const AdminDashboard = () => {
             <ArtistsTable
               artists={artists}
               onEdit={handleEditArtist}
-              onDelete={handleDeleteArtist}  // Pasar la función de eliminación aquí
+              onDelete={handleDeleteArtist} // Pasar la función de eliminación aquí
               selectedArtists={selectedArtists}
               setSelectedArtists={setSelectedArtists}
             />
@@ -89,10 +91,7 @@ const AdminDashboard = () => {
       case 'view-releases':
         return (
           <ContentSection title="Releases">
-            <ReleasesTable
-              releases={releases}
-              onEdit={handleEditRelease}
-            />
+            <ReleasesTable releases={releases} onEdit={handleEditRelease} />
           </ContentSection>
         );
       // More cases for 'delete-user', 'create-release', etc.
@@ -111,7 +110,9 @@ const AdminDashboard = () => {
           onItemClick={setCurrentView}
           currentView={currentView}
         />
-        <main className={`flex-1 transition-all duration-300 overflow-y-auto p-4 md:ml-0 ${sidebarOpen ? 'ml-[20%]' : 'ml-[51px]'}`}>
+        <main
+          className={`flex-1 transition-all duration-300 overflow-y-auto p-4 md:ml-0 ${sidebarOpen ? 'ml-[20%]' : 'ml-[51px]'}`}
+        >
           {!sidebarOpen && (
             <button
               onClick={toggleSidebar}
@@ -122,7 +123,10 @@ const AdminDashboard = () => {
             </button>
           )}
           {error && (
-            <div className="bg-red-500 text-white p-4 mb-4 rounded" role="alert">
+            <div
+              className="bg-red-500 text-white p-4 mb-4 rounded"
+              role="alert"
+            >
               {error}
             </div>
           )}

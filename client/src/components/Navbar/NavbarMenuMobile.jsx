@@ -22,7 +22,7 @@ function NavbarMenuMobile() {
     <>
       <div className="flex">
         {!adminAuthenticated && (
-          <div className='hidden'>
+          <div className="hidden">
             <DemoButton />
           </div>
         )}
@@ -50,7 +50,8 @@ function NavbarMenuMobile() {
                 {links.map((link) => (
                   <li key={link.id}>
                     <a href={link.to} className="menu-link">
-                      {t(`navbar.${link.id}`)} {/* Usamos t() para obtener la traducción */}
+                      {t(`navbar.${link.id}`)}{' '}
+                      {/* Usamos t() para obtener la traducción */}
                     </a>
                     <hr />
                   </li>

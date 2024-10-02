@@ -32,7 +32,6 @@
   flex-direction: column;
   height: 20rem;
   border-top: white solid 1px;
-
 }
 
 .menu-list li {
@@ -63,7 +62,6 @@ a.menu-link {
 }
 
 @media (min-width: 768px) {
-
   /* Ocultar este menú en pantallas más grandes */
   .navbar-mobile {
     display: none;

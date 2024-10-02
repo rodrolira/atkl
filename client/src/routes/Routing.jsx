@@ -16,8 +16,8 @@ import NotFound from '@/pages/NotFound';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 function Routing() {
-  const { isAuthenticated: adminAuthenticated } =  useAdminAuth()
-  
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -28,7 +28,8 @@ function Routing() {
       <Route
         path="/admin/login"
         element={
-          adminAuthenticated ? <Navigate to="/admin" /> : <LoginAdminPage />}
+          adminAuthenticated ? <Navigate to="/admin" /> : <LoginAdminPage />
+        }
       />
       {/* Admin Routes */}
       <Route element={<AdminRoutes />}>

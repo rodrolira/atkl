@@ -9,7 +9,7 @@ const CreateReleaseForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -26,7 +26,10 @@ const CreateReleaseForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="release_name" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="release_name"
+          className="block text-sm font-medium text-gray-300"
+        >
           Release Name
         </label>
         <input
@@ -40,7 +43,10 @@ const CreateReleaseForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="artist_name" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="artist_name"
+          className="block text-sm font-medium text-gray-300"
+        >
           Artist Name
         </label>
         <input
@@ -54,7 +60,10 @@ const CreateReleaseForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="release_date" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="release_date"
+          className="block text-sm font-medium text-gray-300"
+        >
           Release Date
         </label>
         <input

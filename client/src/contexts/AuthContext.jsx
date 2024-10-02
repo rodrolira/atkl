@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '@/utils/supabase';
+import supabase from '@/utils/supabase';
 
 // Crear el contexto de autenticación
 const AuthContext = createContext();
@@ -10,17 +10,26 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Verificar si hay una sesión activa
-    const session = supabase.auth.session();
-    setUser(session?.user ?? null);
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error('Error fetching session:', error);
+        return;
+      }
+      setUser(data?.session?.user ?? null);
+    };
+    getSession();
 
     // Escuchar cambios de autenticación
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      },
+    );
 
     // Limpiar el listener al desmontar el componente
     return () => {
-      authListener?.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 

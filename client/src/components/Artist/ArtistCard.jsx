@@ -37,10 +37,16 @@ const ArtistCard = ({ artist }) => {
   }, [artist.id]);
 
   const handleDelete = async () => {
-    if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
+    if (
+      window.confirm(
+        t('delete_confirmation', { artistName: artist.artist_name }),
+      )
+    ) {
       try {
         await deleteArtist(artist.id);
-        setArtists((prevArtists) => prevArtists.filter((a) => a.id !== artist.id));
+        setArtists((prevArtists) =>
+          prevArtists.filter((a) => a.id !== artist.id),
+        );
       } catch (error) {
         console.error('Error deleting artist:', error);
       }
@@ -73,18 +79,39 @@ const ArtistCard = ({ artist }) => {
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0">
-            <img className="rounded-t-lg w-full h-auto object-cover" src={`http://localhost:3000/${currentArtist.image}`} alt={currentArtist.artist_name} />
+          <Link
+            to={`/artists/${currentArtist.id}`}
+            className="block relative z-0"
+          >
+            <img
+              className="rounded-t-lg w-full h-auto object-cover"
+              src={`http://localhost:3000/${currentArtist.image}`}
+              alt={currentArtist.artist_name}
+            />
           </Link>
 
           {adminAuthenticated && (
             <div className="absolute right-2 top-2 flex">
-              <Button className="!px-2" aria-label={t('edit_artist')} onClick={openEditModal}>
-                <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl" />
+              <Button
+                className="!px-2"
+                aria-label={t('edit_artist')}
+                onClick={openEditModal}
+              >
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  className="text-yellow-400 hover:text-yellow-500 text-xl"
+                />
               </Button>
 
-              <Button className="!px-2" onClick={handleDelete} aria-label={t('delete_artist')}>
-                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl" />
+              <Button
+                className="!px-2"
+                onClick={handleDelete}
+                aria-label={t('delete_artist')}
+              >
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className="text-red-400 hover:text-red-500 text-xl"
+                />
               </Button>
             </div>
           )}

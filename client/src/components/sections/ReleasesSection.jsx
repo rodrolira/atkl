@@ -7,7 +7,7 @@ import { useReleases } from '@/contexts/ReleaseContext';
 import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
 import ReleaseList from '@/components/Release/ReleaseList';
 import Title from '@/components/atoms/Title/Title';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 function ReleasesSection() {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
