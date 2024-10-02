@@ -1,5 +1,5 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -13,7 +13,8 @@ i18n.use(initReactI18next).init({
         email: 'Email',
         description: 'Description (Optional)',
         submit: 'Submit',
-        subscribe_message: 'Subscribe to receive the latest releases for free by email',
+        subscribe_message:
+          'Subscribe to receive the latest releases for free by email',
         description_optional: 'Description (Optional)',
         form_sent_success: 'Form successfully submitted',
         send_demo: 'Send Demo',
@@ -30,15 +31,16 @@ i18n.use(initReactI18next).init({
         spotify_link: 'Spotify Link',
         beatport_link: 'Beatport Link',
         apple_music_link: 'Apple Music Link',
-        delete_confirmation: "Are you sure you want to delete the artist {{artistName}}?",
-        edit_artist: "Edit Artist",
-        delete_artist: "Delete Artist",
-        no_roles_assigned: "No roles assigned",
-        loading: "Loading...",
+        delete_confirmation:
+          'Are you sure you want to delete the artist {{artistName}}?',
+        edit_artist: 'Edit Artist',
+        delete_artist: 'Delete Artist',
+        no_roles_assigned: 'No roles assigned',
+        loading: 'Loading...',
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
-          language: 'EN'
+          language: 'EN',
         },
         navbar: {
           home: 'Home',
@@ -58,7 +60,7 @@ i18n.use(initReactI18next).init({
           myArtists: 'My artists',
           myReleases: 'My releases',
           myReleasesSection: 'My releases',
-          myProfileSection: 'My profile', 
+          myProfileSection: 'My profile',
           mySettingsSection: 'My settings',
         },
         validation: {
@@ -75,17 +77,17 @@ i18n.use(initReactI18next).init({
           subtitle: 'LABEL',
         },
         artistSection: {
-          title: 'Artists'
+          title: 'Artists',
         },
         releaseSection: {
-          title: 'Releases'
+          title: 'Releases',
         },
         aboutSection: {
           title: 'About',
-          text: "ATKL Records, founded by <a href=\"https://soundcloud.com/rodro_music\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hover:text-red-500\">RODRO</a> in December 2022 in Chile, is characterized by its distinctive blend of hardcore techno, industrial, and schranz genres, known for their heavy, energetic, and dynamic soundscapes. The label's inaugural release, \"<a href=\"https://open.spotify.com/album/unknown-va-i\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hover:text-red-500\">Unknown VA I</a>\", a compilation featuring 10 emerging artists from Chile, Colombia, and Spain, was launched in March 2023, marking the beginning of its journey. Since then, ATKL Records has grown to showcase over 12 diverse releases and hosts two popular podcasts on SoundCloud, highlighting both established and up-and-coming talents in the global electronic music scene. In mid-2023, the label expanded its influence by organizing energetic events and parties, further solidifying its role not only as a record label but also as a vibrant community hub where local DJs and music enthusiasts converge."
+          text: 'ATKL Records, founded by <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">RODRO</a> in December 2022 in Chile, is characterized by its distinctive blend of hardcore techno, industrial, and schranz genres, known for their heavy, energetic, and dynamic soundscapes. The label\'s inaugural release, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">Unknown VA I</a>", a compilation featuring 10 emerging artists from Chile, Colombia, and Spain, was launched in March 2023, marking the beginning of its journey. Since then, ATKL Records has grown to showcase over 12 diverse releases and hosts two popular podcasts on SoundCloud, highlighting both established and up-and-coming talents in the global electronic music scene. In mid-2023, the label expanded its influence by organizing energetic events and parties, further solidifying its role not only as a record label but also as a vibrant community hub where local DJs and music enthusiasts converge.',
         },
         contactSection: {
-          title: 'Contact Us'
+          title: 'Contact Us',
         },
         footer: {
           label: 'Sitemap',
@@ -105,7 +107,7 @@ i18n.use(initReactI18next).init({
           discography: 'Discography',
           merchandising: 'Merchandising',
           samplePacks: 'Sample Packs',
-          rightsReserved: 'All Rights Reserved'
+          rightsReserved: 'All Rights Reserved',
         },
         label: {
           artist_name: 'Artist Name',
@@ -115,7 +117,7 @@ i18n.use(initReactI18next).init({
           bio: 'Bio',
           role: 'Role',
           dj: 'DJ',
-          producer: 'Producer'
+          producer: 'Producer',
         },
         login: {
           loginAdmin: 'Admin Sign in',
@@ -140,8 +142,8 @@ i18n.use(initReactI18next).init({
           role: {
             role: 'Role',
             dj: 'DJ',
-            producer: 'Producer'
-          }
+            producer: 'Producer',
+          },
         },
       },
     },
@@ -155,7 +157,8 @@ i18n.use(initReactI18next).init({
         email: 'Correo electrónico',
         description: 'Descripción (Opcional)',
         submit: 'Enviar',
-        subscribe_message: 'Suscríbete para recibir las últimas actualizaciones gratis por correo electrónico',
+        subscribe_message:
+          'Suscríbete para recibir las últimas actualizaciones gratis por correo electrónico',
         description_optional: 'Descripción (Opcional)',
         form_sent_success: 'Formulario enviado con éxito',
         send_demo: 'Enviar Demo',
@@ -172,15 +175,16 @@ i18n.use(initReactI18next).init({
         spotify_link: 'Enlace de Spotify',
         beatport_link: 'Enlace de Beatport',
         apple_music_link: 'Enlace de Apple Music',
-        delete_confirmation: "¿Estás seguro de que deseas eliminar al artista {{artistName}}?",
-        edit_artist: "Editar Artista",
-        delete_artist: "Eliminar Artista",
-        no_roles_assigned: "No hay roles asignados",
-        loading: "Cargando...",
+        delete_confirmation:
+          '¿Estás seguro de que deseas eliminar al artista {{artistName}}?',
+        edit_artist: 'Editar Artista',
+        delete_artist: 'Eliminar Artista',
+        no_roles_assigned: 'No hay roles asignados',
+        loading: 'Cargando...',
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
-          language: 'ES'
+          language: 'ES',
         },
         navbar: {
           home: 'Inicio',
@@ -200,7 +204,7 @@ i18n.use(initReactI18next).init({
           myArtists: 'Mis artistas',
           myReleases: 'Mis lanzamientos',
           myReleasesSection: 'Mis lanzamientos',
-          myProfileSection: 'Mi perfil', 
+          myProfileSection: 'Mi perfil',
           mySettingsSection: 'Mis configuraciones',
         },
         validation: {
@@ -224,10 +228,10 @@ i18n.use(initReactI18next).init({
         },
         aboutSection: {
           title: 'Acerca de',
-          text: 'ATKL Records, fundada por <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">RODRO</a> en diciembre de 2022 en Chile, se caracteriza por su distintiva fusión de géneros como hardcore techno, industrial y schranz, reconocidos por sus paisajes sonoros pesados, energéticos y dinámicos. El primer lanzamiento del sello, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">Unknown VA I</a>", un compilado que incluye a 10 artistas emergentes de Chile, Colombia y España, se lanzó en marzo de 2023, marcando el inicio de su trayectoria. Desde entonces, ATKL Records ha crecido hasta exhibir más de 12 lanzamientos diversos y cuenta con dos podcasts populares en SoundCloud, destacando tanto talentos establecidos como prometedores en la escena global de la música electrónica. A mediados de 2023, el sello expandió su influencia al organizar eventos y fiestas enérgicas, consolidando aún más su rol no solo como sello discográfico sino también como un vibrante punto de encuentro comunitario donde DJs locales y entusiastas de la música convergen.'
+          text: 'ATKL Records, fundada por <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">RODRO</a> en diciembre de 2022 en Chile, se caracteriza por su distintiva fusión de géneros como hardcore techno, industrial y schranz, reconocidos por sus paisajes sonoros pesados, energéticos y dinámicos. El primer lanzamiento del sello, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">Unknown VA I</a>", un compilado que incluye a 10 artistas emergentes de Chile, Colombia y España, se lanzó en marzo de 2023, marcando el inicio de su trayectoria. Desde entonces, ATKL Records ha crecido hasta exhibir más de 12 lanzamientos diversos y cuenta con dos podcasts populares en SoundCloud, destacando tanto talentos establecidos como prometedores en la escena global de la música electrónica. A mediados de 2023, el sello expandió su influencia al organizar eventos y fiestas enérgicas, consolidando aún más su rol no solo como sello discográfico sino también como un vibrante punto de encuentro comunitario donde DJs locales y entusiastas de la música convergen.',
         },
         contactSection: {
-          title: 'Contáctanos'
+          title: 'Contáctanos',
         },
         footer: {
           label: 'Mapa del sitio',
@@ -247,7 +251,7 @@ i18n.use(initReactI18next).init({
           discography: 'Discografía',
           merchandising: 'Merchandising',
           samplePacks: 'Paquetes de Muestras',
-          rightsReserved: 'Todos los Derechos Reservados'
+          rightsReserved: 'Todos los Derechos Reservados',
         },
         label: {
           artist_name: 'Nombre del Artista',
@@ -257,7 +261,7 @@ i18n.use(initReactI18next).init({
           bio: 'Bio',
           role: 'Rol',
           dj: 'DJ',
-          producer: 'Productor'
+          producer: 'Productor',
         },
         login: {
           loginAdmin: 'Inicia Sesión de Administrador',
@@ -265,7 +269,8 @@ i18n.use(initReactI18next).init({
           email: 'Correo electrónico',
           password: 'Contraseña',
           login: 'Iniciar sesión',
-          failed: 'Inicio de sesión fallido. Por favor, verifica tus credenciales y vuelve a intentarlo.',
+          failed:
+            'Inicio de sesión fallido. Por favor, verifica tus credenciales y vuelve a intentarlo.',
           welcome: 'Bienvenido a ATKL Records',
           forgotPassword: '¿Olvidaste tu contraseña?',
           enterEmail: 'Introduce tu correo electrónico',
@@ -281,18 +286,18 @@ i18n.use(initReactI18next).init({
           role: {
             role: 'Rol',
             dj: 'DJ',
-            producer: 'Productor'
+            producer: 'Productor',
           },
           selectRole: 'Seleccionar Rol',
-        }
-      }
-    }
+        },
+      },
+    },
   },
   lng: 'en', // idioma por defecto
   fallbackLng: 'en',
   interpolation: {
-    escapeValue: false // React ya se encarga de esto
-  }
-})
+    escapeValue: false, // React ya se encarga de esto
+  },
+});
 
-export default i18n
+export default i18n;

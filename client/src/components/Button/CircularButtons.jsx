@@ -11,81 +11,79 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 // Botón para agregar artista
 export const AddArtistButton = () => {
-    const [open, setOpen] = useState(false);
-    const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+  const [open, setOpen] = useState(false);
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
-    const openPopup = () => setOpen(true)
-    const closePopup = () => setOpen(false)
+  const openPopup = () => setOpen(true);
+  const closePopup = () => setOpen(false);
 
-    return (
-        <>
-            {/* Botón circular */}
-            {adminAuthenticated && (
-                <IconButton onClick={openPopup} open={open} className="circular-button">
-                    <PersonAddIcon fontSize="large" className="button-icon" />
-                    {/* Formulario emergente */}
-                </IconButton>
-            )}
+  return (
+    <>
+      {/* Botón circular */}
+      {adminAuthenticated && (
+        <IconButton onClick={openPopup} open={open} className="circular-button">
+          <PersonAddIcon fontSize="large" className="button-icon" />
+          {/* Formulario emergente */}
+        </IconButton>
+      )}
 
-            {/* Formulario para agregar artista */}
-            <AddArtistForm
-                open={open}
-                closePopup={closePopup}
-                onArtistAdded={(newArtist) => {
-                    console.log("Nuevo artista agregado:", newArtist)
-                }}
-            />
-
-        </>
-    );
+      {/* Formulario para agregar artista */}
+      <AddArtistForm
+        open={open}
+        closePopup={closePopup}
+        onArtistAdded={(newArtist) => {
+          console.log('Nuevo artista agregado:', newArtist);
+        }}
+      />
+    </>
+  );
 };
 
 // Botón para agregar release
 export const AddReleaseButton = () => {
-    const [open, setOpen] = useState(false);
-    const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+  const [open, setOpen] = useState(false);
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
-    const functionOpenPopup = () => {
-        setOpen(true);
-    };
+  const functionOpenPopup = () => {
+    setOpen(true);
+  };
 
-    const closePopup = () => {
-        setOpen(false);
-    };
+  const closePopup = () => {
+    setOpen(false);
+  };
 
-    return (
-        <>
-            {/* Botón circular */}
-            {adminAuthenticated && (
-                <IconButton onClick={functionOpenPopup} className="circular-button">
-                    <LibraryMusicIcon fontSize="large" className="button-icon" />
-                </IconButton>
-            )}
+  return (
+    <>
+      {/* Botón circular */}
+      {adminAuthenticated && (
+        <IconButton onClick={functionOpenPopup} className="circular-button">
+          <LibraryMusicIcon fontSize="large" className="button-icon" />
+        </IconButton>
+      )}
 
-            {/* Formulario emergente */}
-            <AddReleaseForm open={open} closePopup={closePopup} />
-        </>
-    );
+      {/* Formulario emergente */}
+      <AddReleaseForm open={open} closePopup={closePopup} />
+    </>
+  );
 };
 
 // Botón para salir (logout)
 export const AdminLogoutButton = () => {
-    const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
-    const navigate = useNavigate();
+  const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        await signout(); // Llama a tu función de cerrar sesión
-        navigate('/');
-    };
+  const handleLogout = async () => {
+    await signout(); // Llama a tu función de cerrar sesión
+    navigate('/');
+  };
 
-    return (
-        <>
-            {adminAuthenticated && (
-                <IconButton onClick={handleLogout} className="circular-button">
-                    <ExitToAppIcon fontSize="large" className="button-icon" />
-                </IconButton>
-            )}
-        </>
-    );
-
+  return (
+    <>
+      {adminAuthenticated && (
+        <IconButton onClick={handleLogout} className="circular-button">
+          <ExitToAppIcon fontSize="large" className="button-icon" />
+        </IconButton>
+      )}
+    </>
+  );
 };

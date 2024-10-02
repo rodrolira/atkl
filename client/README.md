@@ -1,32 +1,32 @@
-## viterjs-template
+# viterjs-template
 
 JavaScript + React + Redux + Mui + Axios + ESLint + Prettier
 
 ![viterjs-template](https://i.ibb.co/xMMGs2Q/Screenshot-2023-07-07-105634.png)
 
-### Getting Started
+## Getting Started
 
-#### Clone the repo
+### Clone the repo
 
-```
+``
 npx degit emre-cil/viterjs-template my-app
-```
+``
 
-```
+``
 cd my-app
-```
+``
 
 #### Install Dependencies
 
-```
+``
 pnpm install
-```
+``
 
 #### Run
 
-```
+``
 pnpm dev
-```
+``
 
 #### Paths
 
@@ -37,22 +37,22 @@ if you don't want to use you can remove these lines from
 
 > vite.config.js
 
-```
+``
  resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
-```
+``
 
 > jsconfig.json
 
-```
+``
 "paths": {
       "@/*": ["./*"]
     }
-```
+``
 
 ### Scripts
 
@@ -68,6 +68,6 @@ if you don't want to use you can remove these lines from
 
 ### Check List
 
-```
+``
 
-```
+``

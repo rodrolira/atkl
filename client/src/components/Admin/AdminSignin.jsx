@@ -8,7 +8,7 @@ import {
   colors,
   FormControlLabel,
   Typography,
-  Grid
+  Grid,
 } from '@mui/material';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import CustomInput from '@/components/atoms/Input/CustomInput';
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 function AdminSignin() {
   const { t } = useTranslation();

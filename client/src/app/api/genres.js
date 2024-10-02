@@ -1,3 +1,3 @@
-import axios from './axios'
+import axios from './axios';
 
-export const getGenresRequest = () => axios.get('/genres')
+export const getGenresRequest = () => axios.get('/genres');

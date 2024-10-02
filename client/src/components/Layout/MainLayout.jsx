@@ -1,6 +1,6 @@
-import React from 'react'
-import { Box, ThemeProvider } from '@mui/material'
-import { theme } from '@/themes/theme'
+import React from 'react';
+import { Box, ThemeProvider } from '@mui/material';
+import { theme } from '@/themes/theme';
 
 /**
  * Renders the main layout with a specified theme and background image.
@@ -26,7 +26,7 @@ const MainLayout = ({ children }) => {
         {children}
       </Box>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

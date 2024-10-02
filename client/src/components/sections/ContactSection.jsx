@@ -1,7 +1,9 @@
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 // Importa ContactForm usando importación dinámica
-const ContactForm = React.lazy(() => import('@/components/Contact/ContactForm'));
+const ContactForm = React.lazy(
+  () => import('@/components/Contact/ContactForm'),
+);
 import Title from '@/components/atoms/Title/Title';
 import BaseCard from '../Layout/BaseCard';
 
@@ -12,9 +14,7 @@ const ContactSection = () => {
     <section className="relative" id="contact">
       <div className="relative container p-4 sm:p-16 z-0 max-w-screen-xl mx-auto text-gray-900 sm:px-4 md:px-8">
         <div className="max-w-lg space-y-3 px-4 sm:mx-auto sm:text-center sm:px-0">
-          <Title>
-            {t('contactSection.title')}
-          </Title>
+          <Title>{t('contactSection.title')}</Title>
         </div>
         <BaseCard className="mt-8 sm:mt-12 mx-auto sm:p-8 bg-white !border-purple-600 sm:max-w-lg sm:px-8 sm:rounded-xl rounded-md">
           <Suspense fallback={<div>Loading...</div>}>

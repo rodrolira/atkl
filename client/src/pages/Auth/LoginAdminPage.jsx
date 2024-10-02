@@ -1,5 +1,5 @@
-import AdminLoginForm from '@/components/Admin/AdminLoginForm'
-import Navbar from '@/components/Navbar/Navbar'
+import AdminLoginForm from '@/components/Admin/AdminLoginForm';
+import Navbar from '@/components/Navbar/Navbar';
 
 function LoginAdminPage() {
   return (
@@ -7,7 +7,7 @@ function LoginAdminPage() {
       <Navbar />
       <AdminLoginForm />
     </div>
-  )
+  );
 }
 
-export default LoginAdminPage
+export default LoginAdminPage;

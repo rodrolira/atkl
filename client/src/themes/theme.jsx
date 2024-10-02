@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material'
+import { createTheme } from '@mui/material';
 
 export const colors = {
   green: {
@@ -10,7 +10,7 @@ export const colors = {
     600: '#24a551',
     700: '#1b7c3d',
     800: '#125228',
-    900: '#092914'
+    900: '#092914',
   },
   lightBlue: {
     100: '#d2eafb',
@@ -21,7 +21,7 @@ export const colors = {
     600: '#1a78be',
     700: '#135a8e',
     800: '#0d3c5f',
-    900: '#061e2f'
+    900: '#061e2f',
   },
   input: {
     100: '#d3d6da',
@@ -32,7 +32,7 @@ export const colors = {
     600: '#1c2a39',
     700: '#151f2b',
     800: '#0e151c',
-    900: '#070a0e'
+    900: '#070a0e',
   },
   background: {
     100: '#d2d2d5',
@@ -43,22 +43,22 @@ export const colors = {
     600: '#191723',
     700: '#13111a',
     800: '#0c0c12',
-    900: '#060609'
-  }
-}
+    900: '#060609',
+  },
+};
 
 export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: colors.green[500]
+      main: colors.green[500],
     },
     background: {
-      default: '#122e0f'
-    }
+      default: '#122e0f',
+    },
   },
   typography: {
     fontFamily: ['sans-serif'].join(' '),
-    textAlign: 'center'
-  }
-})
+    textAlign: 'center',
+  },
+});

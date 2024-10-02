@@ -1,20 +1,19 @@
 .circular-button {
-    background-color: #22581d !important; /* Color de fondo del botón */
-    color: white; /* Color del icono */
-    border-radius: 50%; /* Hace que el botón sea circular */
-    width: 30px; /* Ajusta el tamaño según prefieras */
-    height: 30px; /* Ajusta el tamaño según prefieras */
-    margin: 5px !important; /* Espaciado entre los botones */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-    transition: background-color 0.3s ease !important;
-  }
-  
-  .circular-button:hover {
-    background-color: #24db13 !important;  /* Color al pasar el mouse */
-  }
-  
-  .button-icon {
-    font-size: inherit !important; /* Tamaño del icono */
-    padding: 1px;
-  }
-  
+  background-color: #22581d !important; /* Color de fondo del botón */
+  color: white; /* Color del icono */
+  border-radius: 50%; /* Hace que el botón sea circular */
+  width: 30px; /* Ajusta el tamaño según prefieras */
+  height: 30px; /* Ajusta el tamaño según prefieras */
+  margin: 5px !important; /* Espaciado entre los botones */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  transition: background-color 0.3s ease !important;
+}
+
+.circular-button:hover {
+  background-color: #24db13 !important; /* Color al pasar el mouse */
+}
+
+.button-icon {
+  font-size: inherit !important; /* Tamaño del icono */
+  padding: 1px;
+}

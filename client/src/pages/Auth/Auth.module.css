@@ -1,5 +1,7 @@
-.auth{
-    background-image: linear-gradient(var(--primary-color), var(--secondary-color));
-    box-shadow: 0 5px 20px 3px var(--secondary-color);
-    
+.auth {
+  background-image: linear-gradient(
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  box-shadow: 0 5px 20px 3px var(--secondary-color);
 }

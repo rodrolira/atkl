@@ -9,7 +9,7 @@ const CreateUserForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -26,7 +26,10 @@ const CreateUserForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="artist_name" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="artist_name"
+          className="block text-sm font-medium text-gray-300"
+        >
           Artist Name
         </label>
         <input
@@ -40,7 +43,10 @@ const CreateUserForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-300"
+        >
           Email
         </label>
         <input
@@ -54,7 +60,10 @@ const CreateUserForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-300"
+        >
           Password
         </label>
         <input
