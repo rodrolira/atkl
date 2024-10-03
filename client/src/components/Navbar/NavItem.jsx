@@ -1,6 +1,8 @@
 // NavItem.js
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const NavItem = ({ to, text, isActive, onClick }) => {
   const location = useLocation();
@@ -21,8 +23,8 @@ const NavItem = ({ to, text, isActive, onClick }) => {
 
   return (
     <li>
-      <a
-        href={to}
+      <Link
+        to={to}
         className={`block xl:text-2xl lg:text-xl md:text-lg rounded ${
           isActive ? 'text-green-700' : 'text-white'
         } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
@@ -30,7 +32,7 @@ const NavItem = ({ to, text, isActive, onClick }) => {
         onClick={handleClick}
       >
         {text}
-      </a>
+      </Link>
     </li>
   );
 };

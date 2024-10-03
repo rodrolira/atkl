@@ -8,6 +8,7 @@ import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
 import ReleaseList from '@/components/Release/ReleaseList';
 import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 function ReleasesSection() {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
@@ -26,9 +27,9 @@ function ReleasesSection() {
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16" id="releases">
-      <a href="/releases" className="mx-auto">
+      <Link to="/releases" className="mx-auto">
         <Title>{t('releaseSection.title')}</Title>
-      </a>
+      </Link>
       {adminAuthenticated && (
         <AddReleaseForm onReleaseAdded={handleReleaseAdded} />
       )}

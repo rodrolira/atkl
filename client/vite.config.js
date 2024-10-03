@@ -11,6 +11,7 @@ export default defineConfig({
   build: {
     sourcemap: false,
     rollupOptions: {
+      external: ['prop-types'],
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
