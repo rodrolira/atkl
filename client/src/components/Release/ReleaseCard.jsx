@@ -22,7 +22,7 @@ import { Icon } from '@iconify/react';
 import ReleaseLinks from './ReleaseLinks';
 import BaseCard from '@/components/Layout/BaseCard';
 
-const ReleaseCard = ({ release, artist }) => {
+const ReleaseCard = ({ release }) => {
   const [currentRelease, setCurrentRelease] = useState(release);
   const { deleteRelease, setReleases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
