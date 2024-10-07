@@ -9,11 +9,13 @@ import Button from '@/components/Button/Button';
 import AddArtistButton from '@/components/Button/AddArtistButton';
 import AddReleaseButton from '@/components/Button/AddReleaseButton';
 import AdminLogoutButton from '@/components/Button/AdminLogoutButton';
+
 import {
   AddArtistButton as AddArtistButtonMobile,
   AddReleaseButton as AddReleaseButtonMobile,
   AdminLogoutButton as AdminLogoutButtonMobile,
 } from '../Button/CircularButtons';
+import AddTeamMemberButton from '@/components/Button/AddTeamMemberButton';
 
 function NavbarMenu() {
   const { language } = useLanguage();
@@ -38,6 +40,9 @@ function NavbarMenu() {
                   <AddReleaseButton className="btn-add">
                     {language === 'en' ? 'Add Release' : 'Agregar Lanzamiento'}
                   </AddReleaseButton>
+                </li>
+                <li className="mx-1">
+                  <AddTeamMemberButton />
                 </li>
                 <li className="mx-1">
                   <Button

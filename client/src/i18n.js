@@ -118,6 +118,9 @@ i18n.use(initReactI18next).init({
           role: 'Role',
           dj: 'DJ',
           producer: 'Producer',
+          image_url: 'Image URL',
+          position: 'Position',
+          name: 'Name',
         },
         login: {
           loginAdmin: 'Admin Sign in',
@@ -132,6 +135,9 @@ i18n.use(initReactI18next).init({
           enterEmail: 'Enter Email',
           enterPassword: 'Enter Password',
           rememberMe: 'Remember Me',
+        },
+        addTeamMember: {
+          title: 'Add Team',
         },
         addArtist: {
           title: 'Add Artist',
@@ -262,6 +268,9 @@ i18n.use(initReactI18next).init({
           role: 'Rol',
           dj: 'DJ',
           producer: 'Productor',
+          image_url: 'URL de Imagen',
+          name: 'Nombre',
+          position: 'Posición',
         },
         login: {
           loginAdmin: 'Inicia Sesión de Administrador',
@@ -277,6 +286,9 @@ i18n.use(initReactI18next).init({
           enterUsername: 'Introduce tu nombre de usuario',
           enterPassword: 'Introduce tu contraseña',
           rememberMe: 'Recordarme',
+        },
+        addTeamMember: {
+          title: 'Agregar Equipo',
         },
         addArtist: {
           title: 'Agregar Artista',

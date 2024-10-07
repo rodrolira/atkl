@@ -37,6 +37,7 @@
     "react-dom": "^18.3.1",
     "semver": "^7.6.3",
     "sequelize": "^6.37.3",
+    "server": "file:",
     "yup": "^1.4.0",
     "zod": "^3.22.5"
   },

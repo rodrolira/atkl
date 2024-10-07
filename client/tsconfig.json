@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",               // o "ES2020" si prefieres
+    "module": "ESNext",               // Esto permite usar 'import.meta'
+    "moduleResolution": "Node",       // Opción común para resolver módulos
+    "esModuleInterop": true,          // Asegura la interoperabilidad con CommonJS
+    "strict": true,                   // Opciones de chequeo estricto
+    "jsx": "react",                   // O "react-jsx" para JSX moderno
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
+    "paths": {
+        "@/*": ["*"] // Esto permite que @ apunte a la carpeta src
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src/declarations.d.ts" // Asegúrate de incluir esto
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}
