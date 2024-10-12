@@ -15,10 +15,10 @@ const getAuthHeaders = () => {
   };
 };
 
-export const registerAdminRequest = (user) =>
+export const registerAdminRequest = (user: { username: string; password: string; email: string; }) =>
   axios.post('/admin/register', user);
 
-export const loginAdminRequest = async (user) => {
+export const loginAdminRequest = async (user: { username: string; password: string; }) => {
   try {
     const response = await axios.post('/admin/login', user);
     console.log('Server response:', response.data); // Agrega este log para inspeccionar la respuesta
@@ -36,7 +36,7 @@ export const loginAdminRequest = async (user) => {
   }
 };
 
-export const verifyAdminTokenRequest = () => axios.get('/admin/verify');
+export const verifyAdminTokenRequest = (token: string) => axios.get('/admin/verify');
 
 export const logoutAdminRequest = () =>
   axios.post('/admin/logout', {}, getAuthHeaders());

@@ -51,6 +51,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "@supabase/supabase-js": "^2.45.4",
+    "@vercel/postgres": "^0.10.0",
     "axios": "^1.7.7",
     "flowbite-react": "^0.10.2",
     "formik": "^2.4.6",

@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "node_modules/@types",
+      "./typings",
+      "/client/src/app/api"
+  ],
     "target": "ESNext",               // o "ES2020" si prefieres
     "module": "ESNext",               // Esto permite usar 'import.meta'
     "moduleResolution": "Node",       // Opción común para resolver módulos
@@ -7,17 +12,26 @@
     "strict": true,                   // Opciones de chequeo estricto
     "jsx": "react",                   // O "react-jsx" para JSX moderno
     "skipLibCheck": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
         "@/*": ["*"] // Esto permite que @ apunte a la carpeta src
-    }
+    },
+    "outDir": "./dist",
   },
   "include": [
     "src/**/*",
-    "src/declarations.d.ts" // Asegúrate de incluir esto
+    "typings/declarations.d.ts", // Asegúrate de incluir esto
+    "node_modules/**/*",
+    "client/src/app/api/**/*"
   ],
   "exclude": [
     "node_modules",
+    "dist",
+    "**/dist/*"
   ]
 }
+
