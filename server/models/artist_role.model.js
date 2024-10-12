@@ -7,6 +7,7 @@ import Role from './role.model.js'
 const ArtistRoles = sequelize.define('ArtistRoles', {
   artist_id: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     references: {
       model: Artist,
       key: 'id'
@@ -15,6 +16,7 @@ const ArtistRoles = sequelize.define('ArtistRoles', {
   },
   role_id: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     references: {
       model: Role,
       key: 'id'

@@ -15,6 +15,7 @@ import './release_artist.model.js'; // Importa el modelo ReleaseArtist
 import './role.model.js'; // Importa el modelo Role
 import './artist_role.model.js'; // Importa el modelo ArtistRole
 import './associations.js';  // Importa el archivo de asociaciones
+import './teammember.model.js'
 
 const basename = _basename(__filename)
 const env = _env.NODE_ENV || 'development'
