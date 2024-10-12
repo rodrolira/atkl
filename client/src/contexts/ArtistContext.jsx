@@ -60,9 +60,11 @@ export const ArtistProvider = ({ children }) => {
       await updateArtistRequest(artist, updatedArtist);
       fetchArtist(artist);
     } catch (error) {
+      console.error('Error updating artist:', error);
       setError(error);
     }
   };
+
 
   // Lógica para eliminar un artista
   const deleteArtist = async (artist) => {

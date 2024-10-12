@@ -27,7 +27,7 @@ const AddArtistButton = () => {
 
       {/* Formulario para agregar artista */}
       <AddArtistForm
-        open={open} // Estado que controla si está abierto o no
+        openPopup={open} // Estado que controla si está abierto o no
         closePopup={closePopup} // Función para cerrar el formulario
         onArtistAdded={(newArtist) => {
           console.log('Nuevo artista agregado:', newArtist);
