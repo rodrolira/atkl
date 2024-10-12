@@ -57,9 +57,10 @@ function EditArtistModal({ id, onClose }) {
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
-      // Si `roleIds` es un array, conviértelo a una cadena separada por comas
       if (key === 'roleIds') {
         formData.append(key, values[key].join(','));
+      } else if (key === 'image' && values[key]) {
+        formData.append(key, values[key]);
       } else {
         formData.append(key, values[key]);
       }

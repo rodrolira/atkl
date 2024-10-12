@@ -10,6 +10,8 @@ import { getReleaseRequest } from '@/app/api/releases';
 // import { useReleases } from '../../../contexts/ReleaseContext'
 import { useReleases } from '@/hooks/useReleases';
 import { MenuItem, Select, Stack, TextField } from '@mui/material';
+import Title from '@/components/atoms/Title/Title';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string(),
@@ -19,15 +21,10 @@ const validationSchema = Yup.object().shape({
   description: Yup.string(),
   genre_id: Yup.string(),
   release_type: Yup.string(),
-  bandcamp_link: Yup.string().url('Invalid URL'),
-  beatport_link: Yup.string().url('Invalid URL'),
-  spotify_link: Yup.string().url('Invalid URL'),
-  apple_music_link: Yup.string().url('Invalid URL'),
-  youtube_link: Yup.string().url('Invalid URL'),
-  soundcloud_link: Yup.string().url('Invalid URL'),
 });
 
 function EditReleaseModal({ id, onClose }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState({
     title: '',
@@ -104,13 +101,13 @@ function EditReleaseModal({ id, onClose }) {
         onSubmit={onSubmit}
       >
         {({ isSubmitting, setFieldValue }) => (
-          <Form className="w-full bg-white shadow-md rounded px-8 text-center">
+          <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Stack spacing={2} margin={2}>
-              <h2 className="text-2xl mb-4 font-bold">Edit Release</h2>
+              <Title className='!text-3xl mb-4 text-center font-bold text-gray-700'>{t('edit_release')}</Title>
               <div className="mb-4">
                 <label
                   htmlFor="title"
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block !text-gray-700 font-bold mb-2"
                 >
                   Title
                 </label>
@@ -129,12 +126,30 @@ function EditReleaseModal({ id, onClose }) {
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-              <Field name="artist_id">
+              
+              <div className="mb-4">
+                <label
+                  htmlFor="artist_id"
+                  className="block !text-gray-700 font-bold "
+                >
+                  Artist
+                </label>
+              <Field 
+              name="artist_id" 
+              id="artist_id"
+              type="select"
+              >
                 {({ field, form }) => (
                   <TextField
                     {...field}
                     select
+                    id="artist_id"
                     label="Artist"
+                    className="shadow appearance-none border rounded w-full  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    size="small"
+                    margin="normal"
+                    fullWidth
+                    padding="none"
                     variant="outlined"
                     error={Boolean(
                       form.errors.artist_id && form.touched.artist_id,
@@ -149,6 +164,7 @@ function EditReleaseModal({ id, onClose }) {
                       setFieldValue('artist_id', selectedIds);
                     }}
                     SelectProps={{
+                      displayEmpty: true,
                       multiple: true,
                       value: field.value || [],
                       onChange: (e) => {
@@ -156,9 +172,9 @@ function EditReleaseModal({ id, onClose }) {
                         setFieldValue('artist_id', selectedIds);
                       },
                       renderValue: (selected) => (
-                        <div>
+                        <div className="text-gray-700 ">
                           {selected.map((id) => (
-                            <MenuItem key={id} value={id}>
+                            <MenuItem className="text-gray-700 p-0" key={id} value={id}>
                               {
                                 artists.find((artist) => artist.id === id)
                                   ?.artist_name
@@ -177,6 +193,7 @@ function EditReleaseModal({ id, onClose }) {
                   </TextField>
                 )}
               </Field>
+              </div>
               <div className="mb-4">
                 <FileUploadRelease />
               </div>
@@ -216,7 +233,7 @@ function EditReleaseModal({ id, onClose }) {
               <div className="mb-4">
                 <label
                   htmlFor="description"
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-4"
                 >
                   Description
                 </label>
@@ -233,13 +250,24 @@ function EditReleaseModal({ id, onClose }) {
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-              <Field name="genre_id" className="w-full">
+              <div className="mb-4">
+                <label
+                  htmlFor="genres"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Genre
+                </label>
+                <Field 
+                name="genre_id"
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
                 {({ field, form }) => (
                   <TextField
                     {...field}
                     select
                     label="Genre"
                     variant="outlined"
+                    className="w-full shadow appearance-none border rounded py-2 px-3 !text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     error={form.errors.genre_id && form.touched.genre_id}
                     helperText={
                       form.errors.genre_id &&
@@ -261,6 +289,8 @@ function EditReleaseModal({ id, onClose }) {
                 component="div"
                 className="text-red-500 text-sm mt-1"
               />
+
+              </div>
               <div className="mb-4 w-full">
                 <label
                   htmlFor="release_type"
