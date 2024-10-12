@@ -35,6 +35,12 @@ i18n.use(initReactI18next).init({
           'Are you sure you want to delete the artist {{artistName}}?',
         edit_artist: 'Edit Artist',
         delete_artist: 'Delete Artist',
+        edit: 'Edit',
+        edit_release: 'Edit Release',
+          buy: 'BUY',
+        delete_release: 'Delete Release',
+        add_release: 'Add Release',
+        add: 'Add',
         no_roles_assigned: 'No roles assigned',
         loading: 'Loading...',
         languageMenu: {
@@ -151,6 +157,12 @@ i18n.use(initReactI18next).init({
             producer: 'Producer',
           },
         },
+        errors: {
+            deleteArtist: 'Failed to delete artist. Please try again.',
+        },
+        confirmation: {
+          deleteArtist: 'Are you sure you want to delete this artist?',
+        },
       },
     },
     es: {
@@ -185,6 +197,12 @@ i18n.use(initReactI18next).init({
           '¿Estás seguro de que deseas eliminar al artista {{artistName}}?',
         edit_artist: 'Editar Artista',
         delete_artist: 'Eliminar Artista',
+        edit_release: 'Editar Lanzamiento',
+        delete_release: 'Eliminar Lanzamiento',
+        edit: 'Editar',
+        delete: 'Eliminar',
+        add: 'Agregar',
+        buy: 'Comprar',
         no_roles_assigned: 'No hay roles asignados',
         loading: 'Cargando...',
         languageMenu: {
