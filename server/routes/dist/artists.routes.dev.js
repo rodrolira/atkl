@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _artistsController = require("../controllers/artists.controller.js");
+var _artistsController = require("../src/controllers/artists.controller.js");
 
 var _multer = _interopRequireDefault(require("multer"));
 

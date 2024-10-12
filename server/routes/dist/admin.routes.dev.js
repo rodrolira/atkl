@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var adminController = _interopRequireWildcard(require("../controllers/admin.controller.js"));
+var adminController = _interopRequireWildcard(require("../src/controllers/admin.controller.js"));
 
 var _validateToken = require("../middlewares/validateToken.js");
 

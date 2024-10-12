@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var userController = _interopRequireWildcard(require("../controllers/auth.controller.js"));
+var userController = _interopRequireWildcard(require("../src/controllers/auth.controller.js"));
 
 var _authMiddleware = require("../middlewares/auth.middleware.js");
 
