@@ -9,7 +9,7 @@ var _express = _interopRequireDefault(require("express"));
 
 var _multer = _interopRequireDefault(require("multer"));
 
-var _releasesController = require("../controllers/releases.controller.js");
+var _releasesController = require("../src/controllers/releases.controller.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
