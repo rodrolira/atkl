@@ -2,8 +2,9 @@
 
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import Admin from '../models/admin.model.js'
+import Admin from '../../models/admin.model.js'
 import dotenv from 'dotenv'
+
 
 dotenv.config()
 
@@ -13,8 +14,8 @@ const createToken = (adminId) => {
 export const createAdmin = async ({ username, email, password }) => {
   try {
     const newAdmin = await Admin.create({
-      username,
-      email,
+        username,
+        email,
       password,
     })
     return newAdmin
@@ -73,7 +74,7 @@ export const profileAdmin = async (adminId) => {
     if (!admin) {
       throw new Error('Admin not found')
     }
-
+    
     return admin
   } catch (error) {
     throw new Error(`Error fetching admin profile: ${error.message}`)
