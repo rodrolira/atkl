@@ -23,14 +23,16 @@ export const useArtist = (id) => {
 
   // Lógica para actualizar un artista
 
-  const updateArtist = async (artistId, updatedArtist) => {
+  const updateArtist = async (artist, updatedArtist) => {
     try {
-      await updateArtistRequest(artistId, updatedArtist);
-      fetchArtist(artistId);
+      await updateArtistRequest(artist, updatedArtist);
+      fetchArtist(artist);
     } catch (error) {
+      console.error('Error updating artist:', error);
       setError(error);
     }
   };
+  
 
   // Lógica para eliminar un artista
   const deleteArtist = async (artistId) => {
