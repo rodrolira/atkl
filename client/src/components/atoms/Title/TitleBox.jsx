@@ -1,11 +1,9 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useLanguage } from '@/contexts/LanguageContext'; // Importa el hook useLanguage
-
+import { useTranslation } from 'react-i18next';
 const TitleBox = () => {
-  const { language } = useLanguage(); // Obtiene el estado del idioma desde el contexto
-
+  const { t } = useTranslation();
   return (
     <Grid xs={12} sm={12} md={6} lg={6} xl={6} minHeight={550}>
       <Box
@@ -39,13 +37,11 @@ const TitleBox = () => {
           alignItems="flex-start"
         >
           <Typography variant="h4" fontWeight="bold" color="whitesmoke" mb={3}>
-            {language === 'en' ? 'Sign into your' : 'Entra en tu'} <br />{' '}
-            {language === 'en' ? 'Account' : 'Cuenta'}
+            {t('sign')} <br />{' '}
+            {t('account')}
           </Typography>
           <Typography variant="body1" fontWeight="" color="whitesmoke">
-            {language === 'en'
-              ? 'Check out the latest label releases.'
-              : 'Revisa los nuevos lanzamientos del sello.'}
+            {t('checkReleases')}
           </Typography>
         </Box>
       </Box>

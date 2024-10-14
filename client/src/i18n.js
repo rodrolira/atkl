@@ -33,16 +33,20 @@ i18n.use(initReactI18next).init({
         apple_music_link: 'Apple Music Link',
         delete_confirmation:
           'Are you sure you want to delete the artist {{artistName}}?',
+        add_artist: 'Add Artist',
         edit_artist: 'Edit Artist',
         delete_artist: 'Delete Artist',
         edit: 'Edit',
         edit_release: 'Edit Release',
-          buy: 'BUY',
+        buy: 'BUY',
         delete_release: 'Delete Release',
         add_release: 'Add Release',
         add: 'Add',
         no_roles_assigned: 'No roles assigned',
         loading: 'Loading...',
+        sign: 'Sign in to your',
+        account: 'Account',
+        checkReleases: 'Check out the latest label releases.',
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
@@ -68,6 +72,7 @@ i18n.use(initReactI18next).init({
           myReleasesSection: 'My releases',
           myProfileSection: 'My profile',
           mySettingsSection: 'My settings',
+          admin_dashboard: 'Admin dashboard',
         },
         validation: {
           artistNameRequired: 'Artist name is required',
@@ -157,8 +162,11 @@ i18n.use(initReactI18next).init({
             producer: 'Producer',
           },
         },
+        artistReleases: {
+          noReleases: 'No releases available',
+        },
         errors: {
-            deleteArtist: 'Failed to delete artist. Please try again.',
+          deleteArtist: 'Failed to delete artist. Please try again.',
         },
         confirmation: {
           deleteArtist: 'Are you sure you want to delete this artist?',
@@ -195,8 +203,10 @@ i18n.use(initReactI18next).init({
         apple_music_link: 'Enlace de Apple Music',
         delete_confirmation:
           '¿Estás seguro de que deseas eliminar al artista {{artistName}}?',
+        add_artist: 'Agregar Artista',
         edit_artist: 'Editar Artista',
         delete_artist: 'Eliminar Artista',
+        add_release: 'Agregar Lanzamiento',
         edit_release: 'Editar Lanzamiento',
         delete_release: 'Eliminar Lanzamiento',
         edit: 'Editar',
@@ -205,6 +215,9 @@ i18n.use(initReactI18next).init({
         buy: 'Comprar',
         no_roles_assigned: 'No hay roles asignados',
         loading: 'Cargando...',
+        sign: 'Inicia sesión en tu',
+        account: 'Cuenta',
+        checkReleases: 'Revisa los nuevos lanzamientos del sello',
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
@@ -230,6 +243,7 @@ i18n.use(initReactI18next).init({
           myReleasesSection: 'Mis lanzamientos',
           myProfileSection: 'Mi perfil',
           mySettingsSection: 'Mis configuraciones',
+          admin_dashboard: 'Panel de Administrador',
         },
         validation: {
           artistNameRequired: 'El nombre del artista es requerido',
@@ -319,6 +333,9 @@ i18n.use(initReactI18next).init({
             producer: 'Productor',
           },
           selectRole: 'Seleccionar Rol',
+        },
+        artistReleases: {
+          noReleases: 'No hay lanzamientos disponibles',
         },
       },
     },
