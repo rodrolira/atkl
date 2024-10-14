@@ -9,21 +9,20 @@ import EditArtistModal from './EditArtist/EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
 import { getArtistRequest } from '@/app/api/artists';
-import { useArtist } from '@/hooks/useArtist';
 import { Button } from 'react-bootstrap';
 import BaseCard from '@/components/Layout/BaseCard';
 import { useTranslation } from 'react-i18next'; // Importa el hook
 
 const ArtistCard = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState(artist);
-  const { setArtists } = useArtists();
-  const { deleteArtist } = useArtist();
+  const { deleteArtist, setArtists } = useArtists();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
 
   const { t } = useTranslation(); // Hook de traducción
 
   useEffect(() => {
+    if (artist?.id) {
     const fetchArtist = async () => {
       try {
         const response = await getArtistRequest(artist.id);
@@ -34,7 +33,8 @@ const ArtistCard = ({ artist }) => {
     };
 
     fetchArtist();
-  }, [artist.id]);
+    }
+  }, [artist?.id]);
 
   const handleDelete = async () => {
     if (
@@ -45,7 +45,7 @@ const ArtistCard = ({ artist }) => {
       try {
         await deleteArtist(artist.id);
         setArtists((prevArtists) =>
-          prevArtists.filter((a) => a.id !== artist.id),
+          prevArtists.filter((a) => a.id !== currentArtist.id),
         );
       } catch (error) {
         console.error('Error deleting artist:', error);
@@ -66,8 +66,8 @@ const ArtistCard = ({ artist }) => {
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
+      fetchArtist();
     };
-    fetchArtist();
   };
 
   const rolesText =
@@ -141,8 +141,8 @@ const ArtistCard = ({ artist }) => {
 
 ArtistCard.propTypes = {
   artist: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    artist_name: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    artist_name: PropTypes.string,
     image: PropTypes.string,
     username: PropTypes.string,
     password: PropTypes.string,

@@ -97,6 +97,8 @@ export function ReleaseProvider({ children }) {
         updateRelease,
         deleteRelease,
         fetchRelease,
+        loading,
+        error,
       }}
     >
       {children}
