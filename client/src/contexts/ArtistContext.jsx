@@ -10,7 +10,7 @@ import {
   updateArtistRequest,
 } from '../app/api/artists';
 
-const ArtistContext = createContext();
+export const ArtistContext = createContext();
 
 export const useArtists = () => {
   const context = useContext(ArtistContext);
@@ -24,55 +24,68 @@ export const useArtists = () => {
 
 export const ArtistProvider = ({ children }) => {
   const [artists, setArtists] = useState([]); // Estado para almacenar la lista de artistas
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [artist, setArtist] = useState(null);
-  const fetchArtist = async (artist) => {
-    try {
-      const response = await getArtistRequest(artist);
-      setArtist(response);
-    } catch (error) {
-      setError(error);
-    }
-  };
+
+
   // Lógica para obtener la lista de artistas
   const fetchArtists = useCallback(async () => {
     // Asegúrate de que este fetch esté funcionando correctamente y devuelva los datos esperados.
     try {
       const response = await getArtistsRequest();
-      setArtists(response);
+      setArtists(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching artists:', error);
+      setError('Failed to fetch artists');
+      setLoading(false);
     }
   }, []);
+
+  const fetchArtist = async (id) => {
+    try {
+      const response = await getArtistRequest(id);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching artist with ID ${id}:`, error);
+      throw error;
+    }
+  };
 
   // Lógica para crear un artista
   const createArtist = async (artist) => {
     try {
       const res = await createArtistRequest(artist);
       setArtists((prevArtists) => [...prevArtists, res.data]);
+      return res.data;
     } catch (error) {
       console.error('Error creating artist:', error);
     }
   };
 
-  const updateArtist = async (artist, updatedArtist) => {
+  const updateArtist = async (id, updatedArtist) => {
     try {
-      await updateArtistRequest(artist, updatedArtist);
-      fetchArtist(artist);
+      const response = await updateArtistRequest(id, updatedArtist);
+      setArtists((prevArtists) =>
+        prevArtists.map((artist) => (artist.id === id ? response.data : artist)),
+      );
+      return response;
     } catch (error) {
       console.error('Error updating artist:', error);
-      setError(error);
+      throw error
     }
   };
 
 
   // Lógica para eliminar un artista
-  const deleteArtist = async (artist) => {
+  const deleteArtist = async (id) => {
     try {
-      await deleteArtistRequest(artist);
-      setArtist(null);
+      await deleteArtistRequest(id);
+      setArtists((prevArtists) =>
+        prevArtists.filter((artist) => artist.id !== id));
     } catch (error) {
-      setError(error);
+      console.error('Error deleting artist:', error);
+      throw error
     }
   };
 
@@ -84,10 +97,8 @@ export const ArtistProvider = ({ children }) => {
         createArtist,
         fetchArtists,
         fetchArtist,
-        artist,
-        setArtist,
         error,
-        setError,
+        loading,
         updateArtist,
         deleteArtist,
       }}

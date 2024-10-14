@@ -1,38 +1,28 @@
 import React, { useEffect } from 'react';
-import Title from '@/components/atoms/Title/Title';
-import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm';
-import ArtistList from '@/components/Artist/ArtistList';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm';
+import ArtistList from '@/components/Artist/ArtistList';
+import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-// Define the type for the new artist object
-interface Artist {
-  id: string;
-  name: string;
-  // Agrega otros campos según lo necesites
-}
 
 // Define las propiedades que recibirá ArtistsSection
-interface ArtistsSectionProps {
-  artistsData: Artist[]; // Recibe la lista de artistas
-}
+interface ArtistsSectionProps {}
 
 
-const ArtistsSection: React.FC<ArtistsSectionProps> = ({ artistsData = [] }) => {
+const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const { fetchArtists, createArtist } = useArtists();
+  const { artists, fetchArtists, createArtist } = useArtists();
   const { t } = useTranslation();
 
   // Asegúrate de que los artistas se establezcan a partir de artistsData
   useEffect(() => {
-    if (artistsData.length === 0) {
-      fetchArtists();
-    }
-  }, [fetchArtists, artistsData]);
+    fetchArtists();
+  }, [fetchArtists]);
 
-  const handleArtistAdded = async (newArtist: Artist) => {
+  const handleArtistAdded = async (newArtist: any) => {
     await createArtist(newArtist);
     fetchArtists(); // Esto podría no ser necesario si ya estás manejando artistsData
   };
@@ -44,10 +34,10 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({ artistsData = [] }) => 
           <Title>{t('artistSection.title')}</Title>
         </Link>
         {adminAuthenticated && (
-          <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={() => {}} />
+          <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={() => { }} />
         )}
       </div>
-      <ArtistList artists={artistsData} />
+      <ArtistList artists={artists || []} />
     </section>
   );
 };
