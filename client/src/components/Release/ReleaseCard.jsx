@@ -3,13 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBandcamp,
-  faSpotify,
-  faApple,
-  faYoutube,
-  faSoundcloud,
-} from '@fortawesome/free-brands-svg-icons';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Button from '@/components/Button/Button';
@@ -21,8 +14,10 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import ReleaseLinks from './ReleaseLinks';
 import BaseCard from '@/components/Layout/BaseCard';
+  import { useTranslation } from 'react-i18next';
 
 const ReleaseCard = ({ release }) => {
+  const { t } = useTranslation();
   const [currentRelease, setCurrentRelease] = useState(release);
   const { deleteRelease, setReleases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
@@ -140,7 +135,7 @@ const ReleaseCard = ({ release }) => {
               className="mb-4"
               colorClass="bg-green-500 hover:bg-green-600 text-black"
             >
-              <p className="font-semibold">Comprar</p>
+              <p className="font-semibold">{t('buy')}</p>
             </Button>
           )}
         </div>
