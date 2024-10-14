@@ -14,11 +14,14 @@ import ArtistName from '@/components/Artist/ArtistName';
 // Definimos la interfaz para los parámetros de la URL
 interface Params {
   id: string;
-  name: string;
+  artist_name: string;
   bio: string;
 }
 const ArtistPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  if (!id) {
+    return <div>No se encontró el artista</div>;
+  }
   const { artist, error, loading } = useArtistData(id); // Usando el hook personalizado
   const [showEditModal, setShowEditModal] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();

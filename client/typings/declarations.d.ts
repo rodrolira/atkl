@@ -3,4 +3,3 @@ declare module '*.module.css' {
   export default content;
 }
 
-declare module '@/hooks/useArtistData';
