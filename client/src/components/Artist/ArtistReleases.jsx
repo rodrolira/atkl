@@ -1,13 +1,12 @@
 // ArtistReleases.jsx
 import React, { useState, useEffect } from 'react';
-import { useLanguage } from '@/hooks/useLanguage';
 import { getArtistReleases } from '@/app/api/artists'; // Importa la función para obtener los lanzamientos del artista
-
+import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import ReleaseCard from '@/components/Release/ReleaseCard';
 
 const ArtistReleases = ({ artist }) => {
-  const { language } = useLanguage();
+  const { t } = useTranslation();
   const [releases, setReleases] = useState([]);
 
   useEffect(() => {
@@ -42,9 +41,7 @@ const ArtistReleases = ({ artist }) => {
           ))
         ) : (
           <p>
-            {language === 'en'
-              ? 'No releases available'
-              : 'No hay releases disponibles'}
+            {t('artistReleases.noReleases')}
           </p>
         )}
       </div>

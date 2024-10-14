@@ -2,9 +2,8 @@ import React from 'react';
 import LanguageMenu from '@/components/Language/LanguageMenu';
 import DemoButton from '@/components/Button/DemoButton';
 import NavbarLinks from './NavbarLinks';
-import { useLanguage } from '@/hooks/useLanguage';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-
+import { useTranslation } from 'react-i18next';
 import Button from '@/components/Button/Button';
 import AddArtistButton from '@/components/Button/AddArtistButton';
 import AddReleaseButton from '@/components/Button/AddReleaseButton';
@@ -18,8 +17,8 @@ import {
 import AddTeamMemberButton from '@/components/Button/AddTeamMemberButton';
 
 function NavbarMenu() {
-  const { language } = useLanguage();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="xs:flex lg:block hidden justify-start md:justify-end xs:flex-wrap items-center w-full">
@@ -33,12 +32,12 @@ function NavbarMenu() {
               <>
                 <li className="mx-1">
                   <AddArtistButton className="!capitalize">
-                    {language === 'en' ? 'Add Artist' : 'Agregar Artista'}
+                    {t('add_artist')}
                   </AddArtistButton>
                 </li>
                 <li className="mx-1">
                   <AddReleaseButton className="btn-add">
-                    {language === 'en' ? 'Add Release' : 'Agregar Lanzamiento'}
+                    {t('add_release')}
                   </AddReleaseButton>
                 </li>
                 <li className="mx-1">
@@ -50,9 +49,7 @@ function NavbarMenu() {
                     className="mx-auto flex justify-center"
                     colorClass="bg-[#22581d] text-white"
                   >
-                    {language === 'en'
-                      ? 'Admin Dashboard'
-                      : 'Panel de Administrador'}
+                    {t('navbar.admin_dashboard')}
                   </Button>
                 </li>
               </>

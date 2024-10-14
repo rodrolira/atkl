@@ -4,23 +4,23 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const LanguageMenu = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n} = useTranslation();
   const { changeLanguage, language } = useLanguage();
   const [isMenuVisible, setMenuVisibility] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(language);
-
+  const [selectedLanguage, setSelectedLanguage] = useState('language');
+    
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('language');
+    const savedLanguage = localStorage.getItem( 'language');
+    setSelectedLanguage(savedLanguage || language);
     if (savedLanguage) {
       i18n.changeLanguage(savedLanguage);
-      setSelectedLanguage(savedLanguage);
     }
   }, [i18n]);
   const handleChangeLanguage = (languageCode) => {
     changeLanguage(languageCode);
+    setSelectedLanguage(languageCode);
     i18n.changeLanguage(languageCode); // Cambiar idioma en i18next
     localStorage.setItem('language', languageCode); // Guardar en localStorage
-    setSelectedLanguage(languageCode);
     setMenuVisibility(false);
   };
 
