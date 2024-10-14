@@ -13,7 +13,7 @@ import { deleteArtistRequest } from '@/app/api/artists'; // Importar función de
 import { useTranslation } from 'react-i18next';
 
 // Define types for artist, release, and other state-related variables
-interface Artist {
+export interface Artist {
   id: number;
   email: string;
   artist_name: string;

@@ -19,7 +19,7 @@ interface ArtistsTableProps {
 }
 
 const ArtistsTable: React.FC<ArtistsTableProps> = ({
-  artists = [], // Ensure artists has a default value of an empty array
+  artists = [],
   onEdit,
   onDelete,
   selectedArtists,
@@ -74,8 +74,9 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {artists.map((artist) => (
-              <tr key={artist.id} className="border-t border-t-[#2e7728]">
+            {Array.isArray(artists) && artists.length > 0 ? (
+              artists.map((artist) => (
+                <tr key={artist.id} className="border-t border-t-[#2e7728]">
                 {isDeleteMode && (
                   <td className="px-4 py-3 w-1/12 text-center">
                     <input
@@ -84,7 +85,8 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                       onChange={() => handleSelectArtist(artist.id)}
                     />
                   </td>
-                )}
+                )}  
+            
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
                   {artist.artist_name}
                 </td>
@@ -99,7 +101,7 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                 <td className="px-4 py-3 w-1/4 text-center">
                   <button
                     className="text-xl mx-2 text-yellow-400 hover:text-yellow-500"
-                    onClick={() => onEdit(artist)}
+                    onClick={() => onEdit(artists)}
                   >
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
@@ -113,7 +115,14 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                   )}
                 </td>
               </tr>
-            ))}
+            ))
+            ) : (
+              <tr>
+                <td colSpan={4} className="text-center py-4">
+                  No artists available.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       )}

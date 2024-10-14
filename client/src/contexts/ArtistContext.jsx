@@ -8,7 +8,7 @@ import {
   getArtistRequest,
   getArtistsRequest,
   updateArtistRequest,
-} from '@/app/api/artists';
+} from '../app/api/artists';
 
 const ArtistContext = createContext();
 
@@ -29,7 +29,7 @@ export const ArtistProvider = ({ children }) => {
   const fetchArtist = async (artist) => {
     try {
       const response = await getArtistRequest(artist);
-      setArtist(response.data);
+      setArtist(response);
     } catch (error) {
       setError(error);
     }
@@ -39,7 +39,7 @@ export const ArtistProvider = ({ children }) => {
     // Asegúrate de que este fetch esté funcionando correctamente y devuelva los datos esperados.
     try {
       const response = await getArtistsRequest();
-      setArtists(response.data);
+      setArtists(response);
     } catch (error) {
       console.error('Error fetching artists:', error);
     }

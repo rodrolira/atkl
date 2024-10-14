@@ -1,6 +1,6 @@
 // useArtistData.js
 import { useState, useEffect } from 'react';
-import { getArtistRequest } from '@/app/api/artists';
+import { getArtistRequest } from '../app/api/artists';
 
 // Define el tipo para el artista (ajusta los campos según tu API)
 interface Artist {

@@ -7,7 +7,7 @@ import Button from '@/components/Button/Button';
 import FileUpload from '@/components/Upload/FileUpload';
 
 // import { useArtists } from '../../../contexts/ArtistContext'
-import { getArtistRequest } from '@/app/api/artists';
+import { getArtistRequest } from '../../../app/api/artists';
 
 const validationSchema = Yup.object().shape({
   artistName: Yup.string().required('Artist name is required'),
