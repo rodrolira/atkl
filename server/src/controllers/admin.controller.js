@@ -9,14 +9,15 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const createToken = (adminId) => {
-  return jwt.sign({ adminId }, process.env.SECRET, { expiresIn: '1h' })
+  return jwt.sign({ adminId, role: 'admin' }, process.env.SECRET, { expiresIn: '12h' })
 }
 export const createAdmin = async ({ username, email, password }) => {
+  const hashedPassword = await bcrypt.hash(password, 10)
   try {
     const newAdmin = await Admin.create({
         username,
         email,
-      password,
+      password: hashedPassword,
     })
     return newAdmin
   } catch (error) {
@@ -83,26 +84,30 @@ export const profileAdmin = async (adminId) => {
 
 export const verifyTokenAdmin = async (token) => {
   try {
-    const decoded = jwt.verify(token, process.env.SECRET)
+    const decoded = jwt.verify(token, process.env.SECRET);
 
-    const admin = await Admin.findByPk(decoded.adminId)
-
-    if (!admin) {
-      throw new Error('Admin not found')
+    if (decoded.role !== 'admin') {
+      throw new Error('Unauthorized');
     }
 
-    return admin
+    const admin = await Admin.findByPk(decoded.adminId);
+
+    if (!admin) {
+      throw new Error('Unauthorized');
+    }
+
+    return admin;
   } catch (error) {
-    throw new Error('Unauthorized')
+    throw new Error(`Error verifying token: ${error.message}`);
   }
-}
+    }
+
 
 export const logoutAdmin = async (req, res) => {
   try {
     res.clearCookie('token')
-    res.json({ message: 'Logout successful' })
+    res.status(200).json({ message: 'Logout successful' })
   } catch (error) {
-    console.error('Error logging out admin:', error)
-    res.status(500).json({ message: 'Server Error' })
+    res.status(500).json({ message: `Error logging out: ${error.message}` })
   }
 }

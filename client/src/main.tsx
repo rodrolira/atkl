@@ -18,7 +18,9 @@ if (process.env.NODE_ENV === 'development') {
   document.body.appendChild(script);
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+if (rootElement) {
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <AppThemeProvider>
@@ -37,3 +39,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </Provider>
   </React.StrictMode>,
 );
+} else {
+  console.error('Root element not found');
+}

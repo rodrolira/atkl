@@ -4,21 +4,19 @@ import {
   loginAdminRequest,
   verifyAdminTokenRequest,
   logoutAdminRequest,
-} from '@/app/api/admin';
+} from '../app/api/admin';
 
 // Definimos las interfaces necesarias
 interface Admin {
-  id: string;
-  name: string;
+  username: string;
+  password: string
   // Agrega otros campos según lo necesites
 }
 
 interface AdminAuthContextType {
-  signin: (user: { username: string; password: string; }) => Promise<void>;
-  signup: (user: { username: string; email: string; password: string; }) => Promise<void>;
-  register: (user: { username: string; password: string; email: string; }) => Promise<void>;
-  login: (user: { username: string; password: string; }) => Promise<void>;
-  logout: () => Promise<void>;
+  signup: (user: Omit<Admin, 'id'>) => Promise<void>;
+  signout: () => Promise<void>;
+  signin: (credentials: any) => Promise<void>; // Agregado
   loading: boolean;
   user: Admin | null;
   isAuthenticated: boolean;
@@ -48,7 +46,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
 
   useEffect(() => {
     const checkLogin = async () => {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('token');
       if (token) {
         await verifyToken(token);
       } else {
@@ -60,49 +58,47 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
 
   const verifyToken = async (token: string) => {
     try {
-      const res = await verifyAdminTokenRequest(token);
+      const res = await verifyAdminTokenRequest();
       setIsAuthenticated(true);
       setUser(res.data.admin);
     } catch (error: any) {
       console.log('Admin verification failed:', error);
       setIsAuthenticated(false);
       setUser(null);
-      setErrors([error.response?.data?.message || 'Error verifying token']);
+      setErrors([error.response?.message || 'Error verifying token']);
     } finally {
       setLoading(false);
     }
   };
 
-  const signup = async (user: { username: string; email: string; password: string }) => {
+  const signup = async (user: Omit<Admin, 'id'>) => {
     try {
       const res = await registerAdminRequest(user);
       setUser(res.data);
       setIsAuthenticated(true);
-      localStorage.setItem('adminToken', res.data.token);
+      localStorage.setItem('token', res.data.token);
     } catch (error: any) {
       setErrors([error.response.data.message]);
     }
   };
 
-  const signin = async (credentials: { username: string; password: string; }) => {
+  const signin = async (credentials: any) => {
     try {
-      await loginAdminRequest(credentials); // Llama a la función de inicio de sesión
+      const response = await loginAdminRequest(credentials); // Llama a la función de inicio de sesión
+      // Verificar que response.data contiene el token y los datos del admin
+      if (response  && response.token && response.admin) {
+        const token = response.token;
+        const admin = response.admin;
 
-      const token = localStorage.getItem('adminToken');
-      if (token) {
-        await verifyToken(token);
-      }
-
-      setSigninError(null);
-      const { username, password } = credentials;
-      if (username === 'admin' && password === 'password') {
+        localStorage.setItem('token', token);
         setIsAuthenticated(true);
+        setUser(admin);
       } else {
-        setSigninError('Invalid username or password');
+        throw new Error('Token not found in response');
       }
     } catch (error: any) {
-      setSigninError(error.response.data.message);
-      setErrors([error.response.data.message]);
+      console.log('Error signing in:', error);
+      setErrors([error.response?.data?.message || 'Error during sign-in']);
     }
   };
 
@@ -129,16 +125,16 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
   return (
     <AdminAuthContext.Provider
       value={{
-        signin,
-        signup,
-        logout: signout,
-        loading,
-        register: signup,
-        login: signin,
-        user,
-        isAuthenticated,
+
+
+        signin: signin,
+        signup: signup as (user: Omit<Admin, 'id'>) => Promise<void>,
+        signout: signout,
+        loading: loading,
+        user: user,
+        isAuthenticated: isAuthenticated,
         errors,
-        
+
       }}
     >
       {children}

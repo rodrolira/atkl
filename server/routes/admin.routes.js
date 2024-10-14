@@ -2,7 +2,7 @@
 
 import express from 'express'
 import * as adminController from '../src/controllers/admin.controller.js'
-import { verifyTokenAdmin } from '../middlewares/validateToken.js'
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = express.Router()
 
@@ -27,14 +27,15 @@ router.post('/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body
     const token = await adminController.loginAdmin(username, password)
+    const admin = await adminController.findAdminByUsername(username)
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'dev',
+      secure: process.env.NODE_ENV === 'production', // Solo 'secure' en producción
       maxAge: 12 * 60 * 60 * 1000, // 12hrs
     })
 
-    res.json({ message: 'Login successful', admin: { username, password } })
+    res.json({ message: 'Login successful', token, admin })
   } catch (error) {
     console.error('Error logging in admin:', error)
     res.status(401).json({ message: 'Invalid credentials' })
@@ -43,7 +44,7 @@ router.post('/admin/login', async (req, res) => {
 
 router.post('/admin/logout', adminController.logoutAdmin)
 
-router.get('/admin/profile', verifyTokenAdmin, async (req, res) => {
+router.get('/admin/profile', adminController.verifyTokenAdmin, async (req, res) => {
   try {
     const admin = await adminController.profileAdmin(req.adminId)
     res.json({ admin })
@@ -53,8 +54,17 @@ router.get('/admin/profile', verifyTokenAdmin, async (req, res) => {
   }
 })
 
-router.get('/admin/verify', verifyTokenAdmin, (req, res) => {
-  res.status(200).json({ message: 'Token is valid', adminId: req.adminId })
-})
+//router.get('/admin/verify', verifyTokenAdmin, (req, res) => {
+//  res.status(200).json({ message: 'Token is valid', adminId: req.admin.id })
+//})
 
+router.get('/admin/verify', async (req, res) => {
+  const { token } = req.cookies
+  try {
+    const admin = await adminController.verifyTokenAdmin(token)
+    res.json({ admin })
+  } catch (error) {
+    res.status(401).json({ message: 'Unauthorized' })
+  }
+})
 export default router

@@ -136,8 +136,9 @@ export const updateArtist = async (req, res) => {
   };
 
   export const getArtists = async (req, res) => {
-    try {
-      const artists = await Artist.findAll({
+
+    try { 
+      const artists  =  await  Artist.findAll({
         include: [{ model: Role, 
           as: 'Roles',
           through: { attributes: [] },

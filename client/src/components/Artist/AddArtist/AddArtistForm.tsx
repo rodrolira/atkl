@@ -63,8 +63,8 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
         console.log('API Response:', response); // Check the response structure
 
       // Since the response is directly an array, no need to access `response.data`
-      if (Array.isArray(response)) {
-        setRoles(response);
+      if (Array.isArray(response.data)) {
+        setRoles(response.data);
       } else {
         console.error('Unexpected response format:', response);
       }
