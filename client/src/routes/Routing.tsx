@@ -22,7 +22,7 @@ const Routing: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/artists" element={<ArtistsPage />} />
+      <Route path="/artists" element={<ArtistsPage artistsData={[]} />} />
       <Route path="/releases" element={<ReleasesPage />} />
       <Route path="/artists/:id" element={<ArtistPage />} />
       <Route path="/about" element={<AboutPage />} />
@@ -45,7 +45,7 @@ const Routing: React.FC = () => {
             )
           }
         />
-        <Route path="/edit-release/:id" element={<EditReleaseModal />} />
+        <Route path="/edit-release/:id" element={<EditReleaseModal id={undefined} onClose={undefined} />} />
         <Route path="/artists/:id/edit" element={<EditArtist />} />
       </Route>
       {/* Redirect to NotFound for unknown paths */}

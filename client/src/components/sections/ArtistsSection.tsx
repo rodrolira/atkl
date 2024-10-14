@@ -14,18 +14,27 @@ interface Artist {
   // Agrega otros campos según lo necesites
 }
 
-const ArtistsSection: React.FC = () => {
+// Define las propiedades que recibirá ArtistsSection
+interface ArtistsSectionProps {
+  artistsData: Artist[]; // Recibe la lista de artistas
+}
+
+
+const ArtistsSection: React.FC<ArtistsSectionProps> = ({ artistsData = [] }) => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const { artists, fetchArtists, createArtist } = useArtists();
+  const { fetchArtists, createArtist } = useArtists();
   const { t } = useTranslation();
 
+  // Asegúrate de que los artistas se establezcan a partir de artistsData
   useEffect(() => {
-    fetchArtists();
-  }, [fetchArtists]);
+    if (artistsData.length === 0) {
+      fetchArtists();
+    }
+  }, [fetchArtists, artistsData]);
 
   const handleArtistAdded = async (newArtist: Artist) => {
     await createArtist(newArtist);
-    fetchArtists();
+    fetchArtists(); // Esto podría no ser necesario si ya estás manejando artistsData
   };
 
   return (
@@ -35,10 +44,10 @@ const ArtistsSection: React.FC = () => {
           <Title>{t('artistSection.title')}</Title>
         </Link>
         {adminAuthenticated && (
-          <AddArtistForm onArtistAdded={handleArtistAdded} />
+          <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={() => {}} />
         )}
       </div>
-      <ArtistList artists={artists} />
+      <ArtistList artists={artistsData} />
     </section>
   );
 };
