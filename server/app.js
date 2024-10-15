@@ -15,9 +15,11 @@ import rolesRouter from './routes/roles.routes.js'
 import discographyRoutes from './routes/discography.routes.js'
 import postgres from 'postgres'
 
+
 dotenv.config()
 
 const app = express()
+
 
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'))
