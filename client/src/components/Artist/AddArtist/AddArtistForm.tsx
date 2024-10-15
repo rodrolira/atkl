@@ -33,7 +33,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
   const [roles, setRoles] = useState<any[]>([]); // Cambia `any` por un tipo más específico si lo tienes
   const [error, setError] = useState<string | null>(null);
   const { createArtist } = useArtists();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const onSubmit = async (values: any, actions: any) => { // Cambia `any` por un tipo más específico
     const formData = new FormData();

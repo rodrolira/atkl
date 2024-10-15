@@ -8,11 +8,17 @@ import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm';
 import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm'; // Importa el formulario
 import { useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { useTranslation } from 'react-i18next';
 
 // Botón para agregar artista
 export const AddArtistButton = () => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+
+  const handleOpen = () => setIsDialogOpen(true);
+  const handleClose = () => setIsDialogOpen(false);
 
   const openPopup = () => setOpen(true);
   const closePopup = () => setOpen(false);
@@ -21,20 +27,22 @@ export const AddArtistButton = () => {
     <>
       {/* Botón circular */}
       {adminAuthenticated && (
-        <IconButton onClick={openPopup} open={open} className="circular-button">
+        <IconButton onClick={handleOpen} className="circular-button">
           <PersonAddIcon fontSize="large" className="button-icon" />
           {/* Formulario emergente */}
         </IconButton>
       )}
 
       {/* Formulario para agregar artista */}
-      <AddArtistForm
-        open={open}
-        closePopup={closePopup}
-        onArtistAdded={(newArtist) => {
-          console.log('Nuevo artista agregado:', newArtist);
-        }}
-      />
+      {isDialogOpen && (
+        <AddArtistForm
+          openPopup={isDialogOpen}
+          closePopup={handleClose}
+          onArtistAdded={(newArtist) => {
+            console.log('Nuevo artista agregado:', newArtist);
+          }}
+        />
+      )}
     </>
   );
 };

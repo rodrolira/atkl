@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const CreateReleaseForm = () => {
-  const [formData, setFormData] = useState({
-    release_name: '',
+interface FormData {
+  artist_name: string;
+  email: string;
+  password: string;
+}
+
+const CreateUserForm: React.FC = () => {
+  const { t } = useTranslation();
+
+  const [formData, setFormData] = useState<FormData>({
     artist_name: '',
-    release_date: '',
+    email: '',
+    password: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -15,39 +24,20 @@ const CreateReleaseForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you would typically send the form data to your API
     console.log('Form submitted:', formData);
-    // Reset form after submission
-    setFormData({ release_name: '', artist_name: '', release_date: '' });
+    setFormData({ artist_name: '', email: '', password: '' });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label
-          htmlFor="release_name"
-          className="block text-sm font-medium text-gray-300"
-        >
-          Release Name
-        </label>
-        <input
-          type="text"
-          id="release_name"
-          name="release_name"
-          value={formData.release_name}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
-        />
-      </div>
-      <div>
-        <label
           htmlFor="artist_name"
           className="block text-sm font-medium text-gray-300"
         >
-          Artist Name
+          {t('label.artist_name')}
         </label>
         <input
           type="text"
@@ -61,16 +51,33 @@ const CreateReleaseForm = () => {
       </div>
       <div>
         <label
-          htmlFor="release_date"
+          htmlFor="email"
           className="block text-sm font-medium text-gray-300"
         >
-          Release Date
+          {t('label.email')}
         </label>
         <input
-          type="date"
-          id="release_date"
-          name="release_date"
-          value={formData.release_date}
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-300"
+        >
+          {t('label.password')}
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
           onChange={handleChange}
           required
           className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
@@ -80,10 +87,10 @@ const CreateReleaseForm = () => {
         type="submit"
         className="w-full px-4 py-2 bg-[#2e7728] text-white rounded-md hover:bg-[#3a9934] focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
       >
-        Create Release
+        {t('admin.create_user')}
       </button>
     </form>
   );
 };
 
-export default CreateReleaseForm;
+export default CreateUserForm;

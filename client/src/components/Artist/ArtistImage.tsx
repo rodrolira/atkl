@@ -3,7 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'flowbite-react';
 import React from 'react';
 
-const ArtistImage = ({ image, alt, adminAuthenticated, openEditModal }) => (
+interface ArtistImageProps {
+  image: string;
+  alt: string;
+  adminAuthenticated: boolean;
+  openEditModal: () => void;
+}
+
+const ArtistImage: React.FC<ArtistImageProps> = ({ image, alt, adminAuthenticated, openEditModal }) => (
   <div className="relative p-4 pb-0 rounded-lg">
     {adminAuthenticated && (
       <Button

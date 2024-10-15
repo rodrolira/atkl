@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Button.css';
+import { Link } from 'react-router-dom';
 
 interface ButtonProps {
-  href?: string;
+  to?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   children?: React.ReactNode;
   text?: string;
@@ -14,16 +15,16 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button = ({ href, onClick, children, text, colorClass, fontWeight }: ButtonProps) => (
+const Button = ({ to, onClick, children, text, colorClass, fontWeight }: ButtonProps) => (
   <div className="mx-auto flex justify-center">
-    {href ? (
-      <a
-        href={href}
+    {to ? (
+      <Link
+        to={to}
         rel="noopener noreferrer"
         className={`flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 lg:h-8 px-4 text-sm leading-normal tracking-[0.015em] ${colorClass} ${fontWeight}`}
       >
         <span className="truncate">{text || children}</span>
-      </a>
+      </Link>
     ) : (
       <button
         onClick={onClick}
@@ -38,7 +39,7 @@ const Button = ({ href, onClick, children, text, colorClass, fontWeight }: Butto
 Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  href: PropTypes.string,
+  to: PropTypes.string,
   onClick: PropTypes.func,
   text: PropTypes.string,
   colorClass: PropTypes.string,

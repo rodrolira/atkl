@@ -10,10 +10,15 @@ import {
   faSpotify,
 } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
+import { Artist } from '@/types/interfaces/Artist';
 
-const ArtistLinks = ({ artist }) => (
+interface ArtistLinksProps {
+  artist: Artist
+}
+
+const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => (
   <div className="flex flex-wrap space-x-2 text-2xl items-center justify-center py-2">
     {artist.twitter_link && (
       <Link
@@ -110,17 +115,5 @@ const ArtistLinks = ({ artist }) => (
     )}
   </div>
 );
-
-ArtistLinks.propTypes = {
-  artist: PropTypes.shape({
-    twitter_link: PropTypes.string,
-    instagram_link: PropTypes.string,
-    facebook_link: PropTypes.string,
-    soundcloud_link: PropTypes.string,
-    bandcamp_link: PropTypes.string,
-    youtube_link: PropTypes.string,
-    spotify_link: PropTypes.string,
-  }).isRequired,
-};
 
 export default ArtistLinks;

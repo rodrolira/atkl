@@ -11,6 +11,7 @@ import { GenreProvider } from '@/contexts/GenreContext';
 import { ReleaseProvider } from '@/contexts/ReleaseContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 
+
 // Cargar React DevTools solo en desarrollo
 if (process.env.NODE_ENV === 'development') {
   const script = document.createElement('script');

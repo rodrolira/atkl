@@ -4,7 +4,8 @@ import AdminSignin from './AdminSignin';
 import MainLayout from '@/components/Layout/MainLayout';
 import styles from '@/pages/Auth/Auth.module.css';
 
-const AdminLoginForm = () => {
+
+const AdminLoginForm: React.FC = () => {
   return (
     <div className={styles.auth}>
       <MainLayout>

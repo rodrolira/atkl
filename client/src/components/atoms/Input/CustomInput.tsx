@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, Ref } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
@@ -8,10 +8,23 @@ import {
   Typography,
 } from '@mui/material';
 import { colors } from '@/themes/theme';
-import PropTypes from 'prop-types';
+
+// Define the props type for the CustomInput component
+interface CustomInputProps {
+  isIconActive?: boolean;
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  id?: string;
+  name?: string;
+  value?: string;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  
+}
 
 // eslint-disable-next-line react/display-name
-const CustomInput = React.forwardRef(
+const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
   (
     {
       isIconActive = true,
@@ -21,8 +34,9 @@ const CustomInput = React.forwardRef(
       id = '',
       name = '',
       onChange = () => {},
+
     },
-    ref,
+    ref: Ref<HTMLInputElement>,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -85,15 +99,5 @@ const CustomInput = React.forwardRef(
     );
   },
 );
-
-CustomInput.propTypes = {
-  isIconActive: PropTypes.bool,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  type: PropTypes.string,
-  id: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
-};
 
 export default CustomInput;

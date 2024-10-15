@@ -11,6 +11,10 @@ import { useArtists } from '@/contexts/ArtistContext';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { deleteArtistRequest } from '@/app/api/artists'; // Importar función de eliminación
 import { useTranslation } from 'react-i18next';
+import { Add } from '@mui/icons-material';
+import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
+import Modal from '@/components/Modal/Modal';
+import { deleteReleaseRequest } from '@/app/api/releases';
 
 // Define types for artist, release, and other state-related variables
 export interface Artist {
@@ -66,12 +70,26 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleDeleteRelease = async (releaseId: string) => {
+    // Implement the logic to delete a release by its ID
+    try {
+      // Call the API to delete the release
+      await deleteReleaseRequest(releaseId);
+      // Update the local state by filtering out the deleted release
+      setReleases((prevReleases: Release[]) =>
+        prevReleases.filter((release: Release) => release.id !== Number(releaseId)),
+      );
+    } catch (error) {
+      setError(t('errors.deleteRelease'));
+    }
+  };
+
   const handleEditArtist = useCallback((artist: Artist) => {
     setCurrentArtist(artist);
     setShowEditModal(true);
   }, []);
 
-  const handleEditRelease = useCallback((release: React.SetStateAction<Release | null>) => {
+  const handleEditRelease = useCallback((release: Release) => {
     setCurrentRelease(release);
     setShowEditModal(true);
   }, []);
@@ -87,12 +105,12 @@ const AdminDashboard: React.FC = () => {
     switch (currentView) {
       case 'view-users':
         return (
-          <ContentSection title="Artists">
+          <ContentSection title={t('admin.artists')}>
             <ArtistsTable
               artists={artists}
               onEdit={handleEditArtist}
               onDelete={handleDeleteArtist}
-              selectedArtists = {[]}
+              selectedArtists={selectedArtists}
               setSelectedArtists={setSelectedArtists as React.Dispatch<React.SetStateAction<Artist[]>>} // Add this line
               isDeleteMode={true}
             />
@@ -100,16 +118,22 @@ const AdminDashboard: React.FC = () => {
         );
       case 'create-user':
         return (
-          <ContentSection title="Create User">
+          <ContentSection title={t('admin.add_user')}>
             <CreateUserForm />
           </ContentSection>
         );
       case 'view-releases':
         return (
-          <ContentSection title="Releases">
-            <ReleasesTable releases={releases} onEdit={handleEditRelease} onDelete={handleDeleteArtist} />
+          <ContentSection title={t('admin.releases')}>
+            <ReleasesTable releases={releases} onEdit={(release: any) => handleEditRelease(release as Release)} onDelete={handleDeleteRelease} />
           </ContentSection>
         );
+      case 'create-release':
+        return (
+          <ContentSection title={t('admin.add_release')}>
+            < > </>
+          </ContentSection>
+        )
       default:
         return null;
     }
@@ -148,9 +172,13 @@ const AdminDashboard: React.FC = () => {
           {renderContent()}
         </main>
       </div>
-      {showEditModal && (currentArtist || currentRelease) && (
-        <EditArtistModal
-          onClose={closeEditModal} id={currentArtist?.id || currentRelease?.id} />
+      {showEditModal && (currentArtist) && (
+        <Modal onClose={closeEditModal}>
+          <EditArtistModal
+            onClose={closeEditModal}
+            id={currentArtist?.id.toString()}
+          />
+        </Modal>
       )}
     </div>
   );
