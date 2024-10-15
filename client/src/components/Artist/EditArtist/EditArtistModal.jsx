@@ -34,25 +34,35 @@ function EditArtistModal({ id, onClose }) {
   const { updateArtist, deleteArtist } = useArtists();
 
   useEffect(() => {
-    console.log('Artist ID:', id);
-    fetchArtist(id);
+    const fetchArtist = async (artist_id) => {
+      try {
+        const response = await getArtistRequest(artist_id);
+        console.log('Artist:', response.data);
+        const roles = response.data?.roles ?? [];
+        setInitialValues({
+          ...response.data,
+          roleIds: roles.map((role) => role.id),
+        })
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+  
+  
+    const fetchRoles = async () => {
+      try {
+        const response = await getRolesRequest();
+        if (response && response.data) {
+          setRoles(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    };
+
+    fetchArtist(id);  
+    fetchRoles();
   }, [id]);
-
-  const fetchArtist = async (artist_id) => {
-    try {
-      const response = await getArtistRequest(artist_id);
-      console.log('Artist:', response.data);
-      const roles = response.data?.roles ?? [];
-      console.log('Roles:', roles); // Verifica los roles antes de usarlos
-
-      setInitialValues({
-        ...response.data,
-        roleIds: roles.map((role) => role.id),
-      });
-    } catch (error) {
-      console.error('Error fetching artist:', error);
-    }
-  };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
@@ -85,19 +95,7 @@ function EditArtistModal({ id, onClose }) {
     }
   };
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const response = await getRolesRequest();
-        if (response && response.data) {
-          setRoles(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      }
-    };
-    fetchRoles();
-  }, []);
+
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -107,7 +105,7 @@ function EditArtistModal({ id, onClose }) {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, setFieldValue, values }) => (
           <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Title className="!text-3xl mb-4 font-bold text-center text-gray-700">
               {t('edit_artist')}
@@ -135,8 +133,9 @@ function EditArtistModal({ id, onClose }) {
               />
             </div>
             <div className="mb-4">
-              <FileUpload />
+              <FileUpload  setFieldValue={setFieldValue} name="image"/>
             </div>
+
             <FormControl className="!mb-4 !block" fullWidth variant="outlined">
               <InputLabel className="!block !text-gray-700 !font-bold !mb-2">
                 {t('addArtist.selectRole')}
@@ -146,6 +145,8 @@ function EditArtistModal({ id, onClose }) {
                 as={Select}
                 name="roleIds"
                 multiple
+                value={values.roleIds} // Ensure selected roles are displayed 
+                onChange={(event) => setFieldValue('roleIds', event.target.value)}  // Update selected roles
               >
                 {roles.map((role) => (
                   <MenuItem key={role.id} value={role.id}>
@@ -159,7 +160,7 @@ function EditArtistModal({ id, onClose }) {
                 htmlFor="bio"
                 className="block text-gray-700 font-bold mb-2"
               >
-                Bio
+                Bio:
               </label>
               <Field
                 as="textarea"
@@ -174,107 +175,33 @@ function EditArtistModal({ id, onClose }) {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-            <div className="mb-4">
+
+            {/* Social Links */}
+            {['twitter_link', 'instagram_link', 'facebook_link', 'soundcloud_link', 'bandcamp_link', 'youtube_link', 'spotify_link'].map((link, index) => (
+                          <div className="mb-4 flex" key={index}>
               <label
-                htmlFor="twitter_link"
+                htmlFor="link"
                 className="block text-gray-700 font-bold mb-2"
               >
-                Twitter Link
+                {t(`social_links.${link}`)}:
               </label>
               <Field
                 type="text"
-                id="twitter_link"
-                name="twitter_link"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Twitter Link"
-              />
+                id={link}
+                name={link}
+                className="shadow appearance-none border ms-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder={`${link.replace('_', ' ')} Link`}
+                />
               <ErrorMessage
-                name="twitter_link"
+                name={link}
                 component="div"
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="instagram_link"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                Instagram Link
-              </label>
-              <Field
-                type="text"
-                id="instagram_link"
-                name="instagram_link"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Instagram Link"
-              />
-              <ErrorMessage
-                name="instagram_link"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="facebook_link"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                Facebook Link
-              </label>
-              <Field
-                type="text"
-                id="facebook_link"
-                name="facebook_link"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Facebook Link"
-              />
-              <ErrorMessage
-                name="facebook_link"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="soundcloud_link"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                SoundCloud Link
-              </label>
-              <Field
-                type="text"
-                id="soundcloud_link"
-                name="soundcloud_link"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="SoundCloud Link"
-              />
-              <ErrorMessage
-                name="soundcloud_link"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="bandcamp_link"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                Bandcamp Link
-              </label>
-              <Field
-                type="text"
-                id="bandcamp_link"
-                name="bandcamp_link"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Bandcamp Link"
-              />
-              <ErrorMessage
-                name="bandcamp_link"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
-            <div className="flex items-center justify-around sm:justify-between w-full flex-wrap">
+            ))}
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-around sm:justify-between lg:justify-evenly mx-auto w-[50%] flex-wrap">
               <Link
                 type="button"
                 onClick={onClose} // Cambia a navigate para cerrar el modal

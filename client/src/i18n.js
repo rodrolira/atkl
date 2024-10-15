@@ -52,6 +52,16 @@ i18n.use(initReactI18next).init({
           spanish: 'ES',
           language: 'EN',
         },
+        social_links: {
+          bandcamp_link: 'Bandcamp',
+          facebook_link: 'Facebook',
+          instagram_link: 'Instagram',
+          soundcloud_link: 'Soundcloud',
+          twitter_link: 'Twitter',
+          youtube_link: 'Youtube',
+          spotify_link: 'Spotify',
+          beatport_link: 'Beatport',
+        },
         navbar: {
           home: 'Home',
           artists: 'Artists',
@@ -222,6 +232,16 @@ i18n.use(initReactI18next).init({
           english: 'EN',
           spanish: 'ES',
           language: 'ES',
+        },
+        social_links: {
+          bandcamp_link: 'Bandcamp',
+          facebook_link: 'Facebook',
+          instagram_link: 'Instagram',
+          soundcloud_link: 'Soundcloud',
+          twitter_link: 'Twitter',
+          youtube_link: 'Youtube',
+          spotify_link: 'Spotify',
+          beatport_link: 'Beatport',
         },
         navbar: {
           home: 'Inicio',

@@ -46,6 +46,7 @@ const ArtistPage: React.FC = () => {
       <Navbar />
       <div className="inline-block w-full mt-24 sm:mt-32">
         <ArtistName
+          id={id}
           name={artist.artist_name}
           adminAuthenticated={adminAuthenticated}
           openEditModal={openEditModal}
