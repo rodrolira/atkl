@@ -2,6 +2,8 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 i18n.use(initReactI18next).init({
+  lng: 'en', // idioma por defecto
+  fallbackLng: 'en',
   resources: {
     en: {
       translation: {
@@ -13,6 +15,10 @@ i18n.use(initReactI18next).init({
         email: 'Email',
         description: 'Description (Optional)',
         submit: 'Submit',
+        admin_dashboard: 'Admin Dashboard',
+
+        biography: 'Biography',
+        actions: 'Actions',
         subscribe_message:
           'Subscribe to receive the latest releases for free by email',
         description_optional: 'Description (Optional)',
@@ -20,7 +26,12 @@ i18n.use(initReactI18next).init({
         send_demo: 'Send Demo',
         upload_cover_image: 'Upload Cover Image',
         upload_profile_image: 'Upload Profile Image',
+        artists: 'Artists',
+        artist: 'Artist',
         artistName: 'Artist Name',
+        releaseName: 'Release Name',
+        releaseDate: 'Release Date',
+        roles: 'Roles',
         image: 'Image',
         bandcamp_link: 'Bandcamp Link',
         facebook_link: 'Facebook Link',
@@ -47,6 +58,25 @@ i18n.use(initReactI18next).init({
         sign: 'Sign in to your',
         account: 'Account',
         checkReleases: 'Check out the latest label releases.',
+        admin: {
+          dashboard: 'Dashboard',
+          admin_dashboard: 'Admin Dashboard',
+          users: 'Users',
+          releases: 'Releases',
+          manage_users: 'Manage Users',
+          view_users: 'View Users',
+          manage_artists: 'Manage Artists',
+          add_user: 'Add User',
+          create_user: 'Create User',
+          edit_user: 'Edit User',
+          delete_user: 'Delete User',
+          manage_releases: 'Manage Releases',
+          add_release: 'Add Release',
+          edit_release: 'Edit Release',
+          delete_release: 'Delete Release',
+          view_releases: 'View Releases',
+          add_artist: 'Add Artist',
+        },
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
@@ -172,6 +202,11 @@ i18n.use(initReactI18next).init({
             producer: 'Producer',
           },
         },
+        availability: {
+          no_artists: 'No artists available',
+          no_releases: 'No releases available',
+          no_info: 'No information available',
+        },
         artistReleases: {
           noReleases: 'No releases available',
         },
@@ -193,6 +228,8 @@ i18n.use(initReactI18next).init({
         email: 'Correo electrónico',
         description: 'Descripción (Opcional)',
         submit: 'Enviar',
+        biography: 'Biografia',
+        actions: 'Acciones',
         subscribe_message:
           'Suscríbete para recibir las últimas actualizaciones gratis por correo electrónico',
         description_optional: 'Descripción (Opcional)',
@@ -200,7 +237,12 @@ i18n.use(initReactI18next).init({
         send_demo: 'Enviar Demo',
         upload_cover_image: 'Subir Portada',
         upload_profile_image: 'Subir Imagen de Perfil',
+        artists: 'Artistas',
+        artist: 'Artista',
         artistName: 'Nombre del Artista',
+        releaseName: 'Nombre del Lanzamiento',
+        releaseDate: 'Fecha de Lanzamiento',
+        roles: 'Roles',
         image: 'Imagen',
         bandcamp_link: 'Enlace de Bandcamp',
         facebook_link: 'Enlace de Facebook',
@@ -216,6 +258,9 @@ i18n.use(initReactI18next).init({
         add_artist: 'Agregar Artista',
         edit_artist: 'Editar Artista',
         delete_artist: 'Eliminar Artista',
+        view_artists: 'Ver Artistas',
+        releases: 'Lanzamientos',
+        view_releases: 'Ver Lanzamientos',
         add_release: 'Agregar Lanzamiento',
         edit_release: 'Editar Lanzamiento',
         delete_release: 'Eliminar Lanzamiento',
@@ -228,6 +273,27 @@ i18n.use(initReactI18next).init({
         sign: 'Inicia sesión en tu',
         account: 'Cuenta',
         checkReleases: 'Revisa los nuevos lanzamientos del sello',
+        admin: {
+          admin_dashboard: 'Panel de Administración',
+          artists: 'Artistas',
+          releases: 'Lanzamientos',
+          manage_users: 'Administrar Usuarios',
+          view_users: 'Ver Usuarios',
+          add_user: 'Agregar Usuario',
+          create_user: 'Crear Usuario',
+          add_release: 'Agregar Lanzamiento',
+          edit_user: 'Editar Usuario',
+          delete_user: 'Eliminar Usuario',
+          view_roles: 'Ver Roles',
+          add_role: 'Agregar Rol',
+          edit_role: 'Editar Rol',
+          delete_role: 'Eliminar Rol',
+          view_artists: 'Ver Artistas',
+          view_releases: 'Ver Lanzamientos',
+          view_labels: 'Ver Sello',
+          view_admins: 'Ver Administradores',
+
+        },
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
@@ -354,16 +420,23 @@ i18n.use(initReactI18next).init({
           },
           selectRole: 'Seleccionar Rol',
         },
+        availability: {
+          no_artists: 'No hay artistas disponibles',
+          no_releases: 'No hay lanzamientos disponibles',
+          no_info: 'No hay información disponible',
+        },
         artistReleases: {
           noReleases: 'No hay lanzamientos disponibles',
         },
       },
     },
   },
-  lng: 'en', // idioma por defecto
-  fallbackLng: 'en',
   interpolation: {
     escapeValue: false, // React ya se encarga de esto
+  },
+  detection: {
+    order: ['localStorage', 'navigator', 'htmlTag'],
+    caches: ['localStorage'],
   },
 });
 

@@ -82,7 +82,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
     }
   };
 
-  const signin = async (credentials: any) => {
+  const signin = async (credentials: { username: string; password: string }) => {
     try {
       const response = await loginAdminRequest(credentials); // Llama a la función de inicio de sesión
       // Verificar que response.data contiene el token y los datos del admin

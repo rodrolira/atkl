@@ -2,53 +2,76 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Button from '@/components/Button/Button';
 import FileUpload from '@/components/Upload/FileUpload';
-
 import { getArtistRequest, getRolesRequest } from '@/app/api/artists';
 import { useArtists } from '@/contexts/ArtistContext';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Title from '../../atoms/Title/Title';
 
+interface Role {
+  id: number;
+  label: string;
+}
+
+interface Artist {
+  artist_name: string;
+  image: File | null;
+  twitter_link: string;
+  instagram_link: string;
+  facebook_link: string;
+  soundcloud_link: string;
+  bandcamp_link: string;
+  youtube_link: string;
+  spotify_link: string;
+  roleIds: number[];
+  bio: string;
+}
+
+interface EditArtistModalProps {
+  id: string;
+  onClose: () => void;
+}
+
 const validationSchema = Yup.object().shape({
-  artist_name: Yup.string(),
+  artist_name: Yup.string().required('Artist name is required'),
   image: Yup.mixed(),
 });
 
-function EditArtistModal({ id, onClose }) {
+const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<Artist>({
     artist_name: '',
-    image: '',
+    image: null,
     twitter_link: '',
     instagram_link: '',
     facebook_link: '',
     soundcloud_link: '',
     bandcamp_link: '',
-    roleIds: [], // Initialize as an empty array for multiple selection
+    youtube_link: '',
+    spotify_link: '',
+    roleIds: [],
     bio: '',
   });
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const { updateArtist, deleteArtist } = useArtists();
 
   useEffect(() => {
-    const fetchArtist = async (artist_id) => {
+    const fetchArtist = async (artist_id: string) => {
       try {
         const response = await getArtistRequest(artist_id);
         console.log('Artist:', response.data);
         const roles = response.data?.roles ?? [];
         setInitialValues({
           ...response.data,
-          roleIds: roles.map((role) => role.id),
-        })
+          roleIds: roles.map((role: Role) => role.id),
+        });
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
     };
-  
-  
+
     const fetchRoles = async () => {
       try {
         const response = await getRolesRequest();
@@ -60,21 +83,24 @@ function EditArtistModal({ id, onClose }) {
       }
     };
 
-    fetchArtist(id);  
+    fetchArtist(id);
     fetchRoles();
   }, [id]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values: Artist, { setSubmitting }: any) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
-      if (key === 'roleIds') {
-        formData.append(key, values[key].join(','));
-      } else if (key === 'image' && values[key]) {
-        formData.append(key, values[key]);
-      } else {
-        formData.append(key, values[key]);
+      if (key in values) {
+        if (key === 'roleIds') {
+          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
+        } else if (key === 'image' && values[key as keyof Artist]) {
+          formData.append(key, values[key as keyof Artist] as File);
+        } else {
+          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
+        }
       }
     });
+
     try {
       await updateArtist(id, formData);
       onClose();
@@ -94,8 +120,6 @@ function EditArtistModal({ id, onClose }) {
       }
     }
   };
-
-
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -132,21 +156,24 @@ function EditArtistModal({ id, onClose }) {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
+
             <div className="mb-4">
-              <FileUpload  setFieldValue={setFieldValue} name="image"/>
+              <FileUpload setFieldValue={setFieldValue} name="image" />
             </div>
 
             <FormControl className="!mb-4 !block" fullWidth variant="outlined">
               <InputLabel className="!block !text-gray-700 !font-bold !mb-2">
-                {t('addArtist.selectRole')}
+                {t('addArtist.selectRole')}:
               </InputLabel>
               <Field
                 className="!shadow !appearance-none !border !rounded !w-full !text-gray-700 !leading-tight !focus:!outline-none !focus:!shadow-outline"
                 as={Select}
                 name="roleIds"
                 multiple
-                value={values.roleIds} // Ensure selected roles are displayed 
-                onChange={(event) => setFieldValue('roleIds', event.target.value)}  // Update selected roles
+                value={values.roleIds}
+                onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+                  setFieldValue('roleIds', event.target.value as number[])
+                }
               >
                 {roles.map((role) => (
                   <MenuItem key={role.id} value={role.id}>
@@ -155,11 +182,9 @@ function EditArtistModal({ id, onClose }) {
                 ))}
               </Field>
             </FormControl>
+
             <div className="mb-4">
-              <label
-                htmlFor="bio"
-                className="block text-gray-700 font-bold mb-2"
-              >
+              <label htmlFor="bio" className="block text-gray-700 font-bold mb-2">
                 Bio:
               </label>
               <Field
@@ -177,38 +202,46 @@ function EditArtistModal({ id, onClose }) {
             </div>
 
             {/* Social Links */}
-            {['twitter_link', 'instagram_link', 'facebook_link', 'soundcloud_link', 'bandcamp_link', 'youtube_link', 'spotify_link'].map((link, index) => (
-                          <div className="mb-4 flex" key={index}>
-              <label
-                htmlFor="link"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                {t(`social_links.${link}`)}:
-              </label>
-              <Field
-                type="text"
-                id={link}
-                name={link}
-                className="shadow appearance-none border ms-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder={`${link.replace('_', ' ')} Link`}
+            {[
+              'twitter_link',
+              'instagram_link',
+              'facebook_link',
+              'soundcloud_link',
+              'bandcamp_link',
+              'youtube_link',
+              'spotify_link',
+            ].map((link) => (
+              <div className="mb-4 flex" key={link}>
+                <label
+                  htmlFor={link}
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  {t(`social_links.${link}`)}:
+                </label>
+                <Field
+                  type="text"
+                  id={link}
+                  name={link}
+                  className="shadow appearance-none border ms-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder={`${link.replace('_', ' ')} Link`}
                 />
-              <ErrorMessage
-                name={link}
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
+                <ErrorMessage
+                  name={link}
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
             ))}
 
             {/* Action Buttons */}
             <div className="flex items-center justify-around sm:justify-between lg:justify-evenly mx-auto w-[50%] flex-wrap">
-              <Link
+              <button
                 type="button"
-                onClick={onClose} // Cambia a navigate para cerrar el modal
+                onClick={onClose}
                 className="btn btn-cancel h-10 mt-2"
               >
                 Cancel
-              </Link>
+              </button>
               <button
                 type="submit"
                 className="btn btn-save h-10 mt-2"
@@ -229,6 +262,6 @@ function EditArtistModal({ id, onClose }) {
       </Formik>
     </div>
   );
-}
+};
 
 export default EditArtistModal;

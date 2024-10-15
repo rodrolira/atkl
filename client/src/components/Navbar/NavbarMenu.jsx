@@ -16,7 +16,7 @@ import {
 } from '../Button/CircularButtons';
 import AddTeamMemberButton from '@/components/Button/AddTeamMemberButton';
 
-function NavbarMenu() {
+function NavbarMenu( { isDialogOpen, handleClose, handleArtistAdded } ) {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ function NavbarMenu() {
             {adminAuthenticated && (
               <>
                 <li className="mx-1">
-                  <AddArtistButton className="!capitalize">
+                  <AddArtistButton className="!capitalize" openPopup={isDialogOpen} closePopup={handleClose} onArtistAdded={handleArtistAdded}>
                     {t('add_artist')}
                   </AddArtistButton>
                 </li>
@@ -45,7 +45,7 @@ function NavbarMenu() {
                 </li>
                 <li className="mx-1">
                   <Button
-                    href="/admin"
+                    to="/admin"
                     className="mx-auto flex justify-center"
                     colorClass="bg-[#22581d] text-white"
                   >

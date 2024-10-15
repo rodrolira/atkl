@@ -6,6 +6,10 @@ import { useTranslation } from 'react-i18next';
 const AddArtistButton = () => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleOpen = () => setIsDialogOpen(true);
+  const handleClose = () => setIsDialogOpen(false);
 
   const functionOpenPopup = () => {
     setOpen(true);
@@ -18,7 +22,7 @@ const AddArtistButton = () => {
     <>
       {/* Botón para abrir el popup */}
       <Button
-        onClick={functionOpenPopup}
+        onClick={handleOpen}
         fontWeight="font-bold"
         colorClass="bg-[#24db13] text-[#051403]"
       >
@@ -26,13 +30,15 @@ const AddArtistButton = () => {
       </Button>
 
       {/* Formulario para agregar artista */}
+      {isDialogOpen && (
       <AddArtistForm
-        openPopup={open} // Estado que controla si está abierto o no
-        closePopup={closePopup} // Función para cerrar el formulario
+        openPopup={isDialogOpen} // Estado que controla si está abierto o no
+        closePopup={handleClose} // Función para cerrar el formulario
         onArtistAdded={(newArtist) => {
           console.log('Nuevo artista agregado:', newArtist);
         }}
       />
+      )}
     </>
   );
 };

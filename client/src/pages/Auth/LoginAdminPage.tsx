@@ -1,7 +1,8 @@
 import AdminLoginForm from '@/components/Admin/AdminLoginForm';
 import Navbar from '@/components/Navbar/Navbar';
+import React from 'react';
 
-function LoginAdminPage() {
+const LoginAdminPage: React.FC = () => {
   return (
     <div>
       <Navbar />
