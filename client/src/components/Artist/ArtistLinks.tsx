@@ -10,7 +10,6 @@ import {
   faSpotify,
 } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { Artist } from '@/types/interfaces/Artist';
 

@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import ReleaseCard from '@/components/Release/ReleaseCard';
 import { Artist } from '@/types/interfaces/Artist';
-
-interface Release {
-  id: number; // Add other properties of release if necessary
-  // Add other properties that are relevant for the release
-}
+import Release from '../../types/interfaces/Release';
 
 
 

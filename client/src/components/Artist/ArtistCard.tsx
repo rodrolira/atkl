@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Modal from '@/components/Modal/Modal';
-import EditArtistModal from './EditArtist/EditArtistModal';
+import EditArtistModal from './EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
 import { getArtistRequest } from '@/app/api/artists';
@@ -12,12 +12,6 @@ import { Button } from 'react-bootstrap';
 import BaseCard from '@/components/Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
-
-interface Role {
-  id: number;
-  label: string;
-}
-
 
 
 interface ArtistCardProps {
