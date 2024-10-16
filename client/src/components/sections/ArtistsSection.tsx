@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-import AddArtistForm from '@/components/Artist/AddArtist/AddArtistForm';
+import AddArtistForm from '@/components/Artist/AddArtistForm';
 import ArtistList from '@/components/Artist/ArtistList';
 import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
