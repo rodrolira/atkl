@@ -5,23 +5,9 @@ import {
   verifyAdminTokenRequest,
   logoutAdminRequest,
 } from '../app/api/admin';
+import { Admin, AdminAuthContextType } from '@/types/interfaces/Admin';
 
-// Definimos las interfaces necesarias
-interface Admin {
-  username: string;
-  password: string
-  // Agrega otros campos según lo necesites
-}
 
-interface AdminAuthContextType {
-  signup: (user: Omit<Admin, 'id'>) => Promise<void>;
-  signout: () => Promise<void>;
-  signin: (credentials: any) => Promise<void>; // Agregado
-  loading: boolean;
-  user: Admin | null;
-  isAuthenticated: boolean;
-  errors: string[];
-}
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
