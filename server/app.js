@@ -24,10 +24,11 @@ const app = express()
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'))
 
-// app.use(
+//app.use(
 //   cors({
-//       origin: 'https://atkl-react2-fzwl.vercel.app',
+//       origin: 'https://atkl-records-web.vercel.app',
 //     credentials: true,
+//     allowedHeaders: ['Content-Type', 'Authorization'],
 //     exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
 //   })
 // )
@@ -39,7 +40,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 }
 app.use(
-  cors( corsOptions )
+  cors(corsOptions)
 )
 app.use(morgan('dev'))
 app.use(express.json())
@@ -53,7 +54,7 @@ app.use('/api', adminRoutes)
 app.use('/api', contactFormRoutes)
 app.use('/api', genreRoutes)
 app.use('/api', rolesRouter)
-  app.use('/api', discographyRoutes)
+app.use('/api', discographyRoutes)
 
 // Middleware para manejo de errores
 app.use((err, req, res, next) => {
