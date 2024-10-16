@@ -1,15 +1,21 @@
-// NavItem.js
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-const NavItem = ({ to, text, isActive, onClick }) => {
+interface NavItemProps {
+  to: string;
+  text: string;
+  isActive: boolean;
+  onClick: (id: string) => void;
+}
+
+const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevents the default anchor click behavior
 
     if (isHomePage) {

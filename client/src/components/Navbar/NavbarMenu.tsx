@@ -8,7 +8,6 @@ import Button from '@/components/Button/Button';
 import AddArtistButton from '@/components/Button/AddArtistButton';
 import AddReleaseButton from '@/components/Button/AddReleaseButton';
 import AdminLogoutButton from '@/components/Button/AdminLogoutButton';
-
 import {
   AddArtistButton as AddArtistButtonMobile,
   AddReleaseButton as AddReleaseButtonMobile,
@@ -16,7 +15,13 @@ import {
 } from '../Button/CircularButtons';
 import AddTeamMemberButton from '@/components/Button/AddTeamMemberButton';
 
-function NavbarMenu( { isDialogOpen, handleClose, handleArtistAdded } ) {
+interface NavbarMenuProps {
+  isDialogOpen: boolean;
+  handleClose: () => void;
+  handleArtistAdded: () => void;
+}
+
+const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, handleArtistAdded }) => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { t } = useTranslation();
 
@@ -36,7 +41,7 @@ function NavbarMenu( { isDialogOpen, handleClose, handleArtistAdded } ) {
                   </AddArtistButton>
                 </li>
                 <li className="mx-1">
-                  <AddReleaseButton className="btn-add">
+                  <AddReleaseButton className="btn-add" openPopup={isDialogOpen} closePopup={handleClose} onReleaseAdded={() => {}}>
                     {t('add_release')}
                   </AddReleaseButton>
                 </li>
@@ -77,6 +82,6 @@ function NavbarMenu( { isDialogOpen, handleClose, handleArtistAdded } ) {
       <NavbarLinks />
     </div>
   );
-}
+};
 
 export default NavbarMenu;
