@@ -1,24 +1,10 @@
+// ReleasesTable.tsx
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import { Artist } from '@/types/interfaces/Artist';
-
-// Define the types for the artist and release
-
-interface Release {
-  id: string;
-  title: string;
-  artists: Artist[];
-  release_date: string;
-}
-
-// Define the props for the ReleasesTable component
-interface ReleasesTableProps {
-  releases: Release[];
-  onEdit: (release: Release) => void;
-  onDelete: (releaseId: string) => void;
-}
+import Release from '@/types/interfaces/Release';
+import { ReleasesTableProps } from '@/types/props/Admin/ReleasesTableProps';
 
 const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelete }) => {
   const { t } = useTranslation();

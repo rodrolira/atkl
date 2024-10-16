@@ -15,13 +15,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
 import { useTranslation } from 'react-i18next';
+import { FormValues } from '@/types/interfaces/Form';
 
-// Define the shape of the form values
-interface FormValues {
-  username: string;
-  password: string;
-  rememberMe: boolean;
-}
 
 const AdminSignin: React.FC = () => {
   const { t } = useTranslation();
@@ -91,7 +86,7 @@ const AdminSignin: React.FC = () => {
                   justifyContent: 'center',
                 }}
               >
-                <Logo isAdminSignin />
+                <Logo alt="Company Logo" isAdminSignin />
               </Box>
               <Typography color="white" fontSize="24px" fontWeight="bold" mt={7} mb={3}>
                 {t('login.loginAdmin')}

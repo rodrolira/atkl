@@ -1,3 +1,4 @@
+// AdminDashboard.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import Navbar from '@/components/Navbar/Navbar';
@@ -6,29 +7,16 @@ import ContentSection from '@/components/Admin/ContentSection';
 import ArtistsTable from '@/components/Admin/ArtistsTable';
 import ReleasesTable from '@/components/Admin/ReleasesTable';
 import CreateUserForm from '@/components/Admin/CreateUserForm';
-import EditArtistModal from '@/components/Artist/EditArtist/EditArtistModal';
+import EditArtistModal from '@/components/Artist/EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { deleteArtistRequest } from '@/app/api/artists'; // Importar función de eliminación
 import { useTranslation } from 'react-i18next';
-import { Add } from '@mui/icons-material';
-import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
 import Modal from '@/components/Modal/Modal';
 import { deleteReleaseRequest } from '@/app/api/releases';
+import { Artist } from '@/types/interfaces/Artist';
+import Release from '@/types/interfaces/Release';
 
-// Define types for artist, release, and other state-related variables
-export interface Artist {
-  id: number;
-  email: string;
-  artist_name: string;
-  [key: string]: any; // Include any other artist-related fields
-}
-
-interface Release {
-  id: number;
-  title: string;
-  [key: string]: any; // Include any other release-related fields
-}
 
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -43,6 +31,7 @@ const AdminDashboard: React.FC = () => {
   const { t } = useTranslation();
   const { artists, fetchArtists, setArtists } = useArtists();
   const { releases, fetchReleases, setReleases } = useReleases();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +59,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleDeleteRelease = async (releaseId: string) => {
+  const handleDeleteRelease = async (releaseId: number) => {
     // Implement the logic to delete a release by its ID
     try {
       // Call the API to delete the release
@@ -105,7 +94,7 @@ const AdminDashboard: React.FC = () => {
     switch (currentView) {
       case 'view-users':
         return (
-          <ContentSection title={t('admin.artists')}>
+          <ContentSection title={t('artists')}>
             <ArtistsTable
               artists={artists}
               onEdit={handleEditArtist}

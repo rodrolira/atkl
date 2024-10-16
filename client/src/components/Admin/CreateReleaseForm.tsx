@@ -1,13 +1,10 @@
+import { ReleaseFormData } from '@/types/interfaces/Form';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
-interface FormData {
-  release_name: string;
-  artist_name: string;
-  release_date: string;
-}
+
 
 const CreateReleaseForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ReleaseFormData>({
     release_name: '',
     artist_name: '',
     release_date: '',

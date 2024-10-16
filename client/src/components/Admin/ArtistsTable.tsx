@@ -2,21 +2,9 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-  type Artist = {
-  id: number;
-  artist_name: string;
-  email: string;
-  Roles?: { label: string }[] | undefined; // Adjust this to match your role structure
-}
+import { ArtistsTableProps } from '@/types/props/Admin/ArtistsTableProps';
 
-interface ArtistsTableProps {
-  artists: Artist[]; // Expecting an array of artists
-  onEdit: (artist: Artist) => void;
-  onDelete: (id: number) => void;
-  selectedArtists: Artist[];
-  setSelectedArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
-  isDeleteMode: boolean;
-}
+
 
 const ArtistsTable: React.FC<ArtistsTableProps> = ({
   artists = [],
