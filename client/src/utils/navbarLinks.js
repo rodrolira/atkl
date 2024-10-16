@@ -3,6 +3,7 @@ const links = [
     to: '/',
     id: 'home',
     authRequired: false,
+    
   },
   {
     to: '/artists',

@@ -18,8 +18,8 @@ const AdminLoginForm: React.FC = () => {
               lg: '60vw',
               xl: '60vw',
             },
-            margin: '0 auto',
-            marginTop: 10,
+            margin: ' auto',
+            marginTop: 15,
           }}
         >
           {/* GRID SYSTEM */}

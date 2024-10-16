@@ -1,16 +1,13 @@
+import { UserFormData } from '@/types/interfaces/Form';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface FormData {
-  artist_name: string;
-  email: string;
-  password: string;
-}
+
 
 const CreateUserForm: React.FC = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<UserFormData>({
     artist_name: '',
     email: '',
     password: '',
