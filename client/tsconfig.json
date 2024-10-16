@@ -3,7 +3,10 @@
     "typeRoots": [
       "node_modules/@types",
       "./typings",
-      "/client/src/app/api"
+      "/client/src/app/api",
+      "/client/src/components",
+      "/client/src/types/hooks",
+      "/client/src/types",
   ],
     "target": "ESNext",               // o "ES2020" si prefieres
     "module": "ESNext",               // Esto permite usar 'import.meta'
@@ -26,7 +29,12 @@
     "src/**/*",
     "typings/declarations.d.ts", // Asegúrate de incluir esto
     "node_modules/**/*",
-    "client/src/app/api/**/*"
+    "client/src/app/api/**/*",
+    "client/src/app/**/*",
+    "client/src/components/**/*",
+    "client/src/hooks/**/*",
+    "client/src/utils/**/*",
+    "client/src/app/queries/**/*",
   ],
   "exclude": [
     "node_modules",
