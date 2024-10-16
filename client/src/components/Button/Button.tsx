@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import './Button.css';
 import { Link } from 'react-router-dom';
 
-interface ButtonProps {
-  to?: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  children?: React.ReactNode;
-  text?: string;
-  colorClass?: string;
-  fontWeight?: string;
-  type?: 'button' | 'submit' | 'reset' | undefined;
-  className?: string;
-  disabled?: boolean;
+class ButtonProps {
+  to?: string
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  children?: React.ReactNode
+  text?: string
+  colorClass?: string
+  fontWeight?: string
+  type?: 'button' | 'submit' | 'reset' | undefined
+  variant?: 'contained' | 'outlined' | 'text'
+  className?: string
+  disabled?: boolean
 }
+
 
 const Button = ({ to, onClick, children, text, colorClass, fontWeight }: ButtonProps) => (
   <div className="mx-auto flex justify-center">
@@ -46,6 +48,7 @@ Button.propTypes = {
   fontWeight: PropTypes.string,
   type: PropTypes.string,
   disabled: PropTypes.bool,
+  variant: PropTypes.string,
 };
 
 export default Button;
