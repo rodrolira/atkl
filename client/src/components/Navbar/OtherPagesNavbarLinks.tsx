@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import NavItem from './NavItem';
 import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // Importamos useTranslation
+import { useTranslation } from 'react-i18next';
 import links from '@/utils/navbarLinks';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
-const OtherPagesNavbarLinks = () => {
-  const { t } = useTranslation(); // Usamos el hook de traducción
-  const [isNavbarOpen, setNavbarOpen] = useState(false);
+const OtherPagesNavbarLinks: React.FC = () => {
+  const { t } = useTranslation();
+  const [isNavbarOpen, setNavbarOpen] = useState<boolean>(false);
   const location = useLocation();
-  const [activeItem, setActiveItem] = useState(location.pathname);
+  const [activeItem, setActiveItem] = useState<string>(location.pathname);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
-  const handleItemClick = (to) => {
+  const handleItemClick = (to: string) => {
     setNavbarOpen(false);
-    setActiveItem(to); // Actualiza el estado activo con la nueva ruta
+    setActiveItem(to);
 
     if (to === '/') {
       // Scroll to top for home
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // Scroll to section
-      const sectionId = to.replace('/', ''); // Convert the path to an ID
+      const sectionId = to.replace('/', '');
       const section = document.getElementById(sectionId);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
@@ -46,10 +46,10 @@ const OtherPagesNavbarLinks = () => {
           >
             <div className="max-w-screen-xl mx-auto w-full">
               <div className="flex items-center justify-center w-full">
-                <ul className="items-center md:bg-transparent bg-gray-700 bg-opacity-75 font-semibold flex flex-col md:p-0 w-full sm:border md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700">
+                <ul className="items-center justify-center text-lg md:bg-transparent bg-gray-700 bg-opacity-75 font-semibold flex flex-col md:p-0 w-full sm:border md:space-x-6 space-x-3 sm:space-x-4 lg:space-x-8 xl:space-x-10  rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700">
                   {links.map((link) => {
                     const showLink = link.authRequired
-                      ? adminAuthenticated // Mostrar el enlace si el administrador está autenticado
+                      ? adminAuthenticated // Show the link if admin is authenticated
                       : true;
 
                     return (
@@ -57,8 +57,7 @@ const OtherPagesNavbarLinks = () => {
                         <NavItem
                           key={link.to}
                           to={link.to}
-                          href={link.to}
-                          text={t(`navbar.${link.id}`)} // Usamos la función t para traducir los textos
+                          text={t(`navbar.${link.id}`)} // Translate the text
                           isActive={
                             activeItem === link.to ||
                             (link.to === '/' && activeItem === '')

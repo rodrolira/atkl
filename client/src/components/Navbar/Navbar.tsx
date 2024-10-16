@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Menú de navegación (para pantallas grandes) */}
-        <NavbarMenu />
+        <NavbarMenu isDialogOpen={false} handleClose={() => {}} handleArtistAdded={() => {}} />
       </div>
     </nav>
   );
