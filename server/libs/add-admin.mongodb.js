@@ -6,6 +6,6 @@ use('test')
 
 // Create a new document in the collection.
 db.getCollection('admins').insertOne({
-  username: 'atkl',
-  password: 'atkl'
+  username: '',
+  password: ''
 })
