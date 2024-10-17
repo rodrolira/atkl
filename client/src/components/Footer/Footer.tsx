@@ -20,7 +20,7 @@ const SITEMAP: Record<string, { title: string; links: string[] }[]> = {
     },
     {
       title: 'Services',
-      links: ['Booking', 'Mastering', 'Free Releases', 'Affiliate Program'],
+      links: ['Booking', 'Mastering', 'Free Releases'],
     },
     {
       title: 'Products',
@@ -42,7 +42,6 @@ const SITEMAP: Record<string, { title: string; links: string[] }[]> = {
         'Booking',
         'Mastering',
         'Lanzamientos gratuitos',
-        'Programa de afiliados',
       ],
     },
     {

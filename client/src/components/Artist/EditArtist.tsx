@@ -8,6 +8,7 @@ import FileUpload from '@/components/Upload/FileUpload';
 import { getArtistRequest } from '../../app/api/artists';
 import { useArtists } from '../../contexts/ArtistContext';
 import { ArtistFormValues } from './ArtistFormInterfaces';
+import FormData from 'form-data';
 
 const validationSchema = Yup.object().shape({
   artistName: Yup.string().required('Artist name is required'),
@@ -29,6 +30,7 @@ const validationSchema = Yup.object().shape({
   apple_music_link: Yup.string(),
   beatport_link: Yup.string(),
 });
+
 
 const EditArtist: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -68,13 +70,15 @@ const EditArtist: React.FC = () => {
 
   const handleSubmit = async (values: ArtistFormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     const formData = new FormData();
+    const jsonData = await FormData.parse(formData);
+    console.log(jsonData);
     for (const key in values) {
       if (key === 'role') {
         formData.append('role', values.role.join(','));
       } else {
         const value = values[key as keyof ArtistFormValues];
         if (Array.isArray(value)) {
-        formData.append(key, value.join(','));
+          formData.append(key, value.join(','));
         } else if ((value as any) instanceof Blob) {
           formData.append(key, value);
         } else {
@@ -83,6 +87,31 @@ const EditArtist: React.FC = () => {
       }
     }
 
+
+    // const artistData = {
+    //   id: formData.get('id'),
+    //   artist_name: formData.get('artist_name'),
+    //   email: formData.get('email'),
+    //   username: formData.get('username'),
+    //   password: formData.get('password'),
+    //   bio: formData.get('bio'),
+    //   image: formData.get('image'),
+    //   Roles: formData.get('role'),
+    //   twitter_link: formData.get('twitter_link'),
+    //   instagram_link: formData.get('instagram_link'),
+    //   facebook_link: formData.get('facebook_link'),
+    //   soundcloud_link: formData.get('soundcloud_link'),
+    //   bandcamp_link: formData.get('bandcamp_link'),
+    //   youtube_link: formData.get('youtube_link'),
+    //   spotify_link: formData.get('spotify_link'),
+    //   apple_music_link: formData.get('apple_music_link'),
+    //   beatport_link: formData.get('beatport_link'),
+    //   roleIds: formData.get('roleIds'),
+    // }
+
+    // const formData = new FormData();
+    // const jsonData = await FormData.parse(formData);
+    // console.log(jsonData);
     try {
       if (id) {
         await updateArtist(id, formData);

@@ -20,35 +20,36 @@ const NavbarMenuMobile: React.FC = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex items-center">
         {!adminAuthenticated && (
           <div className="hidden">
             <DemoButton />
           </div>
         )}
-        <div>
+        <div className="me-4">
           <LanguageMenu />
         </div>
-        <div>
+        <div className="me-1">
           <IconButton
             edge="start"
             color="inherit"
             aria-label="menu"
             onClick={toggleMenu}
-            className="menu-button"
+            className="menu-button !bg-green-900 hover:bg-green-500"
+            size="small"
           >
             {isOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
 
           {isOpen && (
-            <div className="menu-content">
+            <div className="menu-content border-l-2 border-t-2 border-b-2 border-green-600 rounded-bl-lg z-20 ">
               <ul className="menu-list">
-                {links.map((link) => (
+                {links.map((link, index) => (
                   <li key={link.id}>
-                    <a href={link.to} className="menu-link">
+                    <a href={link.to} className="menu-link ">
                       {t(`navbar.${link.id}`)}
                     </a>
-                    <hr />
+                    {index !== links.length - 1 && <hr className="border-t-2 border-green-600 overflow-hidden" />} {/* Solo agrega el <hr> si no es el último enlace */}
                   </li>
                 ))}
               </ul>

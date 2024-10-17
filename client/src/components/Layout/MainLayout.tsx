@@ -16,9 +16,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundColor: '#122e0f',
-          height: '180vh',
+          minHeight:{
+            xs: '100vh',
+          },
         }}
-        className="px-0 mx-auto relative overflow-hidden w-full flex h-screen"
+        className="px-0 mx-auto relative overflow-hidden w-full flex"
       >
         {children}
       </Box>

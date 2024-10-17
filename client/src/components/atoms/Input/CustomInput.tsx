@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { colors } from '@/themes/theme';
+import CustomTextInput from './CustomTextInput';
 
 // Define the props type for the CustomInput component
 interface CustomInputProps {
@@ -20,7 +21,9 @@ interface CustomInputProps {
   value?: string;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  
+  autoComplete?: boolean;
+  helperText?: string | React.ReactNode;
+
 }
 
 // eslint-disable-next-line react/display-name
@@ -33,8 +36,10 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
       type = 'text',
       id = '',
       name = '',
-      onChange = () => {},
-
+      autoComplete = false,
+      onChange = () => { },
+      onBlur = () => { },
+      value = '',
     },
     ref: Ref<HTMLInputElement>,
   ) => {
@@ -50,7 +55,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        mb={2}
+        mb={0.5}
       >
         <Box
           display="flex"
@@ -58,7 +63,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
           justifyContent="center"
           width="100%"
         >
-          <Typography color="white" pb={1} textAlign="center">
+          <Typography color="white" pb={0.3} textAlign="center">
             {label}
           </Typography>
           <InputBase
@@ -71,17 +76,28 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
             name={name}
             onChange={onChange}
             inputRef={ref}
-            sx={{
-              bgcolor: colors.input[500],
-              color: 'black',
-              p: 1,
-              paddingX: 2,
-              borderRadius: '5px',
+            onBlur={onBlur}
+            autoComplete={autoComplete ? 'on' : 'off'}
+            inputProps={{
+              autocomplete: { autoComplete: 'off' },
             }}
+            value={value}
+            sx={{
+              bgcolor: colors.green[800],
+              color: 'white',
+              p: 1,
+              paddingX: 1,
+              borderRadius: '5px',
+              border: '1px solid',
+              borderColor: colors.green[700],
+              height: '30px',
+            }
+            }
             endAdornment={
               type === 'password' &&
               isIconActive && (
-                <InputAdornment position="end">
+                <InputAdornment position="end"
+                >
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={togglePasswordVisibility}

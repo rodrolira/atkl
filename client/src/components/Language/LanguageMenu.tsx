@@ -3,7 +3,11 @@ import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
 
-const LanguageMenu: React.FC = () => {
+interface LanguageMenuProps {
+  className?: string;
+}
+
+const LanguageMenu: React.FC<LanguageMenuProps> = () => {
   const { t, i18n } = useTranslation();
   const { changeLanguage, language } = useLanguage();
   const [isMenuVisible, setMenuVisibility] = useState(false);
