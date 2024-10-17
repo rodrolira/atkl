@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
             <div key={index} className="w-full">
               <Typography
                 variant="h6"
-                color="#00af00"
+                color="#09B309"
                 className="mb-4 font-bold uppercase opacity-50"
               >
                 {t(title)}
