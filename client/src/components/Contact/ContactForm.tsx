@@ -94,7 +94,7 @@ const ContactForm: React.FC = () => {
           </div>
           <div className="flex items-center justify-between mx-auto">
             <button
-              className="bg-purple-500 hover:bg-purple-700 text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-purple-500 hover:bg-purple-700 text-gray-100 mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               {t('submit')}
