@@ -43,7 +43,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const handleDelete = async () => {
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
       try {
-        await deleteArtist(artist.id);
+        await deleteArtist(artist.id.toString());
         setArtists((prevArtists: Artist[]) => prevArtists.filter((a) => a.id !== currentArtist.id));
       } catch (error) {
         console.error('Error deleting artist:', error);
@@ -97,9 +97,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
         </div>
 
         <Link to={`/artists/${currentArtist.id}`} className="block">
-          <h5 className="text-2xl font-bold tracking-tight text-white text-center mb-2">
+          <h2 className=" font-bold tracking-tight text-white text-center mb-2">
             {currentArtist.artist_name}
-          </h5>
+          </h2>
         </Link>
 
         <div className="mb-2 text-xl font-bold tracking-tight text-white text-center">
