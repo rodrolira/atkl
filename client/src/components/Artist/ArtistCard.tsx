@@ -96,7 +96,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           )}
         </div>
 
-        <Link to={`/artists/${currentArtist.id}`} className="block relative">
+        <Link to={`/artists/${currentArtist.id}`} className="block">
           <h5 className="text-2xl font-bold tracking-tight text-white text-center mb-2">
             {currentArtist.artist_name}
           </h5>

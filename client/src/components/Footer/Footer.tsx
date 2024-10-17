@@ -67,7 +67,7 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
           {sitemap.map(({ title, links }, index) => (
             <div key={index} className="w-full">
               <Typography
-                variant="h6"
+                variant="h2"
                 color="#09B309"
                 className="mb-4 font-bold uppercase"
               >
