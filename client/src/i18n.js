@@ -16,7 +16,9 @@ i18n.use(initReactI18next).init({
         description: 'Description (Optional)',
         submit: 'Submit',
         admin_dashboard: 'Admin Dashboard',
-
+        error: 'Error',
+        page_not_found: 'Page Not Found',
+        back_home: 'Back to Home',
         biography: 'Biography',
         actions: 'Actions',
         subscribe_message:
@@ -141,6 +143,7 @@ i18n.use(initReactI18next).init({
           title: 'Contact Us',
         },
         footer: {
+          title: 'ATKL Records',
           label: 'Sitemap',
           aboutUs: 'About Us',
           artists: 'Artists',
@@ -230,6 +233,9 @@ i18n.use(initReactI18next).init({
         submit: 'Enviar',
         biography: 'Biografia',
         actions: 'Acciones',
+        error: 'Error',
+        page_not_found: 'Página No Encontrada',
+        back_home: 'Volver a Inicio',
         subscribe_message:
           'Suscríbete para recibir las últimas actualizaciones gratis por correo electrónico',
         description_optional: 'Descripción (Opcional)',
@@ -333,7 +339,7 @@ i18n.use(initReactI18next).init({
         },
         validation: {
           artistNameRequired: 'El nombre del artista es requerido',
-          usernameRequired: 'El nombre de usuario es requerido',
+          usernameRequired: 'El usuario es requerido',
           emailRequired: 'El correo electrónico es requerido',
           invalidEmail: 'Correo electrónico inválido',
           passwordRequired: 'La contraseña es requerida',
@@ -358,6 +364,7 @@ i18n.use(initReactI18next).init({
           title: 'Contáctanos',
         },
         footer: {
+          title: 'Sello Discográfico',
           label: 'Mapa del sitio',
           aboutUs: 'Sobre Nosotros',
           artists: 'Artistas',
@@ -391,17 +398,17 @@ i18n.use(initReactI18next).init({
           position: 'Posición',
         },
         login: {
-          loginAdmin: 'Inicia Sesión de Administrador',
-          username: 'Nombre de Usuario',
+          loginAdmin: 'Inicia Sesión',
+          username: 'Usuario',
           email: 'Correo electrónico',
           password: 'Contraseña',
-          login: 'Iniciar sesión',
+          login: 'Iniciar Sesión',
           failed:
             'Inicio de sesión fallido. Por favor, verifica tus credenciales y vuelve a intentarlo.',
           welcome: 'Bienvenido a ATKL Records',
           forgotPassword: '¿Olvidaste tu contraseña?',
           enterEmail: 'Introduce tu correo electrónico',
-          enterUsername: 'Introduce tu nombre de usuario',
+          enterUsername: 'Introduce tu usuario',
           enterPassword: 'Introduce tu contraseña',
           rememberMe: 'Recordarme',
         },

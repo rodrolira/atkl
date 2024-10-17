@@ -37,7 +37,7 @@ export interface Artist {
     fetchArtist: (id: number) => Promise<Artist>;
     error: string | null;
     loading: boolean;
-    updateArtist: (id: number, updatedArtist: Artist) => Promise<void>;
-    deleteArtist: (id: number) => Promise<void>;
+    updateArtist: (id: string, updatedArtist: Artist) => Promise<void>;
+    deleteArtist: (id: string) => Promise<void>;
   }
   

@@ -22,7 +22,7 @@ const DemoButton: React.FC = () => {
   return (
     <div className="sm:h-full md:block lg:h-[60%] xl:h-auto cursor-pointer">
       <Button
-        colorClass="bg-[#22581d] text-white"
+        colorClass="bg-green-800 text-white hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-[#22581d] md:order-1"
         onClick={handleButtonClick}
         className="justify-center sm:w-32 md:w-auto lg:text-sm md:text-xs h-full md:font-normal lg:font-bold bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 px-5 md:m-0 lg:mx-2 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 md:order-2"
       >

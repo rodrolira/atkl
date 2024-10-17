@@ -8,7 +8,7 @@ const ArtistsPage: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <div className="my-12 lg:my-16">
+      <div className="">
         <ArtistsSection />
       </div>
     </div>

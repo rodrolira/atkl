@@ -19,13 +19,18 @@ const AdminLoginForm: React.FC = () => {
               xl: '60vw',
             },
             margin: ' auto',
-            marginTop: 15,
+            marginTop:{
+              sm: 8,
+              xs: 6,
+              md: 10,
+              lg: 15,
+              xl: 15,
+            }
           }}
         >
           {/* GRID SYSTEM */}
           <Grid
             container
-            height="90vh"
             justifyContent="center"
             alignItems="center"
           >

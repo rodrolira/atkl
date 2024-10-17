@@ -1,20 +1,25 @@
 import React from 'react';
 import { useField, ErrorMessage } from 'formik';
+import { TextField } from '@mui/material';
 
 interface CustomTextInputProps {
   name: string;
   [key: string]: any; // Accepts any additional props
 }
 
-const CustomTextInput: React.FC<CustomTextInputProps> = (props) => {
-  const [field] = useField(props);
+const CustomTextInput: React.FC<CustomTextInputProps> = ({ name, ...props }) => {
+  const [field, meta] = useField(name);
 
   return (
-    <>
-      <input {...field} {...props} />
-      <ErrorMessage name={props.name} component="span" className="error" />
-    </>
+    <TextField
+      {...field}
+      {...props}
+      color='success'
+      error={meta.touched && Boolean(meta.error)}
+      helperText={meta.touched && meta.error}
+    />
   );
 };
+
 
 export default CustomTextInput;

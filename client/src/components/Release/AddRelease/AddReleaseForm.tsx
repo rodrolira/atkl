@@ -12,7 +12,7 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Form, Field, FieldProps } from 'formik';
+import { Formik, Form, Field, FieldProps, useField } from 'formik';
 import * as Yup from 'yup';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useArtists } from '@/contexts/ArtistContext';
@@ -22,6 +22,8 @@ import Button from '@/components/Button/Button';
 import { createReleaseRequest } from '@/app/api/releases';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '../../../types/interfaces/Artist';
+import CustomInput from '@/components/atoms/Input/CustomInput';
+import CustomTextInput from '@/components/atoms/Input/CustomTextInput';
 
 interface AddReleaseFormProps {
   open: boolean;
@@ -88,11 +90,14 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           flexDirection: 'column',
           position: 'relative',
           float: 'right',
+          zIndex: '10',
+          backgroundColor: 'rgba(18, 46, 15, 0.9)',
+          backgroundImage: 'none',
         },
       }}
       scroll="body"
     >
-      <DialogTitle style={{ textAlign: 'center' }}>
+      <DialogTitle style={{ textAlign: 'center' }} sx={{ bgcolor: 'rgba(18, 46, 15, 1.8)' , height: '10vh' }}>
         {t('Add Release')}
         <IconButton style={{ float: 'right' }} onClick={closePopup}>
           <CloseIcon color="error" />
@@ -137,12 +142,13 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <Stack spacing={2} margin={2}>
-                <Field name="title">
+                <Field name="title" type="text" autoComplete="on" component="select">
                   {({ field, form }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Title"
                       variant="outlined"
+                      autoComplete="on"
                       error={Boolean(form.errors.title && form.touched.title)}
                       helperText={
                         form.errors.title &&
@@ -154,7 +160,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="release_date">
                   {({ field, form }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       variant="outlined"
                       type="date"
@@ -171,7 +177,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                   )}
                 </Field>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel>Genre</InputLabel>
+                  <InputLabel sx={{ color: 'white' }} className='text-white'>Genre</InputLabel>
                   <Field name="genre_id">
                     {({ field, form }: FieldProps) => (
                       <Select
@@ -191,7 +197,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                   </Field>
                 </FormControl>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel>Artist</InputLabel>
+                  <InputLabel sx={{ color: 'white' }}>Artist</InputLabel>
                   <Field name="artist_id">
                     {({ field, form }: FieldProps) => (
                       <Select
@@ -225,7 +231,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     )}
                   </Field>
                 </FormControl>
-                <FileUploadRelease  setFieldValue={setFieldValue}/>
+                <FileUploadRelease setFieldValue={setFieldValue} />
                 <Field name="release_type">
                   {({ field, form }: FieldProps) => (
                     <Select
@@ -243,10 +249,11 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="description">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Description"
                       variant="outlined"
+                        color='success'
                       multiline
                       rows={4}
                     />
@@ -254,7 +261,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="bandcamp_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Bandcamp Link"
                       variant="outlined"
@@ -263,7 +270,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="beatport_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Beatport Link"
                       variant="outlined"
@@ -272,7 +279,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="spotify_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Spotify Link"
                       variant="outlined"
@@ -281,7 +288,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="apple_music_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Apple Music Link"
                       variant="outlined"
@@ -290,7 +297,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="youtube_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Youtube Link"
                       variant="outlined"
@@ -299,7 +306,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 </Field>
                 <Field name="soundcloud_link">
                   {({ field }: FieldProps) => (
-                    <TextField
+                    <CustomTextInput
                       {...field}
                       label="Soundcloud Link"
                       variant="outlined"

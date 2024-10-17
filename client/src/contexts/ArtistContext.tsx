@@ -67,11 +67,11 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   // Update an existing artist
-  const updateArtist = async (id: number, updatedArtist: Artist): Promise<void> => {
+  const updateArtist = async (id: string, updatedArtist: Artist): Promise<void> => {
     try {
       const response = await updateArtistRequest(id, updatedArtist);
       setArtists((prevArtists) =>
-        prevArtists.map((artist) => (artist.id === id ? response.data : artist))
+        prevArtists.map((artist) => (artist.id.toString() === id ? response.data : artist))
       );
     } catch (error) {
       console.error('Error updating artist:', error);
@@ -80,11 +80,11 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   // Delete an artist
-  const deleteArtist = async (id: number): Promise<void> => {
+  const deleteArtist = async (id: string): Promise<void> => {
     try {
       await deleteArtistRequest(id);
       setArtists((prevArtists) =>
-        prevArtists.filter((artist) => artist.id !== id)
+        prevArtists.filter((artist) => artist.id.toString() !== id)
       );
     } catch (error) {
       console.error('Error deleting artist:', error);

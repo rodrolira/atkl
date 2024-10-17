@@ -26,9 +26,9 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
   const { t } = useTranslation();
 
   return (
-    <div className="xs:flex lg:block hidden justify-start md:justify-end xs:flex-wrap items-center w-full">
-      <div className="flex items-center justify-end h-[50%] px-2">
-        <div className="z-10 flex divide-y rounded-lg text-center ">
+    <div className="xs:flex lg:block hidden justify-start md:justify-end xs:flex-wrap items-center h-full w-full me-3">
+      <div className="flex items-end h-12 px-2 flex-col">
+        <div className="z-10 flex divide-y rounded-lg text-center items-end h-full">
           <ul
             className="text-sm hidden sm:flex text-white dark:text-white sm:font-normal"
             aria-labelledby="dropdownHoverButton"
@@ -60,11 +60,13 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
               </>
             )}
             {!adminAuthenticated && (
-              <li className="mx-1">
+              <li className="mx-1 hidden md:block ">
                 <DemoButton />
               </li>
             )}
+            <li className="mx-1 hidden md:block">
             <LanguageMenu />
+            </li>
             {adminAuthenticated && (
               <li className="mx-1">
                 <AdminLogoutButton />

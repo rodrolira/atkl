@@ -52,33 +52,56 @@ const AdminSignin: React.FC = () => {
   return (
     <React.Suspense fallback={<div>{t('loading')}</div>}>
       <Grid
-        minHeight={550}
+        minHeight='100%'
         sx={{
-          boxShadow: {
-            md: '15px 2px 5px -5px',
-            lg: '15px 2px 5px -5px',
-            xl: '15px 2px 5px -5px',
+          marginTop:{
+            xs: '50px',
+            md: '30px',
+            lg: '0px',
           },
-          marginTop: { xs: '50px', sm: '50px', md: '0px' },
+          marginBottom: '20px',
+          width: '80%',
         }}
       >
         <Box
           sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            // backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            color: 'black',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             blockSize: '100%',
-            borderRadius: '30px',
+            borderRadius: '10px',
+            border: '1px solid rgba(22, 163, 74, 0.2)',
           }}
         >
-          <Box width="80%">
+          <Box sx={
+            { width: '80%' }}>
             <Box display="flex" flexDirection="column" alignItems="center">
               <Box
                 sx={{
-                  mt: '60px',
-                  width: '150px',
-                  height: '150px',
+                  mt:{
+                    xs: '20px',
+                    sm: '50px',
+                    md: '50px',
+                    lg: '50px',
+                    xl: '50px',
+                  },
+                  width: {
+                    xs: '100px',
+                    sm: '150px',
+                    md: '200px',
+                    lg: '200px',
+                    xl: '200px',
+                  },
+                  height: {
+                    xs: '100px',
+                    sm: '150px',
+                    md: '200px',
+                    lg: '200px',
+                    xl: '200px',
+                  },
                   bgcolor: 'black',
                   borderRadius: '20px',
                   display: 'flex',
@@ -88,32 +111,32 @@ const AdminSignin: React.FC = () => {
               >
                 <Logo alt="Company Logo" isAdminSignin />
               </Box>
-              <Typography color="white" fontSize="24px" fontWeight="bold" mt={7} mb={3}>
+              <Typography color="white" fontSize="24px" fontWeight="bold" mt={2} mb={1} >
                 {t('login.loginAdmin')}
               </Typography>
             </Box>
 
-            <div>
-              <Box component="form" onSubmit={formik.handleSubmit}>
+            <div >
+              <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off">
                 <CustomInput
                   type="text"
-                  label={t('login.username')}
+                  label={t('login.username') + ':'}
                   placeholder={t('login.enterUsername')}
                   onChange={formik.handleChange}
-                  value={formik.values.username}
-                  onBlur={formik.handleBlur}
                   name="username"
                   id="username"
+                  value={formik.values.username}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.username && formik.errors.username && (
-                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                    <p className="font-bold">Error</p>
+                  <div className="mt-2 min-h-10 overflow-hidden inline-block relative w-full  bg-red-100 rounded border-l-4 border-red-500 text-red-700 ">
+                    <p className="mb-1 font-bold text-center h-[30%]">Error</p>
                     <p>{formik.errors.username}</p>
                   </div>
                 )}
 
                 <CustomInput
-                  label={t('login.password')}
+                  label={t('login.password') + ':'}
                   placeholder={t('login.password')}
                   type="password"
                   onChange={formik.handleChange}
@@ -123,13 +146,13 @@ const AdminSignin: React.FC = () => {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.password && formik.errors.password && (
-                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                    <p className="font-bold">Error</p>
+                  <div className="mt-2 min-h-10 overflow-hidden inline-block relative w-full bg-red-100 rounded border-l-4  border-red-500 text-red-700">
+                    <p className="mb-1 font-bold text-center h-[30%]">Error</p>
                     <p>{formik.errors.password}</p>
                   </div>
                 )}
 
-                <Box display="flex" flexDirection="row" justifyContent="space-between" mt={2} width="100%" color="white">
+                <Box display="flex" flexDirection="row" justifyContent="center"  width="100%"  color="white">
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -147,14 +170,14 @@ const AdminSignin: React.FC = () => {
                   type="submit"
                   variant="contained"
                   fullWidth
-                  sx={{ mt: 4, mb: 4, boxShadow: `0 0 20px ${colors.green[500]}` }}
+                  sx={{ mt: 1, mb: 2.5, boxShadow: `0 0 15px ${colors.green[500]}`, minWidth: '25%' }}
                 >
                   {t('login.login')}
                 </Button>
                 {signinErrors && signinErrors.length > 0 && (
                   <div>
                     {signinErrors.map((error, index) => (
-                      <div className="text-red-900 font-bold mb-4 bg-red-200" key={index}>
+                      <div className="text-red-900 font-bold rounded mb-4 bg-red-200" key={index}>
                         {error}
                       </div>
                     ))}

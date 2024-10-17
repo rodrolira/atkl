@@ -18,14 +18,14 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
 
   return (
     <FormGroup className="mb-3 w-full" controlId={name}>
-      <FormLabel className="block text-gray-700 font-bold mb-2 w-full">
+      <FormLabel className="block font-bold mb-2 w-full">
         {t(labelKey)}
       </FormLabel>
       <div className="w-full">
         <FormControl
           {...field}  // Spread field props
           type="file"
-          className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           onChange={(event) => {
             const target = event.currentTarget as HTMLInputElement;
             if (target.files) {
