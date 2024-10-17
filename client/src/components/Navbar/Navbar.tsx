@@ -24,8 +24,8 @@ const Navbar: React.FC = () => {
         </div>
         <div className="h-full w-full xs:w-[93px] flex md:hidden flex-col xs:flex-row items-end">
           {adminAuthenticated && (
-            <div className="h-full flex md:hidden w-full justify-end xs:justify-start items-center me-3">
-              <AddArtistButton />
+            <div className="h-full flex md:hidden w-full justify-end xs:justify-start items-center me-3" aria-hidden="true">
+              <AddArtistButton  />
               <AddReleaseButton />
               <div className="relative xs:absolute right-0 xs:me-3">
                 <AdminLogoutButton />
