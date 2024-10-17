@@ -1,4 +1,4 @@
-  // .eslintrc.cjs
+// .eslintrc.cjs
 module.exports = {
   extends: [
     'airbnb',
@@ -33,7 +33,35 @@ module.exports = {
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
+      tsx: true,
+      ts: true,
+      js: true,
+      modules: true,
     },
+    parser: '@typescript-eslint/parser',
+    project: './tsconfig.json',
+  },
+  globals: {
+    React: 'writable',
+    JSX: 'writable',
+    document: 'writable',
+    navigator: 'writable',
+    window: 'writable',
+    location: 'writable',
+    localStorage: 'writable',
+    sessionStorage: 'writable',
+    XMLHttpRequest: 'writable',
+    fetch: 'writable',
+    FormData: 'writable',
+    Blob: 'writable',
+    navigator: 'writable',
+    Event: 'writable',
+    EventTarget: 'writable',
+    EventListener: 'writable',
+    EventListenerObject: 'writable',
+    EventListenerOptions: 'writable',
+    EventListenerOrEventListenerObject: 'writable',
+    EventSource: 'writable',
   },
   rules: {
     'import/extensions': 'off',

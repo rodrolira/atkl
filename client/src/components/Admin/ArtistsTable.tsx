@@ -96,6 +96,9 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                     <button
                       className="text-xl mx-2 text-yellow-400 hover:text-yellow-500"
                       onClick={() => onEdit(artist)}
+                      type="button"
+                      aria-label="Edit"
+                      aria-labelledby='edit' title='edit'
                     >
                       <FontAwesomeIcon icon={faEdit} />
                     </button>
@@ -103,6 +106,8 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                       onClick={() => onDelete(artist.id)}
                       type="button"
                       className="text-red-400 hover:text-red-500 text-xl mx-2"
+                      aria-label="Delete"
+                      aria-labelledby='delete' title='delete'
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
