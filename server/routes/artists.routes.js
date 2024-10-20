@@ -14,7 +14,7 @@ const router = express.Router()
 // Configuración de multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/') // Define dónde se almacenarán los archivos
+    cb(null, 'uploads/') // Define dónde se almacenarán los archivos
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`) // Define el nombre del archivo

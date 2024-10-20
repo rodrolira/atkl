@@ -47,7 +47,8 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
       password: values.password,
       bio: values.bio,
       image: values.image,
-      Roles: values.roleIds.split(','),
+      roleIds: values.roleIds,
+      Roles: values.roleIds,
     };
 
     try {
@@ -65,6 +66,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
     const fetchRoles = async () => {
       try {
         const response = await getRolesRequest();
+        
         console.log('API Response:', response); // Check the response structure
 
         // Since the response is directly an array, no need to access `response.data`
@@ -149,7 +151,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
             password: '',
             bio: '',
             image: '',
-            roleIds: [] as string[], // Define como un array de strings
+            roleIds: [], // Define como un array de strings
             bandcamp_link: '',
             facebook_link: '',
             instagram_link: '',
@@ -201,6 +203,8 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
                   'current-password',
                 )}
                 <FileUpload name="image" setFieldValue={setFieldValue} />
+
+                {/* Roles Section */}
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>{t('addArtist.selectRole')}</InputLabel>
                   <Field name="roleIds">
@@ -214,7 +218,11 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
                         }
                         value={values.roleIds}
                         error={form.errors.roleIds && form.touched.roleIds}
-                        renderValue={(selected) => (selected as string[]).join(' / ')}
+                        renderValue={(selected: number[]) => {
+                          // Muestra los nombres de los roles seleccionados
+                          const selectedRoles = roles.filter(role => selected.includes(role.id));
+                          return selectedRoles.map(role => role.label).join(' / ');
+                        }}
                       >
                         {roles.map((role) => (
                           <MenuItem key={role.id} value={role.id}>
@@ -267,14 +275,13 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
                   ))}
                 </Stack>
                 {error && <div className="text-red-500">{error}</div>}
-                <Button
+                <button
                   type="submit"
-                  colorClass="bg-[#24db13] text-[#122e0f]"
                   disabled={isSubmitting}
-                  className="mx-auto flex justify-center"
+                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
                 >
                   {t('submit')}
-                </Button>
+                </button>
               </Stack>
             </Form>
           )}
