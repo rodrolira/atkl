@@ -14,7 +14,7 @@ const ArtistName: React.FC<ArtistNameProps> = ({
   id,
   textSize = 'text-2xl',
 }) => (
-  <Link to={`/artists/${id}`} className="flex items-center justify-center w-full">
+  <Link to={`/artists/${id}`} className="flex items-center justify-center w-full hover:text-green-500">
     <h1 className={`${textSize} font-bold`}>{name}</h1>
   </Link>
 );

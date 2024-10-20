@@ -6,7 +6,7 @@ export interface Artist {
     artist_name: string;
     email: string;
     image: string | File | null;
-    Roles: Role[];
+    Roles: Role[] | number[];
     roleIds: number[];
     bio?: string;
     twitter_link?: string;
