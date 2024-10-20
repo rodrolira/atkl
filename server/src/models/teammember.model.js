@@ -1,6 +1,6 @@
 // models/teammember.model.js
 import { DataTypes } from 'sequelize';
-import sequelize from '../db/sequelize.js';
+import sequelize from '../../db/sequelize.js';
 
 const TeamMember = sequelize.define(
   'TeamMember',

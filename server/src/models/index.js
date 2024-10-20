@@ -6,7 +6,7 @@ import Sequelize, { DataTypes } from 'sequelize'
 import { env as _env } from 'process'
 
 // Importa los modelos de artistas y releases
-import sequelize from '../db/sequelize.js';
+import sequelize from '../../db/sequelize.js';
 import './release.model.js'; // Importa el modelo Release
 import './artist.model.js';  // Importa el modelo Artist
 import './genre.model.js';   // Importa el modelo Genre

@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import sequelize from '../db/sequelize.js'
+import sequelize from '../../db/sequelize.js'
 import Genre from './genre.model.js'
 
 const Release = sequelize.define(
