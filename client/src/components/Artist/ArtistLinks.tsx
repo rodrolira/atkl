@@ -26,6 +26,7 @@ const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => (
         rel="noopener noreferrer"
         aria-label="View Twitter Profile"
         className="text-gray-400 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-300"
+      
       >
         <FontAwesomeIcon icon={faTwitter} />
       </Link>

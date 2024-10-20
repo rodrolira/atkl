@@ -1,2 +1,13 @@
 t
+.vercel
+.vscode
 node_modules
+dist    
+build
+vercel.json
+vercelignore
+.gitignore
+.env
+.env.production
+/api.rest
+CVE-2023-44487.json

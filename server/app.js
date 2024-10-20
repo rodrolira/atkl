@@ -35,27 +35,27 @@ const upload = multer({ storage: storage })
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'))
 
-// app.use(
-  // cors({
-    // origin: 'https://atkl.vercel.app',
-    // credentials: true,
-    // methods: ['GET', 'POST', 'DELETE', 'PUT'],
-    // // Agrega DELETE aquí si es necesario
+app.use(
+  cors({
+    origin: 'https://atkl.vercel.app',
+    credentials: true,
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    // Agrega DELETE aquí si es necesario
 
-    // allowedHeaders: ['Content-Type', 'Authorization'],
-    // exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
-  // })
-// )
- const corsOptions = {
-   origin: 'http://localhost:5173',
-   credentials: true,
-   methods: ['GET', 'POST', 'DELETE', 'PUT'],
-   // Agrega DELETE aquí si es necesario
-   allowedHeaders: ['Content-Type', 'Authorization'],
- }
- app.use(
-   cors(corsOptions)
- )
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
+  })
+)
+//  const corsOptions = {
+//    origin: 'http://localhost:5173',
+//    credentials: true,
+//    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+//    // Agrega DELETE aquí si es necesario
+//    allowedHeaders: ['Content-Type', 'Authorization'],
+//  }
+//  app.use(
+//    cors(corsOptions)
+//  )
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser())
