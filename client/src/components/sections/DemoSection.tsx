@@ -11,13 +11,11 @@ const DemosSection: React.FC = () => {
           <iframe
             title="Send Demo"
             aria-label="Send Demo"
-            className="mx-auto w-3/4"
+            className="mx-auto w-3/4 !bg-black"
             width="600"
             height="650"
             style={{ border: '0' }} // Use inline style here
-            marginWidth={0}
-            marginHeight={0}
-            scrolling="true"
+            color='#ffffff'
             src="https://atklrecords.label-engine.com/demos?embed=1&bg_color=000000&text_color=ffffff&feature_color=55b338"
           ></iframe>
         </div>
