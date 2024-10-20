@@ -35,17 +35,37 @@ const upload = multer({ storage: storage })
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'))
 
-app.use(
-  cors({
-    origin: 'https://atkl.vercel.app',
-    credentials: true,
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],
-    // Agrega DELETE aquí si es necesario
+// Lista de origenes permitidos prodccion y desarrollo
+const allowedOrigins = ['http://localhost:5173', 'https://atkl.vercel.app']
 
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
-  })
-)
+app.use(cors({
+   origin:(origin, callback) => {
+     // Permite solicitudes de cualquier origen como Postman
+     if(!origin) return callback(null, true)
+
+     if(allowedOrigins.includes(origin)) {
+       callback(null, true)
+     } else {
+       callback(new Error('No permitido por CORS'))
+     }
+   },
+   credentials: true,
+   methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
+  }))
+
+// app.use(
+//   cors({
+//     origin: 'https://atkl.vercel.app',
+//     credentials: true,
+//     methods: ['GET', 'POST', 'DELETE', 'PUT'],
+//     // Agrega DELETE aquí si es necesario
+
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
+//   })
+// )
 //  const corsOptions = {
 //    origin: 'http://localhost:5173',
 //    credentials: true,
@@ -84,19 +104,6 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Page not found' })
 })
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env
-
-const sql = postgres({
-  host: PGHOST,
-  database: PGDATABASE,
-  username: PGUSER,
-  password: PGPASSWORD,
-  port: 5432,
-  ssl: 'require',
-  connection: {
-    options: `project=${ENDPOINT_ID}`,
-  },
-})
 
 
 export default app
