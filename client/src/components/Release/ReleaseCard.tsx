@@ -114,6 +114,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             <div className="absolute top-2 right-2 flex space-x-2">
               <button
                 className="text-xl mx-2 text-yellow-400 hover:text-yellow-500"
+                aria-label="Edit Release"
                 onClick={openEditModal}
               >
                 <FontAwesomeIcon icon={faEdit} />
