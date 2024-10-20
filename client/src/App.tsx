@@ -11,15 +11,17 @@ const App: React.FC = () => {
 
 
   return (
-    <div id="app" className="flex">
-      <div className="layout">
-          <BrowserRouter>
-            <CssBaseline />
-            <Routing />
-            <Footer isAdminLogin={false} />
-          </BrowserRouter>
+    <BrowserRouter>
+
+      <div id="app" className="flex">
+        <div className="layout">
+          <CssBaseline />
+          <Routing />
+          <Footer isAdminLogin={false} />
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
+
   );
 };
 

@@ -29,7 +29,7 @@ export const Home: React.FC = () => {
       <Navbar />
       <div id="home">
         <div
-          className={`${styles.parallaxContainer} flex relative h-screen overflow-hidden`}
+          className={`${styles.parallaxContainer} flex relative h-screen overflow-hidden z-50`}
         >
           <div
             className={`${styles.parallaxContent} inset-0 bg-gradient-to-b from-transparent to-[#122e0f] backdrop-blur-md`}

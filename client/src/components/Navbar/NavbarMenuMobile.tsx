@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import { useTranslation } from 'react-i18next';
 import LanguageMenu from '@/components/Language/LanguageMenu';
 import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
@@ -20,15 +20,16 @@ const NavbarMenuMobile: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center">
+      <div className="flex items-end flex-col na">
+        <div className="me-4">
+          <LanguageMenu /> 
+        </div>
+        <div className="me-4">
         {!adminAuthenticated && (
-          <div className="hidden">
+          <div className="hidden sm:block">
             <DemoButton />
           </div>
-        )}
-        <div className="me-4">
-          <LanguageMenu />
-        </div>
+        )}  
         <div className="me-1">
           <IconButton
             edge="start"
@@ -40,6 +41,7 @@ const NavbarMenuMobile: React.FC = () => {
           >
             {isOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
+        </div>
 
           {isOpen && (
             <div className="menu-content border-l-2 border-t-2 border-b-2 border-green-600 rounded-bl-lg z-20 ">
