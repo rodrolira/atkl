@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "vercel-build": "vercel build",
+    "start-prod": "cross-env NODE_ENV=production node server/index.js"
   },
   "keywords": [],
   "author": "",

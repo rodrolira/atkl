@@ -102,7 +102,10 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
           >
             &copy; {currentYear}{' '}
             <Link
-              to="https://material-tailwind.com/"
+              to="https://atkl.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="ATKL Records"
               className="hover:text-green-600"
             >
               ATKL Records
