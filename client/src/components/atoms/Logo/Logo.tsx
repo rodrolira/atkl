@@ -15,9 +15,9 @@ const Logo: React.FC<LogoProps> = ({ isAdminSignin }) => {
     >
       <img
         alt="ATKL Records logo"
-        src="/img/main.png"
-        className={`max-w-full max-h-full object-contain ${
-          isAdminSignin ? 'w-full h-full invert' : 'md:mx-0'
+        src="/logo.jpg"
+        className={`max-w-full max-h-full object-contain invert ${
+          isAdminSignin ? 'w-full h-full' : 'md:mx-0'
         }`}
       />
     </a>

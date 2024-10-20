@@ -1,8 +1,8 @@
 /* Mobile-first styles */
 .navbarWrapper {
   /* Cambiado a camelCase */
-  -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(200px); /* Soporte para Safari */
+  backdrop-filter: blur(20px);
   position: fixed;
   top: 0;
   width: 100%;
@@ -44,3 +44,4 @@
   padding: 0 10px;
   text-decoration: none;
 }
+

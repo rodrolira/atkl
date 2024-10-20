@@ -11,7 +11,7 @@ router.post('/submit-form', async (req, res) => {
             service: 'gmail',
             auth: {
                 user: 'atkl.records@gmail.com',
-                pass: 'htfu ycxh sbft vcmn'
+                pass: 'njyy jaob csid scmt'
             }
         })
 

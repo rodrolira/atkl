@@ -8,7 +8,7 @@ const NavbarLinks: React.FC = () => {
   const location = useLocation();
 
   return (
-    <div className="h-[50%] hidden md:flex !md:px-3 xs:px-5">
+    <div className="h-[35%] hidden md:flex !md:px-3 xs:px-5">
       {location.pathname === '/' ? (
         <HomeNavbarLinks />
       ) : (

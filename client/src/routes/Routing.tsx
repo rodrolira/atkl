@@ -11,7 +11,7 @@ import LoginAdminPage from '@/pages/Auth/LoginAdminPage';
 import AdminRoutes from './AdminRoutes';
 import AdminDashboard from '@/pages/Admin/AdminDashboard';
 import EditReleaseModal from '@/components/Release/EditRelease/EditReleaseModal';
-import EditArtist from '@/components/Artist/EditArtist';
+// import EditArtist from '@/components/Artist/EditArtist';
 import NotFound from '@/pages/NotFound';
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -22,7 +22,7 @@ const Routing: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/artists" element={<ArtistsPage artistsData={[]} />} />
+      <Route path="/artists" element={<ArtistsPage />} />
       <Route path="/releases" element={<ReleasesPage />} />
       <Route path="/artists/:id" element={<ArtistPage />} />
       <Route path="/about" element={<AboutPage />} />
@@ -30,7 +30,7 @@ const Routing: React.FC = () => {
       <Route
         path="/admin/login"
         element={
-          adminAuthenticated ? <Navigate to="/admin" /> : <LoginAdminPage />
+          adminAuthenticated ? <Navigate to="/" /> : <LoginAdminPage />
         }
       />
       {/* Admin Routes */}
@@ -46,7 +46,6 @@ const Routing: React.FC = () => {
           }
         />
         <Route path="/edit-release/:id" element={<EditReleaseModal id={undefined} onClose={undefined} />} />
-        <Route path="/artists/:id/edit" element={<EditArtist />} />
       </Route>
       {/* Redirect to NotFound for unknown paths */}
       <Route path="*" element={<NotFound />} />

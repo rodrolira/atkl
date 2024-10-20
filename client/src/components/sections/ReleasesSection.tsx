@@ -9,6 +9,7 @@ import ReleaseList from '@/components/Release/ReleaseList';
 import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import Background from '../Layout/Background';
 
 interface ReleasesSectionProps {}
 
@@ -28,7 +29,7 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = () => {
   };
 
   return (
-    <section className="grid grid-cols-1 gap-4 p-4 sm:p-16" id="releases">
+    <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="releases">
       <Link to="/releases" className="mx-auto">
         <Title>{t('releaseSection.title')}</Title>
       </Link>
@@ -36,6 +37,7 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = () => {
         <AddReleaseForm onReleaseAdded={handleReleaseAdded} open={false} closePopup={ () => {}} />
       )}
       <ReleaseList releases={releases} />
+      <Background />
     </section>
   );
 }

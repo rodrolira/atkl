@@ -9,7 +9,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const createToken = (adminId) => {
-  return jwt.sign({ adminId, role: 'admin' }, process.env.SECRET, { expiresIn: '12h' })
+  return jwt.sign({ adminId, role: 'admin' }, process.env.SECRET, { expiresIn: '1d' })
 }
 export const createAdmin = async ({ username, email, password }) => {
   const hashedPassword = await bcrypt.hash(password, 10)

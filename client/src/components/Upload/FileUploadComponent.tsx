@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 interface FileUploadComponentProps {
   name: string;       // The name of the field in Formik
   labelKey: string;   // The translation key for the label
+  
 }
 
 const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKey }) => {
@@ -23,7 +24,6 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
       </FormLabel>
       <div className="w-full">
         <FormControl
-          {...field}  // Spread field props
           type="file"
           className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           onChange={(event) => {

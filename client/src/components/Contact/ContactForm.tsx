@@ -44,7 +44,7 @@ const ContactForm: React.FC = () => {
   return (
     <div>
       {formSubmitted && (
-        <div className="text-green-500">{t('form_sent_success')}</div>
+        <div className="text-green-600 font-bold text-center bg-green-100 w-fit p-2 mx-auto rounded">{t('form_sent_success')}</div>
       )}
       <div className="max-w-md mx-auto rounded sm:px-8 sm:pt-6 sm:pb-8 p-4 mb-4">
         <h2 className="text-2xl font-bold mb-4 text-center">{t('subscribe')}</h2>
