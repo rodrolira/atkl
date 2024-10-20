@@ -85,12 +85,12 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           </Link>
 
           {adminAuthenticated && (
-            <div className="absolute right-2 top-2 flex">
-              <Button className="!px-2" aria-label={t('edit_artist')} onClick={openEditModal}>
+            <div className="absolute right-2 top-2 flex space-x-4">
+              <Button className="!px-4 !py-3" aria-label={t('edit_artist')} onClick={openEditModal} style={{minWidth: '48px', minHeight: '48px'}}>
                 <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl" />
               </Button>
-              <Button className="!px-2" onClick={handleDelete} aria-label={t('delete_artist')}>
-                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl" />
+              <Button className="!px-4 !py-3" onClick={handleDelete} aria-label={t('delete_artist')} style={{minWidth: '48px', minHeight: '48px'}}>
+                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl"  />
               </Button>
             </div>
           )}
