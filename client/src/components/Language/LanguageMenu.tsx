@@ -95,7 +95,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                     countryCode="ES"
                     svg
                     style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
-                    title="ES"
+                    title="español"
                   />
                   <span className="max-[320px]:hidden lg:text-sm md:text-xs">
                     {t('languageMenu.spanish')}
