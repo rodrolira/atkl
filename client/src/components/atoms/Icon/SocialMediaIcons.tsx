@@ -14,6 +14,7 @@ const SocialMediaIcons: React.FC = () => (
       to="https://www.instagram.com/atkl.records/"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label='View on Instagram'
     >
       <i>
         <FontAwesomeIcon icon={faInstagram} size="2x" />
@@ -23,6 +24,7 @@ const SocialMediaIcons: React.FC = () => (
       to="https://soundcloud.com/atkl.records"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label='View on Soundcloud'
     >
       <i>
         <FontAwesomeIcon icon={faSoundcloud} size="2x" />
@@ -32,6 +34,7 @@ const SocialMediaIcons: React.FC = () => (
       to="https://www.bandcamp.com/atkl.records"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label='View on Bandcamp'
     >
       <i>
         <FontAwesomeIcon icon={faBandcamp} size="2x" />
@@ -41,6 +44,7 @@ const SocialMediaIcons: React.FC = () => (
       to="https://www.youtube.com/channel/UC-9-kyTW8ZkZNDHQyHvryaw"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label='View on YouTube'
     >
       <i>
         <Icon
