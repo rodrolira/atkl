@@ -21,6 +21,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState<Partial<Artist>>({
+    id: Number(id),
     artist_name: '',
     image: null,
     twitter_link: '',
@@ -36,15 +37,15 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const [roles, setRoles] = useState<Role[]>([]);
   const { updateArtist, deleteArtist } = useArtists();
 
+
   useEffect(() => {
     const fetchArtist = async (artist_id: string) => {
       try {
         const response = await getArtistRequest(artist_id);
-        console.log('Artist:', response.data);
-        const roles = response.data?.roles ?? [];
+        const artistRoles = response.data.roles || [];  
         setInitialValues({
           ...response.data,
-          roleIds: roles.map((role: Role) => role.id),
+          roleIds: artistRoles.map((role: Role) => role.id),
         });
       } catch (error) {
         console.error('Error fetching artist:', error);
@@ -80,8 +81,27 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       }
     });
 
+    const roleIdsValue = formData.get('roleIds');
+    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
+
+    const artistData: Artist = {
+      id: Number(id),
+      artist_name: formData.get('artist_name') as string,
+      email: formData.get('email') as string,
+      image: formData.get('image') as File,
+      twitter_link: formData.get('twitter_link') as string,
+      instagram_link: formData.get('instagram_link') as string,
+      facebook_link: formData.get('facebook_link') as string,
+      soundcloud_link: formData.get('soundcloud_link') as string,
+      bandcamp_link: formData.get('bandcamp_link') as string,
+      youtube_link: formData.get('youtube_link') as string,
+      spotify_link: formData.get('spotify_link') as string,
+      bio: formData.get('bio') as string,
+      roleIds: roleIds,
+      Roles: values.roleIds,
+    };
     try {
-      await updateArtist(id, formData);
+      await updateArtist(id, artistData);
       onClose();
     } catch (error) {
       console.error('Error updating artist:', error);
@@ -100,13 +120,30 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
     }
   };
 
+
   return (
     <div className="flex flex-col items-center justify-center">
       <Formik
-        initialValues={initialValues}
+        initialValues={initialValues as Artist & Partial<Artist>}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => {
+          const formData = new FormData();
+          formData.append('artist_name', values.artist_name);
+          if (values.image) {
+            formData.append('image', values.image);
+          }
+          formData.append('twitter_link', values?.twitter_link ?? '');
+          formData.append('instagram_link', values?.instagram_link ?? '');
+          formData.append('facebook_link', values?.facebook_link ?? '');
+          formData.append('soundcloud_link', values?.soundcloud_link ?? '');
+          formData.append('bandcamp_link', values?.bandcamp_link ?? '');
+          formData.append('youtube_link', values?.youtube_link ?? '');
+          formData.append('spotify_link', values?.spotify_link ?? '');
+          formData.append('bio', values?.bio ?? '');
+          formData.append('roleIds', values.roleIds.join(','));
+          handleSubmit(values, { setSubmitting: false });
+        }}
       >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
@@ -136,10 +173,12 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               />
             </div>
 
+          {/* Image upload */}
             <div className="mb-4">
               <FileUpload setFieldValue={setFieldValue} name="image" />
             </div>
 
+          {/* Roles Selection */}
             <FormControl className="!mb-4 !block" fullWidth variant="outlined">
               <InputLabel className="!block !text-gray-700 !font-bold !mb-2">
                 {t('addArtist.selectRole')}:

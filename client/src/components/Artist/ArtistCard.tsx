@@ -69,8 +69,8 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   };
 
   const rolesText = currentArtist.Roles && currentArtist.Roles.length > 0
-    ? currentArtist.Roles.map((role) => role.label).join(' / ')
-    : t('no_roles_assigned');
+  ? currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `Role ID: ${role}`).join(' / ')
+  : t('no_roles_assigned')
 
   return (
     <>
