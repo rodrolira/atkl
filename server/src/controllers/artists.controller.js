@@ -28,11 +28,12 @@ export const addArtist = async (req, res) => {
     beatport_link,
   } = req.body;
 
-  const image = req.file.path;
+  const image = req.file ? req.file.path : null;
 
   if (!artist_name || !email || !password) {
     return res.status(400).json({ message: 'artist_name, email, and password are required' });
   }
+  console.log('Image path:', image); // Para verificar si la imagen se subió correctamente
 
   try {
     const newUser = await User.create({

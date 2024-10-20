@@ -18,7 +18,7 @@ const DemosSection: React.FC = () => {
             marginWidth={0}
             marginHeight={0}
             scrolling="true"
-            src="https://atklrecords.label-engine.com/demos?embed=1&bg_color=020617&text_color=ffffff&feature_color=c51616"
+            src="https://atklrecords.label-engine.com/demos?embed=1&bg_color=000000&text_color=ffffff&feature_color=55b338"
           ></iframe>
         </div>
       </div>

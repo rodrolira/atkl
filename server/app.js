@@ -14,12 +14,23 @@ import contactFormRoutes from './routes/contact-form.routes.js'
 import rolesRouter from './routes/roles.routes.js'
 import discographyRoutes from './routes/discography.routes.js'
 import postgres from 'postgres'
+import multer from 'multer'
 
 
 dotenv.config()
 
 const app = express()
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname)
+  },
+})
+
+const upload = multer({ storage: storage })
 
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'))
