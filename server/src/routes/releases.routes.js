@@ -7,7 +7,7 @@ import {
   getReleaseById,
   updateRelease,
   deleteRelease,
-} from '../src/controllers/releases.controller.js'
+} from '../controllers/releases.controller.js'
 const router = express.Router()
 
 // Configuración de multer

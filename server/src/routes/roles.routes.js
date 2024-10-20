@@ -1,6 +1,6 @@
 // routes/roles.routes.js
 import express from 'express'
-import sequelize from '../db/sequelize.js'
+import sequelize from '../../db/sequelize.js'
 
 const router = express.Router()
 

@@ -1,6 +1,6 @@
 // models/genre.model.js
 import { DataTypes } from 'sequelize'
-import sequelize from '../db/sequelize.js'
+import sequelize from '../../db/sequelize.js'
 
 const Genre = sequelize.define(
   'Genre',

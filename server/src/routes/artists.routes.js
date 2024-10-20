@@ -7,7 +7,7 @@ import {
   updateArtist,
   getArtistById,
   getArtistReleases,
-} from '../src/controllers/artists.controller.js'
+} from '../controllers/artists.controller.js'
 import multer from 'multer'
 const router = express.Router()
 

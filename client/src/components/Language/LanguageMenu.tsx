@@ -45,7 +45,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
             countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
             svg
             style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
-            title={selectedLanguage === 'en' ? 'US' : 'ES'}
+            title={selectedLanguage === 'en' ? 'US' : 'es' }
           />
           <span className="inline-block lg:text-sm md:text-xs">
             {t('languageMenu.language')}

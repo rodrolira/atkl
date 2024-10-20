@@ -1,6 +1,6 @@
 // models/discography.js
 import { DataTypes } from 'sequelize'
-import sequelize from '../db/sequelize.js'
+import sequelize from '../../db/sequelize.js'
 
 const Discography = sequelize.define(
     'Discography',

@@ -1,12 +1,12 @@
 // server/controllers/artists.controller.js
-import Artist from '../../models/artist.model.js';
-import User from '../../models/user.model.js';
-import Release from '../../models/release.model.js';
-import Role from '../../models/role.model.js';
+import Artist from '../models/artist.model.js';
+import User from '../models/user.model.js';
+import Release from '../models/release.model.js';
+import Role from '../models/role.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import ArtistRoles from '../../models/artist_role.model.js';
+import ArtistRoles from '../models/artist_role.model.js';
 dotenv.config();
 
 export const addArtist = async (req, res) => {

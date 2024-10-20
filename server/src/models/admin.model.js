@@ -1,7 +1,7 @@
 // models/admin.model.js
 import { DataTypes } from 'sequelize'
 import bcrypt from 'bcryptjs'
-import sequelize from '../db/sequelize.js'
+import sequelize from '../../db/sequelize.js'
 
 const Admin = sequelize.define(
   'Admin',

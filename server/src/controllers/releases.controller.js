@@ -1,6 +1,6 @@
 // server/controllers/releases.controller.js
-import Release from '../../models/release.model.js'
-import Artist from '../../models/artist.model.js' // Importa el modelo Artist
+import Release from '../models/release.model.js'
+import Artist from '../models/artist.model.js' // Importa el modelo Artist
 
 export const addRelease = async (req, res) => {
   const {

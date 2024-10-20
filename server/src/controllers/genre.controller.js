@@ -1,5 +1,5 @@
 // controllers/genre.controller.js
-import Genre from "../../models/genre.model.js";
+import Genre from "../models/genre.model.js";
 import prisma from "../prisma.js";
 
 const getAllGenres = async (req, res) => {
