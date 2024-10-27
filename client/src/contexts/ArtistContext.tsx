@@ -34,6 +34,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Fetch artists from the API
   const fetchArtists = useCallback(async () => {
     setLoading(true);
+    setError(null); 
     try {
       const response = await getArtistsRequest();
       setArtists(response.data);
@@ -63,28 +64,30 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return res.data;
     } catch (error) {
       console.error('Error creating artist:', error);
+      setError('Failed to create artist');
     }
   };
 
   // Update an existing artist
-  const updateArtist = async (id: string, updatedArtist: Artist): Promise<void> => {
+  const updateArtist = async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
     try {
       const response = await updateArtistRequest(id, updatedArtist);
       setArtists((prevArtists) =>
-        prevArtists.map((artist) => (artist.id.toString() === id ? response.data : artist))
+        prevArtists.map((artist) => (artist.id === id ? response.data : artist))
       );
     } catch (error) {
       console.error('Error updating artist:', error);
+      setError('Failed to update artist');
       throw error;
     }
   };
 
   // Delete an artist
-  const deleteArtist = async (id: string): Promise<void> => {
+  const deleteArtist = async (id: number): Promise<void> => {
     try {
       await deleteArtistRequest(id);
       setArtists((prevArtists) =>
-        prevArtists.filter((artist) => artist.id.toString() !== id)
+        prevArtists.filter((artist) => artist.id !== id)
       );
     } catch (error) {
       console.error('Error deleting artist:', error);

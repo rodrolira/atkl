@@ -69,9 +69,8 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
               <Typography
                 variant="h2"
                color='#09B309'   // #00af00
-               fontSize={'5rem'}
                fontWeight={'bold'}
-                className="mb-4 font-bold uppercase"
+                className="mb-4 font-bold uppercase xs:text-3xl md:text-4xl"
               >
                 {t(title)}
               </Typography>

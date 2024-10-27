@@ -3,6 +3,8 @@ import app from './app.js'
 import sequelize from './db/sequelize.js'
 import dotenv from 'dotenv'
 import './src/models/associations.js'
+
+
 dotenv.config()
 
 sequelize

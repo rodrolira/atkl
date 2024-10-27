@@ -39,6 +39,8 @@
     "test:cover": "vitest run --coverage"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.21.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@formkit/auto-animate": "^0.8.2",

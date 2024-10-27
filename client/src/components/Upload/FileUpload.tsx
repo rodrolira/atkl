@@ -1,17 +1,15 @@
 import React from 'react';
 import FileUploadComponent from './FileUploadComponent';
-import { FormikErrors } from 'formik';
 import { Artist } from '@/types/interfaces/Artist';
+import { useFormikContext } from 'formik';
 
-interface FileUploadProps {
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<Artist>>;
-  name: string;
-}
+const FileUpload: React.FC = () => {
+  const { setFieldValue } = useFormikContext<Artist>();
 
-const FileUpload: React.FC<FileUploadProps> = ({
-   setFieldValue,
-   }) => {
-  return <FileUploadComponent name="image" labelKey="upload_profile_image" />;
+  return <FileUploadComponent
+    name="image"
+    labelKey="upload_profile_image"
+    setFieldValue={setFieldValue} />;
 };
 
 export default FileUpload;

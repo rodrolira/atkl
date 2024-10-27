@@ -21,7 +21,7 @@ const NavbarMenuMobile: React.FC = () => {
   return (
     <>
       <div className="flex items-end flex-col na">
-        <div className="me-4">
+        <div className="me-2 sm:me-2 z-30 relative">
           <LanguageMenu /> 
         </div>
         <div className="me-4">

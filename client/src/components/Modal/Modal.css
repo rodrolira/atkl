@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+
 }
 
 .modal-content {
@@ -20,6 +21,8 @@
   overflow: auto;
   position: relative;
   scrollbar-width: none;
+  z-index: 1000;
+  position: relative;
 }
 
 .close-btn {

@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@/components/Button/Button';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useArtists } from '@/contexts/ArtistContext';
@@ -27,7 +26,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
   const [roles, setRoles] = useState<any[]>([]); // Cambia `any` por un tipo más específico si lo tienes
   const [error, setError] = useState<string | null>(null);
   const { createArtist } = useArtists();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const onSubmit = async (values: any, actions: any) => { // Cambia `any` por un tipo más específico
     const formData = new FormData();
@@ -51,17 +49,23 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
       Roles: values.roleIds,
     };
 
+    if(artistData){
     try {
       const newArtist = await createArtist(artistData);
       actions.setSubmitting(false);
       closePopup();
-      onArtistAdded && onArtistAdded(newArtist);
+      onArtistAdded && onArtistAdded(newArtist!);
     } catch (error) {
       console.error('Error adding artist:', error);
       setError(t('error.addArtist'));
       actions.setSubmitting(false);
     }
-  };
+  } else {
+    console.error('Error: artistData is undefined');
+    setError(t('error.addArtist'));
+    actions.setSubmitting(false);
+  }};
+
   useEffect(() => {
     const fetchRoles = async () => {
       try {
@@ -202,7 +206,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
                   'password',
                   'current-password',
                 )}
-                <FileUpload name="image" setFieldValue={setFieldValue} />
+                <FileUpload/>
 
                 {/* Roles Section */}
                 <FormControl fullWidth variant="outlined">

@@ -8,7 +8,7 @@ interface BaseCardProps {
 const BaseCard: React.FC<BaseCardProps> = ({ children, className = '', ...props }) => {
   return (
     <div
-      className={`bg-black max-w-sm border border-gray-200 rounded-lg shadow dark:border-green-500 relative ${className}`}
+      className={`bg-black max-w-sm border border-gray-200 rounded-lg shadow dark:border-green-500 z-10 relative ${className}`}
       {...props}
     >
       {children}

@@ -15,45 +15,66 @@ import rolesRouter from './src/routes/roles.routes.js'
 import discographyRoutes from './src/routes/discography.routes.js'
 import postgres from 'postgres'
 import multer from 'multer'
-
+import path from 'path'
+import { fileURLToPath } from 'url';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config()
+
+// Crear __dirname en un modulo ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+cloudinary.config({
+  cloud_name: 'dotfwyxwr',
+  api_key: '434532883233174',
+  api_secret: process.env.CLOUDINARY_API_SECRET, // Click 'View API Keys' above to copy your API secret
+  secure: true
+});
+
+
 
 const app = express()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './src/uploads/')
+    cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname)
+    const extension = path.extname(file.originalname)
+    const filename = `${Date.now()}-${file.originalname}`;
+    cb(null, filename)
+
+    console.log(`File saved to: ${filename}`);
+
   },
 })
 
-const upload = multer({ storage: storage })
-
+const upload = multer({ storage })
 // Middleware para servir archivos estáticos
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Lista de origenes permitidos prodccion y desarrollo
 const allowedOrigins = ['http://localhost:5173', 'https://atkl.vercel.app']
 
 app.use(cors({
-   origin:(origin, callback) => {
-     // Permite solicitudes de cualquier origen como Postman
-     if(!origin) return callback(null, true)
+  origin: (origin, callback) => {
+    // Permite solicitudes de cualquier origen como Postman
+    if (!origin) {
+      return callback(null, true)
+    }
 
-     if(allowedOrigins.includes(origin)) {
-       callback(null, true)
-     } else {
-       callback(new Error('No permitido por CORS'))
-     }
-   },
-   credentials: true,
-   methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('No permitido por CORS'))
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: 'Access-Control-Allow-Origin' // Agrega esta línea
-  }))
+}))
 
 // app.use(
 //   cors({
@@ -89,6 +110,7 @@ app.use('/api', contactFormRoutes)
 app.use('/api', genreRoutes)
 app.use('/api', rolesRouter)
 app.use('/api', discographyRoutes)
+
 
 // Middleware para manejo de errores
 app.use((err, req, res, next) => {

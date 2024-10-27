@@ -43,7 +43,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const handleDelete = async () => {
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
       try {
-        await deleteArtist(artist.id.toString());
+        await deleteArtist(artist.id);
         setArtists((prevArtists: Artist[]) => prevArtists.filter((a) => a.id !== currentArtist.id));
       } catch (error) {
         console.error('Error deleting artist:', error);
@@ -111,7 +111,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
       {showEditModal && (
         <Modal onClose={closeEditModal}>
-          <EditArtistModal id={currentArtist.id.toString()} onClose={closeEditModal} />
+          <EditArtistModal id={currentArtist.id} onClose={closeEditModal} />
         </Modal>
       )}
     </>

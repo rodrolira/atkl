@@ -17,6 +17,7 @@ export interface Artist {
     youtube_link?: string;
     spotify_link?: string;
     beatport_link?: string;
+    apple_music_link?: string;
     [key: string]: any;
 
   }
@@ -37,7 +38,7 @@ export interface Artist {
     fetchArtist: (id: number) => Promise<Artist>;
     error: string | null;
     loading: boolean;
-    updateArtist: (id: string, updatedArtist: Artist) => Promise<void>;
-    deleteArtist: (id: string) => Promise<void>;
+    updateArtist: (id: number, updatedArtist:  Partial<Artist>) => Promise<void>;
+    deleteArtist: (id: number) => Promise<void>;
   }
   

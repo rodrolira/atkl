@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import ArtistRoles from '../models/artist_role.model.js';
+
 dotenv.config();
 
 export const addArtist = async (req, res) => {
@@ -28,7 +29,7 @@ export const addArtist = async (req, res) => {
     beatport_link,
   } = req.body;
 
-  const image = req.file ? req.file.path : null;
+  const image = req.file ? `uploads\\${req.file.filename}` : null;
 
   if (!artist_name || !email || !password) {
     return res.status(400).json({ message: 'artist_name, email, and password are required' });
@@ -74,13 +75,21 @@ export const updateArtist = async (req, res) => {
   const { artistId } = req.params;
   let { roleIds, ...updateData } = req.body;
 
-  if (req.file) {
-    updateData.image = req.file.path;
+  // Verificar si hay un archivo subido para la imagen 
+  const imagePath = req.file ? `uploads\\${req.file.filename}` : undefined;
+
+  if (imagePath) {
+    updateData.image = imagePath;
   }
 
-  if (!artistId) {
-    return res.status(400).json({ message: 'Artist ID is required' });
-  }
+  delete updateData.id;
+  delete updateData.user_id;
+
+  // Agregar logs para depuración
+  console.log('Update Data before update:', updateData); // Verifica que updateData sea lo que esperas
+  console.log('Image Path:', imagePath); // Verifica que imagePath sea una cadena
+
+
 
   try {
     await Artist.update(updateData, {
@@ -96,92 +105,111 @@ export const updateArtist = async (req, res) => {
         roleIds = [parseInt(roleIds, 10)];
       }
 
+      const existingRoles = await ArtistRoles.findAll({ where: { artist_id: artistId } });
+      const existingRoleIds = existingRoles.map(role => role.role_id);
+
+      const rolesToAdd = roleIds.filter(roleId => !existingRoleIds.includes(roleId));
+      const rolesToRemove = existingRoleIds.filter(roleId => !roleIds.includes(roleId));
+
+      if (rolesToRemove.length > 0) {
+        await ArtistRoles.destroy({ where: { artist_id: artistId, role_id: rolesToRemove } });
+      }
+
+      if (rolesToAdd.length > 0) {
+        const artistRoles = rolesToAdd.map((roleId) => ({ artist_id: artistId, role_id: roleId }));
+        await ArtistRoles.bulkCreate(artistRoles);
+
       // Eliminar los roles existentes del artista
       await ArtistRoles.destroy({ where: { artist_id: artistId } });
-
-      // Asignar los nuevos roles
-      const artistRoles = roleIds.map((roleId) => ({ artist_id: artistId, role_id: roleId }));
       await ArtistRoles.bulkCreate(artistRoles);
     }
+  }
 
     const updatedArtist = await Artist.findByPk(artistId, {
       include: [{
-        model: Role, 
+        model: Role,
         as: 'Roles',
-        through: { attributes: [ 
-          'role_id',
-          'artist_id',
-        ] },
+        through: {
+          attributes: [],
+        },
       }],
     });
 
 
-      res.json(updatedArtist);
-    } catch (error) {
-      console.error('Error updating artist:', error);
-      res.status(500).json({ message: 'Error updating artist' });
+    res.json(updatedArtist);
+  } catch (error) {
+    console.error('Error updating artist:', error);
+    res.status(500).json({ message: 'Error updating artist', details: error.message });
+  }
+};
+
+export const deleteArtist = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const artist = await Artist.findOne({ where: { user_id: id } });
+
+    if (artist) {
+      await ArtistRoles.destroy({ where: { artist_id: artist.id } });
+      await Artist.destroy({ where: {id: artist.id }});
     }
-  };
 
-  export const deleteArtist = async (req, res) => {
-    try {
-      const { id } = req.params;
-      await Artist.destroy({ where: { id } });
-      await User.destroy({ where: { id } });
+    await User.destroy({ where: { id } });
 
-      res.status(200).json({ message: 'Artist and user account deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting artist:', error);
-      res.status(500).json({ message: error.message });
+    res.status(200).json({ message: 'Artist and user account deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting artist:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getArtists = async (req, res) => {
+
+  try {
+    const artists = await Artist.findAll({
+      include: [{
+        model: Role,
+        as: 'Roles',
+        through: { attributes: [] },
+      }],
+    });
+    res.status(200).json(artists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getArtistById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const artist = await Artist.findByPk(id, {
+      include: [{ model: Role, as: 'Roles' }],
+    });
+    if (!artist) {
+      return res.status(404).json({ message: 'Artist not found' });
     }
-  };
+    res.status(200).json(artist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-  export const getArtists = async (req, res) => {
+export const getArtistReleases = async (req, res) => {
+  const { id } = req.params;
 
-    try { 
-      const artists  =  await  Artist.findAll({
-        include: [{ model: Role, 
-          as: 'Roles',
-          through: { attributes: [] },
-        }],
-      });
-      res.status(200).json(artists);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  try {
+    const artist = await Artist.findByPk(id, {
+      include: { model: Release, as: 'releases' },
+    });
+
+    if (!artist) {
+      return res.status(404).json({ message: 'Artist not found' });
     }
-  };
 
-  export const getArtistById = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-      const artist = await Artist.findByPk(id, {
-        include: [{ model: Role, as: 'Roles' }],
-      });
-      if (!artist) {
-        return res.status(404).json({ message: 'Artist not found' });
-      }
-      res.status(200).json(artist);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
-
-  export const getArtistReleases = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-      const artist = await Artist.findByPk(id, {
-        include: { model: Release, as: 'releases' },
-      });
-
-      if (!artist) {
-        return res.status(404).json({ message: 'Artist not found' });
-      }
-
-      res.status(200).json(artist.releases);
-    } catch (error) {
-      console.error('Error fetching artist releases:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  };
+    res.status(200).json(artist.releases);
+  } catch (error) {
+    console.error('Error fetching artist releases:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

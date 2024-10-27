@@ -14,12 +14,11 @@ const createToken = (adminId) => {
 export const createAdmin = async ({ username, email, password }) => {
   const hashedPassword = await bcrypt.hash(password, 10)
   try {
-    const newAdmin = await Admin.create({
-        username,
-        email,
-      password: hashedPassword,
-    })
-    return newAdmin
+    return await Admin.create({
+            username,
+            email,
+          password: hashedPassword,
+        });
   } catch (error) {
     throw new Error(`Error creating admin: ${error.message}`)
   }
@@ -28,7 +27,9 @@ export const createAdmin = async ({ username, email, password }) => {
 export const findAdminByEmail = async (email) => {
   try {
     const admin = await Admin.findOne({ where: { email } })
-    if (!admin) throw new Error('Admin not found')
+    if (!admin) {
+      throw new Error('Admin not found')
+    }
     return admin
   } catch (error) {
     throw new Error(`Error finding admin by email: ${error.message}`)
@@ -38,7 +39,9 @@ export const findAdminByEmail = async (email) => {
 export const findAdminByUsername = async (username) => {
   try {
     const admin = await Admin.findOne({ where: { username } })
-    if (!admin) throw new Error('Admin not found')
+    if (!admin) {
+      throw new Error('Admin not found')
+    }
     return admin
   } catch (error) {
     throw new Error(`Error finding admin by username: ${error.message}`)

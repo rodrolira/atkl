@@ -33,3 +33,4 @@ router.put('/artists/:artistId', upload.single('image'), updateArtist)
 router.delete('/artists/:id', deleteArtist)
 
 export default router
+

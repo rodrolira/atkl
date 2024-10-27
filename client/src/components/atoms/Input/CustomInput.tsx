@@ -79,7 +79,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
             onBlur={onBlur}
             autoComplete={autoComplete ? 'on' : 'off'}
             inputProps={{
-              autocomplete: { autoComplete: 'off' },
+              autoComplete: { autoComplete: 'off' },
             }}
             value={value}
             sx={{
