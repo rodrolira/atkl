@@ -18,7 +18,7 @@ interface ArtistLinksProps {
 }
 
 const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => (
-  <div className="flex flex-wrap space-x-2 text-2xl items-center justify-center py-2">
+  <div className="flex flex-wrap space-x-2 text-2xl items-center justify-center py-2 z-10 relative" >
     {artist.twitter_link && (
       <Link
         to={artist.twitter_link}

@@ -48,7 +48,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
       setIsAuthenticated(true);
       setUser(res.data.admin);
     } catch (error: any) {
-      console.log('Admin verification failed:', error);
+      // console.log('Admin verification failed:', error);
       setIsAuthenticated(false);
       setUser(null);
       setErrors([error.response?.message || 'Error verifying token']);
@@ -73,8 +73,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
       const response = await loginAdminRequest(credentials); // Llama a la función de inicio de sesión
       // Verificar que response.data contiene el token y los datos del admin
       if (response  && response.token && response.admin) {
-        const token = response.token;
-        const admin = response.admin;
+        const {token, admin} = response;
 
         localStorage.setItem('token', token);
         setIsAuthenticated(true);

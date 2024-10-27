@@ -29,11 +29,24 @@ export const getArtistReleases = (id) => {
 };
 
 export const createArtistRequest = async (artist) => {
-  return await axios.post('/artists', artist);
+  const formData = new FormData();
+  Object.keys(artist).forEach((key) => {
+    formData.append(key, artist[key]);
+  })
+  return await axios.post('/artists', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
 };
 
 export const updateArtistRequest = async (artistId, artist) => {
-  return await axios.put(`/artists/${artistId}`, artist, {
+  const formData = new FormData();
+  Object.keys(artist).forEach((key) => {
+    formData.append(key, artist[key]);
+  })
+  return await axios.put(`/artists/${artistId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data', // Cambia a 'application/json' si no usas FormData
     },
@@ -41,6 +54,7 @@ export const updateArtistRequest = async (artistId, artist) => {
 };
 export const deleteArtistRequest = async (id) => {
   return await axios.delete(`/artists/${id}`);
+  
 };
 
 export const getRolesRequest = async () => {

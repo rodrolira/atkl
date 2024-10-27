@@ -24,7 +24,7 @@ const Artist = sequelize.define(
       allowNull: true,
     },
     image: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     bandcamp_link: {

@@ -7,20 +7,8 @@ import {
   updateReleaseRequest,
   deleteReleaseRequest,
 } from '@/app/api/releases';
-import Release from '@/types/interfaces/Release'; // Define la interfaz `Release` para representar un release
+import { Release, ReleaseContextType } from '@/types/interfaces/Release'; // Define la interfaz `Release` para representar un release
 
-// Define el tipo del contexto
-interface ReleaseContextType {
-  releases: Release[];
-  setReleases: React.Dispatch<React.SetStateAction<Release[]>>;
-  fetchReleases: () => Promise<void>;
-  fetchRelease: (id: string | number) => Promise<Release | undefined>;
-  createRelease: (release: Release) => Promise<Release | undefined>;
-  updateRelease: (id: string | number, updatedRelease: Release) => Promise<Release | undefined>;
-  deleteRelease: (id: string | number) => Promise<void>;
-  loading: boolean;
-  error: string | null;
-}
 
 export const ReleaseContext = createContext<ReleaseContextType | undefined>(undefined);
 
@@ -40,7 +28,7 @@ interface ReleaseProviderProps {
   children: ReactNode;
 }
 
-export function ReleaseProvider({ children }: ReleaseProviderProps) {
+export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) => {
   const [releases, setReleases] = useState<Release[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +48,7 @@ export function ReleaseProvider({ children }: ReleaseProviderProps) {
   }, []);
 
   // Lógica para obtener un release por ID
-  const fetchRelease = async (id: string | number): Promise<Release | undefined> => {
+  const fetchRelease = async (id: number): Promise<Release> => {
     try {
       const response = await getReleaseRequest(id);
       return response.data;
@@ -82,7 +70,7 @@ export function ReleaseProvider({ children }: ReleaseProviderProps) {
   };
 
   // Lógica para actualizar un release
-  const updateRelease = async (id: string | number, updatedRelease: Release): Promise<Release | undefined> => {
+  const updateRelease = async (id:  number, updatedRelease: Partial<Release>): Promise<void> => {
     try {
       const response = await updateReleaseRequest(id, updatedRelease);
       setReleases((prevReleases) =>
@@ -96,7 +84,7 @@ export function ReleaseProvider({ children }: ReleaseProviderProps) {
   };
 
   // Lógica para eliminar un release
-  const deleteRelease = async (id: string | number): Promise<void> => {
+  const deleteRelease = async (id: number): Promise<void> => {
     try {
       await deleteReleaseRequest(id);
       setReleases((prevReleases) =>
@@ -125,4 +113,4 @@ export function ReleaseProvider({ children }: ReleaseProviderProps) {
       {children}
     </ReleaseContext.Provider>
   );
-}
+};

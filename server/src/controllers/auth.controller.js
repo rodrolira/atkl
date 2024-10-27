@@ -17,12 +17,11 @@ export const createUser = async ({ username, email, password }) => {
   const hashedPassword = await bcrypt.hash(password, 10)
 
   try {
-    const newUser = await User.create({
-      username,
-      email,
-      password: hashedPassword,
-    })
-    return newUser
+    return await User.create({
+          username,
+          email,
+          password: hashedPassword,
+        });
   } catch (error) {
     throw new Error(`Error creating user: ${error.message}`)
   }
@@ -30,8 +29,7 @@ export const createUser = async ({ username, email, password }) => {
 
 export const findUserByEmail = async (email) => {
   try {
-    const user = await User.findOne({ where: { email } })
-    return user
+    return await User.findOne({ where: { email } });
   } catch (error) {
     throw new Error(`Error finding user by email: ${error.message}`)
   }
@@ -39,8 +37,7 @@ export const findUserByEmail = async (email) => {
 
 export const findUserByUsername = async (username) => {
   try {
-    const user = await User.findOne({ where: { username } })
-    return user
+    return await User.findOne({ where: { username } });
   } catch (error) {
     throw new Error(`Error finding user by username: ${error.message}`)
   }
@@ -60,9 +57,7 @@ export const loginUser = async (username, password) => {
       throw new Error('Invalid credentials')
     }
 
-    const token = createToken(user.id)
-
-    return token
+    return createToken(user.id);
   } catch (error) {
     throw new Error(`Error logging in user: ${error.message}`)
   }

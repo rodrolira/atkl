@@ -2,6 +2,7 @@ import React from 'react';
 import ArtistImage from './ArtistImage';
 import ArtistLinks from './ArtistLinks';
 import { Artist } from '@/types/interfaces/Artist';
+import { Role } from '@/types/interfaces/Role';
 
 
 interface ArtistDetailsProps {
@@ -12,7 +13,7 @@ interface ArtistDetailsProps {
 
 const ArtistDetails: React.FC<ArtistDetailsProps> = ({ artist, adminAuthenticated, openEditModal }) => {
   const rolesText = artist.Roles && artist.Roles.length > 0
-    ? artist.Roles.map((role) => role.label).join(' / ')
+    ? artist.Roles.map((role) => (role as Role).label).join(' / ')
     : 'No roles assigned';
 
   return (

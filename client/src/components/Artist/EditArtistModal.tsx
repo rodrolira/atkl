@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import FileUpload from '@/components/Upload/FileUpload';
@@ -11,6 +11,7 @@ import Title from '../atoms/Title/Title';
 import { Artist } from '@/types/interfaces/Artist';
 import { Role } from '@/types/interfaces/Role';
 import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
+import FileUploadComponent from '../Upload/FileUploadComponent';
 
 const validationSchema = Yup.object().shape({
   artist_name: Yup.string().required('Artist name is required'),
@@ -23,7 +24,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const [initialValues, setInitialValues] = useState<Partial<Artist>>({
     id: Number(id),
     artist_name: '',
-    image: null,
+    image: '',
     twitter_link: '',
     instagram_link: '',
     facebook_link: '',
@@ -37,12 +38,11 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const [roles, setRoles] = useState<Role[]>([]);
   const { updateArtist, deleteArtist } = useArtists();
 
-
   useEffect(() => {
-    const fetchArtist = async (artist_id: string) => {
+    const fetchArtist = async (artist_id: number) => {
       try {
         const response = await getArtistRequest(artist_id);
-        const artistRoles = response.data.roles || [];  
+        const artistRoles = response.data.roles || [];
         setInitialValues({
           ...response.data,
           roleIds: artistRoles.map((role: Role) => role.id),
@@ -63,7 +63,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       }
     };
 
-    fetchArtist(id);
+    fetchArtist( id);
     fetchRoles();
   }, [id]);
 
@@ -73,13 +73,21 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       if (key in values) {
         if (key === 'roleIds') {
           formData.append(key, values[key as keyof Artist]?.toString() ?? '');
-        } else if (key === 'image' && values[key as keyof Artist]) {
-          formData.append(key, values[key as keyof Artist] as File);
+        } else if (key === 'image' && (values[key])) {
+          // Directly check if it's an instance of File
+          formData.append(key, values[key]); // Cast to File
         } else {
-          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
+          const value = values[key as keyof Artist];
+          if (value !== null && value !== undefined) {
+            formData.append(key, value.toString());
+          }
         }
       }
     });
+  
+      // Add this log to debug the formData contents
+  console.log('FormData:', formData.get('image')); // Check if the image is appended correctly
+
 
     const roleIdsValue = formData.get('roleIds');
     const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
@@ -88,7 +96,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       id: Number(id),
       artist_name: formData.get('artist_name') as string,
       email: formData.get('email') as string,
-      image: formData.get('image') as File,
+      image: formData.get('image') as string,
       twitter_link: formData.get('twitter_link') as string,
       instagram_link: formData.get('instagram_link') as string,
       facebook_link: formData.get('facebook_link') as string,
@@ -100,6 +108,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       roleIds: roleIds,
       Roles: values.roleIds,
     };
+
     try {
       await updateArtist(id, artistData);
       onClose();
@@ -120,30 +129,13 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
     }
   };
 
-
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center z-50 relative ">
       <Formik
         initialValues={initialValues as Artist & Partial<Artist>}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          const formData = new FormData();
-          formData.append('artist_name', values.artist_name);
-          if (values.image) {
-            formData.append('image', values.image);
-          }
-          formData.append('twitter_link', values?.twitter_link ?? '');
-          formData.append('instagram_link', values?.instagram_link ?? '');
-          formData.append('facebook_link', values?.facebook_link ?? '');
-          formData.append('soundcloud_link', values?.soundcloud_link ?? '');
-          formData.append('bandcamp_link', values?.bandcamp_link ?? '');
-          formData.append('youtube_link', values?.youtube_link ?? '');
-          formData.append('spotify_link', values?.spotify_link ?? '');
-          formData.append('bio', values?.bio ?? '');
-          formData.append('roleIds', values.roleIds.join(','));
-          handleSubmit(values, { setSubmitting: false });
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
@@ -173,12 +165,12 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               />
             </div>
 
-          {/* Image upload */}
+            {/* Image upload */}
             <div className="mb-4">
-              <FileUpload setFieldValue={setFieldValue} name="image" />
+              <FileUpload  />
             </div>
 
-          {/* Roles Selection */}
+            {/* Roles Selection */}
             <FormControl className="!mb-4 !block" fullWidth variant="outlined">
               <InputLabel className="!block !text-gray-700 !font-bold !mb-2">
                 {t('addArtist.selectRole')}:

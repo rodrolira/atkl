@@ -9,7 +9,7 @@ import {
 import { Icon } from '@iconify/react';
 
 const SocialMediaIcons: React.FC = () => (
-  <div className="flex gap-4 text-white sm:justify-center px-4">
+  <div className="flex gap-4 text-white sm:justify-center z-10 px-4">
     <Link
       to="https://www.instagram.com/atkl.records/"
       target="_blank"

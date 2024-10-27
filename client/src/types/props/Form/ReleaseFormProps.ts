@@ -6,3 +6,8 @@ export interface ReleaseFormProps {
     genres: Array<{ id: number; name: string }>;
     handleClose: () => void;
 }
+
+export interface EditReleaseModalProps {
+    id: number;
+    onClose: () => void
+}

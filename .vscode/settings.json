@@ -2,5 +2,7 @@
     "cSpell.words": [
         "ATKL"
     ],
-    "tinypng.apiKey": "S73yvXr2Wr8MKCqtYmMqyzq3DqxFW44F"
+    "tinypng.apiKey": "S73yvXr2Wr8MKCqtYmMqyzq3DqxFW44F",
+    "frontMatter.framework.id": "other",
+    "frontMatter.content.publicFolder": ""
 }
