@@ -35,7 +35,7 @@ const ArtistImage: React.FC<ArtistImageProps> = ({ image, alt, adminAuthenticate
       </Button>
     )}
 
-    <img className="rounded-t-lg" src={image} alt={alt} />
+    <img className="rounded-t-lg w-full" src={image} alt={alt} />
   </div>
 );
 

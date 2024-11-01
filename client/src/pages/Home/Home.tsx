@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
                 <div>
                   <img
                     alt="main"
-                    className="mt-0 mx-auto md:mt-24 sm:w-3/4 xl:w-2/5 lg:w-1/2"
+                    className="mt-0 mx-auto md:mt-24 sm:w-3/4 xl:w-2/5 lg:w-1/2 inverted md:inset-0"
                     src="/img/main.png"
                   />
                 </div>

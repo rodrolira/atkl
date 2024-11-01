@@ -16,9 +16,20 @@ import FileUploadComponent from '../Upload/FileUploadComponent';
 const validationSchema = Yup.object().shape({
   artist_name: Yup.string().required('Artist name is required'),
   image: Yup.mixed(),
+  roleIds: Yup.array().required('Role is required'),
+  bio: Yup.string(),
+  twitter_link: Yup.string(),
+  instagram_link: Yup.string(),
+  facebook_link: Yup.string(),
+  soundcloud_link: Yup.string(),
+  bandcamp_link: Yup.string(),  
+  youtube_link: Yup.string(),
+  spotify_link: Yup.string(),  
+  apple_music_link: Yup.string(),
+  beatport_link: Yup.string(),
 });
 
-const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
+const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState<Partial<Artist>>({
@@ -32,7 +43,10 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
     bandcamp_link: '',
     youtube_link: '',
     spotify_link: '',
+    apple_music_link: '',
+    beatport_link: '',
     roleIds: [],
+    roles: [] as Role[],
     bio: '',
   });
   const [roles, setRoles] = useState<Role[]>([]);
@@ -53,7 +67,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
     };
 
     const fetchRoles = async () => {
-      try {
+      try { 
         const response = await getRolesRequest();
         if (response && response.data) {
           setRoles(response.data);
@@ -63,51 +77,51 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       }
     };
 
-    fetchArtist( id);
+    fetchArtist(id);
     fetchRoles();
   }, [id]);
 
   const handleSubmit = async (values: Artist, { setSubmitting }: any) => {
     const formData = new FormData();
+
+    // Añade todos los campos, incluso los vacíos
     Object.keys(values).forEach((key) => {
-      if (key in values) {
+      const value = values[key as keyof Artist];
         if (key === 'roleIds') {
           formData.append(key, values[key as keyof Artist]?.toString() ?? '');
-        } else if (key === 'image' && (values[key])) {
-          // Directly check if it's an instance of File
-          formData.append(key, values[key]); // Cast to File
-        } else {
-          const value = values[key as keyof Artist];
-          if (value !== null && value !== undefined) {
-            formData.append(key, value.toString());
-          }
-        }
-      }
-    });
-  
-      // Add this log to debug the formData contents
-  console.log('FormData:', formData.get('image')); // Check if the image is appended correctly
+      } else if (key === 'image' && value) {
+        formData.append(key, value as File);
+      } else {
+        formData.append(key, value); // Asegura que se envíen como cadena vacía
+      } 
+    }); 
 
+    // Verificación de campos en FormData antes de enviarlo
+    console.log('FormData:', Array.from(formData.entries()));
 
     const roleIdsValue = formData.get('roleIds');
-    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
+    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(stringId => Number(stringId)) : [];
 
+    // Crea el objeto de datos del artista, asegurando que los campos vacíos sean cadenas vacías
     const artistData: Artist = {
       id: Number(id),
       artist_name: formData.get('artist_name') as string,
       email: formData.get('email') as string,
       image: formData.get('image') as string,
-      twitter_link: formData.get('twitter_link') as string,
-      instagram_link: formData.get('instagram_link') as string,
-      facebook_link: formData.get('facebook_link') as string,
-      soundcloud_link: formData.get('soundcloud_link') as string,
-      bandcamp_link: formData.get('bandcamp_link') as string,
-      youtube_link: formData.get('youtube_link') as string,
-      spotify_link: formData.get('spotify_link') as string,
-      bio: formData.get('bio') as string,
-      roleIds: roleIds,
+      twitter_link: formData.get('twitter_link') as string || '',
+      instagram_link: formData.get('instagram_link') as string || '',
+      facebook_link: formData.get('facebook_link') as string || '',
+      soundcloud_link: formData.get('soundcloud_link') as string || '',
+      bandcamp_link: formData.get('bandcamp_link') as string || '',
+      youtube_link: formData.get('youtube_link') as string || '',
+      spotify_link: formData.get('spotify_link') as string || '',
+      apple_music_link: formData.get('apple_music_link') as string || '',
+      beatport_link: formData.get('beatport_link') as string || '',
+      bio: formData.get('bio') as string || '',
+      roleIds:  roleIds || [],
       Roles: values.roleIds,
     };
+
 
     try {
       await updateArtist(id, artistData);
@@ -167,7 +181,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
 
             {/* Image upload */}
             <div className="mb-4">
-              <FileUpload  />
+              <FileUpload />
             </div>
 
             {/* Roles Selection */}
@@ -177,13 +191,15 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               </InputLabel>
               <Field
                 className="!shadow !appearance-none !border !rounded !w-full !text-gray-700 !leading-tight !focus:!outline-none !focus:!shadow-outline"
-                as={Select}
                 name="roleIds"
+                as={Select}
                 multiple
                 value={values.roleIds}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
-                  setFieldValue('roleIds', event.target.value as number[])
-                }
+                id="roleIds"
+                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                  setFieldValue('roleIds', event.target.value as number[]);
+                }}
+                
               >
                 {roles.map((role) => (
                   <MenuItem key={role.id} value={role.id}>
@@ -220,11 +236,13 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               'bandcamp_link',
               'youtube_link',
               'spotify_link',
+              'apple_music_link',
+              'beatport_link',
             ].map((link) => (
               <div className="mb-4 flex" key={link}>
                 <label
                   htmlFor={link}
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-2 w-1/5"
                 >
                   {t(`social_links.${link}`)}:
                 </label>
@@ -232,8 +250,8 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
                   type="text"
                   id={link}
                   name={link}
-                  className="shadow appearance-none border ms-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder={`${link.replace('_', ' ')} Link`}
+                  className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder={t(`${link}`) } 
                 />
                 <ErrorMessage
                   name={link}

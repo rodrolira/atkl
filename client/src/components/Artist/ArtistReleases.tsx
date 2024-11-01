@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import ReleaseCard from '@/components/Release/ReleaseCard';
 import { Artist } from '@/types/interfaces/Artist';
-import Release from '../../types/interfaces/Release';
+import {Release} from '../../types/interfaces/Release';
 
 
 
@@ -36,17 +36,17 @@ const ArtistReleases: React.FC<ArtistReleasesProps> = ({ artist }) => {
   return (
     <div>
       <Title> Releases </Title>
-      <div className="p-4 text-white text-center">
+      <div className="p-4 text-white text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {releases.length > 0 ? (
           releases.map((release) => (
-            <div key={release.id} className="mb-4">
+            <div key={release.id} className="mb-4 ">
               <ReleaseCard
                 release={release} // Pass the entire release object
               />
             </div>
           ))
         ) : (
-          <p>
+          <p className="col-span-full">
             {t('artistReleases.noReleases')}
           </p>
         )}

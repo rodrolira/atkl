@@ -17,10 +17,12 @@ Release.belongsTo(Genre, { foreignKey: 'genre_id', as: 'genre' })
 Genre.hasMany(Release, { foreignKey: 'genre_id', as: 'releases' })
 
 // Definir la asociación entre Release y Artist (many-to-many)
-Release.belongsToMany(Artist, { through: 'ReleaseArtist', foreignKey: 'release_id', as: 'artists' })
-Artist.belongsToMany(Release, { through: 'ReleaseArtist', foreignKey: 'artist_id', as: 'releases' })
+Release.belongsToMany(Artist, { through: 'ReleaseArtists', foreignKey: 'release_id', as: 'artists' })
+Artist.belongsToMany(Release, { through: 'ReleaseArtists', foreignKey: 'artist_id', as: 'releases' })
 
 // Definir la relación entre Artist y Role (many-to-many)
 Artist.belongsToMany(Role, { through: ArtistRoles, as: 'Roles', foreignKey: 'artist_id' })
 Role.belongsToMany(Artist, { through: ArtistRoles, as: 'Artists', foreignKey: 'role_id' })
+
+
 

@@ -10,10 +10,11 @@ import ArtistReleases from '@/components/Artist/ArtistReleases';
 import ArtistBio from '@/components/Artist/ArtistBio';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import ArtistName from '@/components/Artist/ArtistName';
+import Loading from '@/components/atoms/Loading/Loading';
 
 // Definimos la interfaz para los parámetros de la URL
 interface Params {
-  id: string;
+  id: number;
   artist_name: string;
   bio: string;
 }
@@ -31,7 +32,7 @@ const ArtistPage: React.FC = () => {
   }
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div><Loading /></div>;
   }
 
   if (!artist) {
@@ -66,7 +67,7 @@ const ArtistPage: React.FC = () => {
       </div>
       {showEditModal && (
         <Modal onClose={closeEditModal} aria-labelledby="edit-artist-modal">
-          <EditArtistModal id={id} onClose={closeEditModal} />
+          <EditArtistModal id={+id} onClose={closeEditModal} />
         </Modal>
       )}
     </>

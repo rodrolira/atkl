@@ -33,14 +33,14 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
 };
 
   return (
-    <FormGroup className="mb-3 w-full" controlId={name}>
-      <FormLabel className="block font-bold mb-2 w-full text-gray-700">
-        {t(labelKey)}
+    <FormGroup className="mb-3 w-full flex justify-center items-center" controlId={name}>
+      <FormLabel className="block font-bold mb-2 w-1/5 text-gray-700">
+        {t(labelKey)}:
       </FormLabel>
-      <div className="w-full">
+      <div className="w-full flex justify-center  mx-auto">
         <FormControl
           type="file"
-          className="shadow appearance-none border border-1 solid rounded !w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow !mx-auto appearance-none border border-1 solid rounded !w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           onChange={handleChange}
           isInvalid={isInvalid}
           isValid={isValid}

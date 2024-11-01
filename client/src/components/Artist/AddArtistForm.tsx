@@ -17,76 +17,114 @@ import * as Yup from 'yup';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useTranslation } from 'react-i18next';
 import FileUpload from '@/components/Upload/FileUpload';
-import { getRolesRequest } from '@/app/api/artists';
+import { getArtistRequest, getRolesRequest } from '@/app/api/artists';
 import { motion } from 'framer-motion'; // Importamos framer-motion
 import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
+import { Role } from '@/types/interfaces/Role';
+import { Artist } from '@/types/interfaces/Artist';
 
-const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, onArtistAdded }) => {
+const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, onArtistAdded, id }) => {
   const { t } = useTranslation();
-  const [roles, setRoles] = useState<any[]>([]); // Cambia `any` por un tipo más específico si lo tienes
   const [error, setError] = useState<string | null>(null);
+  const [initialValues, setInitialValues] = useState<Partial<Artist>>({
+    id: Number(id),
+    artist_name: '',
+    email: '',
+    username: '',
+    password: '',
+    bio: '',
+    image: '',
+    roleIds: [],
+  });
+  const [roles, setRoles] = useState<Role[]>([]); // Cambia `any` por un tipo más específico si lo tienes
   const { createArtist } = useArtists();
 
-  const onSubmit = async (values: any, actions: any) => { // Cambia `any` por un tipo más específico
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (key === 'roleIds') {
-        formData.append(key, values[key].join(','));
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
-
-    const artistData = {
-      id: values.id,
-      artist_name: values.artist_name,
-      email: values.email,
-      username: values.username,
-      password: values.password,
-      bio: values.bio,
-      image: values.image,
-      roleIds: values.roleIds,
-      Roles: values.roleIds,
-    };
-
-    if(artistData){
-    try {
-      const newArtist = await createArtist(artistData);
-      actions.setSubmitting(false);
-      closePopup();
-      onArtistAdded && onArtistAdded(newArtist!);
-    } catch (error) {
-      console.error('Error adding artist:', error);
-      setError(t('error.addArtist'));
-      actions.setSubmitting(false);
-    }
-  } else {
-    console.error('Error: artistData is undefined');
-    setError(t('error.addArtist'));
-    actions.setSubmitting(false);
-  }};
 
   useEffect(() => {
+    const fetchArtist = async (artist_id: number) => {
+      try {
+        const response = await getArtistRequest(artist_id);
+        const artistRoles = response.data.roles || [];
+        setInitialValues({
+          ...response.data,
+          roleIds: artistRoles.map((role: Role) => role.id),
+        });
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+
     const fetchRoles = async () => {
       try {
         const response = await getRolesRequest();
-        
-        console.log('API Response:', response); // Check the response structure
-
-        // Since the response is directly an array, no need to access `response.data`
-        if (Array.isArray(response.data)) {
+        if (response && response.data) {
           setRoles(response.data);
-        } else {
-          console.error('Unexpected response format:', response);
         }
       } catch (error) {
         console.error('Error fetching roles:', error);
-        setError('Error fetching roles');
       }
     };
 
+    if (id !== undefined) {
+      fetchArtist(id);
+    }
     fetchRoles();
-  }, []);
+  }, [id]);
+
+
+  const onSubmit = async (values: Artist, { setSubmitting }: any) => { // Cambia `any` por un tipo más específico
+    const formData = new FormData();
+
+    Object.keys(values).forEach((key) => {
+        const value = values[key as keyof Artist];
+        if (key === 'roleIds') {
+          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
+        } else if (key === 'image' && (values[key])) {
+          // Directly check if it's an instance of File
+          formData.append(key, values[key]); // Cast to File
+        } else {
+            formData.append(key, value);
+        }
+
+    });
+
+    // Add this log to debug the formData contents
+    console.log('FormData:', formData.get('image')); // Check if the image is appended correctly
+
+    const roleIdsValue = formData.get('roleIds');
+    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
+
+    const artistData: Artist = {
+      id: Number(id),
+      artist_name: formData.get('artist_name') as string,
+      email: formData.get('email') as string,
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+      bio: formData.get('bio') as string,
+      image: formData.get('image') as string,
+      roleIds: roleIds,
+      Roles: values.roleIds,
+      twitter_link: formData.get('twitter_link') as string || '',
+      instagram_link: formData.get('instagram_link') as string || '',
+      facebook_link: formData.get('facebook_link') as string || '',
+      soundcloud_link: formData.get('soundcloud_link') as string || '',
+      bandcamp_link: formData.get('bandcamp_link') as string || '',
+      youtube_link: formData.get('youtube_link') as string || '',
+      spotify_link: formData.get('spotify_link') as string || '',
+
+    };
+
+    try {
+      await createArtist(artistData);
+      closePopup();
+    } catch (error) {
+      console.error('Error adding artist:', error);
+      setError(t('error.addArtist'));
+      setSubmitting(false);
+    }
+  };
+
+
 
   const renderField = (name: string, label: string, type: string = 'text', autoComplete: string = 'on') => (
     <Field name={name}>
@@ -131,6 +169,9 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
           flexDirection: 'column',
           position: 'relative',
           float: 'right',
+          backgroundColor: 'rgba(18, 46, 15, 0.9)',
+          backgroundImage: 'none',
+
         },
         component: motion.div, // Añade la animación
         variants: modalVariants, // Asigna las variantes
@@ -148,35 +189,17 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
       </DialogTitle>
       <DialogContent>
         <Formik
-          initialValues={{
-            artist_name: '',
-            username: '',
-            email: '',
-            password: '',
-            bio: '',
-            image: '',
-            roleIds: [], // Define como un array de strings
-            bandcamp_link: '',
-            facebook_link: '',
-            instagram_link: '',
-            soundcloud_link: '',
-            twitter_link: '',
-            youtube_link: '',
-            spotify_link: '',
-            beatport_link: '',
-            apple_music_link: '',
-          }}
+          initialValues={initialValues as Artist & Partial<Artist>}
+          enableReinitialize
           validationSchema={Yup.object().shape({
             artist_name: Yup.string().required(
               t('validation.artistNameRequired'),
             ),
-            username: Yup.string().required(t('validation.usernameRequired')),
+            username: Yup.string(),
             email: Yup.string()
-              .email(t('validation.invalidEmail'))
-              .required(t('validation.emailRequired')),
+              .email(t('validation.invalidEmail')),
             password: Yup.string()
-              .min(6, t('validation.passwordMin'))
-              .required(t('validation.passwordRequired')),
+              .min(6, t('validation.passwordMin')),
             bio: Yup.string(),
             image: Yup.mixed(),
             roleIds: Yup.array()
@@ -206,35 +229,25 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
                   'password',
                   'current-password',
                 )}
-                <FileUpload/>
+                <FileUpload />
 
                 {/* Roles Section */}
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>{t('addArtist.selectRole')}</InputLabel>
-                  <Field name="roleIds">
-                    {({ field, form }: { field: any; form: any }) => (
-                      <Select
-                        {...field}
-                        multiple
-                        label={t('addArtist.selectRole')}
-                        onChange={(event) =>
-                          setFieldValue('roleIds', event.target.value)
-                        }
-                        value={values.roleIds}
-                        error={form.errors.roleIds && form.touched.roleIds}
-                        renderValue={(selected: number[]) => {
-                          // Muestra los nombres de los roles seleccionados
-                          const selectedRoles = roles.filter(role => selected.includes(role.id));
-                          return selectedRoles.map(role => role.label).join(' / ');
-                        }}
-                      >
-                        {roles.map((role) => (
-                          <MenuItem key={role.id} value={role.id}>
-                            {role.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
+                  <Field
+                    name="roleIds"
+                    as={Select}
+                    multiple
+                    value={values.roleIds}
+                    onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+                      setFieldValue('roleIds', event.target.value as number[])
+                    }>
+
+                    {roles.map((role) => (
+                      <MenuItem key={role.id} value={role.id}>
+                        {role.label}
+                      </MenuItem>
+                    ))}
                   </Field>
                 </FormControl>
 

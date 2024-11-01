@@ -12,7 +12,8 @@ import { Link } from 'react-router-dom';
 import ReleaseLinks from './ReleaseLinks';
 import BaseCard from '@/components/Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
-import Release from '@/types/interfaces/Release';
+import { Release } from '@/types/interfaces/Release';
+import Loading from '../atoms/Loading/Loading';
 
 
 interface ReleaseCardProps {
@@ -79,14 +80,18 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   };
 
   if (!currentRelease) {
-    return <div>Loading...</div>; // Render a loading state or message
+    return <div><Loading /></div>; // Render a loading state or message
   }
 
   return (
     <>
-      <BaseCard>
+      <BaseCard className="border !border-purple-500">
         <div className="w-full rounded-t-lg overflow-hidden relative">
           <h3 className="text-xl font-bold mt-2">{currentRelease.title}</h3>
+          {/* Display Genre and Type */}
+          <p className="text-sm text-white">{currentRelease.genre?.name}</p>
+          <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
+
           {currentRelease.artists && currentRelease.artists.length > 0 ? (
             currentRelease.artists.map((artist) => (
               <Link
@@ -94,8 +99,8 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
                 className="block relative"
                 key={artist.id}
               >
-                <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2">
-                  {artist.artist_name}
+                <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+                  {t('artist')}: {artist.artist_name}
                 </h3>
               </Link>
             ))

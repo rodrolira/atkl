@@ -28,7 +28,7 @@ interface ReleaseProviderProps {
   children: ReactNode;
 }
 
-export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) => {
+export const ReleaseProvider: React.FC<ReleaseProviderProps> = ({ children }) => {
   const [releases, setReleases] = useState<Release[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,10 +39,10 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) 
     try {
       const response = await getReleasesRequest();
       setReleases(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching releases:', error);
       setError('Failed to fetch releases');
+    } finally {
       setLoading(false);
     }
   }, []);
@@ -59,7 +59,7 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) 
   };
 
   // Lógica para crear un release
-  const createRelease = async (release: Release): Promise<Release | undefined> => {
+  const createRelease = async (release: Release): Promise<void> => {
     try {
       const res = await createReleaseRequest(release);
       setReleases((prevReleases) => [...prevReleases, res.data]);
@@ -70,7 +70,7 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) 
   };
 
   // Lógica para actualizar un release
-  const updateRelease = async (id:  number, updatedRelease: Partial<Release>): Promise<void> => {
+  const updateRelease = async (id: number, updatedRelease: Partial<Release>): Promise<void> => {
     try {
       const response = await updateReleaseRequest(id, updatedRelease);
       setReleases((prevReleases) =>
@@ -96,19 +96,20 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> =({ children }) 
     }
   };
 
+  const value = {
+    releases,
+    loading,
+    error,
+    fetchReleases,
+    fetchRelease,
+    createRelease,
+    updateRelease,
+    deleteRelease,
+    setReleases,
+  };
   return (
     <ReleaseContext.Provider
-      value={{
-        releases,
-        setReleases,
-        fetchReleases,
-        createRelease,
-        updateRelease,
-        deleteRelease,
-        fetchRelease,
-        loading,
-        error,
-      }}
+      value={value}
     >
       {children}
     </ReleaseContext.Provider>

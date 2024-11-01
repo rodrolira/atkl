@@ -15,6 +15,7 @@ i18n.use(initReactI18next).init({
         email: 'Email',
         description: 'Description (Optional)',
         submit: 'Submit',
+        admin: 'Admin',
         admin_dashboard: 'Admin Dashboard',
         error: 'Error',
         page_not_found: 'Page Not Found',
@@ -33,8 +34,10 @@ i18n.use(initReactI18next).init({
         artistName: 'Artist Name',
         releaseName: 'Release Name',
         releaseDate: 'Release Date',
+        releaseType: 'Release Type',
         roles: 'Roles',
         image: 'Image',
+        genre: 'Genre',
         bandcamp_link: 'Bandcamp Link',
         facebook_link: 'Facebook Link',
         instagram_link: 'Instagram Link',
@@ -93,6 +96,7 @@ i18n.use(initReactI18next).init({
           youtube_link: 'Youtube',
           spotify_link: 'Spotify',
           beatport_link: 'Beatport',
+          apple_music_link: 'Apple Music',
         },
         navbar: {
           home: 'Home',
@@ -137,7 +141,7 @@ i18n.use(initReactI18next).init({
         },
         aboutSection: {
           title: 'About',
-          text: 'ATKL Records, founded by <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">RODRO</a> in December 2022 in Chile, is characterized by its distinctive blend of hardcore techno, industrial, and schranz genres, known for their heavy, energetic, and dynamic soundscapes. The label\'s inaugural release, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">Unknown VA I</a>", a compilation featuring 10 emerging artists from Chile, Colombia, and Spain, was launched in March 2023, marking the beginning of its journey. Since then, ATKL Records has grown to showcase over 12 diverse releases and hosts two popular podcasts on SoundCloud, highlighting both established and up-and-coming talents in the global electronic music scene. In mid-2023, the label expanded its influence by organizing energetic events and parties, further solidifying its role not only as a record label but also as a vibrant community hub where local DJs and music enthusiasts converge.',
+          text: 'ATKL Records, founded by <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-green-500 !text-green-600">RODRO</a> in December 2022 in Chile, is characterized by its distinctive blend of hardcore techno, industrial, and schranz genres, known for their heavy, energetic, and dynamic soundscapes. The label\'s inaugural release, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-green-500 !text-green-600">Unknown VA I</a>", a compilation featuring 10 emerging artists from Chile, Colombia, and Spain, was launched in March 2023, marking the beginning of its journey. Since then, ATKL Records has grown to showcase over 12 diverse releases and hosts two popular podcasts on SoundCloud, highlighting both established and up-and-coming talents in the global electronic music scene. In mid-2023, the label expanded its influence by organizing energetic events and parties, further solidifying its role not only as a record label but also as a vibrant community hub where local DJs and music enthusiasts converge.',
         },
         contactSection: {
           title: 'Contact Us',
@@ -248,8 +252,10 @@ i18n.use(initReactI18next).init({
         artistName: 'Nombre del Artista',
         releaseName: 'Nombre del Lanzamiento',
         releaseDate: 'Fecha de Lanzamiento',
+        releaseType: 'Tipo de Lanzamiento',
         roles: 'Roles',
         image: 'Imagen',
+        genre: 'Género',
         bandcamp_link: 'Enlace de Bandcamp',
         facebook_link: 'Enlace de Facebook',
         instagram_link: 'Enlace de Instagram',
@@ -314,6 +320,7 @@ i18n.use(initReactI18next).init({
           youtube_link: 'Youtube',
           spotify_link: 'Spotify',
           beatport_link: 'Beatport',
+          apple_music_link: 'Apple Music',
         },
         navbar: {
           home: 'Inicio',
@@ -358,7 +365,7 @@ i18n.use(initReactI18next).init({
         },
         aboutSection: {
           title: 'Acerca de',
-          text: 'ATKL Records, fundada por <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">RODRO</a> en diciembre de 2022 en Chile, se caracteriza por su distintiva fusión de géneros como hardcore techno, industrial y schranz, reconocidos por sus paisajes sonoros pesados, energéticos y dinámicos. El primer lanzamiento del sello, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-red-500">Unknown VA I</a>", un compilado que incluye a 10 artistas emergentes de Chile, Colombia y España, se lanzó en marzo de 2023, marcando el inicio de su trayectoria. Desde entonces, ATKL Records ha crecido hasta exhibir más de 12 lanzamientos diversos y cuenta con dos podcasts populares en SoundCloud, destacando tanto talentos establecidos como prometedores en la escena global de la música electrónica. A mediados de 2023, el sello expandió su influencia al organizar eventos y fiestas enérgicas, consolidando aún más su rol no solo como sello discográfico sino también como un vibrante punto de encuentro comunitario donde DJs locales y entusiastas de la música convergen.',
+          text: 'ATKL Records, fundada por <a href="https://soundcloud.com/rodro_music" target="_blank" rel="noopener noreferrer" class="hover:text-green-500 !text-green-600">RODRO</a> en diciembre de 2022 en Chile, se caracteriza por su distintiva fusión de géneros como hardcore techno, industrial y schranz, reconocidos por sus paisajes sonoros pesados, energéticos y dinámicos. El primer lanzamiento del sello, "<a href="https://open.spotify.com/album/unknown-va-i" target="_blank" rel="noopener noreferrer" class="hover:text-green-500 !text-green-600">Unknown VA I</a>", un compilado que incluye a 10 artistas emergentes de Chile, Colombia y España, se lanzó en marzo de 2023, marcando el inicio de su trayectoria. Desde entonces, ATKL Records ha crecido hasta exhibir más de 12 lanzamientos diversos y cuenta con dos podcasts populares en SoundCloud, destacando tanto talentos establecidos como prometedores en la escena global de la música electrónica. A mediados de 2023, el sello expandió su influencia al organizar eventos y fiestas enérgicas, consolidando aún más su rol no solo como sello discográfico sino también como un vibrante punto de encuentro comunitario donde DJs locales y entusiastas de la música convergen.',
         },
         contactSection: {
           title: 'Contáctanos',

@@ -9,7 +9,7 @@ const Logo: React.FC<LogoProps> = ({ isAdminSignin }) => {
   return (
     <a
       href="/"
-      className={`flex md:justify-start justify-center items-center w-full h-full ${
+      className={`flex z-0 md:justify-start justify-center items-center w-full h-full ${
         isAdminSignin ? 'admin-signin' : ''
       }`}
     >

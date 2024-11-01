@@ -8,6 +8,6 @@ export interface ReleaseFormProps {
 }
 
 export interface EditReleaseModalProps {
-    id: number;
+    id: string | number;
     onClose: () => void
 }

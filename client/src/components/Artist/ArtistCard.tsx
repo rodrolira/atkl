@@ -78,19 +78,19 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
         <div className="w-full rounded-t-lg relative">
           <Link to={`/artists/${currentArtist.id}`} className="block relative z-0">
             <img
-              className="rounded-t-lg w-full h-auto object-cover"
+              className="rounded-t-lg w-full h-96 object-cover"
               src={`http://localhost:3000/${currentArtist.image}`}
               alt={currentArtist.artist_name}
             />
           </Link>
 
           {adminAuthenticated && (
-            <div className="absolute right-2 top-2 flex space-x-4">
-              <Button className="!px-4 !py-3" aria-label={t('edit_artist')} onClick={openEditModal} style={{minWidth: '48px', minHeight: '48px'}}>
-                <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl" />
+            <div className="absolute right-2 top-2 flex space-x-2">
+              <Button  aria-label={t('edit_artist')} onClick={openEditModal} >
+                <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
               </Button>
-              <Button className="!px-4 !py-3" onClick={handleDelete} aria-label={t('delete_artist')} style={{minWidth: '48px', minHeight: '48px'}}>
-                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl"  />
+              <Button  onClick={handleDelete} aria-label={t('delete_artist')} >
+                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2"  />
               </Button>
             </div>
           )}
