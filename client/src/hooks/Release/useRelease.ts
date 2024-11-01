@@ -19,7 +19,7 @@ export const useReleases = (id: number | null): UseReleaseReturn => {
     }
   };
 
-  const updateRelease = async (releaseId: number, updatedRelease: Partial<Release>) => {
+  const updateRelease = async (releaseId: number, updatedRelease: Partial<Release>): Promise<void> => {
     try {
       await updateReleaseRequest(releaseId, updatedRelease);
       fetchRelease(releaseId);

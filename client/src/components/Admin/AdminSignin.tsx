@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
 import { useTranslation } from 'react-i18next';
 import { FormValues } from '@/types/interfaces/Form';
+import Loading from '../atoms/Loading/Loading';
 
 
 const AdminSignin: React.FC = () => {
@@ -50,7 +51,7 @@ const AdminSignin: React.FC = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <React.Suspense fallback={<div>{t('loading')}</div>}>
+    <React.Suspense fallback={<div><Loading /></div>}>
       <Grid
         minHeight='100%'
         sx={{

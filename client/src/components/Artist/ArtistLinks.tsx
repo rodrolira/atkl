@@ -97,6 +97,22 @@ const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => (
         <FontAwesomeIcon icon={faSpotify} />
       </Link>
     )}
+    {artist.apple_music_link && (
+      <Link
+        to={artist.apple_music_link}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View Apple Music Profile"
+        className="flex items-center justify-center"
+      >
+        <Icon
+          icon="simple-icons:applemusic"
+          width="1em"
+          height="1em"
+          className="text-gray-400 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+        />
+      </Link>
+    )}
     {artist.beatport_link && (
       <Link
         to={artist.beatport_link}

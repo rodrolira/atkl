@@ -33,7 +33,6 @@ export const useArtist = (id: number | null): UseArtistReturn => {
   const deleteArtist = async (artistId: number) => {
     try {
       await deleteArtistRequest(artistId);
-      setArtist(null);
     } catch (error) {
       setError('Error deleting artist');
     }

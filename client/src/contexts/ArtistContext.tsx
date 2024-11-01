@@ -91,6 +91,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       );
     } catch (error) {
       console.error('Error deleting artist:', error);
+      setError('Failed to delete artist');
       throw error;
     }
   };

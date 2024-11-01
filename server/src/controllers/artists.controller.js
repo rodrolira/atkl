@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import ArtistRoles from '../models/artist_role.model.js';
+import ReleaseArtist from '../models/release_artist.model.js';
 
 dotenv.config();
 
@@ -15,9 +16,9 @@ export const addArtist = async (req, res) => {
     artist_name,
     email,
     username,
+    roleIds,
     password,
     bio,
-    roleIds, // List of role IDs
     bandcamp_link,
     facebook_link,
     instagram_link,
@@ -31,21 +32,26 @@ export const addArtist = async (req, res) => {
 
   const image = req.file ? `uploads\\${req.file.filename}` : null;
 
-  if (!artist_name || !email || !password) {
-    return res.status(400).json({ message: 'artist_name, email, and password are required' });
+  if (!artist_name) {
+    return res.status(400).json({ message: 'artist_name are required' });
   }
-  console.log('Image path:', image); // Para verificar si la imagen se subió correctamente
 
   try {
+    let newUserId = null; // Variable para almacenar el ID del nuevo usuario
+    
+    // Solo crear un nuevo usario si email, username y password son proporcionados
+    if (email && username && password) {
     const newUser = await User.create({
       username,
       email,
       password: await bcrypt.hash(password, 10),
     });
+    newUserId = newUser.id;
+    } 
 
     const newArtist = await Artist.create({
       artist_name,
-      user_id: newUser.id,
+      user_id: newUserId, // Esto puede ser null si no se crea un nuevo usuario
       email,
       bio,
       image,
@@ -59,6 +65,24 @@ export const addArtist = async (req, res) => {
       apple_music_link,
       beatport_link,
     });
+
+    // Verificar y convertir `roleIds` en array si es necesario
+    const roleIdsArray = Array.isArray(roleIds)
+      ? roleIds
+      : typeof roleIds === 'string'
+        ? roleIds.split(',').map((id) => parseInt(id.trim(), 10)) // Convertir string a array de números
+        : []; // Si `roleIds` es nulo o undefined, usar array vacío
+
+
+    // Asociar roles con el artista si se proporciona roleIds
+    if (roleIdsArray.length > 0) {
+      const artistRoles = roleIdsArray.map((roleId) => ({
+        artist_id: newArtist.id,
+        role_id: roleId,
+      }));
+      await ArtistRoles.bulkCreate(artistRoles);
+    }
+
 
     const token = jwt.sign({ email }, process.env.SECRET, { expiresIn: '12h' });
     res.cookie('token', token, { httpOnly: true });
@@ -105,32 +129,23 @@ export const updateArtist = async (req, res) => {
         roleIds = [parseInt(roleIds, 10)];
       }
 
-      const existingRoles = await ArtistRoles.findAll({ where: { artist_id: artistId } });
-      const existingRoleIds = existingRoles.map(role => role.role_id);
+            // Elimina roles existentes para este artista
+            await ArtistRoles.destroy({ where: { artist_id: artistId } });
 
-      const rolesToAdd = roleIds.filter(roleId => !existingRoleIds.includes(roleId));
-      const rolesToRemove = existingRoleIds.filter(roleId => !roleIds.includes(roleId));
-
-      if (rolesToRemove.length > 0) {
-        await ArtistRoles.destroy({ where: { artist_id: artistId, role_id: rolesToRemove } });
-      }
-
-      if (rolesToAdd.length > 0) {
-        const artistRoles = rolesToAdd.map((roleId) => ({ artist_id: artistId, role_id: roleId }));
-        await ArtistRoles.bulkCreate(artistRoles);
-
-      // Eliminar los roles existentes del artista
-      await ArtistRoles.destroy({ where: { artist_id: artistId } });
-      await ArtistRoles.bulkCreate(artistRoles);
+      // Agrega los nuevos roles
+      const rolesToAdd = roleIds.map(roleId => ({ artist_id: artistId, role_id: roleId }));
+      await ArtistRoles.bulkCreate(rolesToAdd);
     }
-  }
 
     const updatedArtist = await Artist.findByPk(artistId, {
       include: [{
         model: Role,
         as: 'Roles',
         through: {
-          attributes: [],
+          attributes: [
+            'artist_id',
+            'role_id',
+          ],
         },
       }],
     });
@@ -147,14 +162,30 @@ export const deleteArtist = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const artist = await Artist.findOne({ where: { user_id: id } });
 
-    if (artist) {
-      await ArtistRoles.destroy({ where: { artist_id: artist.id } });
-      await Artist.destroy({ where: {id: artist.id }});
+    const artist = await Artist.findOne({ where: { id } });
+    if (!artist) {
+      console.log(`No artist found for user_id: ${id}`);
+      return res.status(404).json({ message: 'Artist not found' });
     }
+    console.log(`Artist found with ID: ${artist.id}`);
 
-    await User.destroy({ where: { id } });
+    // Elimina los roles asociados al artista en la tabla `ArtistRoles`
+    const rolesDeleted = await ArtistRoles.destroy({ where: { artist_id: artist.id } });
+    console.log(`Roles deleted: ${rolesDeleted}`);
+
+    // Elimina lanzamientos asociados al artista en la tabla `Release`
+    const releasesDeleted = await ReleaseArtist.destroy({ where: { artist_id: artist.id } });
+    console.log(`Releases deleted: ${releasesDeleted}`);
+
+
+    // Elimina el artista
+    const artistDeleted = await Artist.destroy({ where: { id: artist.id } });
+    console.log(`Artist deleted: ${artistDeleted}`);
+
+    // Finalmente, elimina el usuario
+    const userDeleted = await User.destroy({ where: { id: artist.user_id } });
+    console.log(`User deleted: ${userDeleted}`);
 
     res.status(200).json({ message: 'Artist and user account deleted successfully' });
   } catch (error) {

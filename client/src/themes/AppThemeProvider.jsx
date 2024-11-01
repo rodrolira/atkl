@@ -19,6 +19,9 @@ function AppThemeProvider({ children }) {
         secondary: {
           main: '#9DF3C4',
         },
+        purple: {
+          main: '#9333ea',
+        },
         Ink: {
           Darkest: '#000000',
           Darker: '#222222',

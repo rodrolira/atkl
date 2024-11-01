@@ -18,12 +18,11 @@ import { useReleases } from '@/contexts/ReleaseContext';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useGenres } from '@/contexts/GenreContext';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
-import Button from '@/components/Button/Button';
 import { createReleaseRequest } from '@/app/api/releases';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '../../../types/interfaces/Artist';
-import CustomInput from '@/components/atoms/Input/CustomInput';
 import CustomTextInput from '@/components/atoms/Input/CustomTextInput';
+import Button from '@/components/Button/Button';
 
 interface AddReleaseFormProps {
   open: boolean;
@@ -43,9 +42,26 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   const { createRelease, fetchReleases } = useReleases();
   const { artists, fetchArtists } = useArtists();
   const { genres, fetchGenres } = useGenres();
+  const [customArtists, setCustomArtists] = useState<string[]>([]);
+
+  const handleAddCustomArtist = () => {
+    setCustomArtists((prev) => [...prev, ''])
+  }
+
+  const handleCustomArtistChange = (index: number, value: string) => {
+    setCustomArtists((prev) => {
+      const updatedArtists = [...prev];
+      updatedArtists[index] = value;
+      return updatedArtists;
+    });
+  };
 
   const onSubmit = async (values: any, actions: any) => {
     const formData = new FormData();
+    // Concatenamos los artistas seleccionados de la base de datos y los personalizados
+    const allArtists = [...values.artist_id, ...customArtists.filter(Boolean)];
+    formData.append('artist_id', JSON.stringify(allArtists));
+
     Object.keys(values).forEach((key) => {
       if (Array.isArray(values[key])) {
         values[key].forEach((value, index) => {
@@ -97,7 +113,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
       }}
       scroll="body"
     >
-      <DialogTitle style={{ textAlign: 'center' }} sx={{ bgcolor: 'rgba(18, 46, 15, 1.8)' , height: '10vh' }}>
+      <DialogTitle style={{ textAlign: 'center' }} sx={{ bgcolor: 'rgba(18, 46, 15, 1.8)', height: '10vh' }}>
         {t('Add Release')}
         <IconButton style={{ float: 'right' }} onClick={closePopup}>
           <CloseIcon color="error" />
@@ -126,8 +142,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
             genre_id: Yup.string().required('Genre is required'),
             release_type: Yup.string().required('Release type is required'),
             artist_id: Yup.array()
-              .of(Yup.string())
-              .min(1, 'At least one artist is required'),
+              .of(Yup.string()),
             bandcamp_link: Yup.string(),
             beatport_link: Yup.string(),
             spotify_link: Yup.string(),
@@ -142,7 +157,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <Stack spacing={2} margin={2}>
-                <Field name="title" type="text" autoComplete="on" component="select">
+                <Field name="title" type="text" autoComplete="on" >
                   {({ field, form }: FieldProps) => (
                     <CustomTextInput
                       {...field}
@@ -177,7 +192,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                   )}
                 </Field>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel sx={{ color: 'white' }} className='text-white'>Genre</InputLabel>
+                  <InputLabel className='text-white'>Genre</InputLabel>
                   <Field name="genre_id">
                     {({ field, form }: FieldProps) => (
                       <Select
@@ -197,7 +212,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                   </Field>
                 </FormControl>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel sx={{ color: 'white' }}>Artist</InputLabel>
+                  <InputLabel>Artist</InputLabel>
                   <Field name="artist_id">
                     {({ field, form }: FieldProps) => (
                       <Select
@@ -231,29 +246,44 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     )}
                   </Field>
                 </FormControl>
-                <FileUploadRelease setFieldValue={setFieldValue} />
-                <Field name="release_type">
-                  {({ field, form }: FieldProps) => (
-                    <Select
-                      {...field}
-                      label="Release Type"
-                      variant="outlined"
-                      error={Boolean(
-                        form.errors.release_type && form.touched.release_type)}
-                    >
-                      <MenuItem value="Album">Album</MenuItem>
-                      <MenuItem value="Single">Single</MenuItem>
-                      <MenuItem value="EP">EP</MenuItem>
-                    </Select>
-                  )}
-                </Field>
+                 {/* Custom Artists Section */}
+                 {customArtists.map((artist, index) => (
+                  <TextField
+                    key={index}
+                    label={`Custom Artist ${index + 1}`}
+                    value={artist}
+                    onChange={(e) => handleCustomArtistChange(index, e.target.value)}
+                  />
+                ))}
+                <Button onClick={handleAddCustomArtist}>Add Custom Artist</Button>
+                <FileUploadRelease />
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Release Type</InputLabel>
+                  <Field name="release_type">
+                    {({ field, form }: FieldProps) => (
+                      <Select
+                        {...field}
+                        label="Release Type"
+                        variant="outlined"
+                        onChange={(e) => setFieldValue('release_type', e.target.value)}
+                        value={values.release_type}
+                        error={Boolean(
+                          form.errors.release_type && form.touched.release_type)}
+                      >
+                        <MenuItem value="Album">Album</MenuItem>
+                        <MenuItem value="Single">Single</MenuItem>
+                        <MenuItem value="EP">EP</MenuItem>
+                      </Select>
+                    )}
+                  </Field>
+                </FormControl>
                 <Field name="description">
                   {({ field }: FieldProps) => (
                     <CustomTextInput
                       {...field}
                       label="Description"
                       variant="outlined"
-                        color='success'
+                      color='success'
                       multiline
                       rows={4}
                     />
@@ -313,14 +343,13 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     />
                   )}
                 </Field>
-                <Button
-                  className="flex justify-center mx-auto"
+                <button
                   type="submit"
-                  colorClass="bg-[#24db13] text-[#122e0f]"
                   disabled={isSubmitting}
+                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
                 >
                   {isSubmitting ? 'Adding...' : 'Add'}
-                </Button>
+                </button>
                 {error && <div style={{ color: 'red' }}>{error}</div>}
               </Stack>
             </Form>
