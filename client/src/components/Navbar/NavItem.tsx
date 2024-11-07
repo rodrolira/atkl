@@ -30,7 +30,7 @@ const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
     <li>
       <Link
         to={to}
-        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${
+        className={`nav-link block xl:text-xl lg:text-xl md:text-lg rounded ${
           isActive ? 'text-green-700' : 'text-white text-shadow' 
         } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
         aria-current={isActive ? 'page' : undefined}
