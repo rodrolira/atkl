@@ -3,3 +3,8 @@ declare module '*.module.css' {
   export default content;
 }
 
+interface ImportMeta {
+  env: {
+    [key: string]: string;
+  };
+}
