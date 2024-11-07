@@ -58,7 +58,9 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
     } else {
       console.error('Invalid release_id:', release_id);
     }
-    if (!artists.length) fetchArtists();
+    if (!artists.length) {
+      fetchArtists();
+    }
   }, [release_id]);
 
   const fetchRelease = async (release_id: number) => {
