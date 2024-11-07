@@ -109,11 +109,14 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               No Artists
             </h3>
           )}
-          <img
-            src={`http://localhost:3000/${currentRelease.cover_image_url}`}
-            alt={currentRelease.title}
-            className="w-full"
-          />
+          <Link to={`/releases/${currentRelease.id}`}>
+            <img
+              src={`http://localhost:3000/${currentRelease.cover_image_url}`}
+              alt={currentRelease.title}
+              className="w-full"
+              loading="lazy"
+            />
+          </Link>
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">

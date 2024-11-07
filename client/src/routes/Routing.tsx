@@ -33,6 +33,8 @@ const Routing: React.FC = () => {
           adminAuthenticated ? <Navigate to="/" /> : <LoginAdminPage />
         }
       />
+
+      <Route path="/login" element={<Login />} />
       {/* Admin Routes */}
       <Route element={<AdminRoutes />}>
         <Route
@@ -45,7 +47,7 @@ const Routing: React.FC = () => {
             )
           }
         />
-        <Route path="/edit-release/:id" element={<EditReleaseModal id={undefined} onClose={undefined} />} />
+        <Route path="/edit-release/:id" element={<EditReleaseModal id={''} onClose={() => { }} />} />
       </Route>
       {/* Redirect to NotFound for unknown paths */}
       <Route path="*" element={<NotFound />} />

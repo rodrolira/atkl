@@ -152,7 +152,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, setFieldValue, values }) => (
-          <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
+          <Form className="w-full !bg-transparent shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Title className="!text-3xl mb-4 font-bold text-center text-gray-700">
               {t('edit_artist')}
             </Title>
