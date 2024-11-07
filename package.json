@@ -61,6 +61,7 @@
     "@types/multer": "^1.4.11",
     "@types/nodemailer": "^6.4.15",
     "@types/pg": "^8.11.6",
+    "@vitejs/plugin-react": "4.3.3",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^0.0.0",
     "babel-preset-stage-0": "^6.24.1",
