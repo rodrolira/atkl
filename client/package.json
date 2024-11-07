@@ -28,7 +28,7 @@
     "dev": "node --experimental-modules --es-module-specifier-resolution=node ./node_modules/vite/bin/vite.js",
     "start": "vite --open",
     "host": "vite --open --host",
-    "build": "npm vite build",
+    "build": "npx vite build",
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
