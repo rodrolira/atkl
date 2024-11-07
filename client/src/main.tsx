@@ -15,7 +15,6 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 // Cargar React DevTools solo en desarrollo
 if (process.env.NODE_ENV === 'development') {
   const script = document.createElement('script');
-  script.src = 'http://localhost:8097'; // React DevTools en localhost
   document.body.appendChild(script);
 }
 

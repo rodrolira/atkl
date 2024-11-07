@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import Routing from './routes/Routing';
@@ -10,6 +10,9 @@ import './i18n';
 import Footer from './components/Footer/Footer';
 
 const App: React.FC = () => {
+  useEffect(() => {
+    console.log('VITE_API_URL:', process.env.VITE_API_URL);
+  }, []);
 
 
   return (
