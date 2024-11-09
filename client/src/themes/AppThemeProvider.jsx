@@ -54,11 +54,7 @@ function AppThemeProvider({ children }) {
           Lighter: '#7FF77F',
           Lightest: '#E5FFE5',
         },
-        background: {
-          default: mode === 'dark' ? '#000000' : '#FCFBFA',
-          opposite: mode === 'dark' ? '#FCFBFA' : '#000000',
-          paper: mode === 'dark' ? '#131313' : '#FCFCFC',
-        },
+  
         text: {
           primary: mode === 'dark' ? '#FFFFFF' : '#000000',
           secondary: '#999999',
