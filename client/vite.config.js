@@ -12,7 +12,9 @@ export default defineConfig({
       threshold: 10240,
     })],
   server: {
-    host: true
+    host: true,
+    strictPort: true,
+    //port: 8080,
   },
   build: {
     sourcemap: false,
