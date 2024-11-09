@@ -49,7 +49,6 @@ export const colors = {
 
 export const theme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
       main: colors.green[500],
     },
