@@ -47,9 +47,6 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
             style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
             title={selectedLanguage === 'en' ? 'US' : 'es' }
           />
-          <span className="inline-block lg:text-sm md:text-xs">
-            {t('languageMenu.language')}
-          </span>
         </button>
 
         <div
