@@ -20,11 +20,11 @@ const NavbarMenuMobile: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-end flex-col na">
+      <div className="flex items-end ">
         <div className="me-2 sm:me-2 z-30 relative">
           <LanguageMenu /> 
         </div>
-        <div className="me-4">
+        <div>
         {!adminAuthenticated && (
           <div className="hidden sm:block">
             <DemoButton />

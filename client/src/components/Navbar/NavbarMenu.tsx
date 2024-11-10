@@ -26,7 +26,7 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
   const { t } = useTranslation();
 
   return (
-    <div className="xs:flex lg:block hidden justify-start md:justify-end xs:flex-wrap items-center h-full w-full me-3">
+    <div className="sm:flex lg:block hidden xs:hidden justify-start md:justify-end xs:flex-wrap items-center h-full w-full me-3">
       <div className="flex items-end h-12 px-2 flex-col">
         <div className="z-10 flex divide-y rounded-lg text-center items-end h-full justify-end">
           <ul

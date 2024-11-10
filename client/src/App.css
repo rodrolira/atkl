@@ -8,7 +8,6 @@
 /* Estilos generales para móviles pequeños (mobile-first) */
 body,
 html {
-  height: 100%;
   margin: 0;
   background-image: linear-gradient(
     var(--primary-color),

@@ -85,7 +85,6 @@ i18n.use(initReactI18next).init({
         languageMenu: {
           english: 'EN',
           spanish: 'ES',
-          language: 'EN',
         },
         social_links: {
           bandcamp_link: 'Bandcamp',
