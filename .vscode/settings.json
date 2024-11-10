@@ -4,5 +4,34 @@
     ],
     "tinypng.apiKey": "S73yvXr2Wr8MKCqtYmMqyzq3DqxFW44F",
     "frontMatter.framework.id": "other",
-    "frontMatter.content.publicFolder": ""
+    "frontMatter.content.publicFolder": "",
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "atkl",
+            "connectString": "postgresql://rodrolira:kMmjy9qhbToO7TfPV5eWNLk1ZCRIhCjs@dpg-csm1mglumphs73chap70-a.oregon-postgres.render.com/atkl_records"
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "dpg-csm1mglumphs73chap70-a.oregon-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "atkl_records",
+            "database": "atkl_records",
+            "username": "rodrolira",
+            "password": "kMmjy9qhbToO7TfPV5eWNLk1ZCRIhCjs"
+        }
+    ]
 }

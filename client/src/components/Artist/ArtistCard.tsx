@@ -79,7 +79,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           <Link to={`/artists/${currentArtist.id}`} className="block relative z-0">
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={`http://localhost:3000/${currentArtist.image}`}
+              src={`https://atkl-server.onrender.com/${currentArtist.image}`}
               alt={currentArtist.artist_name}
             />
           </Link>
