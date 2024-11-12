@@ -37,6 +37,8 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
         await verifyToken(token);
       } else {
         setLoading(false);
+        setIsAuthenticated(false);
+        setUser(null);
       }
     };
     checkLogin();
@@ -68,33 +70,29 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
     }
   };
 
-  const signin = async (credentials: { username: string; password: string }) => {
+  const signin = async (credentials: any) => {
     try {
-      const response = await loginAdminRequest(credentials); // Llama a la función de inicio de sesión
-      // Verificar que response.data contiene el token y los datos del admin
-      if (response  && response.token && response.admin) {
-        const {token, admin} = response;
-
-        localStorage.setItem('token', token);
+      const response = await loginAdminRequest(credentials);
+      if (response?.token && response.admin) {
+        localStorage.setItem('token', response.token); // Store token
+        setUser(response.admin);
         setIsAuthenticated(true);
-        setUser(admin);
       } else {
-        throw new Error('Token not found in response');
+        throw new Error('Token not found');
       }
     } catch (error: any) {
-      console.log('Error signing in:', error);
       setErrors([error.response?.data?.message || 'Error during sign-in']);
     }
   };
-
+  
   const signout = async () => {
     try {
       await logoutAdminRequest();
       setIsAuthenticated(false);
       setUser(null);
-      localStorage.removeItem('adminToken');
+      localStorage.removeItem('token');
     } catch (error: any) {
-      setErrors([error.response.data.message]);
+      setErrors([error.response?.data?.message]);
     }
   };
 

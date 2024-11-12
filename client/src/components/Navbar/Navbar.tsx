@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
           <Logo alt="Company Logo" />
         </div>
         {adminAuthenticated && (
-          <div className="h-full flex xs:hidden w-full justify-end xs:justify-start items-center me-3">
+          <div className="h-full flex md:hidden xs:hidden w-full justify-end xs:justify-start items-center me-3">
             <AddArtistButton />
             <AddReleaseButton />
             <div className="relative xs:absolute right-0 xs:me-3">

@@ -30,7 +30,6 @@ export const loginAdminRequest = async (credentials) => {
 export const verifyAdminTokenRequest = () => {
   return axios.get('/admin/verify', {
     headers: getAuthHeaders(),
-    withCredentials: true,
   });
 }
 
