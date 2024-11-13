@@ -8,6 +8,7 @@ import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
 import DemoButton from '../Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { Link } from 'react-router-dom';
 
 const NavbarMenuMobile: React.FC = () => {
   const { t } = useTranslation();
@@ -18,10 +19,24 @@ const NavbarMenuMobile: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleItemClick = (id: string, to: string) => {
+    setIsOpen(false); // Close the menu when an item is clicked
+    if (id) {
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.warn(`No section found with ID: ${id}`);
+      }
+    }
+  };
+
+
+
   return (
     <>
-      <div className="flex items-end ">
-        <div className="me-2 sm:me-2 z-30 relative">
+      <div className="flex items-center">
+        <div className="sm:me-2 z-30 relative">
           <LanguageMenu /> 
         </div>
         <div>
@@ -48,10 +63,15 @@ const NavbarMenuMobile: React.FC = () => {
               <ul className="menu-list">
                 {links.map((link, index) => (
                   <li key={link.id}>
-                    <a href={link.to} className="menu-link ">
+                    <button 
+                      onClick={() => handleItemClick(link.id, link.to)} 
+                      className="menu-link"
+                    >
                       {t(`navbar.${link.id}`)}
-                    </a>
-                    {index !== links.length - 1 && <hr className="border-t-2 border-green-600 overflow-hidden" />} {/* Solo agrega el <hr> si no es el último enlace */}
+                    </button>
+                    {index !== links.length - 1 && (
+                      <hr className="border-t-2 border-green-600 overflow-hidden" />
+                    )}
                   </li>
                 ))}
               </ul>

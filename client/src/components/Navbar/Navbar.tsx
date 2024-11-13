@@ -14,31 +14,39 @@ const Navbar: React.FC = () => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
   return (
-    <nav className={`${styles.navbarWrapper} shadow-lg min-h-16  sm:min-h-20 xs:min-h-12 lg:h-24 border-b-2 border-b-green-600 `} style={{ zIndex: 1000 }}>
-      <div className="h-full flex items-center ">
-        {/* Contenedor del logo que ocupa todo el ancho */}
+    <nav
+      className={`${styles.navbarWrapper} shadow-lg min-h-16  sm:min-h-20 xs:min-h-12 lg:h-24 border-b-2 border-b-green-600`}
+      style={{ zIndex: 1000 }}
+    >
+      <div className="h-full flex items-center justify-between">
+        {/* Logo occupies full width in mobile view */}
         <div
-          className={`${styles.navbarLogoWrapper} justify-center flex sm:w-[50%] w-full h-24 !ms-6 sm:mx-2`}
+          className={`${styles.navbarLogoWrapper} flex h-full items-center justify-start w-1/3 sm:justify-center p-2`}
         >
           <Logo alt="Company Logo" />
         </div>
-        {adminAuthenticated && (
-          <div className="h-full flex md:hidden xs:hidden w-full justify-end sm:flex xs:justify-start items-center me-3">
-            <AddArtistButton />
-            <AddReleaseButton />
-            <div className="relative right-0 xs:me-3">
+
+        {/* Circular buttons container */}
+        <div className="flex flex-col h-full w-auto sm:w-1/2 sm:flex-row sm:justify-end px-2">
+          {adminAuthenticated && (
+
+            <div className="flex items-center justify-center space-x-2 sm:space-x-4 flex-grow h-1/2">
+              <AddArtistButton />
+              <AddReleaseButton />
               <AdminLogoutButton />
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="md:hidden me-3 flex s  w-full">
-          <NavbarMenuMobile />
-        
+          {/* Navbar menu for mobile view */}
+          <div className="w-full flex items-center justify-end h-1/2 sm:hidden">
+            <NavbarMenuMobile />
+          </div>
         </div>
 
-        {/* Menú de navegación (para pantallas grandes) */}
-        <NavbarMenu isDialogOpen={false} handleClose={() => { }} handleArtistAdded={() => { }} />
+        {/* Navbar menu for larger screens */}
+        <div className="hidden md:flex md:flex-row w-auto">
+          <NavbarMenu isDialogOpen={false} handleClose={() => { }} handleArtistAdded={() => { }} />
+        </div>
       </div>
     </nav>
   );
