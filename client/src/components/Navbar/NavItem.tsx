@@ -26,7 +26,7 @@ const NavItem: React.FC<NavItemProps> = memo(({ to, text, isActive, onClick }) =
         navigate(to);
       }
     }, 100),
-    [isHomePage, onClick, navigate]
+    [isHomePage, onClick]
   )
 
 

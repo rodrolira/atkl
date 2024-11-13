@@ -11,12 +11,7 @@ interface AddReleaseButtonProps {
   children?: React.ReactNode; // Add this line
 }
 
-const AddReleaseButton: React.FC<AddReleaseButtonProps> = ({
-  className,
-  openPopup,
-  onReleaseAdded,
-  children,
-}) => {
+const AddReleaseButton: React.FC<AddReleaseButtonProps> = ({}) => {
 
 
   const { t } = useTranslation();
