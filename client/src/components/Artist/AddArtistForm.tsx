@@ -41,6 +41,22 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
 
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [artistData, rolesData] = await Promise.all([
+          getArtistRequest(id),
+          getRolesRequest(),
+        ]);
+        setInitialValues(artistData.data);
+        setRoles(rolesData.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
     const fetchArtist = async (artist_id: number) => {
       try {
         const response = await getArtistRequest(artist_id);
@@ -53,7 +69,13 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
         console.error('Error fetching artist:', error);
       }
     };
+    if (id !== undefined) {
+      fetchArtist(id);
+    }
+  }, [id]); // Agrega el id a la dependencia
 
+
+  useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await getRolesRequest();
@@ -65,17 +87,16 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
       }
     };
 
-    if (id !== undefined) {
-      fetchArtist(id);
-    }
     fetchRoles();
   }, [id]);
 
 
   const onSubmit = async (values: Artist, { setSubmitting }: any) => { // Cambia `any` por un tipo más específico
-    const formData = new FormData();
+    setSubmitting(true);
+    setTimeout(async () => {
+      const formData = new FormData();
 
-    Object.keys(values).forEach((key) => {
+      Object.keys(values).forEach((key) => {
         const value = values[key as keyof Artist];
         if (key === 'roleIds') {
           formData.append(key, values[key as keyof Artist]?.toString() ?? '');
@@ -83,45 +104,46 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
           // Directly check if it's an instance of File
           formData.append(key, values[key]); // Cast to File
         } else {
-            formData.append(key, value);
+          formData.append(key, value);
         }
 
-    });
+      });
 
-    // Add this log to debug the formData contents
-    console.log('FormData:', formData.get('image')); // Check if the image is appended correctly
+      // Add this log to debug the formData contents
+      console.log('FormData:', formData.get('image')); // Check if the image is appended correctly
 
-    const roleIdsValue = formData.get('roleIds');
-    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
+      const roleIdsValue = formData.get('roleIds');
+      const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(Number) : [];
 
-    const artistData: Artist = {
-      id: Number(id),
-      artist_name: formData.get('artist_name') as string,
-      email: formData.get('email') as string,
-      username: formData.get('username') as string,
-      password: formData.get('password') as string,
-      bio: formData.get('bio') as string,
-      image: formData.get('image') as string,
-      roleIds: roleIds,
-      Roles: values.roleIds,
-      twitter_link: formData.get('twitter_link') as string || '',
-      instagram_link: formData.get('instagram_link') as string || '',
-      facebook_link: formData.get('facebook_link') as string || '',
-      soundcloud_link: formData.get('soundcloud_link') as string || '',
-      bandcamp_link: formData.get('bandcamp_link') as string || '',
-      youtube_link: formData.get('youtube_link') as string || '',
-      spotify_link: formData.get('spotify_link') as string || '',
+      const artistData: Artist = {
+        id: Number(id),
+        artist_name: formData.get('artist_name') as string,
+        email: formData.get('email') as string,
+        username: formData.get('username') as string,
+        password: formData.get('password') as string,
+        bio: formData.get('bio') as string,
+        image: formData.get('image') as string,
+        roleIds: roleIds,
+        Roles: values.roleIds,
+        twitter_link: formData.get('twitter_link') as string || '',
+        instagram_link: formData.get('instagram_link') as string || '',
+        facebook_link: formData.get('facebook_link') as string || '',
+        soundcloud_link: formData.get('soundcloud_link') as string || '',
+        bandcamp_link: formData.get('bandcamp_link') as string || '',
+        youtube_link: formData.get('youtube_link') as string || '',
+        spotify_link: formData.get('spotify_link') as string || '',
 
-    };
+      };
 
-    try {
-      await createArtist(artistData);
-      closePopup();
-    } catch (error) {
-      console.error('Error adding artist:', error);
-      setError(t('error.addArtist'));
-      setSubmitting(false);
-    }
+      try {
+        await createArtist(artistData);
+        closePopup();
+      } catch (error) {
+        console.error('Error adding artist:', error);
+        setError(t('error.addArtist'));
+        setSubmitting(false);
+      }
+    }, 0)
   };
 
 
