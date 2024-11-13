@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import LanguageMenu from '@/components/Language/LanguageMenu';
 import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
-import DemoButton from '../Button/DemoButton';
+import DemoButton from '@/components/Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { Link } from 'react-router-dom';
 

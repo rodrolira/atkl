@@ -3,8 +3,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import Release from '@/types/interfaces/Release';
 import { ReleasesTableProps } from '@/types/props/Admin/ReleasesTableProps';
+import { Artist } from '@/types/interfaces/Artist';
 
 const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelete }) => {
   const { t } = useTranslation();
@@ -38,7 +38,7 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
                   {release.title}
                 </td>
                 <td className="px-4 py-3 text-[#8bd685] text-sm">
-                  {release.artists.map((artist, index) => (
+                  {release.artists.map((artist: Artist, index: number) => (
                     <span key={artist.id}>
                       {artist.artist_name}
                       {index < release.artists.length - 1 ? ', ' : ''}

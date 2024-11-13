@@ -12,9 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Artist } from '../../types/interfaces/Artist';
 
 // Type definitions for props or event handling if necessary
-interface ArtistProps {
-  artist: Artist;
-}
+
 
 // Button to add artist
 export const AddArtistButton: React.FC = () => {
