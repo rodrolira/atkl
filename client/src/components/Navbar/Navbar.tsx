@@ -27,10 +27,10 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Circular buttons container */}
-        <div className="flex flex-col h-full w-auto sm:w-1/2 sm:flex-row sm:justify-end px-2">
+        <div className="flex md:hidden flex-col h-full w-auto sm:w-1/2 sm:flex-row sm:justify-end px-2">
           {adminAuthenticated && (
 
-            <div className="flex items-center justify-center space-x-2 sm:space-x-4 flex-grow h-1/2">
+            <div className="flex md:hidden items-center justify-center space-x-2 sm:space-x-4 flex-grow h-1/2">
               <AddArtistButton />
               <AddReleaseButton />
               <AdminLogoutButton />

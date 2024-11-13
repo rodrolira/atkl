@@ -38,7 +38,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
       >
         <button
           type="button"
-          className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full px-4 py-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white"
+          className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white"
         >
           <ReactCountryFlag
             className="max-[320px]:ms-[0.5rem]"
@@ -72,9 +72,6 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                     style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
                     title="US"
                   />
-                  <span className="max-[320px]:hidden lg:text-sm md:text-xs">
-                    {t('languageMenu.english')}
-                  </span>
                 </div>
               </button>
             </li>
@@ -94,9 +91,6 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                     style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
                     title="español"
                   />
-                  <span className="max-[320px]:hidden lg:text-sm md:text-xs">
-                    {t('languageMenu.spanish')}
-                  </span>
                 </div>
               </button>
             </li>
