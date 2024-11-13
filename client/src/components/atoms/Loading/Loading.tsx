@@ -18,7 +18,7 @@ const Loading: React.FC = () => {
     var(--secondary-color)
   )"
         >
-            <CircularProgress color="secondary" size={60} thickness={5} />
+            <CircularProgress color="secondary" role='progressbar' title="Loading" size={60} thickness={5} />
             <Typography variant="h6" color="primary" mt={2}>
                 {t('loading')}
             </Typography>

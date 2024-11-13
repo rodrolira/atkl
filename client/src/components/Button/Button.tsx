@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import './Button.css';
 import { Link } from 'react-router-dom';
 
-class ButtonProps {
+interface ButtonProps {
   to?: string
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
   children?: React.ReactNode
   text?: string
   colorClass?: string
   fontWeight?: string
-  type?: 'button' | 'submit' | 'reset' | undefined
+  type?: 'button' | 'submit' | 'reset' 
   variant?: 'contained' | 'outlined' | 'text'
   className?: string
   disabled?: boolean
 }
 
-
-const Button = ({ to, onClick, children, text, colorClass, fontWeight }: ButtonProps) => (
+const ButtonComponent: React.FC<ButtonProps> = ({ to, onClick, children, text, colorClass, fontWeight }) => (
   <div className="mx-auto flex justify-center">
     {to ? (
       <Link
@@ -36,9 +35,10 @@ const Button = ({ to, onClick, children, text, colorClass, fontWeight }: ButtonP
       </button>
     )}
   </div>
-);
 
-Button.propTypes = {
+)
+
+ButtonComponent.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   to: PropTypes.string,
@@ -46,9 +46,13 @@ Button.propTypes = {
   text: PropTypes.string,
   colorClass: PropTypes.string,
   fontWeight: PropTypes.string,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  variant: PropTypes.oneOf(['contained', 'outlined', 'text']),
   disabled: PropTypes.bool,
-  variant: PropTypes.string,
 };
 
-export default Button;
+
+const Button = memo(ButtonComponent);
+
+
+export default Button
