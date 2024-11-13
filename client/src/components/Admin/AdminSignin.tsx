@@ -168,6 +168,7 @@ const AdminSignin: React.FC = () => {
                   />
                 </Box>
                 <Button
+                id='loginAdminSubmit'
                   type="submit"
                   variant="contained"
                   fullWidth
