@@ -76,7 +76,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0">
+          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload' >
             <img
               className="rounded-t-lg w-full h-96 object-cover"
               src={`https://atkl-server.onrender.com/${currentArtist.image}`}

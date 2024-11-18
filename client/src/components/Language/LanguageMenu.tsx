@@ -41,6 +41,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
           className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white"
         >
           <ReactCountryFlag
+            alt={selectedLanguage === 'en' ? 'US' : 'es' }
             className="max-[320px]:ms-[0.5rem]"
             countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
             svg
@@ -71,6 +72,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                     svg
                     style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
                     title="US"
+                    alt="Flag of the United States"
                   />
                 </div>
               </button>
@@ -89,7 +91,8 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                     countryCode="ES"
                     svg
                     style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
-                    title="español"
+                    title="ES"
+                    alt="Flag of Spain"  
                   />
                 </div>
               </button>

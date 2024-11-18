@@ -8,8 +8,8 @@ export default defineConfig({
   plugins: [
     react(),
     compression({
-      algorithm: 'gzip',
-      threshold: 10240,
+      brotli: true, // Enable Brotli compression
+      gzip: true,    // Enable gzip compression
     })],
   server: {
     host: true,
