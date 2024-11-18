@@ -53,7 +53,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
       // console.log('Admin verification failed:', error);
       setIsAuthenticated(false);
       setUser(null);
-      setErrors([error.response?.message || 'Error verifying token']);
+      setErrors([error.response?.message]);
     } finally {
       setLoading(false);
     }
