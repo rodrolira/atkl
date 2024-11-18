@@ -11,9 +11,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
-interface ReleasesSectionProps {}
+interface ReleasesSectionProps { }
 
-const ReleasesSection: React.FC<ReleasesSectionProps> = () => {
+const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { releases, fetchReleases, createRelease } = useReleases();
 
@@ -34,12 +34,12 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = () => {
         <Title>{t('releaseSection.title')}</Title>
       </Link>
       {adminAuthenticated && (
-        <AddReleaseForm onReleaseAdded={handleReleaseAdded} open={false} closePopup={ () => {}} />
+        <AddReleaseForm onReleaseAdded={handleReleaseAdded} open={false} closePopup={() => { }} />
       )}
       <ReleaseList releases={releases} />
       <Background />
     </section>
   );
-}
+})
 
 export default ReleasesSection;

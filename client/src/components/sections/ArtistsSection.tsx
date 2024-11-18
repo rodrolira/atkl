@@ -14,7 +14,7 @@ import Background from '../Layout/Background';
 interface ArtistsSectionProps {}
 
 
-const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
+const ArtistsSection: React.FC<ArtistsSectionProps> =React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { artists, fetchArtists, createArtist } = useArtists();
   const { t } = useTranslation();
@@ -43,6 +43,6 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
       <Background />
     </section>
   );
-};
+});
 
 export default ArtistsSection;

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Navbar from '@/components/Navbar/Navbar';
 import styles from './Home.module.css';
-import ArtistsSection from '@/components/sections/ArtistsSection';
-import ReleasesSection from '@/components/sections/ReleasesSection';
-import AboutSection from '@/components/sections/AboutSection';
-import DemosSection from '@/components/sections/DemoSection';
-import ContactSection from '@/components/sections/ContactSection';
 import { useTranslation } from 'react-i18next';
+// Usando React.lazy para cargar los componentes de forma perezosa
+const Navbar = lazy(() => import('@/components/Navbar/Navbar'));
+const ArtistsSection = lazy(() => import('@/components/sections/ArtistsSection'));
+const ReleasesSection = lazy(() => import('@/components/sections/ReleasesSection'));
+const AboutSection = lazy(() => import('@/components/sections/AboutSection'));
+const DemosSection = lazy(() => import('@/components/sections/DemoSection'));
+const ContactSection = lazy(() => import('@/components/sections/ContactSection'));
 
 
 export const Home: React.FC = () => {
@@ -22,10 +23,12 @@ export const Home: React.FC = () => {
         demosSection.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }, [location.state]);
+  }, [location.state?.scrollToDemos]);
 
   return (
     <>
+          <Suspense fallback={<div>Loading...</div>}>
+
       <Navbar />
       <div id="home">
         <div
@@ -44,7 +47,8 @@ export const Home: React.FC = () => {
                   <img
                     alt="main"
                     className="mt-0 mx-auto md:mt-16 lg:mt-24 md:w-1/2 sm:w-3/4 xl:w-2/5 lg:w-1/2 inverted md:inset-0"
-                    src="/img/main.png"
+                    src="/img/main.webp"
+                    loading="lazy"
                   />
                 </div>
                 <div className="text-center mx-auto w-full text-white flex flex-col lg:mb-24">
@@ -66,7 +70,9 @@ export const Home: React.FC = () => {
         <DemosSection />
         <ContactSection />
       </div>
+      </Suspense>
     </>
+    
   );
 };
 
