@@ -18,10 +18,11 @@ const HomeNavbarLinks: React.FC = () => {
     if (id) {
       const section = document.getElementById(id);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.scrollIntoView({ behavior: 'smooth' }); // Desplazamiento suave
       }
     }
   };
+
 
   useEffect(() => {
     setActiveItem(location.pathname);
@@ -39,7 +40,7 @@ const HomeNavbarLinks: React.FC = () => {
                 showLink && (
                   <NavItem
                     key={link.to}
-                    to={link.id}
+                    to={link.to}
                     text={t(`navbar.${link.id}`)}
                     isActive={activeItem === link.to}
                     onClick={() => handleItemClick(link.id, link.to)}
