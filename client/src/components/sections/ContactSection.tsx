@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 const ContactForm = React.lazy(() => import('@/components/Contact/ContactForm'));
 import Title from '@/components/atoms/Title/Title';
 import BaseCard from '../Layout/BaseCard';
+import Loading from '../atoms/Loading/Loading';
+import ErrorBoundary from '../Error/ErrorBoundary';
 
 const ContactSection: React.FC = () => {
   const { t } = useTranslation();
@@ -15,9 +17,11 @@ const ContactSection: React.FC = () => {
           <Title>{t('contactSection.title')}</Title>
         </div>
         <BaseCard className="mt-8 sm:mt-12 mx-auto sm:p-8 bg-white !border-purple-600 sm:max-w-lg sm:px-8 sm:rounded-xl rounded-md">
-          <Suspense fallback={<div>Loading...</div>}>
-            <ContactForm /> {/* Renders the ContactForm component */}
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <ContactForm /> {/* Renders the ContactForm component */}
+            </Suspense>
+          </ErrorBoundary>
         </BaseCard>
       </div>
       <div

@@ -8,25 +8,17 @@ JavaScript + React + Redux + Mui + Axios + ESLint + Prettier
 
 ### Clone the repo
 
-``
-npx degit emre-cil/viterjs-template my-app
-``
+`npx degit emre-cil/viterjs-template my-app`
 
-``
-cd my-app
-``
+`cd my-app`
 
 #### Install Dependencies
 
-``
-pnpm install
-``
+`pnpm install`
 
 #### Run
 
-``
-pnpm dev
-``
+`pnpm dev`
 
 #### Paths
 
@@ -37,22 +29,18 @@ if you don't want to use you can remove these lines from
 
 > vite.config.js
 
-``
- resolve: {
+`resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-  },
-``
+  },`
 
 > jsconfig.json
 
-``
-"paths": {
+`"paths": {
       "@/*": ["./*"]
-    }
-``
+    }`
 
 ### Scripts
 

@@ -7,7 +7,7 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Modal from '@/components/Modal/Modal';
 import { getTeamMemberRequest, deleteTeamMemberRequest } from '@/app/api/team';
 import { Button } from 'react-bootstrap';
-import BaseCard from '@/components/Layout/BaseCard';
+import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next'; // Translation hook
 import { TeamMember } from '@/types/interfaces/TeamMember'; // Assuming you have these types defined
 import TeamMemberLinks from './TeamMemberLinks'; // Assuming this is another component

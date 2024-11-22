@@ -7,7 +7,7 @@ import {
 import { useSelector } from 'react-redux';
 import { selectMode } from '@/features/user/userSlice';
 
-function AppThemeProvider({ children }) {
+function AppThemeProvider2({ children }) {
   const mode = useSelector(selectMode);
   const theme = responsiveFontSizes(
     createTheme({
@@ -199,4 +199,4 @@ function AppThemeProvider({ children }) {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
-export default AppThemeProvider;
+export default AppThemeProvider2;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import AdminSignin from './AdminSignin';
-import MainLayout from '@/components/Layout/MainLayout';
+import MainLayout from '../Layout/MainLayout';
 import styles from '@/pages/Auth/Auth.module.css';
 
 
