@@ -15,6 +15,8 @@ const ContactForm: React.FC = () => {
     description: '',
   });
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -94,10 +96,11 @@ const ContactForm: React.FC = () => {
           </div>
           <div className="flex items-center justify-between mx-auto">
             <button
+              disabled={isSubmitting}
               className="bg-[#881CBA] hover:bg-purple-700 text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              {t('submit')}
+              {isSubmitting ? t('submitting') : t('submit')}
             </button>
           </div>
         </form>

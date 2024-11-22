@@ -62,3 +62,6 @@ dist-ssr
 prettierrc.json
 .eslintrc
 .eslintrc.json
+
+# Million Lint
+.million

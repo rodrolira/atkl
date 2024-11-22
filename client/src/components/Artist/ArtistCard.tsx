@@ -9,7 +9,7 @@ import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
 import { getArtistRequest } from '@/app/api/artists';
 import { Button } from 'react-bootstrap';
-import BaseCard from '@/components/Layout/BaseCard';
+import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
 

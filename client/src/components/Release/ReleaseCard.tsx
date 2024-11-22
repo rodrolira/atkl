@@ -10,11 +10,10 @@ import { useReleases } from '@/contexts/ReleaseContext';
 import { getReleaseRequest } from '@/app/api/releases';
 import { Link } from 'react-router-dom';
 import ReleaseLinks from './ReleaseLinks';
-import BaseCard from '@/components/Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Release } from '@/types/interfaces/Release';
 import Loading from '../atoms/Loading/Loading';
-
+import BaseCard from '../Layout/BaseCard';
 
 interface ReleaseCardProps {
   release: Release;

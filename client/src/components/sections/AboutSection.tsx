@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import Background from '../Layout/Background';
+
 import { Link } from 'react-router-dom';
 
 const AboutSection: React.FC = () => {

@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
 import './i18n';
-import Footer from './components/Contact/Footer/Footer';
+import Footer from './components/Footer/Footer';
 
 const App: React.FC = () => {
   useEffect(() => {
