@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Auth/Login';
@@ -16,8 +16,10 @@ import NotFound from '@/pages/NotFound';
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
-const Routing: React.FC = () => {
+const Routing: React.FC = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+
+  const memoizedAdminRoutes = useMemo(() => <AdminRoutes />, []);
 
   return (
     <Routes>
@@ -36,7 +38,7 @@ const Routing: React.FC = () => {
 
       <Route path="/login" element={<Login />} />
       {/* Admin Routes */}
-      <Route element={<AdminRoutes />}>
+      <Route element={memoizedAdminRoutes}>
         <Route
           path="/admin"
           element={
@@ -53,6 +55,6 @@ const Routing: React.FC = () => {
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
-};
+});
 
 export default Routing;

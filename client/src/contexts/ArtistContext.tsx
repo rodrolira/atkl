@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
 import {
   createArtistRequest,
   deleteArtistRequest,
@@ -46,7 +46,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   }, []);
 
-  const fetchArtist = async (id: number): Promise<Artist> => {
+  const fetchArtist = useCallback(async (id: number): Promise<Artist> => {
     try {
       const response = await getArtistRequest(id);
       return response.data;
@@ -54,10 +54,10 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       console.error(`Error fetching artist with ID ${id}:`, error);
       throw error;
     }
-  };
+  }, []);
 
   // Create a new artist
-  const createArtist = async (artist: Artist): Promise<Artist | undefined> => {
+  const createArtist = useCallback(async (artist: Artist): Promise<Artist | undefined> => {
     try {
       const res = await createArtistRequest(artist);
       setArtists((prevArtists) => [...prevArtists, res.data]);
@@ -66,10 +66,10 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       console.error('Error creating artist:', error);
       setError('Failed to create artist');
     }
-  };
+  }, []);
 
   // Update an existing artist
-  const updateArtist = async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
+  const updateArtist = useCallback(async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
     try {
       const response = await updateArtistRequest(id, updatedArtist);
       setArtists((prevArtists) =>
@@ -80,10 +80,10 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setError('Failed to update artist');
       throw error;
     }
-  };
+  }, []);
 
   // Delete an artist
-  const deleteArtist = async (id: number): Promise<void> => {
+  const deleteArtist = useCallback(async (id: number): Promise<void> => {
     try {
       await deleteArtistRequest(id);
       setArtists((prevArtists) =>
@@ -94,22 +94,32 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setError('Failed to delete artist');
       throw error;
     }
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    artists,
+    setArtists,
+    createArtist,
+    fetchArtists,
+    fetchArtist,
+    error,
+    loading,
+    updateArtist,
+    deleteArtist,
+  }), [
+    artists,
+    setArtists,
+    createArtist,
+    fetchArtists,
+    fetchArtist,
+    error,
+    loading,
+    updateArtist,
+    deleteArtist,
+  ]);
 
   return (
-    <ArtistContext.Provider
-      value={{
-        artists,
-        setArtists,
-        createArtist,
-        fetchArtists,
-        fetchArtist,
-        error,
-        loading,
-        updateArtist,
-        deleteArtist,
-      }}
-    >
+    <ArtistContext.Provider value={contextValue}>
       {children}
     </ArtistContext.Provider>
   );

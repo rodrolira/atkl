@@ -5,7 +5,7 @@ import Background from '../Layout/Background';
 
 import { Link } from 'react-router-dom';
 
-const AboutSection: React.FC = () => {
+const AboutSection: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
@@ -22,6 +22,6 @@ const AboutSection: React.FC = () => {
       <Background />
     </section>
   );
-};
+});
 
 export default AboutSection;

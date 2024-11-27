@@ -27,4 +27,4 @@ const AdminLogoutButton: React.FC = () => {
   );
 };
 
-export default AdminLogoutButton;
+export default React.memo(AdminLogoutButton);

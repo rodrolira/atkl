@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 // Import ContactForm using dynamic import
-const ContactForm = React.lazy(() => import('@/components/Contact/ContactForm'));
+const ContactForm = React.lazy(() => import('../Contact/ContactForm'));
 import Title from '@/components/atoms/Title/Title';
 import BaseCard from '../Layout/BaseCard';
 import Loading from '../atoms/Loading/Loading';
 import ErrorBoundary from '../Error/ErrorBoundary';
 
-const ContactSection: React.FC = () => {
+const ContactSection: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
@@ -33,6 +33,6 @@ const ContactSection: React.FC = () => {
       ></div>
     </section>
   );
-};
+});
 
 export default ContactSection;

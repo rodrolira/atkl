@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import classNames from 'classnames';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -6,6 +7,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 interface LanguageMenuProps {
   className?: string;
 }
+
 
 const LanguageMenu: React.FC<LanguageMenuProps> = () => {
   const { t, i18n } = useTranslation();
@@ -21,13 +23,13 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
     }
   }, [i18n, language]);
 
-  const handleChangeLanguage = (languageCode: string) => {
+  const handleChangeLanguage = useCallback((languageCode: string) => {
     changeLanguage(languageCode);
     setSelectedLanguage(languageCode);
     i18n.changeLanguage(languageCode);
     localStorage.setItem('language', languageCode);
     setMenuVisibility(false);
-  };
+  }, [changeLanguage, i18n]);
 
   return (
     <div className="relative z-50">
@@ -42,35 +44,35 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
         >
           <ReactCountryFlag
             alt={selectedLanguage === 'en' ? 'US' : 'es' }
-            className="max-[320px]:ms-[0.5rem]"
+            className="max-[320px]:ms-[0.5rem] flag-icon"
             countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
             svg
-            style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
             title={selectedLanguage === 'en' ? 'US' : 'es' }
           />
         </button>
 
         <div
-          className={`${
-            isMenuVisible ? 'block' : 'hidden'
-          } lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-green-700 max-[320px]:ms-2`}
+          className={classNames(
+            'lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-green-700 max-[320px]:ms-2',
+            { 'block': isMenuVisible, 'hidden': !isMenuVisible }
+          )}
           role="menu"
         >
           <ul className="font-medium" role="none">
             <li>
               <button
                 type="button"
-                className={`block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-green-600 rounded-t-xl ${
-                  selectedLanguage === 'en' ? '!bg-green-600' : ''
-                }`}
+                className={classNames(
+                  'block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-green-600 rounded-t-xl',
+                  { '!bg-green-600': selectedLanguage === 'en' }
+                )}
                 onClick={() => handleChangeLanguage('en')}
               >
                 <div className="inline-flex items-center">
                   <ReactCountryFlag
-                    className="max-[320px]:!me-0"
+                    className="max-[320px]:!me-0 flag-icon"
                     countryCode="US"
                     svg
-                    style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
                     title="US"
                     alt="Flag of the United States"
                   />
@@ -80,17 +82,17 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
             <li>
               <button
                 type="button"
-                className={`block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-green-600 rounded-b-xl ${
-                  selectedLanguage === 'es' ? '!bg-green-600' : ''
-                }`}
+                className={classNames(
+                  'block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-green-600 rounded-b-xl',
+                  { '!bg-green-600': selectedLanguage === 'es' }
+                )}
                 onClick={() => handleChangeLanguage('es')}
               >
                 <div className="inline-flex items-center">
                   <ReactCountryFlag
-                    className="max-[320px]:!me-0 lg:text-sm md:text-xs"
+                    className="max-[320px]:!me-0 lg:text-sm md:text-xs flag-icon"
                     countryCode="ES"
                     svg
-                    style={{ width: '1.5em', height: '1.5em', marginInlineEnd: '0.5rem' }}
                     title="ES"
                     alt="Flag of Spain"  
                   />
@@ -104,4 +106,4 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
   );
 };
 
-export default LanguageMenu;
+export default React.memo(LanguageMenu);

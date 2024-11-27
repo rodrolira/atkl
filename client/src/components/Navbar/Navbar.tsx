@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import NavbarMenu from './NavbarMenu';
 import NavbarMenuMobile from './NavbarMenuMobile';
 import Logo from '@/components/atoms/Logo/Logo';
@@ -10,8 +10,16 @@ import {
 } from '@/components/Button/CircularButtons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+
+  const handleClose = useCallback(() => {
+    // Your handleClose logic here
+  }, []);
+
+  const handleArtistAdded = useCallback(() => {
+    // Your handleArtistAdded logic here
+  }, []);
 
   return (
     <nav
@@ -45,11 +53,15 @@ const Navbar: React.FC = () => {
 
         {/* Navbar menu for larger screens */}
         <div className="hidden md:flex md:flex-row w-auto">
-          <NavbarMenu isDialogOpen={false} handleClose={() => { }} handleArtistAdded={() => { }} />
+          <NavbarMenu 
+            isDialogOpen={false} 
+            handleClose={handleClose} 
+            handleArtistAdded={handleArtistAdded} 
+          />
         </div>
       </div>
     </nav>
   );
-};
+});
 
 export default Navbar;

@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import React from 'react';
 import store from './app/store';
-import AppThemeProvider2 from './themes/AppThemeProvider2';
+import AppThemeProvider from './themes/AppThemeProvider';
 import App from './App';
 import './main.css';
 import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
@@ -14,7 +14,7 @@ import ErrorBoundary from './components/Error/ErrorBoundary';
 
 
 // Cargar React DevTools solo en desarrollo
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production') {
   const script = document.createElement('script');
   document.body.appendChild(script);
 }
@@ -24,7 +24,7 @@ if (rootElement) {
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppThemeProvider2>
+      <AppThemeProvider>
         <LanguageProvider>
           <AdminAuthProvider>
             <ArtistProvider>
@@ -38,7 +38,7 @@ ReactDOM.createRoot(rootElement).render(
             </ArtistProvider>
           </AdminAuthProvider>
         </LanguageProvider>
-      </AppThemeProvider2>
+      </AppThemeProvider>
     </Provider>
   </React.StrictMode>,
 );

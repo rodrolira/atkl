@@ -44,7 +44,6 @@ const OtherPagesNavbarLinks: React.FC = () => {
               isNavbarOpen ? 'md:hidden absolute top-full w-full' : 'hidden'
             } items-center justify-between lg:flex md:block md:w-auto md:order-1`}
           >
-            <div className="max-w-screen-xl mx-auto w-full">
               <div className="flex items-center justify-center w-full">
                 <ul className="items-center justify-center text-lg md:bg-transparent bg-gray-700 bg-opacity-75 font-semibold flex flex-col md:p-0 w-full sm:border md:space-x-6 space-x-3 sm:space-x-4 lg:space-x-8 xl:space-x-10  rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700">
                   {links.map((link) => {
@@ -56,7 +55,8 @@ const OtherPagesNavbarLinks: React.FC = () => {
                       showLink && (
                         <NavItem
                           key={link.to}
-                          to={link.to}
+                          to={link.to}  // Use the link to navigate
+                          linkId= {link.id} // Use the link ID
                           text={t(`navbar.${link.id}`)} // Translate the text
                           isActive={
                             activeItem === link.to ||
@@ -69,7 +69,6 @@ const OtherPagesNavbarLinks: React.FC = () => {
                   })}
                 </ul>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -77,4 +76,4 @@ const OtherPagesNavbarLinks: React.FC = () => {
   );
 };
 
-export default OtherPagesNavbarLinks;
+export default React.memo(OtherPagesNavbarLinks);

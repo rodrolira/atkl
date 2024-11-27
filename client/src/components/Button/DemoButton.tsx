@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -32,4 +32,4 @@ const DemoButton: React.FC = () => {
   );
 };
 
-export default DemoButton;
+export default memo(DemoButton);

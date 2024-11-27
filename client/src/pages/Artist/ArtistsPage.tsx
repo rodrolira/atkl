@@ -4,7 +4,7 @@ import ArtistsSection from '@/components/sections/ArtistsSection';
 
 
 
-const ArtistsPage: React.FC = () => {
+const ArtistsPage: React.FC = React.memo(() => {
   return (
     <div>
       <Navbar />
@@ -13,6 +13,6 @@ const ArtistsPage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default ArtistsPage;

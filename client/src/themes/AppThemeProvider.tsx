@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  PaletteOptions,
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
@@ -7,7 +8,40 @@ import {
 import { useSelector } from 'react-redux';
 import { selectMode } from '@/features/user/userSlice';
 
-function AppThemeProvider2({ children }) {
+interface AppThemeProviderProps {
+  children: React.ReactNode;
+}
+interface CustomPaletteOptions extends PaletteOptions {
+  Ink: {
+    Darkest: string;
+    Darker: string;
+    Dark: string;
+    Base: string;
+    Light: string;
+    Lighter: string;
+  };
+  Sky: {
+    Dark: string;
+    Base: string;
+    Light: string;
+    Lighter: string;
+    Lightest: string;
+    White: string;
+  };
+  Red: {
+    Darkest: string;
+    Base: string;
+    Light: string;
+    Lighter: string;
+  };
+  Green: {
+    Darkest: string;
+    Base: string;
+    Light: string;
+    Lighter: string;
+  };
+}
+const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
   const mode = useSelector(selectMode);
   const theme = responsiveFontSizes(
     createTheme({
@@ -54,7 +88,7 @@ function AppThemeProvider2({ children }) {
           Lighter: '#7FF77F',
           Lightest: '#E5FFE5',
         },
-  
+
         text: {
           primary: mode === 'dark' ? '#FFFFFF' : '#000000',
           secondary: '#999999',
@@ -78,7 +112,7 @@ function AppThemeProvider2({ children }) {
           silver: 'linear-gradient(180deg, #808080 0%, #DFDFDF 100%)',
           gold: 'linear-gradient(180deg, #A3873C 0%, #E3D294 100%)',
         },
-      },
+      } as CustomPaletteOptions,
 
       typography: {
         fontFamily: 'Dosis, sans-serif',
@@ -107,62 +141,6 @@ function AppThemeProvider2({ children }) {
           fontSize: '16px',
           fontWeight: '500',
           // lineHeight: '20px',
-        },
-
-        CTA1: {
-          fontSize: '28px',
-          fontWeight: '500',
-          // lineHeight: '35px',
-        },
-        CTA2: {
-          fontSize: '18px',
-          fontWeight: '500',
-          // lineHeight: '23px',
-        },
-        CTA3: {
-          fontSize: '16px',
-          fontWeight: '400',
-          // lineHeight: '20px',
-        },
-        Body1: {
-          fontFamily: 'Lato, sans-serif',
-          fontSize: '14px',
-          fontWeight: '400',
-          // lineHeight: '18px',
-        },
-        Body2: {
-          fontFamily: 'Lato, sans-serif',
-          fontSize: '13px',
-          fontWeight: '400',
-          // lineHeight: '16px',
-        },
-        Body3: {
-          fontFamily: 'Lato, sans-serif',
-          fontSize: '12px',
-          fontWeight: '400',
-          // lineHeight: '14px',
-        },
-        Body1Medium: {
-          fontFamily: 'Lato, sans-serif',
-          fontSize: '14px',
-          fontWeight: '500',
-          // lineHeight: '17px',
-        },
-        Body1SemiBold: {
-          fontFamily: 'Lato, sans-serif',
-          fontSize: '14px',
-          fontWeight: '600',
-          // lineHeight: '17px',
-        },
-        body3: {
-          fontSize: '12px',
-          // lineHeight: '16px',
-          display: 'block',
-        },
-        body4: {
-          fontSize: '10px',
-          // lineHeight: '14px',
-          display: 'block',
         },
       },
       components: {
@@ -199,4 +177,4 @@ function AppThemeProvider2({ children }) {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
-export default AppThemeProvider2;
+export default AppThemeProvider;

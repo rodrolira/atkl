@@ -1,7 +1,7 @@
 // ReleasesSection.tsx
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useReleases } from '@/contexts/ReleaseContext';
 import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
@@ -23,10 +23,10 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
     fetchReleases();
   }, [fetchReleases]);
 
-  const handleReleaseAdded = async (newRelease: any) => {
+  const handleReleaseAdded = useCallback(async (newRelease: any) => {
     await createRelease(newRelease); // Agrega el nuevo lanzamiento a la lista de lanzamientos
     fetchReleases();
-  };
+  }, [createRelease, fetchReleases]);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="releases">

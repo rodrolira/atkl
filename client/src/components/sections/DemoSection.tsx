@@ -3,7 +3,7 @@ import Title from '@/components/atoms/Title/Title';
 import Background from '../Layout/Background';
 
 
-const DemosSection: React.FC = () => {
+const DemosSection: React.FC = React.memo(() => {
   return (
     <section id="demo" className='relative z-50'>
       <div className="container mx-auto p-4 sm:p-16 z-50 relative">
@@ -24,6 +24,6 @@ const DemosSection: React.FC = () => {
       <Background />
     </section>
   );
-};
+});
 
 export default DemosSection;

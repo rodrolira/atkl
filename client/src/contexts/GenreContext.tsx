@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useCallback, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useState, useMemo, ReactNode } from 'react';
 import { getGenresRequest } from '@/app/api/genres';
 import { Genre } from '@/types/interfaces/Genre';
 
@@ -33,13 +33,15 @@ export const GenreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return response.data;
   }, []);
 
+  const value = useMemo(() => ({
+    genres,
+    fetchGenres,
+  }), [genres, fetchGenres]);
+
   return (
     <GenreContext.Provider
       data-testid="genre-provider"
-      value={{
-        genres,
-        fetchGenres,
-      }}
+      value={value}
     >
       {children}
     </GenreContext.Provider>

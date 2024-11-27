@@ -15,7 +15,7 @@ import { Artist } from '../../types/interfaces/Artist';
 
 
 // Button to add artist
-export const AddArtistButton: React.FC = () => {
+export const AddArtistButton: React.FC = React.memo(() => {
   const [open, setOpen] = useState<boolean>(false);
   const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -49,10 +49,10 @@ export const AddArtistButton: React.FC = () => {
       )}
     </>
   );
-};
+});
 
 // Button to add release
-export const AddReleaseButton: React.FC = () => {
+export const AddReleaseButton: React.FC = React.memo(() => {
   const [open, setOpen] = useState<boolean>(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
@@ -77,10 +77,10 @@ export const AddReleaseButton: React.FC = () => {
       <AddReleaseForm open={open} closePopup={closePopup} onReleaseAdded={(newRelease: any) => {}} />
     </>
   );
-};
+});
 
 // Button for logout
-export const AdminLogoutButton: React.FC = () => {
+export const AdminLogoutButton: React.FC = React.memo(() => {
   const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
   const navigate = useNavigate();
 
@@ -98,4 +98,4 @@ export const AdminLogoutButton: React.FC = () => {
       )}
     </>
   );
-};
+});
