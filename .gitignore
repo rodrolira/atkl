@@ -11,3 +11,5 @@ vercelignore
 .env.production
 /api.rest
 CVE-2023-44487.json
+# Million Lint
+.million

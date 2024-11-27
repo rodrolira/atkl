@@ -16,7 +16,7 @@ interface ButtonProps {
   disabled?: boolean
 }
 
-const ButtonComponent: React.FC<ButtonProps> = ({ to, onClick, children, text, colorClass, fontWeight }) => (
+const ButtonComponent: React.FC<ButtonProps> = memo(({ to, onClick, children, text, colorClass, fontWeight }) => (
   <div className="mx-auto flex justify-center">
     {to ? (
       <Link
@@ -35,8 +35,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ to, onClick, children, text, c
       </button>
     )}
   </div>
-
-)
+))
 
 ButtonComponent.propTypes = {
   children: PropTypes.node,
@@ -55,4 +54,4 @@ ButtonComponent.propTypes = {
 const Button = memo(ButtonComponent);
 
 
-export default Button
+export default memo(ButtonComponent)

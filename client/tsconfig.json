@@ -7,13 +7,13 @@
       "/client/src/components",
       "/client/src/types/hooks",
       "/client/src/types",
-  ],
-    "target": "ESNext",               // o "ES2020" si prefieres
-    "module": "ESNext",               // Esto permite usar 'import.meta'
-    "moduleResolution": "Node",       // Opción común para resolver módulos
-    "esModuleInterop": true,          // Asegura la interoperabilidad con CommonJS
-    "strict": true,                   // Opciones de chequeo estricto
-    "jsx": "react",                   // O "react-jsx" para JSX moderno
+    ],
+    "target": "ESNext", // o "ES2020" si prefieres
+    "module": "ESNext", // Esto permite usar 'import.meta'
+    "moduleResolution": "Node", // Opción común para resolver módulos
+    "esModuleInterop": true, // Asegura la interoperabilidad con CommonJS
+    "strict": true, // Opciones de chequeo estricto
+    "jsx": "react", // O "react-jsx" para JSX moderno
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -21,7 +21,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
-        "@/*": ["*"] // Esto permite que @ apunte a la carpeta src
+      "@/*": [
+        "*"
+      ] // Esto permite que @ apunte a la carpeta src
     },
     "outDir": "./dist",
   },
@@ -42,4 +44,3 @@
     "**/dist/*"
   ]
 }
-

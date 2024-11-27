@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { Icon } from '@iconify/react';
 
-const SocialMediaIcons: React.FC = () => (
+const SocialMediaIcons: React.FC = React.memo(() => (
   <div className="flex gap-4 text-white sm:justify-center z-10 px-4">
     <Link
       to="https://www.instagram.com/atkl.records/"
@@ -56,6 +56,6 @@ const SocialMediaIcons: React.FC = () => (
       </i>
     </Link>
   </div>
-);
+));
 
 export default SocialMediaIcons;

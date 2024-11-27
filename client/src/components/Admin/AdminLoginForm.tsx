@@ -43,4 +43,4 @@ const AdminLoginForm: React.FC = () => {
   );
 };
 
-export default AdminLoginForm;
+export default React.memo(AdminLoginForm);

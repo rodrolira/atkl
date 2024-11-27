@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface NavItemProps {
-  to: string;
+  linkId: string; // The ID of the section to scroll to
+  to: string; // The URL to navigate to
   text: string;
   isActive: boolean;
   onClick: (id: string) => void;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
+const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, onClick, to }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
@@ -18,10 +19,13 @@ const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
     event.preventDefault(); // Prevents the default anchor click behavior
 
     setTimeout(() => {
-
       if (isHomePage) {
         // If on Home page, scroll to the section
-        onClick(to);
+        // Implement your scroll logic here, for example:
+        const section = document.getElementById(linkId);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
       } else {
         // If on other pages, navigate to the route
         navigate(to);
@@ -34,8 +38,8 @@ const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
       <Link
         to={to}
         className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${
-          isActive ? 'text-green-700' : 'text-white text-shadow' 
-        } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700` }
+          isActive ? 'text-green-700' : 'text-white text-shadow'
+        } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
         aria-current={isActive ? 'page' : undefined}
         onClick={handleClick}
       >
@@ -45,4 +49,5 @@ const NavItem: React.FC<NavItemProps> = ({ to, text, isActive, onClick }) => {
   );
 };
 
-export default NavItem;
+// Wrap with React.memo to prevent unnecessary re-renders
+export default memo(NavItem);

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import isEqual from 'lodash/isEqual';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -31,16 +32,19 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       const fetchArtist = async () => {
         try {
           const response = await getArtistRequest(artist.id);
-          setCurrentArtist(response.data);
+          // Only update state if fetched data is different
+          if (!isEqual(response.data, currentArtist)) {
+            setCurrentArtist(response.data);
+          }
         } catch (error) {
           console.error('Error fetching artist:', error);
         }
       }
-    fetchArtist();
+      fetchArtist();
     }
   }, [artist?.id]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
       try {
         await deleteArtist(artist.id);
@@ -49,18 +53,20 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
         console.error('Error deleting artist:', error);
       }
     }
-  };
+  }, [t, deleteArtist, artist.artist_name, artist.id, setArtists, currentArtist.id]);
 
-  const openEditModal = () => {
+  const openEditModal = useCallback(() => {
     setShowEditModal(true);
-  };
+  }, []);
 
   const closeEditModal = () => {
     setShowEditModal(false);
     const fetchArtist = async () => {
       try {
         const response = await getArtistRequest(currentArtist.id);
-        setCurrentArtist(response.data);
+        if (!isEqual(response.data, currentArtist)) {
+          setCurrentArtist(response.data);
+        }
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
@@ -68,29 +74,41 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     fetchArtist();
   };
 
-  const rolesText = currentArtist.Roles && currentArtist.Roles.length > 0
-  ? currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `Role ID: ${role}`).join(' / ')
-  : t('no_roles_assigned')
+  const rolesText = useMemo(() => {
+    if (currentArtist.Roles && currentArtist.Roles.length > 0) {
+      return currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `Role ID: ${role}`).join(' / ');
+    }
+    return t('no_roles_assigned');
+  }, [currentArtist.Roles, t]);
+
+  const editIconMemo = useMemo(() => (
+    <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
+  ), []);
+
+  const trashIconMemo = useMemo(() => (
+    <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
+  ), []);
 
   return (
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload' >
+          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
               src={`https://atkl-server.onrender.com/${currentArtist.image}`}
               alt={currentArtist.artist_name}
+              loading="lazy"
             />
           </Link>
 
           {adminAuthenticated && (
             <div className="absolute right-2 top-2 flex space-x-2">
-              <Button  aria-label={t('edit_artist')} onClick={openEditModal} >
-                <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
+              <Button aria-label={t('edit_artist')} onClick={openEditModal}>
+                {editIconMemo}
               </Button>
-              <Button  onClick={handleDelete} aria-label={t('delete_artist')} >
-                <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2"  />
+              <Button onClick={handleDelete} aria-label={t('delete_artist')}>
+                {trashIconMemo}
               </Button>
             </div>
           )}

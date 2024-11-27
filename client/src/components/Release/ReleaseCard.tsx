@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -78,6 +78,9 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     }
   };
 
+  const editIcon = useMemo(() => <FontAwesomeIcon icon={faEdit} />, []);
+  const trashIcon = useMemo(() => <FontAwesomeIcon icon={faTrash} />, []);
+
   if (!currentRelease) {
     return <div><Loading /></div>; // Render a loading state or message
   }
@@ -124,7 +127,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
                 aria-label="Edit Release"
                 onClick={openEditModal}
               >
-                <FontAwesomeIcon icon={faEdit} />
+                {editIcon}
               </button>
 
               <button
@@ -132,7 +135,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
                 aria-label="Delete Release"
                 className="text-red-400 hover:text-red-500 text-xl mx-2"
               >
-                <FontAwesomeIcon icon={faTrash} />
+                {trashIcon}
               </button>
             </div>
           )}

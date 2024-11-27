@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
 import OtherPagesNavbarLinks from './OtherPagesNavbarLinks';
-import links from '@/utils/navbarLinks';
 import HomeNavbarLinks from './HomeNavbarLinks';
 import { useLocation } from 'react-router-dom';
 
@@ -18,4 +17,4 @@ const NavbarLinks: React.FC = () => {
   );
 };
 
-export default NavbarLinks;
+export default memo(NavbarLinks);

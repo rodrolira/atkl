@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import AddArtistForm from '@/components/Artist/AddArtistForm';
@@ -14,20 +14,25 @@ import Background from '../Layout/Background';
 interface ArtistsSectionProps {}
 
 
-const ArtistsSection: React.FC<ArtistsSectionProps> =React.memo(() => {
+const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { artists, fetchArtists, createArtist } = useArtists();
   const { t } = useTranslation();
 
   // Asegúrate de que los artistas se establezcan a partir de artistsData
   useEffect(() => {
-    fetchArtists();
+    if (memoizedArtists.length === 0) {
+      fetchArtists();
+    }
   }, [fetchArtists]);
 
-  const handleArtistAdded = async (newArtist: any) => {
+  const handleArtistAdded = useCallback(async (newArtist: any) => {
     await createArtist(newArtist);
-    fetchArtists(); // Esto podría no ser necesario si ya estás manejando artistsData
-  };
+  }, [createArtist]);
+
+  const closePopup = () => { };
+
+  const memoizedArtists = useMemo(() => artists || [], [artists]);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">
@@ -36,10 +41,10 @@ const ArtistsSection: React.FC<ArtistsSectionProps> =React.memo(() => {
           <Title>{t('artistSection.title')}</Title>
         </Link>
         {adminAuthenticated && (
-          <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={() => { }} />
+          <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={closePopup} />
         )}
       </div>
-      <ArtistList artists={artists || []} />
+      <ArtistList artists={memoizedArtists} />
       <Background />
     </section>
   );

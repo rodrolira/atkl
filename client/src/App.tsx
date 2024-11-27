@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import Routing from './routes/Routing';
@@ -14,15 +14,17 @@ const App: React.FC = () => {
     console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
   }, []);
 
+  const memoizedAnalytics = useMemo(() => <Analytics />, []);
+  const memoizedCssBaseline = useMemo(() => <CssBaseline />, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
       <div id="app" className="flex">
         <div className="layout">
-          <Analytics />
+          {memoizedAnalytics}
           <SpeedInsights />
-          <CssBaseline />
+          {memoizedCssBaseline}
           <Routing />
           <Footer isAdminLogin={false} />
         </div>

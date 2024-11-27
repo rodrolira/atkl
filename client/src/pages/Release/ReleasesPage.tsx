@@ -12,7 +12,7 @@ const ReleaseSection = React.lazy(
   () => import('@/components/sections/ReleasesSection'),
 );
 
-const ReleasesPage: React.FC = () => {
+const ReleasesPage: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const { isAuthenticated: isAdmin } = useAdminAuth();
 
@@ -24,6 +24,6 @@ const ReleasesPage: React.FC = () => {
       </Suspense>
     </div>
   );
-}
+});
 
 export default ReleasesPage;

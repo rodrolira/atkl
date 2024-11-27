@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -53,7 +53,7 @@ const SITEMAP: Record<string, { title: string; links: string[] }[]> = {
 
 const currentYear = new Date().getFullYear();
 
-const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
+const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
   const { t, i18n } = useTranslation();
   const { language } = i18n;
   const sitemap = SITEMAP[language] || SITEMAP.en;
@@ -66,14 +66,16 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
         <div className="mx-auto grid w-full grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-4">
           {sitemap.map(({ title, links }, index) => (
             <div key={index} className="w-full">
-              <Typography
-                variant="h2"
-               color='#09B309'   // #00af00
-               fontWeight={'bold'}
-                className="mb-4 font-bold uppercase xs:text-3xl md:text-4xl"
-              >
-                {t(title)}
-              </Typography>
+              {useMemo(() => (
+                <Typography
+                  variant="h2"
+                  color='#09B309'   // #00af00
+                  fontWeight={'bold'}
+                  className="mb-4 font-bold uppercase xs:text-3xl md:text-4xl"
+                >
+                  {t(title)}
+                </Typography>
+              ), [title, t])}
               <ul className="space-y-1">
                 {links.map((link, linkIndex) => (
                   <Typography
@@ -116,6 +118,6 @@ const Footer: React.FC<FooterProps> = ({ isAdminLogin }) => {
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;

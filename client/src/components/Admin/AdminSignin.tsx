@@ -194,4 +194,4 @@ const AdminSignin: React.FC = () => {
   );
 };
 
-export default AdminSignin;
+export default React.memo(AdminSignin);

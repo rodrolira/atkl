@@ -330,4 +330,4 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
   );
 };
 
-export default AddArtistForm;
+export default React.memo(AddArtistForm);
