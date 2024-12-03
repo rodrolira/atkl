@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import isEqual from 'lodash/isEqual';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -27,17 +26,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
-  const artistLinkURL = useMemo(() => `/artists/${currentArtist.id}`, [currentArtist.id]);
-  const imageSrc = useMemo(() => `https://atkl-server.onrender.com/${currentArtist.image}`, [currentArtist.image]);
-  const memoizedArtist = useMemo(() => currentArtist, [currentArtist]);
-
   useEffect(() => {
     if (artist?.id) {
       const fetchArtist = async () => {
         try {
           const response = await getArtistRequest(artist.id);
           // Only update state if fetched data is different
-          if (!isEqual(response.data, currentArtist)) {
+          if (JSON.stringify(response.data) !== JSON.stringify(currentArtist)) {
             setCurrentArtist(response.data);
           }
         } catch (error) {
@@ -46,10 +41,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       }
       fetchArtist();
     }
-  }, [artist?.id, currentArtist]);
+  }, [artist?.id]);
 
   const handleDelete = useCallback(async () => {
-    if (window.confirm(t('delete_confirmation', { artistName: currentArtist.artist_name }))) {
+    if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
       try {
         await deleteArtist(currentArtist.id);
         setArtists((prevArtists: Artist[]) => prevArtists.filter((a) => a.id !== currentArtist.id));
@@ -63,12 +58,12 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     setShowEditModal(true);
   }, []);
 
-  const closeEditModal = useCallback(() => {
+  const closeEditModal = () => {
     setShowEditModal(false);
     const fetchArtist = async () => {
       try {
         const response = await getArtistRequest(currentArtist.id);
-        if (!isEqual(response.data, currentArtist)) {
+        if (JSON.stringify(response.data) !== JSON.stringify(currentArtist)) {
           setCurrentArtist(response.data);
         }
       } catch (error) {
@@ -76,7 +71,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       }
     };
     fetchArtist();
-  }, [currentArtist.id]);
+  };
 
   const rolesText = useMemo(() => {
     if (currentArtist.Roles && currentArtist.Roles.length > 0) {
@@ -109,10 +104,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={artistLinkURL} className="block relative z-0" rel='preload'>
+          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={imageSrc}
+              src={`https://atkl-server.onrender.com/${currentArtist.image}`}
               alt={currentArtist.artist_name}
               loading="lazy"
             />
@@ -126,7 +121,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           )}
         </div>
 
-        <Link to={artistLinkURL} className="block">
+        <Link to={`/artists/${currentArtist.id}`} className="block">
           <p className="text-2xl font-bold tracking-tight text-white text-center mb-2">
             {currentArtist.artist_name}
           </p>
@@ -136,7 +131,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           {rolesText}
         </div>
 
-        <ArtistLinks artist={memoizedArtist} />
+        <ArtistLinks artist={currentArtist} />
       </BaseCard>
 
       {showEditModal && (
