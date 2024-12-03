@@ -18,15 +18,6 @@ const validationSchema = Yup.object().shape({
   image: Yup.mixed(),
   roleIds: Yup.array().required('Role is required'),
   bio: Yup.string(),
-  twitter_link: Yup.string(),
-  instagram_link: Yup.string(),
-  facebook_link: Yup.string(),
-  soundcloud_link: Yup.string(),
-  bandcamp_link: Yup.string(),  
-  youtube_link: Yup.string(),
-  spotify_link: Yup.string(),  
-  apple_music_link: Yup.string(),
-  beatport_link: Yup.string(),
 });
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
