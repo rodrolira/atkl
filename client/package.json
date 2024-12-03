@@ -27,7 +27,7 @@
   "scripts": {
     "dev": "vite dev",
     "clean": "rimraf dist",
-    "scan": "vite dev & npx react-scan@latest localhst:5173",
+    "scan": "vite dev & npx react-scan@latest localhost:5173",
     "start": "vite --open",
     "host": "vite --open --host",
     "build": "vite build",
@@ -68,6 +68,7 @@
     "i18next": "^23.16.8",
     "million": "^3.1.11",
     "prop-types": "^15.8.1",
+    "punycode": "^2.3.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-country-flag": "^3.1.0",

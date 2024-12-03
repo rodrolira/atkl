@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import AddTeamMemberForm from '@/components/Team/AddTeamMemberForm';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
@@ -7,12 +7,17 @@ const AddTeamMemberButton: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { t } = useTranslation();
 
-  const functionOpenPopup = () => {
+  const functionOpenPopup = useCallback(() => {
     setOpen(true);
-  };
-  const closePopup = () => {
+  }, []);
+
+  const closePopup = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
+
+  const onTeamMemberAdded = useCallback((newTeamMember: any) => {
+    console.log('Nuevo miembro del equipo agregado:', newTeamMember);
+  }, []);
 
   return (
     <>
@@ -27,12 +32,10 @@ const AddTeamMemberButton: React.FC = () => {
       <AddTeamMemberForm
         open={open}
         closePopup={closePopup}
-        onTeamMemberAdded={(newTeamMember: any) => {
-          console.log('Nuevo miembro del equipo agregado:', newTeamMember);
-        }}
+        onTeamMemberAdded={onTeamMemberAdded}
       />
     </>
   );
 };
 
-export default AddTeamMemberButton;
+export default React.memo(AddTeamMemberButton);

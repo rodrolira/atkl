@@ -17,7 +17,7 @@ interface ArtistLinksProps {
   artist: Artist
 }
 
-const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => {
+const ArtistLinks: React.FC<ArtistLinksProps> = React.memo(({ artist }) => {
   const memoizedFaTwitter = useMemo(() => faTwitter, [faTwitter]);
   const memoizedFaInstagram = useMemo(() => faInstagram, [faInstagram]);
   const memoizedFaFacebook = useMemo(() => faFacebook, [faFacebook]);
@@ -188,6 +188,6 @@ const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => {
       )}
     </div>
   );
-};
+});
 
 export default ArtistLinks;

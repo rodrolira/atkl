@@ -1,5 +1,5 @@
 // components/ReleaseList.tsx
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import ReleaseCard from './ReleaseCard'; // Asegúrate de tener un componente ReleaseCard correctamente tipado
 import { Release } from '@/types/interfaces/Release';
 
@@ -25,4 +25,4 @@ const ReleaseList: React.FC<ReleaseListProps> = ({ releases }) => {
   );
 };
 
-export default ReleaseList;
+export default memo(ReleaseList);

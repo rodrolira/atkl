@@ -97,22 +97,24 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
           ))}
         </div>
         <div className="flex w-full flex-col items-center justify-center border-t px-4 border-green-600 py-4 md:flex-row md:justify-between">
-          <Typography
-            variant="body1"
-            className="!mb-2 !ms-2 text-center font-normal text-white md:mb-0"
-          >
-            &copy; {currentYear}{' '}
-            <Link
-              to="https://atkl.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="ATKL Records"
-              className="hover:text-green-600"
+          {useMemo(() => (
+            <Typography
+              variant="body1"
+              className="!mb-2 !ms-2 text-center font-normal text-white md:mb-0"
             >
-              ATKL Records
-            </Link>
-            . {t('All Rights Reserved.')}
-          </Typography>
+              &copy; {currentYear}{' '}
+              <Link
+                to="https://atkl.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="ATKL Records"
+                className="hover:text-green-600"
+              >
+                ATKL Records
+              </Link>
+              . {t('All Rights Reserved.')}
+            </Typography>
+          ), [currentYear, t])}
           <SocialMediaIcons />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useCallback, memo } from 'react';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ const DemoButton: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleButtonClick = () => {
+  const handleButtonClick = useCallback(() => {
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollToDemos: true } });
     } else {
@@ -17,7 +17,7 @@ const DemoButton: React.FC = () => {
         demosSection.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  };
+  }, [location.pathname, navigate]);
 
   return (
     <div className="sm:h-full md:block lg:h-[60%] xl:h-auto cursor-pointer">

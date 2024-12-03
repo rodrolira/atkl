@@ -19,20 +19,19 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
   const { artists, fetchArtists, createArtist } = useArtists();
   const { t } = useTranslation();
 
-  // Asegúrate de que los artistas se establezcan a partir de artistsData
+  const memoizedArtists = useMemo(() => artists || [], [artists]);
+
   useEffect(() => {
     if (memoizedArtists.length === 0) {
       fetchArtists();
     }
-  }, [fetchArtists]);
+  }, [fetchArtists, memoizedArtists.length]);
 
   const handleArtistAdded = useCallback(async (newArtist: any) => {
     await createArtist(newArtist);
   }, [createArtist]);
 
-  const closePopup = () => { };
-
-  const memoizedArtists = useMemo(() => artists || [], [artists]);
+  const closePopup = useCallback(() => { }, []);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">

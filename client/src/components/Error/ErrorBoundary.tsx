@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (this.state.hasError) {
       // Puedes personalizar esta interfaz de usuario
       return (
-        <div style={{ padding: "20px", textAlign: "center" }}>
+        <div style={{ padding: "20px", textAlign: "center", height: "100vh" }}>
           <h1>Oops, algo salió mal 😔</h1>
           <p>Por favor, recarga la página o contacta al soporte técnico.</p>
         </div>

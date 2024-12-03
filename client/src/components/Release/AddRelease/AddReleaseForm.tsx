@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -44,31 +44,17 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   const { genres, fetchGenres } = useGenres();
   const [customArtists, setCustomArtists] = useState<string[]>([]);
 
-  const handleAddCustomArtist = useCallback(() => {
-    setCustomArtists((prev) => [...prev, '']);
-  }, []);
+  const handleAddCustomArtist = () => {
+    setCustomArtists((prev) => [...prev, ''])
+  }
 
-  const handleCustomArtistChange = useCallback((index: number, value: string) => {
+  const handleCustomArtistChange = (index: number, value: string) => {
     setCustomArtists((prev) => {
       const updatedArtists = [...prev];
       updatedArtists[index] = value;
       return updatedArtists;
     });
-  }, []);
-
-  const paperProps = useMemo(() => ({
-    sx: {
-      borderRadius: '0px',
-      margin: '0',
-      display: 'inline-flex',
-      flexDirection: 'column',
-      position: 'relative',
-      float: 'right',
-      zIndex: '10',
-      backgroundColor: 'rgba(18, 46, 15, 0.9)',
-      backgroundImage: 'none',
-    },
-  }), []);
+  };
 
   const onSubmit = async (values: any, actions: any) => {
     const formData = new FormData();
@@ -112,7 +98,19 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
       onClose={closePopup}
       fullWidth
       maxWidth="sm"
-      PaperProps={paperProps}
+      PaperProps={{
+        sx: {
+          borderRadius: '0px',
+          margin: '0',
+          display: 'inline-flex',
+          flexDirection: 'column',
+          position: 'relative',
+          float: 'right',
+          zIndex: '10',
+          backgroundColor: 'rgba(18, 46, 15, 0.9)',
+          backgroundImage: 'none',
+        },
+      }}
       scroll="body"
     >
       <DialogTitle style={{ textAlign: 'center' }} sx={{ bgcolor: 'rgba(18, 46, 15, 1.8)', height: '10vh' }}>

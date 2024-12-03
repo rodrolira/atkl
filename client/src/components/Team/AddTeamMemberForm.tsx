@@ -17,7 +17,7 @@ import { AddTeamMemberFormProps } from '@/types/props/Form/TeamFormProps';
 import { TeamMemberFormValues } from './TeamMemberFormInterfaces';
 
 
-const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = ({
+const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
   open,
   closePopup,
   onTeamMemberAdded,
@@ -130,6 +130,6 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = ({
       </DialogContent>
     </Dialog>
   );
-};
+});
 
-export default AddTeamMemberForm;
+export default React.memo(AddTeamMemberForm);

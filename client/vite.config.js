@@ -14,6 +14,14 @@ export default defineConfig({
     brotli: true, // Enable Brotli compression
     gzip: true,    // Enable gzip compression
   })],
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss(),
+        autoprefixer(),
+      ],
+    },
+  },
   server: {
     host: true,
     strictPort: true,

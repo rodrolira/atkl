@@ -15,10 +15,16 @@ import { Release } from '@/types/interfaces/Release';
 
 // Define the props for the component
 interface ReleaseLinksProps {
-  release: Release;
+  release: Release | null;
 }
 
-const ReleaseLinks: React.FC<ReleaseLinksProps> = ({ release }) => {
+const defaultRelease: Release = {} as Release;
+
+const ReleaseLinks: React.FC<ReleaseLinksProps> = ({ release = defaultRelease }) => {
+  if (!release) {
+    return null;
+  } // or return a default value, e.g. <div>No release data</div>
+
   const bandcampIcon = useMemo(() => <FontAwesomeIcon icon={faBandcamp} />, [faBandcamp]);
   const spotifyIcon = useMemo(() => <FontAwesomeIcon icon={faSpotify} />, [faSpotify]);
   const appleMusicIcon = useMemo(() => <FontAwesomeIcon icon={faApple} />, [faApple]);
@@ -98,4 +104,4 @@ const ReleaseLinks: React.FC<ReleaseLinksProps> = ({ release }) => {
   );
 };
 
-export default ReleaseLinks;
+export default React.memo(ReleaseLinks);

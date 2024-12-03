@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import NavItem from './NavItem';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ const OtherPagesNavbarLinks: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string>(location.pathname);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
-  const handleItemClick = (to: string) => {
+  const handleItemClick = useCallback((to: string) => {
     setNavbarOpen(false);
     setActiveItem(to);
 
@@ -29,11 +29,17 @@ const OtherPagesNavbarLinks: React.FC = () => {
         console.error(`No section found with ID: ${sectionId}`);
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     setActiveItem(location.pathname);
   }, [location.pathname]);
+
+  const filteredLinks = useMemo(() => {
+    return links.filter(link => 
+      link.authRequired ? adminAuthenticated : true
+    );
+  }, [links, adminAuthenticated]);
 
   return (
     <div className="bg-transparent border-gray-200 w-full h-full relative">
@@ -46,27 +52,19 @@ const OtherPagesNavbarLinks: React.FC = () => {
           >
               <div className="flex items-center justify-center w-full">
                 <ul className="items-center justify-center text-lg md:bg-transparent bg-gray-700 bg-opacity-75 font-semibold flex flex-col md:p-0 w-full sm:border md:space-x-6 space-x-3 sm:space-x-4 lg:space-x-8 xl:space-x-10  rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700">
-                  {links.map((link) => {
-                    const showLink = link.authRequired
-                      ? adminAuthenticated // Show the link if admin is authenticated
-                      : true;
-
-                    return (
-                      showLink && (
-                        <NavItem
-                          key={link.to}
-                          to={link.to}  // Use the link to navigate
-                          linkId= {link.id} // Use the link ID
-                          text={t(`navbar.${link.id}`)} // Translate the text
-                          isActive={
-                            activeItem === link.to ||
-                            (link.to === '/' && activeItem === '')
-                          }
-                          onClick={() => handleItemClick(link.to)}
-                        />
-                      )
-                    );
-                  })}
+                  {filteredLinks.map((link) => (
+                    <NavItem
+                      key={link.to}
+                      to={link.to}
+                      linkId={link.id}
+                      text={t(`navbar.${link.id}`)}
+                      isActive={
+                        activeItem === link.to ||
+                        (link.to === '/' && activeItem === '')
+                      }
+                      handleItemClick={(id) => console.log(`Navigating to: ${id}`)} // Pass the function
+                      />
+                  ))}
                 </ul>
               </div>
           </div>

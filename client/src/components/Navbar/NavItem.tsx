@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -7,21 +7,20 @@ interface NavItemProps {
   to: string; // The URL to navigate to
   text: string;
   isActive: boolean;
-  onClick: (id: string) => void;
+  handleItemClick: (id: string) => void; // Update this name
 }
 
-const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, onClick, to }) => {
+const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault(); // Prevents the default anchor click behavior
 
     setTimeout(() => {
       if (isHomePage) {
         // If on Home page, scroll to the section
-        // Implement your scroll logic here, for example:
         const section = document.getElementById(linkId);
         if (section) {
           section.scrollIntoView({ behavior: 'smooth' });
@@ -31,7 +30,9 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, onClick, to }
         navigate(to);
       }
     }, 0);
-  };
+
+    handleItemClick(to);
+  }, [isHomePage, linkId, navigate, to, handleItemClick]);
 
   return (
     <li>

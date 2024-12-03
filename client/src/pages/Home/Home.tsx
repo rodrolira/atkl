@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './Home.module.css';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ const DemosSection = React.lazy(() => import('@/components/sections/DemoSection'
 const ContactSection = React.lazy(() => import('@/components/sections/ContactSection'));
 
 
-const Home: React.FC = () => {
+const Home: React.FC = memo(() => {
   const { t } = useTranslation(); // Hook de traducción
   const location = useLocation();
 
@@ -80,6 +80,6 @@ const Home: React.FC = () => {
     </>
 
   );
-};
+});
 
 export default React.memo(Home);
