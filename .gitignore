@@ -9,7 +9,11 @@ vercelignore
 .gitignore
 .env
 .env.production
-/api.rest
+.env.development
+.prettierignore
+api.rest
+.sourcery.yaml
+.babelrc
 CVE-2023-44487.json
 # Million Lint
 .million
