@@ -32,7 +32,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
-      external: [],
+      external: ['lodash', 'lodash-es'],
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
