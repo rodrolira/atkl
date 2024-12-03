@@ -27,6 +27,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
+  const artistLinkURL = useMemo(() => `/artists/${currentArtist.id}`, [currentArtist.id]);
+  const imageSrc = useMemo(() => `https://atkl-server.onrender.com/${currentArtist.image}`, [currentArtist.image]);
+  const memoizedArtist = useMemo(() => currentArtist, [currentArtist]);
+
   useEffect(() => {
     if (artist?.id) {
       const fetchArtist = async () => {
@@ -42,24 +46,24 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       }
       fetchArtist();
     }
-  }, [artist?.id]);
+  }, [artist?.id, currentArtist]);
 
   const handleDelete = useCallback(async () => {
-    if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
+    if (window.confirm(t('delete_confirmation', { artistName: currentArtist.artist_name }))) {
       try {
-        await deleteArtist(artist.id);
+        await deleteArtist(currentArtist.id);
         setArtists((prevArtists: Artist[]) => prevArtists.filter((a) => a.id !== currentArtist.id));
       } catch (error) {
         console.error('Error deleting artist:', error);
       }
     }
-  }, [t, deleteArtist, artist.artist_name, artist.id, setArtists, currentArtist.id]);
+  }, [t, deleteArtist, setArtists, currentArtist.id, currentArtist.artist_name]);
 
   const openEditModal = useCallback(() => {
     setShowEditModal(true);
   }, []);
 
-  const closeEditModal = () => {
+  const closeEditModal = useCallback(() => {
     setShowEditModal(false);
     const fetchArtist = async () => {
       try {
@@ -72,7 +76,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       }
     };
     fetchArtist();
-  };
+  }, [currentArtist.id]);
 
   const rolesText = useMemo(() => {
     if (currentArtist.Roles && currentArtist.Roles.length > 0) {
@@ -81,22 +85,34 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     return t('no_roles_assigned');
   }, [currentArtist.Roles, t]);
 
-  const editIconMemo = useMemo(() => (
+  const memoizedEditIcon = useMemo(() => (
     <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
-  ), []);
+  ), [faEdit]);
 
-  const trashIconMemo = useMemo(() => (
+  const memoizedDeleteIcon = useMemo(() => (
     <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
-  ), []);
+  ), [faTrash]);
+
+  const memoizedEditButton = useMemo(() => (
+    <Button aria-label={t('edit_artist')} onClick={openEditModal}>
+      {memoizedEditIcon}
+    </Button>
+  ), [t, openEditModal, memoizedEditIcon]);
+
+  const memoizedDeleteButton = useMemo(() => (
+    <Button onClick={handleDelete} aria-label={t('delete_artist')}>
+      {memoizedDeleteIcon}
+    </Button>
+  ), [handleDelete, memoizedDeleteIcon]);
 
   return (
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
+          <Link to={artistLinkURL} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={`https://atkl-server.onrender.com/${currentArtist.image}`}
+              src={imageSrc}
               alt={currentArtist.artist_name}
               loading="lazy"
             />
@@ -104,17 +120,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
           {adminAuthenticated && (
             <div className="absolute right-2 top-2 flex space-x-2">
-              <Button aria-label={t('edit_artist')} onClick={openEditModal}>
-                {editIconMemo}
-              </Button>
-              <Button onClick={handleDelete} aria-label={t('delete_artist')}>
-                {trashIconMemo}
-              </Button>
+              {memoizedEditButton}
+              {memoizedDeleteButton}
             </div>
           )}
         </div>
 
-        <Link to={`/artists/${currentArtist.id}`} className="block">
+        <Link to={artistLinkURL} className="block">
           <p className="text-2xl font-bold tracking-tight text-white text-center mb-2">
             {currentArtist.artist_name}
           </p>
@@ -124,7 +136,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           {rolesText}
         </div>
 
-        <ArtistLinks artist={currentArtist} />
+        <ArtistLinks artist={memoizedArtist} />
       </BaseCard>
 
       {showEditModal && (
@@ -136,4 +148,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   );
 };
 
-export default ArtistCard;
+export default React.memo(ArtistCard, (prevProps, nextProps) => {
+  return prevProps.artist === nextProps.artist; // Compare shallow equality
+});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -9,10 +9,10 @@ const AdminLogoutButton: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await signout();
     navigate('/');
-  };
+  }, [signout, navigate]);
 
   return (
     <div className="sm:h-full lg:h-[60%] xl:h-auto cursor-pointer me-1">

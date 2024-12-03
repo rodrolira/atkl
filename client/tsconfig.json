@@ -7,6 +7,7 @@
       "/client/src/components",
       "/client/src/types/hooks",
       "/client/src/types",
+      "./node_modules/@types/classnames/index.d.ts"
     ],
     "target": "ESNext", // o "ES2020" si prefieres
     "module": "ESNext", // Esto permite usar 'import.meta'
@@ -23,7 +24,10 @@
     "paths": {
       "@/*": [
         "*"
-      ] // Esto permite que @ apunte a la carpeta src
+      ], // Esto permite que @ apunte a la carpeta src
+      "classnames": [
+        "./node_modules/classnames/index.d.ts"
+      ]
     },
     "outDir": "./dist",
   },

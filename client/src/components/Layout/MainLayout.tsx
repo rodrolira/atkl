@@ -16,7 +16,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundColor: '#122e0f',
-          minHeight:{
+          minHeight: {
             xs: '100vh',
           },
         }}

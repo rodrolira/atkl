@@ -1,7 +1,7 @@
 // src/components/Background.tsx
 import React from 'react';
 
-const Background: React.FC = () => {
+const Background: React.FC = React.memo(() => {
   return (
     <div
       className="absolute z-0 inset-0 blur-[118px] max-w-lg lg:h-[80%] max-h-lg h-[800px] mx-auto sm:max-w-3xl sm:h-[400px]"
@@ -11,6 +11,6 @@ const Background: React.FC = () => {
       }}
     />
   );
-};
+});
 
 export default Background;

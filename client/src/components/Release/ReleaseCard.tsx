@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -26,22 +26,24 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
-  useEffect(() => {
+  const fetchRelease = useCallback(async () => {
     if (release?.id) {
-      const fetchRelease = async () => {
-        try {
-          const response = await getReleaseRequest(release.id);
-          setCurrentRelease(response.data);
-        } catch (error) {
-          console.error('Error fetching release:', error);
-        }
-      };
-
-      fetchRelease();
+      try {
+        const response = await getReleaseRequest(release.id);
+        setCurrentRelease((prevRelease) =>
+          response.data !== prevRelease ? response.data : prevRelease
+        );
+      } catch (error) {
+        console.error('Error fetching release:', error);
+      }
     }
   }, [release?.id]);
 
-  const handleDelete = async () => {
+  useEffect(() => {
+    fetchRelease();
+  }, [fetchRelease]);
+
+  const handleDelete = useCallback(async () => {
     if (
       window.confirm(
         `¿Estás seguro de que deseas eliminar el lanzamiento ${currentRelease?.title}?`
@@ -56,30 +58,59 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         console.error('Error deleting release:', error);
       }
     }
-  };
+  }, [
+    deleteRelease,
+    release.id,
+    setReleases,
+    currentRelease?.id,
+    currentRelease?.title,
+  ]);
 
-  const openEditModal = () => {
+  const openEditModal = useCallback(() => {
     setShowEditModal(true);
-  };
+  }, []);
 
-  const closeEditModal = () => {
+  const closeEditModal = useCallback(() => {
     setShowEditModal(false);
-    // Fetch release again to get updated data
-    if (currentRelease?.id) {
-      const fetchRelease = async () => {
-        try {
-          const response = await getReleaseRequest(currentRelease.id);
-          setCurrentRelease(response.data);
-        } catch (error) {
-          console.error('Error fetching release:', error);
-        }
-      };
-      fetchRelease();
-    }
-  };
+    fetchRelease();
+  }, [fetchRelease]);
 
   const editIcon = useMemo(() => <FontAwesomeIcon icon={faEdit} />, []);
   const trashIcon = useMemo(() => <FontAwesomeIcon icon={faTrash} />, []);
+
+  const artistLinks = useMemo(() => {
+    if (currentRelease?.artists && currentRelease.artists.length > 0) {
+      return currentRelease.artists.map((artist) => (
+        <Link
+          to={`/artists/${artist.id}`}
+          className="block relative"
+          key={artist.id}
+        >
+          <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+            {t('artist')}: {artist.artist_name}
+          </h3>
+        </Link>
+      ));
+    } else {
+      return (
+        <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">
+          No Artists
+        </h3>
+      );
+    }
+  }, [currentRelease?.artists, t]);
+
+  const memoizedButton = useMemo(() => (
+    currentRelease?.bandcamp_link ? (
+      <Button
+        to={currentRelease.bandcamp_link}
+        className="mb-4"
+        colorClass="bg-green-500 hover:bg-green-600 text-black"
+      >
+        <p className="font-semibold">{t('buy')}</p>
+      </Button>
+    ) : null
+  ), [currentRelease?.bandcamp_link, t]);
 
   if (!currentRelease) {
     return <div><Loading /></div>; // Render a loading state or message
@@ -94,23 +125,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
           <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
 
-          {currentRelease.artists && currentRelease.artists.length > 0 ? (
-            currentRelease.artists.map((artist) => (
-              <Link
-                to={`/artists/${artist.id}`}
-                className="block relative"
-                key={artist.id}
-              >
-                <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
-                  {t('artist')}: {artist.artist_name}
-                </h3>
-              </Link>
-            ))
-          ) : (
-            <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">
-              No Artists
-            </h3>
-          )}
+          {artistLinks}
           <Link to={`/releases/${currentRelease.id}`}>
             <img
               src={`http://localhost:3000/${currentRelease.cover_image_url}`}
@@ -143,15 +158,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         <ReleaseLinks release={currentRelease} />
 
         <div className="my-2">
-          {currentRelease.bandcamp_link && (
-            <Button
-              to={currentRelease.bandcamp_link}
-              className="mb-4"
-              colorClass="bg-green-500 hover:bg-green-600 text-black"
-            >
-              <p className="font-semibold">{t('buy')}</p>
-            </Button>
-          )}
+          {memoizedButton}
         </div>
         {showEditModal && (
           <Modal onClose={closeEditModal}>

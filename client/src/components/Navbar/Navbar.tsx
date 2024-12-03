@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import NavbarMenu from './NavbarMenu';
 import NavbarMenuMobile from './NavbarMenuMobile';
 import Logo from '@/components/atoms/Logo/Logo';
@@ -21,6 +21,8 @@ const Navbar: React.FC = React.memo(() => {
     // Your handleArtistAdded logic here
   }, []);
 
+  const memoizedNavbarMenuMobile = useMemo(() => <NavbarMenuMobile />, []);
+
   return (
     <nav
       className={`${styles.navbarWrapper} shadow-lg min-h-16  sm:min-h-20 xs:min-h-12 lg:h-24 border-b-2 border-b-green-600`}
@@ -37,7 +39,6 @@ const Navbar: React.FC = React.memo(() => {
         {/* Circular buttons container */}
         <div className="flex md:hidden flex-col h-full w-auto sm:w-1/2 sm:flex-row sm:justify-end px-2">
           {adminAuthenticated && (
-
             <div className="flex md:hidden items-center justify-center space-x-2 sm:space-x-4 flex-grow h-1/2">
               <AddArtistButton />
               <AddReleaseButton />
@@ -47,7 +48,7 @@ const Navbar: React.FC = React.memo(() => {
 
           {/* Navbar menu for mobile view */}
           <div className="w-full flex items-center justify-end h-1/2 sm:hidden">
-            <NavbarMenuMobile />
+            {memoizedNavbarMenuMobile}
           </div>
         </div>
 

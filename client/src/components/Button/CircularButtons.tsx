@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import IconButton from '@mui/material/IconButton';
 import PersonAddIcon from '@mui/icons-material/PersonAdd'; // Icon for adding artist
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'; // Icon for adding release
@@ -84,10 +84,10 @@ export const AdminLogoutButton: React.FC = React.memo(() => {
   const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await signout(); // Call your logout function
     navigate('/');
-  };
+  }, [signout, navigate]);
 
   return (
     <>

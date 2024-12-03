@@ -22,7 +22,13 @@ export const createArtist = async (artist) => {
 };
 
 export const getArtistsRequest = () => axios.get('/artists');
-export const getArtistRequest = (id) => axios.get(`/artists/${id}`);
+export const getArtistRequest = (id) => {
+  if (!id) {
+    throw new Error('Invalid artist ID');
+  }
+
+  return axios.get(`/artists/${id}`);
+}
 
 export const getArtistReleases = (id) => {
   return axios.get(`/artists/${id}/releases`);
@@ -54,7 +60,7 @@ export const updateArtistRequest = async (artistId, artist) => {
 };
 export const deleteArtistRequest = async (id) => {
   return await axios.delete(`/artists/${id}`);
-  
+
 };
 
 export const getRolesRequest = async () => {

@@ -17,17 +17,16 @@ import * as Yup from 'yup';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useTranslation } from 'react-i18next';
 import FileUpload from '@/components/Upload/FileUpload';
-import { getArtistRequest, getRolesRequest } from '@/app/api/artists';
+import { getRolesRequest } from '@/app/api/artists';
 import { motion } from 'framer-motion'; // Importamos framer-motion
 import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
 import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
 
-const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, onArtistAdded, id }) => {
+const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded, id }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [initialValues, setInitialValues] = useState<Partial<Artist>>({
-    id: Number(id),
     artist_name: '',
     email: '',
     username: '',
@@ -38,41 +37,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
   });
   const [roles, setRoles] = useState<Role[]>([]); // Cambia `any` por un tipo más específico si lo tienes
   const { createArtist } = useArtists();
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [artistData, rolesData] = await Promise.all([
-          getArtistRequest(id),
-          getRolesRequest(),
-        ]);
-        setInitialValues(artistData.data);
-        setRoles(rolesData.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchArtist = async (artist_id: number) => {
-      try {
-        const response = await getArtistRequest(artist_id);
-        const artistRoles = response.data.roles || [];
-        setInitialValues({
-          ...response.data,
-          roleIds: artistRoles.map((role: Role) => role.id),
-        });
-      } catch (error) {
-        console.error('Error fetching artist:', error);
-      }
-    };
-    if (id !== undefined) {
-      fetchArtist(id);
-    }
-  }, [id]); // Agrega el id a la dependencia
 
 
   useEffect(() => {
@@ -88,7 +52,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
     };
 
     fetchRoles();
-  }, [id]);
+  }, []);
 
 
   const onSubmit = async (values: Artist, { setSubmitting }: any) => { // Cambia `any` por un tipo más específico
@@ -132,7 +96,8 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
         bandcamp_link: formData.get('bandcamp_link') as string || '',
         youtube_link: formData.get('youtube_link') as string || '',
         spotify_link: formData.get('spotify_link') as string || '',
-
+        apple_music_link: formData.get('apple_music_link') as string || '',
+        beatport_link: formData.get('beatport_link') as string || '',
       };
 
       try {
@@ -328,6 +293,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = ({ openPopup, closePopup, on
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default React.memo(AddArtistForm);

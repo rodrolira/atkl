@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Box, Grid } from '@mui/material';
 import AdminSignin from './AdminSignin';
 import MainLayout from '../Layout/MainLayout';
 import styles from '@/pages/Auth/Auth.module.css';
 
 
-const AdminLoginForm: React.FC = () => {
+const AdminLoginForm: React.FC = memo(() => {
   return (
     <div className={styles.auth}>
       <MainLayout>
@@ -41,6 +41,6 @@ const AdminLoginForm: React.FC = () => {
       </MainLayout>
     </div>
   );
-};
+});
 
 export default React.memo(AdminLoginForm);

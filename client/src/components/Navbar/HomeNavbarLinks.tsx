@@ -47,7 +47,7 @@ const HomeNavbarLinks: React.FC = () => {
                     text={t(`navbar.${link.id}`)}
                     isActive={activeItem === link.to}
                     linkId={link.id}
-                    onClick={() => handleItemClick(link.id, link.to)}
+                    handleItemClick={() => handleItemClick(link.id, link.to)}
                   />
                 )
               );
@@ -59,5 +59,5 @@ const HomeNavbarLinks: React.FC = () => {
   );
 };
 
-export default memo(HomeNavbarLinks);
+export default React.memo(HomeNavbarLinks);
 

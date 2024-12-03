@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import classNames from 'classnames';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,6 @@ import { useLanguage } from '@/hooks/useLanguage';
 interface LanguageMenuProps {
   className?: string;
 }
-
 
 const LanguageMenu: React.FC<LanguageMenuProps> = () => {
   const { t, i18n } = useTranslation();
@@ -23,6 +22,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
     }
   }, [i18n, language]);
 
+  // Memoized language change handler
   const handleChangeLanguage = useCallback((languageCode: string) => {
     changeLanguage(languageCode);
     setSelectedLanguage(languageCode);
@@ -30,6 +30,28 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
     localStorage.setItem('language', languageCode);
     setMenuVisibility(false);
   }, [changeLanguage, i18n]);
+
+  // Memoized ReactCountryFlag for US
+  const usFlag = useMemo(() => (
+    <ReactCountryFlag
+      className="max-[320px]:!me-0 flag-icon !w-auto"
+      countryCode="US"
+      svg
+      title="US"
+      alt="Flag of the United States"
+    />
+  ), []);
+
+  // Memoized main ReactCountryFlag to prevent unnecessary re-renders
+  const mainFlag = useMemo(() => (
+    <ReactCountryFlag
+      alt={selectedLanguage === 'en' ? 'US' : 'es'}
+      className="max-[320px]:ms-[0.5rem] flag-icon h-[1em] !w-auto"
+      countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
+      svg
+      title={selectedLanguage === 'en' ? 'US' : 'es'}
+    />
+  ), [selectedLanguage]);
 
   return (
     <div className="relative z-50">
@@ -42,13 +64,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
           type="button"
           className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white"
         >
-          <ReactCountryFlag
-            alt={selectedLanguage === 'en' ? 'US' : 'es' }
-            className="max-[320px]:ms-[0.5rem] flag-icon"
-            countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
-            svg
-            title={selectedLanguage === 'en' ? 'US' : 'es' }
-          />
+          {mainFlag}
         </button>
 
         <div
@@ -69,13 +85,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
                 onClick={() => handleChangeLanguage('en')}
               >
                 <div className="inline-flex items-center">
-                  <ReactCountryFlag
-                    className="max-[320px]:!me-0 flag-icon"
-                    countryCode="US"
-                    svg
-                    title="US"
-                    alt="Flag of the United States"
-                  />
+                  {usFlag}
                 </div>
               </button>
             </li>
@@ -90,7 +100,7 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
               >
                 <div className="inline-flex items-center">
                   <ReactCountryFlag
-                    className="max-[320px]:!me-0 lg:text-sm md:text-xs flag-icon"
+                    className="max-[320px]:!me-0 lg:text-sm md:text-xs flag-icon !w-auto"
                     countryCode="ES"
                     svg
                     title="ES"
@@ -106,4 +116,5 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
   );
 };
 
-export default React.memo(LanguageMenu);
+// Wrap the component with React.memo
+export default memo(LanguageMenu);

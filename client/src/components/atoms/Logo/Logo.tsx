@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface LogoProps {
   isAdminSignin?: boolean; // Optional prop
   alt: string;
 }
 
-const Logo: React.FC<LogoProps> = ({ isAdminSignin }) => {
+const Logo: React.FC<LogoProps> = memo(({ isAdminSignin }) => {
   return (
     <a
       href="/"
@@ -22,6 +22,6 @@ const Logo: React.FC<LogoProps> = ({ isAdminSignin }) => {
       />
     </a>
   );
-};
+});
 
 export default Logo;
