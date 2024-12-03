@@ -34,7 +34,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
 
   return (
     <FormGroup className="mb-3 w-full flex justify-center items-center" controlId={name}>
-      <FormLabel className="block font-bold mb-2 w-1/5 text-gray-700">
+      <FormLabel className="block font-bold mb-2 w-1/5 text-gray-300">
         {t(labelKey)}:
       </FormLabel>
       <div className="w-full flex justify-center  mx-auto">

@@ -128,7 +128,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
           {artistLinks}
           <Link to={`/releases/${currentRelease.id}`}>
             <img
-              src={`http://localhost:3000/${currentRelease.cover_image_url}`}
+              src={`https://atkl-server.onrender.com/${currentRelease.cover_image_url}`}
               alt={currentRelease.title}
               className="w-full"
               loading="lazy"
