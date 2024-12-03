@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   bio: Yup.string(),
 });
 
-const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
+const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState<Partial<Artist>>({
@@ -58,7 +58,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
     };
 
     const fetchRoles = async () => {
-      try { 
+      try {
         const response = await getRolesRequest();
         if (response && response.data) {
           setRoles(response.data);
@@ -78,14 +78,14 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
     // Añade todos los campos, incluso los vacíos
     Object.keys(values).forEach((key) => {
       const value = values[key as keyof Artist];
-        if (key === 'roleIds') {
-          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
+      if (key === 'roleIds') {
+        formData.append(key, values[key as keyof Artist]?.toString() ?? '');
       } else if (key === 'image' && value) {
         formData.append(key, value as File);
       } else {
-        formData.append(key, value); // Asegura que se envíen como cadena vacía
-      } 
-    }); 
+        formData.append(key, value ?? ''); // Asegura que se envíen como cadena vacía
+      }
+    });
 
     // Verificación de campos en FormData antes de enviarlo
     console.log('FormData:', Array.from(formData.entries()));
@@ -109,7 +109,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
       apple_music_link: formData.get('apple_music_link') as string || '',
       beatport_link: formData.get('beatport_link') as string || '',
       bio: formData.get('bio') as string || '',
-      roleIds:  roleIds || [],
+      roleIds: roleIds || [],
       Roles: values.roleIds,
     };
 
@@ -190,7 +190,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                   setFieldValue('roleIds', event.target.value as number[]);
                 }}
-                
+
               >
                 {roles.map((role) => (
                   <MenuItem key={role.id} value={role.id}>
@@ -237,7 +237,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
                   id={link}
                   name={link}
                   className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder={t(`${link}`) } 
+                  placeholder={t(`${link}`)}
                 />
               </div>
             ))}

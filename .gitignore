@@ -19,3 +19,5 @@ CVE-2023-44487.json
 .million
 client/public/img/
 .eslintrc.cjs
+server/uploads/
+uploads
