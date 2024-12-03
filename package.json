@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
+    "preinstall": "corepack enable",
     "dev": "nodemon index.js",
     "vercel-build": "vercel build",
     "start-prod": "cross-env NODE_ENV=production node server/index.js"
