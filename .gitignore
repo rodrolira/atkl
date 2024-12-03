@@ -13,3 +13,4 @@ vercelignore
 CVE-2023-44487.json
 # Million Lint
 .million
+client/public/img/
