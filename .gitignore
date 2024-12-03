@@ -17,7 +17,8 @@ api.rest
 CVE-2023-44487.json
 # Million Lint
 .million
-client/public/img/
+client/public/img/artists
+client/public/img/releases
 .eslintrc.cjs
 server/uploads/
 uploads
