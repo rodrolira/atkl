@@ -127,13 +127,13 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
         onSubmit={onSubmit}
       >
         {({ isSubmitting, setFieldValue, values }) => (
-          <Form className="w-full bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
+          <Form className="w-full shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Stack spacing={2} margin={2}>
-              <Title className='!text-3xl mb-4 text-center font-bold text-gray-700'>{t('edit_release')}</Title>
+              <Title className='!text-3xl mb-4 text-center font-bold text-gray-300'>{t('edit_release')}</Title>
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="title"
-                  className="block !text-gray-700 font-bold mb-2 w-1/5"
+                  className="block !text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Title:
                 </label>
@@ -156,7 +156,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <InputLabel
                   htmlFor="artist_id"
-                  className="block !text-gray-700 !font-bold mb-2 w-1/5"
+                  className="block !text-gray-300 !font-bold mb-2 w-1/5"
                 >Artist:</InputLabel>
                 <FormControl fullWidth variant="outlined">
                   <Field
@@ -193,7 +193,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="release_date"
-                  className="block text-gray-700 font-bold mb-2  w-1/5"
+                  className="block text-gray-300 font-bold mb-2  w-1/5"
                 >
                   Release Date:
                 </label>
@@ -212,7 +212,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="is_explicit"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Explicit Content:
                 </label>
@@ -226,7 +226,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="description"
-                  className="block text-gray-700 font-bold mb-4 w-1/5"
+                  className="block text-gray-300 font-bold mb-4 w-1/5"
                 >
                   Description:
                 </label>
@@ -246,7 +246,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="genres"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Genre:
                 </label>
@@ -296,7 +296,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="release_type"
-                  className="block !text-gray-700 font-bold mb-2 w-1/5"
+                  className="block !text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Release Type:
                 </label>
@@ -329,7 +329,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="bandcamp_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Bandcamp Link:
                 </label>
@@ -349,7 +349,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="beatport_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Beatport Link:
                 </label>
@@ -369,7 +369,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="spotify_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Spotify Link:
                 </label>
@@ -389,7 +389,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="apple_music_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   Apple Music Link:
                 </label>
@@ -409,7 +409,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="youtube_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   YouTube Link:
                 </label>
@@ -429,7 +429,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="soundcloud_link"
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   SoundCloud Link:
                 </label>

@@ -144,13 +144,13 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form className="w-full !bg-transparent shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
-            <Title className="!text-3xl mb-4 font-bold text-center text-gray-700">
+            <Title className="!text-3xl mb-4 font-bold text-center text-gray-300">
               {t('edit_artist')}
             </Title>
             <div className="mb-4">
               <label
                 htmlFor="artist_name"
-                className="block text-gray-700 font-bold mb-2"
+                className="block text-gray-300 font-bold mb-2"
               >
                 {t('artistName')}
               </label>
@@ -177,11 +177,11 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
 
             {/* Roles Selection */}
             <FormControl className="!mb-4 !block" fullWidth variant="outlined">
-              <InputLabel className="!block !text-gray-700 !font-bold !mb-2">
+              <InputLabel className="!block !text-gray-300 !font-bold !mb-2">
                 {t('addArtist.selectRole')}:
               </InputLabel>
               <Field
-                className="!shadow !appearance-none !border !rounded !w-full !text-gray-700 !leading-tight !focus:!outline-none !focus:!shadow-outline"
+                className="!shadow !appearance-none !border !rounded !w-full !text-gray-200 !leading-tight !focus:!outline-none !focus:!shadow-outline"
                 name="roleIds"
                 as={Select}
                 multiple
@@ -201,7 +201,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
             </FormControl>
 
             <div className="mb-4">
-              <label htmlFor="bio" className="block text-gray-700 font-bold mb-2">
+              <label htmlFor="bio" className="block text-gray-300 font-bold mb-2">
                 Bio:
               </label>
               <Field
@@ -228,7 +228,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               <div className="mb-4 flex" key={link}>
                 <label
                   htmlFor={link}
-                  className="block text-gray-700 font-bold mb-2 w-1/5"
+                  className="block text-gray-300 font-bold mb-2 w-1/5"
                 >
                   {t(`social_links.${link}`)}:
                 </label>
