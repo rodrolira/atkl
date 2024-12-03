@@ -26,7 +26,6 @@
   "homepage": "https://github.com/emre-cil/viterjs-template#readme",
   "scripts": {
     "dev": "vite dev",
-    "preinstall": "corepack enable",
     "clean": "rimraf dist",
     "scan": "vite dev & npx react-scan@latest localhost:5173",
     "start": "vite --open",
