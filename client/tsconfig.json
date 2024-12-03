@@ -25,6 +25,9 @@
       "@/*": [
         "*"
       ], // Esto permite que @ apunte a la carpeta src
+      "lodash/*": [
+        "./node_modules/lodash/*"
+      ],
       "classnames": [
         "./node_modules/classnames/index.d.ts"
       ]
