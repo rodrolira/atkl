@@ -220,11 +220,6 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Bio"
               />
-              <ErrorMessage
-                name="bio"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
             </div>
 
             {/* Social Links */}
@@ -252,11 +247,6 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose}) => {
                   name={link}
                   className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder={t(`${link}`) } 
-                />
-                <ErrorMessage
-                  name={link}
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
                 />
               </div>
             ))}
