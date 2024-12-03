@@ -4,7 +4,7 @@ t
 node_modules
 dist    
 build
-vercel.json
+
 vercelignore
 .gitignore
 .env
