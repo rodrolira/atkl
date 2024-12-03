@@ -61,7 +61,7 @@ dist-ssr
 .prettierrc.json
 prettierrc.json
 .eslintrc
-.eslintrc.json
+.eslintrc.cjs
 
 # Million Lint
 .million
