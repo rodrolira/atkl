@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import FileUpload from '@/components/Upload/FileUpload';
-import { getArtistRequest, getRolesRequest } from '@/app/api/artists';
+import { getArtistRequest, getRolesRequest, updateArtistRequest } from '@/app/api/artists';
 import { useArtists } from '@/contexts/ArtistContext';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
