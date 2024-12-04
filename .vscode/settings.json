@@ -13,8 +13,6 @@
         "Youtube"
     ],
     "tinypng.apiKey": "S73yvXr2Wr8MKCqtYmMqyzq3DqxFW44F",
-    "frontMatter.framework.id": "other",
-    "frontMatter.content.publicFolder": "",
     "sqltools.connections": [
         {
             "pgOptions": {
@@ -43,5 +41,14 @@
             "username": "rodrolira",
             "password": "kMmjy9qhbToO7TfPV5eWNLk1ZCRIhCjs"
         }
-    ]
+    ],
+    "[markdown]": {
+        "editor.fontSize": 14,
+        "editor.lineHeight": 26,
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 64,
+        "editor.lineNumbers": "off",
+        "editor.quickSuggestions": false,
+        "editor.minimap.enabled": false
+    }
 }

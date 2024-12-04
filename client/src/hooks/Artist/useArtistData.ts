@@ -1,27 +1,33 @@
-// useArtistData.js
-import { useState, useEffect } from 'react';
-import { getArtistRequest } from '../../app/api/artists';
+// useArtistData.ts
+import { useState, useEffect, useCallback } from 'react';
+import { getArtistRequest } from '@/app/api/artists';
+import { Artist } from '@/types/interfaces/Artist';
 
 
 export const useArtistData = (id: string) => {
-  const [artist, setArtist] = useState<any>(null);
+  const [artist, setArtist] = useState<Artist | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Estado de carga
+
+  const fetchArtist = useCallback(async () => {
+    try {
+      const response = await getArtistRequest(Number(id));
+    } catch (err) {
+      console.error(err);
+      setError('Error fetching artist');
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    const fetchArtist = async () => {
-      try {
-        setLoading(true); // Iniciar carga
-        const response = await getArtistRequest(id);
-        setArtist(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Error al cargar el artista'); // Manejo de errores
-        setLoading(false);
-      }
-    };
     fetchArtist();
   }, [id]);
 
-  return { artist, error, loading };
+  return {
+    artist,
+    loading,
+    error,
+    refetch: fetchArtist, // Exporta la función para refrescar datos
+  };
 };

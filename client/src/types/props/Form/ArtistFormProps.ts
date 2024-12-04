@@ -10,4 +10,5 @@ export interface AddArtistFormProps {
 export interface EditArtistModalProps {
     id: number;
     onClose: () => void;
+
 }

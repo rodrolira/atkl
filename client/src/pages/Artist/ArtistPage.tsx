@@ -1,8 +1,7 @@
-// ArtistPage.tsx
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar/Navbar';
-import { useArtistData } from '@/hooks/Artist/useArtistData'; // Hook personalizado
+import { useArtistData } from '@/hooks/Artist/useArtistData';
 import Modal from '@/components/Modal/Modal';
 import EditArtistModal from '@/components/Artist/EditArtistModal';
 import ArtistDetails from '@/components/Artist/ArtistDetails';
@@ -12,18 +11,13 @@ import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import ArtistName from '@/components/Artist/ArtistName';
 import Loading from '@/components/atoms/Loading/Loading';
 
-// Definimos la interfaz para los parámetros de la URL
-interface Params {
-  id: number;
-  artist_name: string;
-  bio: string;
-}
 const ArtistPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   if (!id) {
     return <div>No se encontró el artista</div>;
   }
-  const { artist, error, loading } = useArtistData(id); // Usando el hook personalizado
+
+  const { artist, loading, error, refetch } = useArtistData(id); // Usamos `refetch` para actualizar datos
   const [showEditModal, setShowEditModal] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
 
@@ -67,11 +61,12 @@ const ArtistPage: React.FC = () => {
       </div>
       {showEditModal && (
         <Modal onClose={closeEditModal} aria-labelledby="edit-artist-modal">
+          {/* Pasamos `refetch` para actualizar los datos al guardar */}
           <EditArtistModal id={+id} onClose={closeEditModal} />
         </Modal>
       )}
     </>
   );
-}
+};
 
 export default ArtistPage;
