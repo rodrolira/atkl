@@ -1,4 +1,5 @@
 import MillionLint from '@million/lint';
+import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import * as path from 'path';
@@ -8,12 +9,17 @@ import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [MillionLint.vite({
-    enabled: true
-  }), react(), compression({
-    brotli: true, // Enable Brotli compression
-    gzip: true,    // Enable gzip compression
-  })],
+  plugins: [
+    million.vite({
+      auto: true,
+    }),
+    MillionLint.vite({
+      enabled: true
+    }),
+    react(), compression({
+      brotli: true, // Enable Brotli compression
+      gzip: true,    // Enable gzip compression
+    })],
   css: {
     postcss: {
       plugins: [

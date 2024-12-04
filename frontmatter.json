@@ -54,7 +54,8 @@
       "title": "client"
     },
     {
-      "path": "[[workspace]]/node_modules/babel-helper-get-function-arity"
+      "path": "[[workspace]]/node_modules/babel-helper-get-function-arity",
+      "title": "babel-helper-get-function-arity"
     }
   ],
   "frontMatter.git.enabled": true

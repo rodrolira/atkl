@@ -21,7 +21,7 @@ interface ArtistCardProps {
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
-  const { deleteArtist, setArtists } = useArtists();
+  const { deleteArtist, setArtists } = useArtists()
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();

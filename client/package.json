@@ -53,7 +53,7 @@
     "@million/lint": "^1.0.13",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
-    "@reduxjs/toolkit": "^2.3.0",
+    "@reduxjs/toolkit": "^2.4.0",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "@supabase/supabase-js": "^2.46.1",
     "@vercel/analytics": "^1.4.1",
