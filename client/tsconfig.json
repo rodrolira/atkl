@@ -21,6 +21,7 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
+    "types": ["node"],
     "paths": {
       "@/*": [
         "*"
@@ -36,7 +37,7 @@
   },
   "include": [
     "src/**/*",
-    "typings/declarations.d.ts", // Asegúrate de incluir esto
+    "typings/", // Asegúrate de incluir esto
     "node_modules/**/*",
     "client/src/app/api/**/*",
     "client/src/app/**/*",

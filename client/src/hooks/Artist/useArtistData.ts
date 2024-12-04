@@ -7,14 +7,17 @@ import { Artist } from '@/types/interfaces/Artist';
 export const useArtistData = (id: string) => {
   const [artist, setArtist] = useState<Artist | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | boolean>(false);
 
   const fetchArtist = useCallback(async () => {
     try {
-      const response = await getArtistRequest(Number(id));
+      setLoading(true);
+      const response = await getArtistRequest(id);
+      console.log(response);
+      setArtist(response.data);
     } catch (err) {
       console.error(err);
-      setError('Error fetching artist');
+      setError(true);
     } finally {
       setLoading(false);
     }

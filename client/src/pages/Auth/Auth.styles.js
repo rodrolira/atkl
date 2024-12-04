@@ -25,7 +25,7 @@ export const FormSX = {
 
   a: {
     fontWeight: '500',
-    lineHeight: '19px',
+    lineHeight: 1.5,
     color: 'primary.main',
     transition: 'color 0.3s',
     textShadow: '1px 1px 1px rgba(0, 0, 0, 0.6)',

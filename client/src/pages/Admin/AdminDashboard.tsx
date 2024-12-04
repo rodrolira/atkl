@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '@/components/Modal/Modal';
 import { deleteReleaseRequest } from '@/app/api/releases';
 import { Artist } from '@/types/interfaces/Artist';
-import Release from '@/types/interfaces/Release';
+import {Release} from '@/types/interfaces/Release';
 
 
 const AdminDashboard: React.FC = () => {
@@ -165,7 +165,7 @@ const AdminDashboard: React.FC = () => {
         <Modal onClose={closeEditModal}>
           <EditArtistModal
             onClose={closeEditModal}
-            id={currentArtist?.id.toString()}
+            id={currentArtist?.id}
           />
         </Modal>
       )}
