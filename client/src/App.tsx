@@ -1,3 +1,4 @@
+// client/src/App.tsx
 import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
@@ -5,9 +6,10 @@ import Routing from './routes/Routing';
 import './App.css';
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/react';
-
+import Loglib from '@loglib/tracker/react';
 import './i18n';
 import Footer from './components/Footer/Footer';
+
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -25,6 +27,11 @@ const App: React.FC = () => {
           {memoizedAnalytics}
           <SpeedInsights />
           {memoizedCssBaseline}
+          <Loglib
+            config={{
+              id: "atkl"
+            }}
+          />
           <Routing />
           <Footer isAdminLogin={false} />
         </div>

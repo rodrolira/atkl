@@ -1,3 +1,4 @@
+// client/src/main.tsx
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import React from 'react';
@@ -11,7 +12,9 @@ import { GenreProvider } from '@/contexts/GenreContext';
 import { ReleaseProvider } from '@/contexts/ReleaseContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import ErrorBoundary from './components/Error/ErrorBoundary';
+import i18n from './i18n';
 
+i18n.init();
 
 // Cargar React DevTools solo en desarrollo
 if (process.env.NODE_ENV === 'production') {

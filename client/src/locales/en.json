@@ -1,0 +1,216 @@
+{
+    "english": "English",
+    "spanish": "Spanish",
+    "logout": "Logout",
+    "subscribe": "Subscribe",
+    "name": "Name",
+    "email": "Email",
+    "description": "Description (Optional)",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "admin_title": "Admin",
+    "admin_dashboard": "Admin Dashboard",
+    "error": "Error",
+    "page_not_found": "Page Not Found",
+    "back_home": "Back to Home",
+    "biography": "Biography",
+    "actions": "Actions",
+    "subscribe_message": "Subscribe to receive the latest releases for free by email",
+    "description_optional": "Description (Optional)",
+    "form_sent_success": "Form successfully submitted",
+    "send_demo": "Send Demo",
+    "upload_cover_image": "Upload Cover Image",
+    "upload_profile_image": "Upload Profile Image",
+    "artists": "Artists",
+    "artist": "Artist",
+    "artistName": "Artist Name",
+    "releaseName": "Release Name",
+    "releaseDate": "Release Date",
+    "releaseType": "Release Type",
+    "roles": "Roles",
+    "image": "Image",
+    "genre": "Genre",
+    "bandcamp_link": "Bandcamp Link",
+    "facebook_link": "Facebook Link",
+    "instagram_link": "Instagram Link",
+    "soundcloud_link": "SoundCloud Link",
+    "twitter_link": "Twitter Link",
+    "youtube_link": "YouTube Link",
+    "spotify_link": "Spotify Link",
+    "beatport_link": "Beatport Link",
+    "apple_music_link": "Apple Music Link",
+    "delete_confirmation": "Are you sure you want to delete the artist {{artistName}}?",
+    "add_artist": "Add Artist",
+    "edit_artist": "Edit Artist",
+    "delete_artist": "Delete Artist",
+    "edit": "Edit",
+    "edit_release": "Edit Release",
+    "buy": "BUY",
+    "delete_release": "Delete Release",
+    "add_release": "Add Release",
+    "add": "Add",
+    "no_roles_assigned": "No roles assigned",
+    "loading": "Loading...",
+    "sign": "Sign in to your",
+    "account": "Account",
+    "checkReleases": "Check out the latest label releases.",
+    "admin": {
+        "dashboard": "Dashboard",
+        "admin_dashboard": "Admin Dashboard",
+        "users": "Users",
+        "releases": "Releases",
+        "manage_users": "Manage Users",
+        "view_users": "View Users",
+        "manage_artists": "Manage Artists",
+        "add_user": "Add User",
+        "create_user": "Create User",
+        "edit_user": "Edit User",
+        "delete_user": "Delete User",
+        "manage_releases": "Manage Releases",
+        "add_release": "Add Release",
+        "edit_release": "Edit Release",
+        "delete_release": "Delete Release",
+        "view_releases": "View Releases",
+        "add_artist": "Add Artist"
+    },
+    "languageMenu": {
+        "english": "EN",
+        "spanish": "ES"
+    },
+    "social_links": {
+        "bandcamp_link": "Bandcamp",
+        "facebook_link": "Facebook",
+        "instagram_link": "Instagram",
+        "soundcloud_link": "Soundcloud",
+        "twitter_link": "Twitter",
+        "youtube_link": "Youtube",
+        "spotify_link": "Spotify",
+        "beatport_link": "Beatport",
+        "apple_music_link": "Apple Music"
+    },
+    "navbar": {
+        "home": "Home",
+        "artists": "Artists",
+        "releases": "Releases",
+        "about": "About",
+        "contact": "Contact",
+        "demo": "Demo",
+        "services": "Services",
+        "login": "Login",
+        "register": "Register",
+        "logout": "Logout",
+        "admin": "Admin",
+        "profile": "Profile",
+        "settings": "Settings",
+        "myProfile": "My Profile",
+        "myArtists": "My artists",
+        "myReleases": "My releases",
+        "myReleasesSection": "My releases",
+        "myProfileSection": "My profile",
+        "mySettingsSection": "My settings",
+        "admin_dashboard": "Admin dashboard"
+    },
+    "validation": {
+        "artistNameRequired": "Artist name is required",
+        "usernameRequired": "Username is required",
+        "emailRequired": "Email is required",
+        "invalidEmail": "Invalid email address",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 6 characters",
+        "roleRequired": "At least one role is required"
+    },
+    "homeHeader": {
+        "title": "HARD TECHNO IS LIFE",
+        "subtitle": "LABEL"
+    },
+    "artistSection": {
+        "title": "Artists"
+    },
+    "releaseSection": {
+        "title": "Releases"
+    },
+    "aboutSection": {
+        "title": "About",
+        "text": "ATKL Records, founded by <a href=\"https://soundcloud.com/rodro_music\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hover:text-green-500 !text-green-600\">RODRO</a> in December 2022 in Chile, is characterized by its distinctive blend of hardcore techno, industrial, and schranz genres, known for their heavy, energetic, and dynamic soundscapes. The label's inaugural release, \"<a href=\"https://open.spotify.com/album/unknown-va-i\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hover:text-green-500 !text-green-600\">Unknown VA I</a>\", a compilation featuring 10 emerging artists from Chile, Colombia, and Spain, was launched in March 2023, marking the beginning of its journey. Since then, ATKL Records has grown to showcase over 12 diverse releases and hosts two popular podcasts on SoundCloud, highlighting both established and up-and-coming talents in the global electronic music scene. In mid-2023, the label expanded its influence by organizing energetic events and parties, further solidifying its role not only as a record label but also as a vibrant community hub where local DJs and music enthusiasts converge."
+    },
+    "contactSection": {
+        "title": "Contact Us"
+    },
+    "footer": {
+        "title": "ATKL Records",
+        "label": "Sitemap",
+        "aboutUs": "About Us",
+        "artists": "Artists",
+        "releases": "Releases",
+        "sendDemo": "Send Demo",
+        "instagram": "Instagram",
+        "soundcloud": "SoundCloud",
+        "beatport": "Beatport",
+        "bandcamp": "Bandcamp",
+        "booking": "Booking",
+        "mastering": "Mastering",
+        "freeReleases": "Free Releases",
+        "affiliateProgram": "Affiliate Program",
+        "events": "Events",
+        "discography": "Discography",
+        "merchandising": "Merchandising",
+        "samplePacks": "Sample Packs",
+        "rightsReserved": "All Rights Reserved"
+    },
+    "label": {
+        "artist_name": "Artist Name",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email",
+        "bio": "Bio",
+        "role": "Role",
+        "dj": "DJ",
+        "producer": "Producer",
+        "image_url": "Image URL",
+        "position": "Position",
+        "name": "Name"
+    },
+    "login": {
+        "loginAdmin": "Admin Sign in",
+        "username": "Username",
+        "email": "Email Address",
+        "password": "Password",
+        "login": "Login",
+        "failed": "Login failed. Please check your credentials and try again.",
+        "welcome": "Welcome to ATKL Records",
+        "forgotPassword": "Forgot Password",
+        "enterUsername": "Enter Username",
+        "enterEmail": "Enter Email",
+        "enterPassword": "Enter Password",
+        "rememberMe": "Remember Me"
+    },
+    "addTeamMember": {
+        "title": "Add Team"
+    },
+    "addArtist": {
+        "title": "Add Artist",
+        "username": "Username",
+        "password": "Password",
+        "bio": "Bio",
+        "selectRole": "Select Role",
+        "role": {
+            "role": "Role",
+            "dj": "DJ",
+            "producer": "Producer"
+        }
+    },
+    "availability": {
+        "no_artists": "No artists available",
+        "no_releases": "No releases available",
+        "no_info": "No information available"
+    },
+    "artistReleases": {
+        "noReleases": "No releases available"
+    },
+    "errors": {
+        "deleteArtist": "Failed to delete artist. Please try again."
+    },
+    "confirmation": {
+        "deleteArtist": "Are you sure you want to delete this artist?"
+    }
+}
