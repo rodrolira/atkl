@@ -15,6 +15,9 @@ const ContactSection = React.lazy(() => import('@/components/sections/ContactSec
 
 const Home: React.FC = memo(() => {
   const { t } = useTranslation(); // Hook de traducción
+  console.log(t); // Should log a function
+  console.log(t('homeHeader.title')); // Should log the translated string
+
   const location = useLocation();
 
 
@@ -56,10 +59,12 @@ const Home: React.FC = memo(() => {
                   <div className="text-center mx-auto w-full text-white flex flex-col lg:mb-24">
                     {/* Usamos el hook `t` para la traducción */}
                     <h1 className="font-extrabold mx-auto text-center lg:text-5xl text-3xl">
-                      {t('homeHeader.title')}{' '}
+                      {t('homeHeader.title')}
+
                     </h1>
+
                     <h2 className="text-xl lg:text-3xl">
-                      {t('homeHeader.subtitle')}{' '}
+                      {t('homeHeader.subtitle')}
                     </h2>
                   </div>
                 </section>

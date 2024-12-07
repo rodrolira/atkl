@@ -9,29 +9,40 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import Loglib from '@loglib/tracker/react';
 import './i18n';
 import Footer from './components/Footer/Footer';
-
+import { Cloudinary } from "@cloudinary/url-gen";
+import { auto } from "@cloudinary/url-gen/actions/resize";
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from "@cloudinary/react";
 
 const App: React.FC = () => {
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+    },
+  })
+
+
   useEffect(() => {
     console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
   }, []);
 
-  const memoizedAnalytics = useMemo(() => <Analytics />, []);
-  const memoizedCssBaseline = useMemo(() => <CssBaseline />, []);
+  const config = useMemo(() => ({ id: "atkl" }), []);
+  const future = useMemo(
+    () => ({
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    }),
+    []
+  );
 
   return (
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-
+    <BrowserRouter future={future}>
       <div id="app" className="flex">
         <div className="layout">
-          {memoizedAnalytics}
+          <Analytics />
           <SpeedInsights />
-          {memoizedCssBaseline}
-          <Loglib
-            config={{
-              id: "atkl"
-            }}
-          />
+          <CssBaseline />
+          <Loglib config={config} />
           <Routing />
           <Footer isAdminLogin={false} />
         </div>
