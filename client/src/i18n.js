@@ -17,10 +17,6 @@ i18n
     interpolation: {
       escapeValue: false, // React ya se encarga de esto
     },
-    detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage'],
-    },
   });
 
 export default i18n;

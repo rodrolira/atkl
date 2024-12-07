@@ -1,3 +1,4 @@
+// client/src/components/Navbar/HomeNavbarLinks.tsx
 import React, { useState, useEffect, memo, useMemo } from 'react';
 import NavItem from './NavItem';
 import { useTranslation } from 'react-i18next';

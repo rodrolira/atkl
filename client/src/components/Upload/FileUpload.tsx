@@ -6,10 +6,13 @@ import { useFormikContext } from 'formik';
 const FileUpload: React.FC = () => {
   const { setFieldValue } = useFormikContext<Artist>();
 
-  return <FileUploadComponent
-    name="image"
-    labelKey="upload_profile_image"
-    setFieldValue={setFieldValue} />;
+  return (
+    <FileUploadComponent
+      name="image"
+      labelKey="upload_profile_image"
+      setFieldValue={setFieldValue}
+    />
+  );
 };
 
 export default FileUpload;

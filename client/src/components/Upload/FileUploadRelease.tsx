@@ -1,12 +1,17 @@
 import React from 'react';
 import FileUploadComponent from './FileUploadComponent';
-import {  useFormikContext } from 'formik';
-import {Release} from '@/types/interfaces/Release';
+import { useFormikContext } from 'formik';
+import { Release } from '@/types/interfaces/Release';
 
 const FileUploadRelease: React.FC = () => {
-  const {setFieldValue} = useFormikContext<Release>();
+  const { setFieldValue } = useFormikContext<Release>();
+
   return (
-    <FileUploadComponent  labelKey="upload_cover_image" name="cover_image_url" setFieldValue={setFieldValue} />
+    <FileUploadComponent
+      name="cover_image_url"
+      labelKey="upload_cover_image"
+      setFieldValue={setFieldValue}
+    />
   );
 };
 
