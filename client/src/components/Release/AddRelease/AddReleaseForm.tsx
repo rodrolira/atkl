@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  TextField,
   MenuItem,
   FormControl,
   InputLabel,
@@ -12,7 +11,7 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Form, Field, FieldProps, useField } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useArtists } from '@/contexts/ArtistContext';
@@ -30,8 +29,6 @@ interface AddReleaseFormProps {
   onReleaseAdded?: (newRelease: any) => void; // Define more specific type if possible
 }
 
-const artists: Artist[] = [];
-
 const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   open,
   closePopup,
@@ -44,9 +41,14 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   const { genres, fetchGenres } = useGenres();
   const [customArtists, setCustomArtists] = useState<string[]>([]);
 
+  useEffect(() => {
+    fetchArtists();
+    fetchGenres();
+  }, [fetchArtists, fetchGenres]);
+
   const handleAddCustomArtist = () => {
-    setCustomArtists((prev) => [...prev, ''])
-  }
+    setCustomArtists((prev) => [...prev, '']);
+  };
 
   const handleCustomArtistChange = (index: number, value: string) => {
     setCustomArtists((prev) => {
@@ -58,7 +60,6 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
 
   const onSubmit = async (values: any, actions: any) => {
     const formData = new FormData();
-    // Concatenamos los artistas seleccionados de la base de datos y los personalizados
     const allArtists = [...values.artist_id, ...customArtists.filter(Boolean)];
     formData.append('artist_id', JSON.stringify(allArtists));
 
@@ -67,8 +68,6 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
         values[key].forEach((value, index) => {
           formData.append(`${key}[${index}]`, value);
         });
-      } else if (values[key] instanceof File) {
-        formData.append(key, values[key]);
       } else {
         formData.append(key, values[key]);
       }
@@ -87,11 +86,6 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
     }
   };
 
-  useEffect(() => {
-    fetchArtists();
-    fetchGenres();
-  }, [fetchArtists, fetchGenres]);
-
   return (
     <Dialog
       open={open}
@@ -100,22 +94,19 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
       maxWidth="sm"
       PaperProps={{
         sx: {
-          borderRadius: '0px',
-          margin: '0',
+          borderRadius: 0,
+          margin: 0,
           display: 'inline-flex',
           flexDirection: 'column',
           position: 'relative',
-          float: 'right',
-          zIndex: '10',
+          zIndex: 10,
           backgroundColor: 'rgba(18, 46, 15, 0.9)',
-          backgroundImage: 'none',
         },
       }}
-      scroll="body"
     >
-      <DialogTitle style={{ textAlign: 'center' }} sx={{ bgcolor: 'rgba(18, 46, 15, 1.8)', height: '10vh' }}>
+      <DialogTitle sx={{ bgcolor: 'rgba(18, 46, 15, 1)', height: '10vh', textAlign: 'center' }}>
         {t('Add Release')}
-        <IconButton style={{ float: 'right' }} onClick={closePopup}>
+        <IconButton sx={{ float: 'right' }} onClick={closePopup}>
           <CloseIcon color="error" />
         </IconButton>
       </DialogTitle>
@@ -141,8 +132,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
             release_date: Yup.date().required('Release date is required'),
             genre_id: Yup.string().required('Genre is required'),
             release_type: Yup.string().required('Release type is required'),
-            artist_id: Yup.array()
-              .of(Yup.string()),
+            artist_id: Yup.array().of(Yup.string()),
             bandcamp_link: Yup.string(),
             beatport_link: Yup.string(),
             spotify_link: Yup.string(),
@@ -157,19 +147,14 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <Stack spacing={2} margin={2}>
-                <Field name="title" type="text" autoComplete="on" >
+                <Field name="title" type="text" autoComplete="on">
                   {({ field, form }: FieldProps) => (
                     <CustomTextInput
                       {...field}
                       label="Title"
                       variant="outlined"
-                      autoComplete="on"
                       error={Boolean(form.errors.title && form.touched.title)}
-                      helperText={
-                        form.errors.title &&
-                        form.touched.title &&
-                        String(form.errors.title)
-                      }
+                      helperText={form.errors.title && form.touched.title ? String(form.errors.title) : ''}
                     />
                   )}
                 </Field>
@@ -179,20 +164,13 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                       {...field}
                       variant="outlined"
                       type="date"
-                      error={Boolean(
-                        form.errors.release_date && form.touched.release_date
-                      )}
-                      helperText={
-                        form.errors.release_date &&
-                          form.touched.release_date
-                          ? String(form.errors.release_date)
-                          : ''
-                      }
+                      error={Boolean(form.errors.release_date && form.touched.release_date)}
+                      helperText={form.errors.release_date && form.touched.release_date ? String(form.errors.release_date) : ''}
                     />
                   )}
                 </Field>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel className='text-white'>Genre</InputLabel>
+                  <InputLabel className="text-white">Genre</InputLabel>
                   <Field name="genre_id">
                     {({ field, form }: FieldProps) => (
                       <Select
@@ -225,17 +203,12 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                           <div>
                             {selected.map((id) => (
                               <div key={id}>
-                                {
-                                  artists.find((artist: any) => artist.id === id)
-                                    ?.artist_name
-                                }
+                                {artists.find((artist: any) => artist.id === id)?.artist_name}
                               </div>
                             ))}
                           </div>
                         )}
-                        error={Boolean(
-                          form.errors.artist_id && form.touched.artist_id,
-                        )}
+                        error={Boolean(form.errors.artist_id && form.touched.artist_id)}
                       >
                         {artists.map((artist: Artist) => (
                           <MenuItem key={artist.id} value={artist.id}>
@@ -246,13 +219,13 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     )}
                   </Field>
                 </FormControl>
-                 {/* Custom Artists Section */}
-                 {customArtists.map((artist, index) => (
-                  <TextField
+                {customArtists.map((artist, index) => (
+                  <CustomTextInput
                     key={index}
                     label={`Custom Artist ${index + 1}`}
                     value={artist}
                     onChange={(e) => handleCustomArtistChange(index, e.target.value)}
+                    variant="outlined"
                   />
                 ))}
                 <Button onClick={handleAddCustomArtist}>Add Custom Artist</Button>
@@ -264,11 +237,9 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                       <Select
                         {...field}
                         label="Release Type"
-                        variant="outlined"
                         onChange={(e) => setFieldValue('release_type', e.target.value)}
                         value={values.release_type}
-                        error={Boolean(
-                          form.errors.release_type && form.touched.release_type)}
+                        error={Boolean(form.errors.release_type && form.touched.release_type)}
                       >
                         <MenuItem value="Album">Album</MenuItem>
                         <MenuItem value="Single">Single</MenuItem>
@@ -283,66 +254,22 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                       {...field}
                       label="Description"
                       variant="outlined"
-                      color='success'
                       multiline
                       rows={4}
                     />
                   )}
                 </Field>
-                <Field name="bandcamp_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Bandcamp Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
-                <Field name="beatport_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Beatport Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
-                <Field name="spotify_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Spotify Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
-                <Field name="apple_music_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Apple Music Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
-                <Field name="youtube_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Youtube Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
-                <Field name="soundcloud_link">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Soundcloud Link"
-                      variant="outlined"
-                    />
-                  )}
-                </Field>
+                {['bandcamp_link', 'beatport_link', 'spotify_link', 'apple_music_link', 'youtube_link', 'soundcloud_link'].map((link) => (
+                  <Field key={link} name={link}>
+                    {({ field }: FieldProps) => (
+                      <CustomTextInput
+                        {...field}
+                        label={link.replace('_', ' ').replace('link', ' Link').toUpperCase()}
+                        variant="outlined"
+                      />
+                    )}
+                  </Field>
+                ))}
                 <button
                   type="submit"
                   disabled={isSubmitting}
