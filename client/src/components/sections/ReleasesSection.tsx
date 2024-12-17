@@ -1,6 +1,5 @@
 // ReleasesSection.tsx
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
 import React, { useEffect, useCallback } from 'react';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useReleases } from '@/contexts/ReleaseContext';
@@ -11,12 +10,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
-interface ReleasesSectionProps { }
+interface ReleasesSectionProps {}
 
 const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { releases, fetchReleases, createRelease } = useReleases();
-
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -24,7 +22,7 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
   }, [fetchReleases]);
 
   const handleReleaseAdded = useCallback(async (newRelease: any) => {
-    await createRelease(newRelease); // Agrega el nuevo lanzamiento a la lista de lanzamientos
+    await createRelease(newRelease);
     fetchReleases();
   }, [createRelease, fetchReleases]);
 
@@ -40,6 +38,6 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
       <Background />
     </section>
   );
-})
+});
 
 export default ReleasesSection;
