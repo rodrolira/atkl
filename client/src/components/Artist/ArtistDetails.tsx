@@ -19,7 +19,7 @@ const ArtistDetails: React.FC<ArtistDetailsProps> = ({ artist, adminAuthenticate
   return (
     <div className="sm:w-1/3 sm:px-4 sm:pt-4 sm:border-r border-green-600 text-center text-white">
       <ArtistImage
-        image={`https://atkl-server.onrender.com/${artist.image}`}
+        image={`https://res.cloudinary.com/dotfwyxwr/${artist.image}`}
         alt={artist.artist_name}
         adminAuthenticated={adminAuthenticated}
         openEditModal={openEditModal}

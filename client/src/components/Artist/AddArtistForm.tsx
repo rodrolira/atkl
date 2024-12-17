@@ -56,21 +56,27 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
 
 
   const onSubmit = async (values: Artist, { setSubmitting }: any) => { // Cambia `any` por un tipo más específico
+
     setSubmitting(true);
     setTimeout(async () => {
       const formData = new FormData();
 
+      // Asegúrate de que el archivo de la imagen se esté pasando correctamente
+      if (values.image) {
+        formData.append('image', values.image);  // Asume que `values.image` es el archivo
+      }
+
+
       Object.keys(values).forEach((key) => {
         const value = values[key as keyof Artist];
+
         if (key === 'roleIds') {
-          formData.append(key, values[key as keyof Artist]?.toString() ?? '');
-        } else if (key === 'image' && (values[key])) {
-          // Directly check if it's an instance of File
-          formData.append(key, values[key]); // Cast to File
+          formData.append(key, value.toString() ?? '');
+        } else if (key === 'image' && value) {
+          formData.append('image', value);
         } else {
           formData.append(key, value);
         }
-
       });
 
       // Add this log to debug the formData contents

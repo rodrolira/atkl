@@ -8,17 +8,19 @@ export const fetchArtists = async () => {
   return response.data;
 };
 
-export const createArtist = async (artist) => {
-  const formData = new FormData();
-  Object.keys(artist).forEach((key) => {
-    formData.append(key, artist[key]);
-  });
-  const response = await axios.post('/artists', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
+export const createArtist = async (artistData) => {
+  try {
+    const response = await axios.post('/artists', artistData, {
+      headers: {
+        'Content-Type': 'aaplication/json',
+      },
+    });
+    return response.data;
+
+  } catch (error) {
+    console.error('Error creating artist:', error);
+    throw error;
+  }
 };
 
 export const getArtistsRequest = () => axios.get('/artists');

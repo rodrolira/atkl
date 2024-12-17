@@ -25,10 +25,12 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
 
     if (target.files && target.files.length > 0) {
       const file = target.files[0];
+      console.log('Selected file:', file);
+      setLoading(true);
       try {
-        const imageUrl = await uploadImageToServer(file);
-        setPreview(imageUrl); // Previsualiza la imagen
-        setFieldValue(name, imageUrl); // Actualiza el campo con la URL de la imagen subida
+        const image = await uploadImageToServer(file);
+        setPreview(image); // Previsualiza la imagen
+        setFieldValue('image', image); // Actualiza el campo con la URL de la imagen subida
       } catch (error) {
         console.error('Error uploading image:', error);
       } finally {
@@ -36,6 +38,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
       }
     }
   };
+
 
   return (
     <FormGroup className="mb-3 w-full flex justify-center items-center" controlId={name}>
