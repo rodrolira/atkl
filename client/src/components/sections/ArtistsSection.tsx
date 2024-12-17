@@ -1,3 +1,5 @@
+// ArtistsSection.tsx
+
 import React, { useEffect, useCallback, useMemo } from 'react';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -8,11 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
-
-
-// Define las propiedades que recibirá ArtistsSection
 interface ArtistsSectionProps {}
-
 
 const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
@@ -31,7 +29,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
     await createArtist(newArtist);
   }, [createArtist]);
 
-  const closePopup = useCallback(() => { }, []);
+  const closePopup = useCallback(() => {}, []);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">
