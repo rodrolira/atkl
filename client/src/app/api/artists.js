@@ -1,8 +1,6 @@
 // api/artists.ts
 import axios from './axios';
 
-
-
 export const fetchArtists = async () => {
   const response = await axios.get('/artists');
   return response.data;
