@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import FileUpload from '@/components/Upload/FileUpload';
+import FileUploadComponent from '../Upload/FileUploadComponent';
 import { getArtistRequest, getRolesRequest, updateArtistRequest } from '@/app/api/artists';
 import { useArtists } from '@/contexts/ArtistContext';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -11,7 +11,6 @@ import Title from '../atoms/Title/Title';
 import { Artist } from '@/types/interfaces/Artist';
 import { Role } from '@/types/interfaces/Role';
 import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
-import FileUploadComponent from '../Upload/FileUploadComponent';
 
 const validationSchema = Yup.object().shape({
   artist_name: Yup.string().required('Artist name is required'),
@@ -23,98 +22,38 @@ const validationSchema = Yup.object().shape({
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState<Partial<Artist>>({
-    id: Number(id),
-    artist_name: '',
-    image: '',
-    twitter_link: '',
-    instagram_link: '',
-    facebook_link: '',
-    soundcloud_link: '',
-    bandcamp_link: '',
-    youtube_link: '',
-    spotify_link: '',
-    apple_music_link: '',
-    beatport_link: '',
-    roleIds: [],
-    roles: [] as Role[],
-    bio: '',
-  });
+  const [initialValues, setInitialValues] = useState<Partial<Artist>>(getInitialArtistValues(id));
   const [roles, setRoles] = useState<Role[]>([]);
   const { updateArtist, deleteArtist } = useArtists();
 
   useEffect(() => {
-    const fetchArtist = async (artist_id: number) => {
-      try {
-        const response = await getArtistRequest(artist_id);
-        const artistRoles = response.data.roles || [];
-        setInitialValues({
-          ...response.data,
-          roleIds: artistRoles.map((role: Role) => role.id),
-        });
-      } catch (error) {
-        console.error('Error fetching artist:', error);
-      }
-    };
-
-    const fetchRoles = async () => {
-      try {
-        const response = await getRolesRequest();
-        if (response && response.data) {
-          setRoles(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      }
-    };
-
-    fetchArtist(id);
+    fetchArtistData(id);
     fetchRoles();
   }, [id]);
 
-  const handleSubmit = async (values: Artist, { setSubmitting }: any) => {
-    const formData = new FormData();
-
-    // Añade todos los campos, incluso los vacíos
-    Object.keys(values).forEach((key) => {
-      const value = values[key as keyof Artist];
-      if (key === 'roleIds') {
-        formData.append(key, values[key as keyof Artist]?.toString() ?? '');
-      } else if (key === 'image' && value) {
-        formData.append(key, value as File);
-      } else {
-        formData.append(key, value ?? ''); // Asegura que se envíen como cadena vacía
-      }
-    });
-
-    // Verificación de campos en FormData antes de enviarlo
-    console.log('FormData:', Array.from(formData.entries()));
-
-    const roleIdsValue = formData.get('roleIds');
-    const roleIds = typeof roleIdsValue === 'string' ? roleIdsValue.split(',').map(stringId => Number(stringId)) : [];
-
-    // Crea el objeto de datos del artista, asegurando que los campos vacíos sean cadenas vacías
-    const artistData: Artist = {
-      id: Number(id),
-      artist_name: formData.get('artist_name') as string,
-      email: formData.get('email') as string,
-      image: formData.get('image') as string,
-      twitter_link: formData.get('twitter_link') as string || '',
-      instagram_link: formData.get('instagram_link') as string || '',
-      facebook_link: formData.get('facebook_link') as string || '',
-      soundcloud_link: formData.get('soundcloud_link') as string || '',
-      bandcamp_link: formData.get('bandcamp_link') as string || '',
-      youtube_link: formData.get('youtube_link') as string || '',
-      spotify_link: formData.get('spotify_link') as string || '',
-      apple_music_link: formData.get('apple_music_link') as string || '',
-      beatport_link: formData.get('beatport_link') as string || '',
-      bio: formData.get('bio') as string || '',
-      roleIds: roleIds || [],
-      Roles: values.roleIds,
-    };
-
-
+  const fetchArtistData = async (artistId: number) => {
     try {
+      const response = await getArtistRequest(artistId);
+      setInitialValues(transformArtistResponse(response.data));
+    } catch (error) {
+      console.error('Error fetching artist:', error);
+    }
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await getRolesRequest();
+      if (response && response.data) {
+        setRoles(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
+  const handleSubmit = async (values: Artist, { setSubmitting }: any) => {
+    try {
+      const artistData = createArtistData(values, id);
       await updateArtist(id, artistData);
       onClose();
     } catch (error) {
@@ -135,7 +74,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center z-50 relative ">
+    <div className="flex flex-col items-center justify-center z-50 relative">
       <Formik
         initialValues={initialValues as Artist & Partial<Artist>}
         enableReinitialize
@@ -143,134 +82,115 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, setFieldValue, values }) => (
-          <Form className="w-full !bg-transparent shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
-            <Title className="!text-3xl mb-4 font-bold text-center text-gray-300">
-              {t('edit_artist')}
-            </Title>
-            <div className="mb-4">
-              <label
-                htmlFor="artist_name"
-                className="block text-gray-300 font-bold mb-2"
-              >
-                {t('artistName')}
-              </label>
-              <Field
-                type="text"
-                id="artist_name"
-                name="artist_name"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Artist Name"
-                autoComplete="off"
-                autoFocus
-              />
-              <ErrorMessage
-                name="artist_name"
-                component="div"
-                className="text-red-500 text-sm mt-1"
-              />
-            </div>
-
-            {/* Image upload */}
-            <div className="mb-4">
-              <FileUpload />
-            </div>
-
-            {/* Roles Selection */}
-            <FormControl className="!mb-4 !block" fullWidth variant="outlined">
-              <InputLabel className="!block !text-gray-300 !font-bold !mb-2">
-                {t('addArtist.selectRole')}:
-              </InputLabel>
-              <Field
-                className="!shadow !appearance-none !border !rounded !w-full !text-gray-200 !leading-tight !focus:!outline-none !focus:!shadow-outline"
-                name="roleIds"
-                as={Select}
-                multiple
-                value={values.roleIds}
-                id="roleIds"
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setFieldValue('roleIds', event.target.value as number[]);
-                }}
-
-              >
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    {role.label}
-                  </MenuItem>
-                ))}
-              </Field>
-            </FormControl>
-
-            <div className="mb-4">
-              <label htmlFor="bio" className="block text-gray-300 font-bold mb-2">
-                Bio:
-              </label>
-              <Field
-                as="textarea"
-                id="bio"
-                name="bio"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Bio"
-              />
-            </div>
-
-            {/* Social Links */}
-            {[
-              'twitter_link',
-              'instagram_link',
-              'facebook_link',
-              'soundcloud_link',
-              'bandcamp_link',
-              'youtube_link',
-              'spotify_link',
-              'apple_music_link',
-              'beatport_link',
-            ].map((link) => (
-              <div className="mb-4 flex" key={link}>
-                <label
-                  htmlFor={link}
-                  className="block text-gray-300 font-bold mb-2 w-1/5"
-                >
-                  {t(`social_links.${link}`)}:
-                </label>
-                <Field
-                  type="text"
-                  id={link}
-                  name={link}
-                  className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder={t(`${link}`)}
-                />
-              </div>
-            ))}
-
-            {/* Action Buttons */}
-            <div className="flex items-center justify-around sm:justify-between lg:justify-evenly mx-auto w-[50%] flex-wrap">
-              <button
-                type="button"
-                onClick={onClose}
-                className="btn btn-cancel h-10 mt-2"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn btn-save h-10 mt-2"
-                disabled={isSubmitting}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="btn btn-delete h-10 mt-2"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </div>
+          <Form className="form-style">
+            <Title className="title-style">{t('edit_artist')}</Title>
+            <FieldInput fieldName="artist_name" label={t('artistName')} placeholder="Artist Name" />
+            <FileUploadComponent />
+            <RolesSelection roles={roles} setFieldValue={setFieldValue} values={values} />
+            <FieldInput fieldName="bio" label="Bio:" as="textarea" />
+            <SocialLinksInput t={t} />
+            <ActionButtons isSubmitting={isSubmitting} onClose={onClose} onDelete={handleDelete} />
           </Form>
         )}
       </Formik>
     </div>
   );
 };
+
+const getInitialArtistValues = (id: string) => ({
+  id: Number(id),
+  artist_name: '',
+  image: '',
+  roleIds: [],
+  bio: '',
+});
+
+const transformArtistResponse = (data: any) => {
+  const artistRoles = data.roles || [];
+  return {
+    ...data,
+    roleIds: artistRoles.map((role: Role) => role.id),
+  };
+};
+
+const createArtistData = (values: Artist, id: number) => {
+  const roleIds = values.roleIds.map(Number);
+  return { ...values, id: Number(id), roleIds };
+};
+
+const FieldInput: React.FC<{ fieldName: string; label: string; placeholder?: string; as?: any }> = ({
+  fieldName,
+  label,
+  placeholder,
+  as,
+}) => (
+  <div className="mb-4">
+    <label htmlFor={fieldName} className="label-style">{label}</label>
+    <Field
+      type="text"
+      id={fieldName}
+      name={fieldName}
+      as={as}
+      className="input-style"
+      placeholder={placeholder}
+    />
+    <ErrorMessage name={fieldName} component="div" className="error-message" />
+  </div>
+);
+
+const RolesSelection: React.FC<{ roles: Role[]; setFieldValue: (field: string, value: any) => void; values: any }> = ({
+  roles,
+  setFieldValue,
+  values,
+}) => (
+  <FormControl className="mb-4" fullWidth variant="outlined">
+    <InputLabel>{t('addArtist.selectRole')}:</InputLabel>
+    <Field
+      name="roleIds"
+      as={Select}
+      multiple
+      value={values.roleIds}
+      onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+        setFieldValue('roleIds', event.target.value as number[]);
+      }}
+    >
+      {roles.map((role) => (
+        <MenuItem key={role.id} value={role.id}>
+          {role.label}
+        </MenuItem>
+      ))}
+    </Field>
+  </FormControl>
+);
+
+const SocialLinksInput: React.FC<{ t: any }> = ({ t }) => (
+  <>
+    {[
+      'twitter_link',
+      'instagram_link',
+      'facebook_link',
+      'soundcloud_link',
+      'bandcamp_link',
+      'youtube_link',
+      'spotify_link',
+      'apple_music_link',
+      'beatport_link',
+    ].map((link) => (
+      <FieldInput key={link} fieldName={link} label={t(`social_links.${link}`)} />
+    ))}
+  </>
+);
+
+const ActionButtons: React.FC<{ isSubmitting: boolean; onClose: () => void; onDelete: () => void }> = ({
+  isSubmitting,
+  onClose,
+  onDelete,
+}) => (
+  <div className="action-buttons-style">
+    <button type="button" onClick={onClose} className="btn cancel-btn">Cancel</button>
+    <button type="submit" className="btn save-btn" disabled={isSubmitting}>Save</button>
+    <button type="button" className="btn delete-btn" onClick={onDelete}>Delete</button>
+  </div>
+);
 
 export default EditArtistModal;
