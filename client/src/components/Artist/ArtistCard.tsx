@@ -107,7 +107,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={`https://atkl-server.onrender.com/${currentArtist.image}`}
+              src={`http://localhost:3000/${currentArtist.image}`}
               alt={currentArtist.artist_name}
               loading="lazy"
             />
