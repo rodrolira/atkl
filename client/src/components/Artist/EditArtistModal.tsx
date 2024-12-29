@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Title from '../atoms/Title/Title';
 import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
 import FileUploadComponent from '../Upload/FileUploadComponent';
-import classNames from 'classnames';
+import { useArtists } from '@/contexts/ArtistContext';
 
 const rolesMock = [
   { id: 1, label: 'Producer' },
@@ -24,7 +24,13 @@ const validationSchema = Yup.object().shape({
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState({
+  const { updateArtist, createArtist, artists } = useArtists();
+  const [initialValues, setInitialValues] = useState<{
+    artist_name: string;
+    image: string | File | null;
+    roles: number[];
+    bio: string;
+  }>({
     artist_name: '',
     image: null,
     roles: [],
@@ -32,19 +38,34 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   });
 
   useEffect(() => {
-    // Simulación de datos iniciales.
-    setInitialValues({
-      artist_name: 'Sample Artist',
-      image: null,
-      roles: [], // ID del rol asignado.
-      bio: 'Sample bio of the artist.',
-    });
-  }, [id]);
+    if (id) {
+      // Aquí deberías obtener el artista desde el estado global o API
+      const artist = artists.find((artist) => artist.id === id);
+      if (artist) {
+        setInitialValues({
+          artist_name: artist.artist_name,
+          image: artist.image || '',
+          roles: artist.roleIds,
+          bio: artist.bio || '',
+        });
+      }
+    }
+  }, [id, artists]);  // Añadir artists a las dependencias
 
 
-  const handleSubmit = (values: any) => {
-    console.log('Updated artist data:', values);
-    onClose(); // Simula el guardado.
+  const handleSubmit = async (values: any) => {
+    try{
+      if (id) {
+        // Si id está presente, se actualiza el artista.
+        await updateArtist(id, values);
+      } else {
+        // Si no hay id, se crea un nuevo artista.
+        await createArtist(values);
+      }
+      onClose();
+      } catch (error) {
+        console.error('Error al guardar el artista:', error);
+    }
   };
 
 
