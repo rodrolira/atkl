@@ -15,8 +15,6 @@ const ContactSection = React.lazy(() => import('@/components/sections/ContactSec
 
 const Home: React.FC = memo(() => {
   const { t } = useTranslation(); // Hook de traducción
-  console.log(t); // Should log a function
-  console.log(t('homeHeader.title')); // Should log the translated string
 
   const location = useLocation();
 
