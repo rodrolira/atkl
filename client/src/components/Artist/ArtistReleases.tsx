@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getArtistReleases } from '@/app/api/artists'; // Import the function to get artist releases
 import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import ReleaseCard from '@/components/Release/ReleaseCard';
 import { Artist } from '@/types/interfaces/Artist';
-import {Release} from '../../types/interfaces/Release';
-
-
+import { Release } from '../../types/interfaces/Release';
 
 interface ArtistReleasesProps {
   artist: Artist; // Define the artist prop type
@@ -22,15 +19,14 @@ const ArtistReleases: React.FC<ArtistReleasesProps> = ({ artist }) => {
     }
   }, [artist]); // Reload releases when artist changes
 
-  const fetchArtistReleases = async () => {
-    try {
-      const response = await getArtistReleases(artist.id); // Get artist releases by ID
-      console.log('Artist releases:', response.data); // Check data structure here
+  const fetchArtistReleases = () => {
+    // Datos de ejemplo para los lanzamientos
+    const localReleases = [
+      { id: 1, title: 'Release 1', artist_id: artist.id, cover_image_url: '', genre_id: 1, release_type: 'Single', release_date: '2023-01-01' },
+      { id: 2, title: 'Release 2', artist_id: artist.id, cover_image_url: '', genre_id: 2, release_type: 'EP', release_date: '2023-02-01' },
+    ];
 
-      setReleases(response.data);
-    } catch (error) {
-      console.error('Error fetching artist releases:', error);
-    }
+    setReleases(localReleases); // Establecer los lanzamientos locales en el estado
   };
 
   return (

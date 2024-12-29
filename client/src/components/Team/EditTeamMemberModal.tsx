@@ -2,7 +2,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { getTeamMemberRequest, updateTeamMemberRequest, getRolesRequest } from '@/app/api/team';
 import { useTranslation } from 'react-i18next';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Role } from '@/types/interfaces/Role';
@@ -14,38 +13,49 @@ const validationSchema = Yup.object().shape({
   roleIds: Yup.array().required('Role is required'),
 });
 
+// Datos simulados de roles
+const mockRoles: Role[] = [
+  { id: 1, label: 'Manager' },
+  { id: 2, label: 'Developer' },
+  { id: 3, label: 'Designer' },
+];
 
+// Datos simulados de un miembro del equipo
+const mockTeamMember = {
+  id: '1',
+  member_name: 'John Doe',
+  Roles: [
+    { id: '1', label: 'Manager' },
+    { id: '3', label: 'Designer' },
+  ],
+};
 
 const EditTeamMemberModal: React.FC<EditTeamMemberModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<TeamMemberValues>({
     member_name: '',
-    roleIds: [],
+    roleIds: [] as number[],
   });
-  const [roles, setRoles] = useState<Role[]>([]);
+  const [roles, setRoles] = useState<Role[]>(mockRoles); // Usamos roles simulados
 
   useEffect(() => {
-    const fetchTeamMember = async () => {
-      const response = await getTeamMemberRequest(id);
-      const teamMember = response.data;
-      setInitialValues({
-        member_name: teamMember.member_name,
-        roleIds: teamMember.Roles.map((role: Role) => role.id),
-      });
-    };
-
-    const fetchRoles = async () => {
-      const response = await getRolesRequest();
-      setRoles(response.data);
+    const fetchTeamMember = () => {
+      // Simulamos la respuesta de un miembro del equipo
+      if (id === mockTeamMember.id) {
+        setInitialValues({
+          member_name: mockTeamMember.member_name,
+          roleIds: mockTeamMember.Roles.map((role) => parseInt(role.id)),
+        });
+      }
     };
 
     fetchTeamMember();
-    fetchRoles();
   }, [id]);
 
   const handleSubmit = async (values: TeamMemberValues) => {
     try {
-      await updateTeamMemberRequest(id, values);
+      // Simulamos la actualización de un miembro del equipo
+      console.log('Updated Team Member:', values);
       onClose();
     } catch (error) {
       console.error('Error updating team member:', error);

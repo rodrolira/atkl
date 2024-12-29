@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useCallback, useState, useMemo, ReactNode } from 'react';
-import { getGenresRequest } from '@/app/api/genres';
 import { Genre } from '@/types/interfaces/Genre';
 
 // Define the type for the context
@@ -28,9 +27,9 @@ export const GenreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Function to fetch the list of genres from the API
   const fetchGenres = useCallback(async () => {
-    const response = await getGenresRequest(); // Ensure the fetch works correctly
-    setGenres(response.data); // Update the genres list with the API response
-    return response.data;
+    const response = await fetch('/api/genres');
+    setGenres(await response.json()); // Update the genres list with the API response
+    return response.json();
   }, []);
 
   const value = useMemo(() => ({
