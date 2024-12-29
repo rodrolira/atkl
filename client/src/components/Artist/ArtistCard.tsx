@@ -20,7 +20,7 @@ interface ArtistCardProps {
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
-  const { deleteArtist, setArtists, artists} = useArtists()
+  const { deleteArtist, setArtists, artists, updateArtist } = useArtists();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
@@ -46,9 +46,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     setShowEditModal(true);
   }, []);
 
-  const closeEditModal = useCallback(() => {
+  const closeEditModal = useCallback((updatedArtist?: Artist) => {
+    if (updatedArtist) {
+      setCurrentArtist(updatedArtist);
+      updateArtist(updatedArtist.id, updatedArtist)
+    }
     setShowEditModal(false);
-  }, []);
+  }, [updateArtist]);
 
   const rolesText = useMemo(() => {
     if (currentArtist.Roles && currentArtist.Roles.length > 0) {
@@ -112,7 +116,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
       </BaseCard>
 
       {showEditModal && (
-        <Modal onClose={closeEditModal}>
+        <Modal onClose={() => closeEditModal()}>
           <EditArtistModal id={currentArtist.id} onClose={closeEditModal} />
         </Modal>
       )}
