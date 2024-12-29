@@ -7,7 +7,6 @@ import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
 import EditReleaseModal from './EditRelease/EditReleaseModal';
 import { useReleases } from '@/contexts/ReleaseContext';
-import { getReleaseRequest } from '@/app/api/releases';
 import { Link } from 'react-router-dom';
 import ReleaseLinks from './ReleaseLinks';
 import { useTranslation } from 'react-i18next';

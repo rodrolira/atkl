@@ -3,23 +3,21 @@ import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import Navbar from '@/components/Navbar/Navbar';
 import TeamMemberCard from '@/components/Team/TeamMemberCard'; // Adjust the import path as necessary
-import { getTeamMembersRequest } from '@/app/api/team'; // Import the API function to fetch team members
 
 function AboutPage() {
   const { t } = useTranslation();
   const [teamMembers, setTeamMembers] = useState([]); // State to hold team members
 
   useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const response = await getTeamMembersRequest(); // Fetch team members
-        setTeamMembers(response.data); // Update state with fetched data
-      } catch (error) {
-        console.error('Error fetching team members:', error);
-      }
-    };
+    // Datos locales para los miembros del equipo
+    const localTeamMembers = [
+      { id: 1, name: 'John Doe', role: 'CEO', bio: 'Leader and visionary.', imageUrl: 'https://example.com/john.jpg' },
+      { id: 2, name: 'Jane Smith', role: 'CTO', bio: 'Tech expert and strategist.', imageUrl: 'https://example.com/jane.jpg' },
+      { id: 3, name: 'Alice Johnson', role: 'CFO', bio: 'Financial guru and operations leader.', imageUrl: 'https://example.com/alice.jpg' },
+      // Agregar más miembros si es necesario
+    ];
 
-    fetchTeamMembers(); // Call the fetch function
+    setTeamMembers(localTeamMembers); // Establecer los miembros del equipo en el estado
   }, []);
 
   return (

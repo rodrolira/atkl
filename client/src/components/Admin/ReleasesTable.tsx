@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ReleasesTableProps } from '@/types/props/Admin/ReleasesTableProps';
 import { Artist } from '@/types/interfaces/Artist';
 
-const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelete }) => {
+const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit }) => {
   const { t } = useTranslation();
 
   return (
@@ -56,7 +56,6 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
                   <button
-                    onClick={() => onDelete(release.id)}
                     className="text-red-400 hover:text-red-500 text-xl mx-2"
                   >
                     <FontAwesomeIcon icon={faTrash} />

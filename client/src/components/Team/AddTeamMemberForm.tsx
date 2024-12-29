@@ -12,10 +12,21 @@ import Button from '@/components/Button/Button';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { createTeamMemberRequest } from '@/app/api/team'; // Ensure you have this function in your API
 import { AddTeamMemberFormProps } from '@/types/props/Form/TeamFormProps';
 import { TeamMemberFormValues } from './TeamMemberFormInterfaces';
 
+// Simulación de la creación de un miembro del equipo
+const simulateCreateTeamMember = (values: TeamMemberFormValues) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newTeamMember = {
+        ...values,
+        id: Date.now().toString(), // Simulamos un ID único
+      };
+      resolve(newTeamMember);
+    }, 1000); // Simulamos una espera de 1 segundo
+  });
+};
 
 const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
   open,
@@ -34,10 +45,10 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
 
   const onSubmit = async (values: TeamMemberFormValues, actions: any) => {
     try {
-      const newTeamMember = await createTeamMemberRequest(values);
+      const newTeamMember = await simulateCreateTeamMember(values); // Usamos la función simulada
       actions.setSubmitting(false);
       closePopup();
-      onTeamMemberAdded && onTeamMemberAdded(newTeamMember);
+      onTeamMemberAdded && onTeamMemberAdded(newTeamMember); // Llamamos al callback con el nuevo miembro
     } catch (error) {
       console.error('Error adding team member:', error);
       setError(t('error.addTeamMember'));

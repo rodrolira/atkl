@@ -137,23 +137,27 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                 >Artist:</InputLabel>
                 <FormControl fullWidth variant="outlined">
                 {artists.length > 0 && (
-                  <Field name="artist_id">
+                  <Field name="artist_id"
+                  
+                  >
                     {({ field }: FieldProps) => (
-                      <Select
+                      <TextField
                         {...field}
-                        value={field.value}
+                        select
+                        id="artist_id"
+                        value={field.value || ''}
                         variant="outlined"
                         className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         size="small"
-                        inputProps={{ className: '!text-gray-700 !text-start' }}
-                        onChange={(e: SelectChangeEvent) => setFieldValue('artist_id', e.target.value)}
+                        InputProps={{ className: '!text-gray-700 !text-start' }}
+                        onChange={(e) => setFieldValue('artist_id', e.target.value)}
                       >
                           {artists.map((artist: Artist) => (
                             <MenuItem key={artist.id} value={String(artist.id)}>
                               {artist.artist_name}
                             </MenuItem>
                           ))}
-                      </Select>
+                      </TextField>
                     )}
                   </Field>
                 )}
