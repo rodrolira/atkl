@@ -9,9 +9,7 @@ const FileUpload: React.FC = () => {
   return (
     <FileUploadComponent
       name="image"
-      labelKey="upload_profile_image"
-      setFieldValue={setFieldValue}
-    />
+      setFieldValue={setFieldValue} label={"Image"}    />
   );
 };
 

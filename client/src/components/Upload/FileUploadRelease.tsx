@@ -9,7 +9,7 @@ const FileUploadRelease: React.FC = () => {
   return (
     <FileUploadComponent
       name="cover_image_url"
-      labelKey="upload_cover_image"
+      label="upload_cover_image"
       setFieldValue={setFieldValue}
     />
   );
