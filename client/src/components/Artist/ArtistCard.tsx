@@ -7,7 +7,6 @@ import Modal from '@/components/Modal/Modal';
 import EditArtistModal from './EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
-import { getArtistRequest } from '@/app/api/artists';
 import { Button } from 'react-bootstrap';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
@@ -21,36 +20,25 @@ interface ArtistCardProps {
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
-  const { deleteArtist, setArtists } = useArtists()
+  const { deleteArtist, setArtists, artists} = useArtists()
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (artist?.id) {
-      const fetchArtist = async () => {
-        try {
-          const response = await getArtistRequest(artist.id);
-          // Only update state if fetched data is different
-          if (JSON.stringify(response.data) !== JSON.stringify(currentArtist)) {
-            setCurrentArtist(response.data);
-          }
-        } catch (error) {
-          console.error('Error fetching artist:', error);
-        }
-      }
-      fetchArtist();
+    const artistFromContext = artists.find((a) => a.id === artist.id);
+    if (artistFromContext) {
+      setCurrentArtist(artistFromContext);
     }
-  }, [artist?.id]);
+  }, [artist.id, artists]);
 
-  const handleDelete = useCallback(async () => {
+  // Manejo de eliminación de artista
+  const handleDelete = useCallback(() => {
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
-      try {
-        await deleteArtist(currentArtist.id);
-        setArtists((prevArtists: Artist[]) => prevArtists.filter((a) => a.id !== currentArtist.id));
-      } catch (error) {
-        console.error('Error deleting artist:', error);
-      }
+      setArtists((prevArtists: Artist[]) =>
+        prevArtists.filter((a) => a.id !== currentArtist.id)
+      );
+      deleteArtist(currentArtist.id);
     }
   }, [t, deleteArtist, setArtists, currentArtist.id, currentArtist.artist_name]);
 
@@ -58,24 +46,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     setShowEditModal(true);
   }, []);
 
-  const closeEditModal = () => {
+  const closeEditModal = useCallback(() => {
     setShowEditModal(false);
-    const fetchArtist = async () => {
-      try {
-        const response = await getArtistRequest(currentArtist.id);
-        if (JSON.stringify(response.data) !== JSON.stringify(currentArtist)) {
-          setCurrentArtist(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching artist:', error);
-      }
-    };
-    fetchArtist();
-  };
+  }, []);
 
   const rolesText = useMemo(() => {
     if (currentArtist.Roles && currentArtist.Roles.length > 0) {
-      return currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `Role ID: ${role}`).join(' / ');
+      return currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `${role}`).join(' / ');
     }
     return t('no_roles_assigned');
   }, [currentArtist.Roles, t]);
@@ -107,7 +84,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={`http://localhost:3000/${currentArtist.image}`}
+              src={typeof currentArtist.image === 'string' ? currentArtist.image : '/images/placeholder.png'}
               alt={currentArtist.artist_name}
               loading="lazy"
             />

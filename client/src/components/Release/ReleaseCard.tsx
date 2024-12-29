@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Release } from '@/types/interfaces/Release';
 import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
+import { Artist } from '@/types/interfaces/Artist';
 
 interface ReleaseCardProps {
   release: Release;
@@ -22,27 +23,17 @@ interface ReleaseCardProps {
 const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { t } = useTranslation();
   const [currentRelease, setCurrentRelease] = useState<Release | null>(release);
-  const { deleteRelease, setReleases } = useReleases();
+  const { deleteRelease, setReleases, releases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
-  const fetchRelease = useCallback(async () => {
-    if (release?.id) {
-      try {
-        const response = await getReleaseRequest(release.id);
-        setCurrentRelease((prevRelease) =>
-          response.data !== prevRelease ? response.data : prevRelease
-        );
-      } catch (error) {
-        console.error('Error fetching release:', error);
-      }
-    }
-  }, [release?.id]);
-
   useEffect(() => {
-    fetchRelease();
-  }, [fetchRelease]);
-
+    const releaseFromContext = releases.find((r) => r.id === release.id);
+    if (releaseFromContext) {
+      setCurrentRelease(releaseFromContext);
+    }
+  }, [release.id, releases]);
+  
   const handleDelete = useCallback(async () => {
     if (
       window.confirm(
@@ -52,7 +43,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
       try {
         await deleteRelease(release.id);
         setReleases((prevReleases: Release[]) =>
-          prevReleases.filter((r) => r.id !== currentRelease?.id)
+          prevReleases.filter((r) => r.id !== release.id)
         );
       } catch (error) {
         console.error('Error deleting release:', error);
@@ -60,10 +51,9 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     }
   }, [
     deleteRelease,
-    release.id,
     setReleases,
-    currentRelease?.id,
-    currentRelease?.title,
+    release,
+    t
   ]);
 
   const openEditModal = useCallback(() => {
@@ -72,15 +62,14 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   const closeEditModal = useCallback(() => {
     setShowEditModal(false);
-    fetchRelease();
-  }, [fetchRelease]);
+  }, []);
 
   const editIcon = useMemo(() => <FontAwesomeIcon icon={faEdit} />, []);
   const trashIcon = useMemo(() => <FontAwesomeIcon icon={faTrash} />, []);
 
   const artistLinks = useMemo(() => {
     if (currentRelease?.artists && currentRelease.artists.length > 0) {
-      return currentRelease.artists.map((artist) => (
+      return currentRelease.artists.map((artist: Artist) => (
         <Link
           to={`/artists/${artist.id}`}
           className="block relative"

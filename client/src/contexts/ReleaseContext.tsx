@@ -1,117 +1,54 @@
-/* eslint-disable no-unused-vars */
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import {
-  getReleasesRequest,
-  getReleaseRequest,
-  createReleaseRequest,
-  updateReleaseRequest,
-  deleteReleaseRequest,
-} from '@/app/api/releases';
-import { Release, ReleaseContextType } from '@/types/interfaces/Release'; // Define la interfaz `Release` para representar un release
-
+import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback } from 'react';
+import { Release, ReleaseContextType } from '@/types/interfaces/Release';
 
 export const ReleaseContext = createContext<ReleaseContextType | undefined>(undefined);
 
 export const useReleases = () => {
   const context = useContext(ReleaseContext);
-
   if (!context) {
-    console.log('useReleases must be used within a ReleaseProvider');
     throw new Error('useReleases must be used within a ReleaseProvider');
   }
-
   return context;
 };
 
-// Definir las props del ReleaseProvider
-interface ReleaseProviderProps {
-  children: ReactNode;
-}
+export const ReleaseProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [releases, setReleases] = useState<Release[]>([
+    { id: 1, title: 'Release 1', artist_id: 1, cover_image_url: '', genre_id: 1, release_type: 'Single', release_date: '2023-01-01' },
+    { id: 2, title: 'Release 2', artist_id: 2, cover_image_url: '', genre_id: 2, release_type: 'EP', release_date: '2023-02-01' },
+  ]);
 
-export const ReleaseProvider: React.FC<ReleaseProviderProps> = ({ children }) => {
-  const [releases, setReleases] = useState<Release[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Lógica para obtener la lista de releases
-  const fetchReleases = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await getReleasesRequest();
-      setReleases(response.data);
-    } catch (error) {
-      console.error('Error fetching releases:', error);
-      setError('Failed to fetch releases');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Lógica para obtener un release por ID
-  const fetchRelease = async (id: number): Promise<Release> => {
-    try {
-      const response = await getReleaseRequest(id);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching release with ID ${id}:`, error);
-      throw error;
-    }
-  };
-
-  // Lógica para crear un release
-  const createRelease = async (release: Release): Promise<void> => {
-    try {
-      const res = await createReleaseRequest(release);
-      setReleases((prevReleases) => [...prevReleases, res.data]);
-      return res.data;
-    } catch (error) {
-      console.error('Error creating release:', error);
-    }
-  };
-
-  // Lógica para actualizar un release
-  const updateRelease = async (id: number, updatedRelease: Partial<Release>): Promise<void> => {
-    try {
-      const response = await updateReleaseRequest(id, updatedRelease);
-      setReleases((prevReleases) =>
-        prevReleases.map((release) => (release.id === id ? response.data : release)),
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error updating release:', error);
-      throw error;
-    }
-  };
-
-  // Lógica para eliminar un release
+    // Implementa fetchReleases para cargar lanzamientos ficticios
+    const fetchReleases = useCallback(async () => {
+      const localReleases = [
+        { id: 1, title: 'Release 1', artist_id: 1, cover_image_url: '', genre_id: 1, release_type: 'Single', release_date: '2023-01-01' },
+        { id: 2, title: 'Release 2', artist_id: 2, cover_image_url: '', genre_id: 2, release_type: 'EP', release_date: '2023-02-01' },
+      ];
+      setReleases(localReleases);
+    }, []);
+  
+  const createRelease = (release: Release) => setReleases([...releases, { ...release, id: Date.now() }]);
+  const updateRelease = (id: number, updatedRelease: Partial<Release>) =>
+    setReleases((prev) => prev.map((release) => (release.id === id ? { ...release, ...updatedRelease } : release)));
   const deleteRelease = async (id: number): Promise<void> => {
-    try {
-      await deleteReleaseRequest(id);
-      setReleases((prevReleases) =>
-        prevReleases.filter((release) => release.id !== id),
-      );
-    } catch (error) {
-      console.error('Error deleting release:', error);
-      throw error;
-    }
+    return new Promise((resolve) => {
+      setReleases((prevReleases) => {
+        const updatedReleases = prevReleases.filter((release) => release.id !== id); // Filtra el lanzamiento a eliminar
+        resolve(); // Resuelve la promesa
+        return updatedReleases; // Devuelve la lista actualizada
+      });
+    });
   };
-
-  const value = {
+  
+  const contextValue = useMemo(() => ({
     releases,
-    loading,
-    error,
+    setReleases,
     fetchReleases,
-    fetchRelease,
     createRelease,
     updateRelease,
     deleteRelease,
-    setReleases,
-  };
-  return (
-    <ReleaseContext.Provider
-      value={value}
-    >
-      {children}
-    </ReleaseContext.Provider>
-  );
+    loading: false,
+    error: null,
+  }), [releases, fetchReleases]);
+
+  return <ReleaseContext.Provider value={contextValue}>{children}</ReleaseContext.Provider>;
 };

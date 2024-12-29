@@ -4,9 +4,8 @@ import { Role } from "./Role";
 export interface Artist {
     id: number;
     artist_name: string;
-    email: string;
     image: string | File | null;
-    Roles: Role[] | number[];
+    Roles: Role[] | string[];
     roleIds: number[];
     bio?: string;
     twitter_link?: string;
@@ -32,13 +31,12 @@ export interface Artist {
   
   export interface ArtistContextType {
     artists: Artist[];
-    setArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
-    createArtist: (artist: Artist) => Promise<Artist | undefined>;
     fetchArtists: () => Promise<void>;
-    fetchArtist: (id: number) => Promise<Artist>;
+    setArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
+    createArtist: (artist: Artist) => Promise<Artist | null>;
+    updateArtist: (id: number, updatedArtist: Partial<Artist>) => Promise<void>; // Asegúrate de que esto sea una Promise
+    deleteArtist: (id: number) => Promise<void>;
     error: string | null;
     loading: boolean;
-    updateArtist: (id: number, updatedArtist:  Partial<Artist>) => Promise<void>;
-    deleteArtist: (id: number) => Promise<void>;
   }
   

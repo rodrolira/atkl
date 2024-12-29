@@ -10,9 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
-interface ReleasesSectionProps {}
 
-const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
+const ReleasesSection: React.FC = () => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const { releases, fetchReleases, createRelease } = useReleases();
   const { t } = useTranslation();
@@ -38,6 +37,6 @@ const ReleasesSection: React.FC<ReleasesSectionProps> = React.memo(() => {
       <Background />
     </section>
   );
-});
+};
 
 export default ReleasesSection;

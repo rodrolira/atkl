@@ -6,18 +6,17 @@ import Button from '@/components/Button/Button';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useGenres } from '@/contexts/GenreContext';
-import { getReleaseRequest } from '@/app/api/releases';
 import { useReleases } from '../../../contexts/ReleaseContext'
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
-import { EditReleaseModalProps } from '@/types/props/Form/ReleaseFormProps';
-import { FormValues, ReleaseFormValues } from '@/types/interfaces/Form';
+import { ReleaseFormValues } from '@/types/interfaces/Form';
 import { Release } from '@/types/interfaces/Release';
 import { Artist } from '../../../types/interfaces/Artist';
+import { SelectChangeEvent } from '@mui/material';
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string(),
+  title: Yup.string().required('Title is required'),
   artist_id: Yup.string(),
   cover_image_url: Yup.mixed(),
   release_date: Yup.date(),
@@ -26,15 +25,18 @@ const validationSchema = Yup.object().shape({
   release_type: Yup.string(),
 });
 
-const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
+const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, onClose }) => {
   const release_id = id;
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { releases, updateRelease, deleteRelease } = useReleases();
+  const { artists, fetchArtists } = useArtists();
+  const { genres } = useGenres();
+
 
   const [initialValues, setInitialValues] = useState<Partial<Release>>({
     title: '',
     artist_id: '',
-    is_explicit: false,
     cover_image_url: '',
     release_date: '',
     description: '',
@@ -48,69 +50,44 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
     beatport_link: '',
   });
 
-  const { updateRelease, deleteRelease } = useReleases();
-  const { artists, fetchArtists } = useArtists();
-  const { genres } = useGenres();
+  const fetchRelease = (release_id: number) => {
+    const release = releases.find((r) => r.id === release_id);
+    if (release) {
+      console.log('Fetched release:', release);  // Debugging
+      setInitialValues({
+        ...release,
+        artist_id: String(release.artist_id),
+        genre_id: String(release.genre_id)
+      });
+    }
+    console.log('Fetching release with ID:', release_id);
+
+  };
 
   useEffect(() => {
-    if (typeof release_id === 'number') {
-      fetchRelease(release_id);
-    } else {
-      console.error('Invalid release_id:', release_id);
-    }
+    console.log('Artists:', artists);  // Debugging
+    console.log('Fetching release with ID:', release_id);
+    fetchRelease(release_id);
+
     if (!artists.length) {
       fetchArtists();
     }
-  }, [release_id]);
+  }, [release_id, artists, fetchArtists]);
 
-  const fetchRelease = async (release_id: number) => {
+
+  const onSubmit = async (values: Partial<Release>) => {
     try {
-      const response = await getReleaseRequest(release_id);
-
-      const artists = response.data.artists || [];
-      const releaseData = {
-        ...response.data,
-        genre: response.data.genre?.name || 'Unknown', // Maneja caso en que `genre` pueda ser undefined
-        artists: artists.map((artist: Artist) => artist.artist_name), // Mapea solo si hay artistas
-        artist_id: artists.length > 0 ? artists[0].id : null, // Solo asigna `artist_id` si hay al menos un artista
-        release_date: response.data.release_date ? response.data.release_date.split('T')[0] : '',
-      };
-      setInitialValues(releaseData);
-    } catch (error) {
-      console.error('Error fetching release:', error);
-    }
-  };
-
-  const onSubmit = async (values: any, actions: any) => {
-    const formData = new FormData();
-
-    Object.keys(values).forEach((key) => {
-      if (Array.isArray(values[key])) { // Handle arrays
-        values[key].forEach((value, index) => {
-          formData.append(`${key}[${index}]`, value);
-        });
-      } else if (values[key] instanceof File) {
-        formData.append(key, values[key]);
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
-
-    console.log([...formData]);
-
-    try {
-      await updateRelease(Number(release_id), formData);
+      await updateRelease(release_id, values);
       onClose();
     } catch (error) {
       console.error('Error updating release:', error);
-      actions.setSubmitting(false);
     }
   };
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this release?')) {
       try {
-        await deleteRelease(Number(release_id));
+        await deleteRelease(release_id);
         navigate('/releases');
       } catch (error) {
         console.error('Error deleting release:', error);
@@ -121,12 +98,12 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Formik
-        initialValues={initialValues as Release & Partial<Release>}
+        initialValues={initialValues}
         enableReinitialize
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ isSubmitting, setFieldValue, values }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form className="w-full shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Stack spacing={2} margin={2}>
               <Title className='!text-3xl mb-4 text-center font-bold text-gray-300'>{t('edit_release')}</Title>
@@ -159,31 +136,27 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
                   className="block !text-gray-300 !font-bold mb-2 w-1/5"
                 >Artist:</InputLabel>
                 <FormControl fullWidth variant="outlined">
-                  <Field
-                    name="artist_id"
-                    className="shadow appearance-none !border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    {({ field, form }: FieldProps) => (
+                {artists.length > 0 && (
+                  <Field name="artist_id">
+                    {({ field }: FieldProps) => (
                       <Select
                         {...field}
-                        label="Artist"
-                        value={values.artist_id}
-                        className="shadow appearance-none border rounded w-full  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        value={field.value}
+                        variant="outlined"
+                        className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         size="small"
-                        fullWidth
-                        color='purple'
                         inputProps={{ className: '!text-gray-700 !text-start' }}
-                        onChange={(e) => setFieldValue('artist_id', e.target.value)}
-                        error={Boolean(form.errors.artist_id && form.touched.artist_id)}
+                        onChange={(e: SelectChangeEvent) => setFieldValue('artist_id', e.target.value)}
                       >
-                        {artists.map((artist: Artist) => (
-                          <MenuItem key={artist.id} value={artist.id}>
-                            {artist.artist_name}
-                          </MenuItem>
-                        ))}
+                          {artists.map((artist: Artist) => (
+                            <MenuItem key={artist.id} value={String(artist.id)}>
+                              {artist.artist_name}
+                            </MenuItem>
+                          ))}
                       </Select>
                     )}
                   </Field>
+                )}
                 </FormControl>
 
               </div>
@@ -255,27 +228,14 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
                   className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 >
                   {({ field, form }: { field: FieldProps; form: FormikProps<ReleaseFormValues> }) => (
-                    <TextField
+                    <Select
                       {...field}
-                      select
                       label="Genre"
                       variant="outlined"
                       className="w-full shadow appearance-none border rounded py-2 px-3 !text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       size="small"
-                      margin="normal"
                       fullWidth
-                      SelectProps={{
-                        color: 'purple',
-                        classes: {
-                          select: '!text-gray-700 !text-start',
-                        },
-                      }}
                       error={!!form.errors.genre_id && form.touched.genre_id}
-                      helperText={
-                        form.errors.genre_id &&
-                        form.touched.genre_id &&
-                        form.errors.genre_id
-                      }
                       onChange={(e) => setFieldValue('genre_id', e.target.value)}
                     >
                       {genres.map((genre) => (
@@ -283,7 +243,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
                           {genre.name}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </Select>
                   )}
                 </Field>
                 <ErrorMessage
@@ -300,29 +260,21 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
                 >
                   Release Type:
                 </label>
-                <Field name="release_type" type="select" id="release_type" className="w-full">
-                  {({ field, form }: { field: FieldProps; form: FormikProps<ReleaseFormValues> }) => (
-
-                    <Select
+                <Field name="release_type">
+                  {({ field }: FieldProps) => (
+                    <TextField
                       {...field}
-                      label="Release Type"
+                      select
+                      value={field.value || ''}
                       variant="outlined"
-                      color="purple"
-                      labelId='release_type'
-                      id="release_type"
-                      className="w-full shadow appearance-none border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      error={
-                        !!form.errors.release_type && form.touched.release_type
-                      }
-                      classes={{
-                        select: '!text-gray-700 !text-start',
-                      }}
-
+                      className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      size="small"
                     >
+                      <MenuItem value="">Select a type</MenuItem>
                       <MenuItem value="Album">Album</MenuItem>
                       <MenuItem value="Single">Single</MenuItem>
                       <MenuItem value="EP">EP</MenuItem>
-                    </Select>
+                    </TextField>
                   )}
                 </Field>
               </div>

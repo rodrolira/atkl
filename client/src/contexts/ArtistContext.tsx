@@ -1,11 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
-import {
-  createArtistRequest,
-  deleteArtistRequest,
-  getArtistRequest,
-  getArtistsRequest,
-  updateArtistRequest,
-} from '../app/api/artists';
+import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback } from 'react';
 import { Artist, ArtistContextType } from '@/types/interfaces/Artist';
 
 
@@ -17,9 +10,8 @@ export const ArtistContext = createContext<ArtistContextType | undefined>(undefi
 // Custom hook to use the ArtistContext
 export const useArtists = () => {
   const context = useContext(ArtistContext);
-  
+
   if (!context) {
-    console.log('useArtists must be used within an ArtistProvider');
     throw new Error('useArtists must be used within an ArtistProvider');
   }
   return context;
@@ -28,99 +20,65 @@ export const useArtists = () => {
 // ArtistProvider component
 export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [artists, setArtists] = useState<Artist[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch artists from the API
   const fetchArtists = useCallback(async () => {
-    setLoading(true);
-    setError(null); 
-    try {
-      const response = await getArtistsRequest();
-      setArtists(response.data);
-    } catch (error) {
-      console.error('Error fetching artists:', error);
-      setError('Failed to fetch artists');
-    } finally {
-      setLoading(false);
-    }
+    
+    const localArtists = [
+      { id: 1, artist_name: 'Artist 1', image: null, roleIds: [1, 2] , Roles: ['Producer / DJ'], bio: 'Bio 1' },
+      { id: 2, artist_name: 'Artist 2', image: null, roleIds: [2], Roles: ['DJ'], bio: 'Bio 2' },
+    ];
+    setArtists(localArtists as Artist[]);
   }, []);
 
-  const fetchArtist = useCallback(async (id: number): Promise<Artist> => {
-    try {
-      const response = await getArtistRequest(id);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching artist with ID ${id}:`, error);
-      throw error;
-    }
-  }, []);
+  // Crear, actualizar y eliminar artistas
+  const createArtist = async (artist: Artist): Promise<Artist | null> => {
+    return new Promise((resolve) => {
+      try {
+        const newArtist = { ...artist, id: Date.now() }; // Asigna un ID único
+        setArtists((prevArtists) => [...prevArtists, newArtist]); // Actualiza el estado
+        resolve(newArtist); // Resuelve la promesa con el nuevo artista
+      } catch (error) {
+        console.error('Error creating artist:', error);
+        resolve(null); // Resuelve con null en caso de error
+      }
+    });
+  };
 
-  // Create a new artist
-  const createArtist = useCallback(async (artist: Artist): Promise<Artist | undefined> => {
-    try {
-      const res = await createArtistRequest(artist);
-      setArtists((prevArtists) => [...prevArtists, res.data]);
-      return res.data;
-    } catch (error) {
-      console.error('Error creating artist:', error);
-      setError('Failed to create artist');
-    }
-  }, []);
+  const updateArtist = async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
+    return new Promise((resolve) => {
+      setArtists((prevArtists) => {
+        const artistIndex = prevArtists.findIndex((artist) => artist.id === id);
+        if (artistIndex !== -1) {
+          const updatedArtists = [...prevArtists];
+          updatedArtists[artistIndex] = { ...updatedArtists[artistIndex], ...updatedArtist };
+          return updatedArtists; // Devuelve la lista actualizada
+        }
+        return prevArtists; // Devuelve el estado anterior si no se encuentra el artista
+      });
+      resolve(); // Resuelve la promesa
+    });
+  };
 
-  // Update an existing artist
-  const updateArtist = useCallback(async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
-    try {
-      const response = await updateArtistRequest(id, updatedArtist);
-      setArtists((prevArtists) =>
-        prevArtists.map((artist) => (artist.id === id ? response.data : artist))
-      );
-    } catch (error) {
-      console.error('Error updating artist:', error);
-      setError('Failed to update artist');
-      throw error;
-    }
-  }, []);
-
-  // Delete an artist
-  const deleteArtist = useCallback(async (id: number): Promise<void> => {
-    try {
-      await deleteArtistRequest(id);
-      setArtists((prevArtists) =>
-        prevArtists.filter((artist) => artist.id !== id)
-      );
-    } catch (error) {
-      console.error('Error deleting artist:', error);
-      setError('Failed to delete artist');
-      throw error;
-    }
-  }, []);
+  const deleteArtist = async (id: number): Promise<void> => {
+    return new Promise((resolve) => {
+      setArtists((prevArtists) => {
+        const updatedArtists = prevArtists.filter((artist) => artist.id !== id);
+        resolve(); // Resuelve la promesa
+        return updatedArtists; // Devuelve la lista actualizada
+      });
+    });
+  };
 
   const contextValue = useMemo(() => ({
     artists,
     setArtists,
-    createArtist,
     fetchArtists,
-    fetchArtist,
-    error,
-    loading,
+    createArtist,
     updateArtist,
     deleteArtist,
-  }), [
-    artists,
-    setArtists,
-    createArtist,
-    fetchArtists,
-    fetchArtist,
-    error,
-    loading,
-    updateArtist,
-    deleteArtist,
-  ]);
+    error: null,
+    loading: false,
+  }), [artists]);
 
-  return (
-    <ArtistContext.Provider value={contextValue}>
-      {children}
-    </ArtistContext.Provider>
-  );
+  return <ArtistContext.Provider value={contextValue}>{children}</ArtistContext.Provider>;
 };

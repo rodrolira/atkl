@@ -7,42 +7,47 @@ import uploadImageToServer from '@/services/imageService';
 interface FileUploadComponentProps {
   name: string;
   labelKey: string;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
 const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKey, setFieldValue }) => {
   const { t } = useTranslation();
   const [field, meta] = useField(name);
   const { error, touched } = meta;
-  const isInvalid = touched && !!error;
-  const isValid = touched && !error;
+
 
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.currentTarget as HTMLInputElement;
-
-    if (target.files && target.files.length > 0) {
-      const file = target.files[0];
-      console.log('Selected file:', file);
-      setLoading(true);
-      try {
-        const image = await uploadImageToServer(file);
-        setPreview(image); // Previsualiza la imagen
-        setFieldValue('image', image); // Actualiza el campo con la URL de la imagen subida
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      } finally {
-        setLoading(false);
-      }
+    const file = event.target.files?.[0];
+    console.log('Selected file:', file);
+    if (!file) {
+      return;
     }
-  };
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
+    setLoading(true);
+
+    try {
+      const imageUrl = await uploadImageToServer(file);
+      setPreview(imageUrl); // Previsualiza la imagen
+      setFieldValue(name, imageUrl); // Actualiza el campo con la URL de la imagen subida
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
 
   return (
     <FormGroup className="mb-3 w-full flex justify-center items-center" controlId={name}>
-      <FormLabel className="block font-bold mb-2 w-1/5 text-gray-300">
+      <FormLabel className="block font-bold mb-2 w-1/5 text-gray-300" htmlFor={name}>
         {t(labelKey)}:
       </FormLabel>
       <div className="w-full flex justify-center mx-auto">
@@ -50,15 +55,19 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, labelKe
           type="file"
           className="shadow !mx-auto appearance-none border border-1 solid rounded !w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           onChange={handleChange}
-          isInvalid={isInvalid}
-          isValid={isValid}
+          aria-invalid={!!meta.error && meta.touched}
+          aria-describedby={`${name}-error`}
         />
-        {isInvalid && (
-          <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>
+        {meta.error && meta.touched && (
+          <FormControl.Feedback type="invalid">{meta.error}</FormControl.Feedback>
         )}
       </div>
+
       {loading && <p>Uploading...</p>}
-      {preview && <img src={preview} alt="Preview" className="mt-3 w-full max-w-xs" />}
+
+      {preview && (
+        <img src={preview} alt="Preview" className="mt-3 w-full max-w-xs" />
+      )}
     </FormGroup>
   );
 };
