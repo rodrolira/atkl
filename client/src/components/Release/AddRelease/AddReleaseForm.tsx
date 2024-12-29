@@ -17,9 +17,7 @@ import { useReleases } from '@/contexts/ReleaseContext';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useGenres } from '@/contexts/GenreContext';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
-import { createReleaseRequest } from '@/app/api/releases';
 import { useTranslation } from 'react-i18next';
-import { Artist } from '../../../types/interfaces/Artist';
 import CustomTextInput from '@/components/atoms/Input/CustomTextInput';
 import Button from '@/components/Button/Button';
 
@@ -36,7 +34,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
-  const { createRelease, fetchReleases } = useReleases();
+  const { createRelease } = useReleases(); // Contexto de releases
   const { artists, fetchArtists } = useArtists();
   const { genres, fetchGenres } = useGenres();
   const [customArtists, setCustomArtists] = useState<string[]>([]);
@@ -59,32 +57,24 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   };
 
   const onSubmit = async (values: any, actions: any) => {
-    const formData = new FormData();
+    // Combina artistas seleccionados y personalizados
     const allArtists = [...values.artist_id, ...customArtists.filter(Boolean)];
-    formData.append('artist_id', JSON.stringify(allArtists));
 
-    Object.keys(values).forEach((key) => {
-      if (Array.isArray(values[key])) {
-        values[key].forEach((value, index) => {
-          formData.append(`${key}[${index}]`, value);
-        });
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
+    // Crear un nuevo release localmente
+    const newRelease = {
+      ...values,
+      artist_id: allArtists,
+      id: Date.now(), // Generar ID único
+    };
 
-    try {
-      const newRelease = await createReleaseRequest(formData);
-      actions.resetForm(false);
-      closePopup();
-      await fetchReleases();
-      onReleaseAdded && onReleaseAdded(newRelease);
-    } catch (error) {
-      console.error('Error adding release:', error);
-      setError('Failed to add release');
-      actions.setSubmitting(false);
+    createRelease(newRelease); // Llama al método del contexto para guardar el release
+    actions.resetForm();
+    closePopup();
+    if (onReleaseAdded) {
+      onReleaseAdded(newRelease);
     }
   };
+
 
   return (
     <Dialog
@@ -172,13 +162,12 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 <FormControl fullWidth variant="outlined">
                   <InputLabel className="text-white">Genre</InputLabel>
                   <Field name="genre_id">
-                    {({ field, form }: FieldProps) => (
+                    {({ field }: FieldProps) => (
                       <Select
                         {...field}
                         label="Genre"
                         onChange={(e) => setFieldValue('genre_id', e.target.value)}
                         value={values.genre_id}
-                        error={Boolean(form.errors.genre_id && form.touched.genre_id)}
                       >
                         {genres.map((genre) => (
                           <MenuItem key={genre.id} value={genre.id}>
@@ -192,25 +181,15 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Artist</InputLabel>
                   <Field name="artist_id">
-                    {({ field, form }: FieldProps) => (
+                    {({ field }: FieldProps) => (
                       <Select
                         {...field}
                         multiple
                         label="Artist"
                         value={values.artist_id}
                         onChange={(e) => setFieldValue('artist_id', e.target.value)}
-                        renderValue={(selected) => (
-                          <div>
-                            {selected.map((id) => (
-                              <div key={id}>
-                                {artists.find((artist: any) => artist.id === id)?.artist_name}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        error={Boolean(form.errors.artist_id && form.touched.artist_id)}
                       >
-                        {artists.map((artist: Artist) => (
+                        {artists.map((artist) => (
                           <MenuItem key={artist.id} value={artist.id}>
                             {artist.artist_name}
                           </MenuItem>
@@ -224,66 +203,64 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     key={index}
                     label={`Custom Artist ${index + 1}`}
                     value={artist}
-                    onChange={(e) => handleCustomArtistChange(index, e.target.value)}
-                    variant="outlined"
-                  />
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCustomArtistChange(index, e.target.value)} name={''}                  />
                 ))}
                 <Button onClick={handleAddCustomArtist}>Add Custom Artist</Button>
                 <FileUploadRelease />
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Release Type</InputLabel>
                   <Field name="release_type">
-                    {({ field, form }: FieldProps) => (
+                    {({ field }: FieldProps) => (
                       <Select
                         {...field}
                         label="Release Type"
                         onChange={(e) => setFieldValue('release_type', e.target.value)}
-                        value={values.release_type}
-                        error={Boolean(form.errors.release_type && form.touched.release_type)}
-                      >
+                        value = { values.release_type }
+                  >
                         <MenuItem value="Album">Album</MenuItem>
                         <MenuItem value="Single">Single</MenuItem>
                         <MenuItem value="EP">EP</MenuItem>
                       </Select>
                     )}
-                  </Field>
+            </Field>
                 </FormControl>
-                <Field name="description">
-                  {({ field }: FieldProps) => (
-                    <CustomTextInput
-                      {...field}
-                      label="Description"
-                      variant="outlined"
-                      multiline
-                      rows={4}
-                    />
-                  )}
-                </Field>
-                {['bandcamp_link', 'beatport_link', 'spotify_link', 'apple_music_link', 'youtube_link', 'soundcloud_link'].map((link) => (
-                  <Field key={link} name={link}>
-                    {({ field }: FieldProps) => (
-                      <CustomTextInput
-                        {...field}
-                        label={link.replace('_', ' ').replace('link', ' Link').toUpperCase()}
-                        variant="outlined"
-                      />
-                    )}
-                  </Field>
-                ))}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
-                >
-                  {isSubmitting ? 'Adding...' : 'Add'}
-                </button>
-                {error && <div style={{ color: 'red' }}>{error}</div>}
-              </Stack>
-            </Form>
+        <Field name="description">
+          {({ field }: FieldProps) => (
+            <CustomTextInput
+              {...field}
+              label="Description"
+              variant="outlined"
+              multiline
+              rows={4}
+            />
           )}
-        </Formik>
-      </DialogContent>
-    </Dialog>
+        </Field>
+        {['bandcamp_link', 'beatport_link', 'spotify_link', 'apple_music_link', 'youtube_link', 'soundcloud_link'].map((link) => (
+          <Field key={link} name={link}>
+            {({ field }: FieldProps) => (
+              <CustomTextInput
+                {...field}
+                label={link.replace('_', ' ').replace('link', ' Link').toUpperCase()}
+                variant="outlined"
+              />
+            )}
+          </Field>
+        ))}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
+        >
+          {isSubmitting ? 'Adding...' : 'Add'}
+        </button>
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+      </Stack>
+    </Form>
+  )
+}
+        </Formik >
+      </DialogContent >
+    </Dialog >
   );
 };
 

@@ -118,7 +118,7 @@ const ReleaseForm: React.FC<ReleaseFormProps> = ({
               )}
             </Field>
 
-            <FileUploadRelease setFieldValue={setFieldValue} />
+            <FileUploadRelease />
 
             <Button
               type="submit"

@@ -11,7 +11,7 @@ export interface ReleaseFormValues {
     description: string;
     genre_id: string;
     release_type: string;
-    artist_id: number[];
+    artist_id: number[] | string[] | undefined | boolean ;
     is_explicit: boolean;
     artists: string[];
     release_date: string;

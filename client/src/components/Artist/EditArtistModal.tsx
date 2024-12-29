@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import FileUploadComponent from '../Upload/FileUploadComponent';
-import { getArtistRequest, getRolesRequest, updateArtistRequest } from '@/app/api/artists';
+import FileUpload from '../Upload/FileUpload';
 import { useArtists } from '@/contexts/ArtistContext';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -15,57 +14,47 @@ import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
 const validationSchema = Yup.object().shape({
   artist_name: Yup.string().required('Artist name is required'),
   image: Yup.mixed(),
-  roleIds: Yup.array().required('Role is required'),
+  roles: Yup.array().required('Role is required'),
   bio: Yup.string(),
 });
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState<Partial<Artist>>(getInitialArtistValues(id));
-  const [roles, setRoles] = useState<Role[]>([]);
-  const { updateArtist, deleteArtist } = useArtists();
+  const { artists, updateArtist, deleteArtist } = useArtists();
+  const [initialValues, setInitialValues] = useState<Partial<Artist>>({
+    artist_name: '',
+    image: null,
+    roles: [],
+    bio: '',
+  });
+  const [roles] = useState([
+    { id: 1, label: 'Producer' },
+    { id: 2, label: 'DJ' },
+  ]);
 
   useEffect(() => {
-    fetchArtistData(id);
-    fetchRoles();
-  }, [id]);
-
-  const fetchArtistData = async (artistId: number) => {
-    try {
-      const response = await getArtistRequest(artistId);
-      setInitialValues(transformArtistResponse(response.data));
-    } catch (error) {
-      console.error('Error fetching artist:', error);
+    const artist = artists.find((artist) => artist.id === id);
+    if (artist) {
+      setInitialValues({
+        artist_name: artist.artist_name || '',
+        image: artist.image || null,
+        roles: artist.roles || [],
+        bio: artist.bio || '',
+      });
     }
-  };
+  }, [id, artists]);
 
-  const fetchRoles = async () => {
-    try {
-      const response = await getRolesRequest();
-      if (response && response.data) {
-        setRoles(response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching roles:', error);
-    }
-  };
 
-  const handleSubmit = async (values: Artist, { setSubmitting }: any) => {
-    try {
-      const artistData = createArtistData(values, id);
-      await updateArtist(id, artistData);
-      onClose();
-    } catch (error) {
-      console.error('Error updating artist:', error);
-      setSubmitting(false);
-    }
+  const handleSubmit = async (values: any) => {
+    console.log('Updated Artist:', values);
+    onClose();
   };
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this artist?')) {
       try {
-        await deleteArtist(id);
+        deleteArtist(id);
         navigate('/artists');
       } catch (error) {
         console.error('Error deleting artist:', error);
@@ -76,7 +65,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   return (
     <div className="flex flex-col items-center justify-center z-50 relative">
       <Formik
-        initialValues={initialValues as Artist & Partial<Artist>}
+        initialValues={initialValues}
         enableReinitialize
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -85,37 +74,25 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
           <Form className="form-style">
             <Title className="title-style">{t('edit_artist')}</Title>
             <FieldInput fieldName="artist_name" label={t('artistName')} placeholder="Artist Name" />
-            <FileUploadComponent />
-            <RolesSelection roles={roles} setFieldValue={setFieldValue} values={values} />
+            <FileUpload />
+            <RolesSelection
+              roles={roles}
+              setFieldValue={setFieldValue}
+              values={values}
+              t={t}
+            />
             <FieldInput fieldName="bio" label="Bio:" as="textarea" />
             <SocialLinksInput t={t} />
-            <ActionButtons isSubmitting={isSubmitting} onClose={onClose} onDelete={handleDelete} />
+            <ActionButtons
+              isSubmitting={isSubmitting}
+              onClose={onClose}
+              onDelete={handleDelete}
+            />
           </Form>
         )}
       </Formik>
     </div>
   );
-};
-
-const getInitialArtistValues = (id: string) => ({
-  id: Number(id),
-  artist_name: '',
-  image: '',
-  roleIds: [],
-  bio: '',
-});
-
-const transformArtistResponse = (data: any) => {
-  const artistRoles = data.roles || [];
-  return {
-    ...data,
-    roleIds: artistRoles.map((role: Role) => role.id),
-  };
-};
-
-const createArtistData = (values: Artist, id: number) => {
-  const roleIds = values.roleIds.map(Number);
-  return { ...values, id: Number(id), roleIds };
 };
 
 const FieldInput: React.FC<{ fieldName: string; label: string; placeholder?: string; as?: any }> = ({
@@ -124,34 +101,36 @@ const FieldInput: React.FC<{ fieldName: string; label: string; placeholder?: str
   placeholder,
   as,
 }) => (
-  <div className="mb-4">
-    <label htmlFor={fieldName} className="label-style">{label}</label>
+  <div className="mb-4 flex items-center justify-center">
+    <label htmlFor={fieldName} className="label-style me-4 block text-gray-300 font-bold mb-2 w-1/5">
+      {label}
+    </label>
     <Field
       type="text"
       id={fieldName}
       name={fieldName}
       as={as}
-      className="input-style"
-      placeholder={placeholder}
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center"
     />
     <ErrorMessage name={fieldName} component="div" className="error-message" />
   </div>
 );
 
-const RolesSelection: React.FC<{ roles: Role[]; setFieldValue: (field: string, value: any) => void; values: any }> = ({
-  roles,
-  setFieldValue,
-  values,
-}) => (
+const RolesSelection: React.FC<{
+  roles: Role[];
+  setFieldValue: (field: string, value: any) => void;
+  values: any;
+  t: (key: string) => string;
+}> = ({ roles, setFieldValue, values, t }) => (
   <FormControl className="mb-4" fullWidth variant="outlined">
     <InputLabel>{t('addArtist.selectRole')}:</InputLabel>
     <Field
-      name="roleIds"
+      name="roles"
       as={Select}
-      multiple
-      value={values.roleIds}
+      className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      value={values.roles || []} // Aseguramos un array vacío como valor predeterminado
       onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-        setFieldValue('roleIds', event.target.value as number[]);
+        setFieldValue('roles', event.target.value as number[]);
       }}
     >
       {roles.map((role) => (
@@ -160,6 +139,9 @@ const RolesSelection: React.FC<{ roles: Role[]; setFieldValue: (field: string, v
         </MenuItem>
       ))}
     </Field>
+    {roles.length === 0 && (
+      <ErrorMessage name="roles" component="div" className="error-message" />
+    )}
   </FormControl>
 );
 
@@ -186,10 +168,16 @@ const ActionButtons: React.FC<{ isSubmitting: boolean; onClose: () => void; onDe
   onClose,
   onDelete,
 }) => (
-  <div className="action-buttons-style">
-    <button type="button" onClick={onClose} className="btn cancel-btn">Cancel</button>
-    <button type="submit" className="btn save-btn" disabled={isSubmitting}>Save</button>
-    <button type="button" className="btn delete-btn" onClick={onDelete}>Delete</button>
+  <div className="flex items-center justify-between">
+    <button type="button" onClick={onClose} className="btn btn-cancel h-10 mb-2">
+      Cancel
+    </button>
+    <button type="submit" className="btn btn-save h-10 mb-2" disabled={isSubmitting}>
+      Save
+    </button>
+    <button type="button" className="btn btn-delete h-10 mb-2" onClick={onDelete}>
+      Delete
+    </button>
   </div>
 );
 

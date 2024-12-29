@@ -49,7 +49,7 @@ const Routing: React.FC = React.memo(() => {
             )
           }
         />
-        <Route path="/edit-release/:id" element={<EditReleaseModal id={''} onClose={() => { }} />} />
+        <Route path="/edit-release/:id" element={<EditReleaseModal id={0} onClose={() => { }} />} />
       </Route>
       {/* Redirect to NotFound for unknown paths */}
       <Route path="*" element={<NotFound />} />

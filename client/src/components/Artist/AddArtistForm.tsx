@@ -17,40 +17,34 @@ import * as Yup from 'yup';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useTranslation } from 'react-i18next';
 import FileUpload from '@/components/Upload/FileUpload';
-import { getRolesRequest } from '@/app/api/artists';
 import { motion } from 'framer-motion';
 import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
 import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
 
-const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded, id }) => {
+const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
-  const [initialValues, setInitialValues] = useState<Partial<Artist>>({});
-  const [roles, setRoles] = useState<Role[]>([]);
+
+  const [roles] = useState<Role[]>([
+    { id: 1, label: 'Producer' },
+    { id: 2, label: 'DJ' },
+  ]);
   const { createArtist } = useArtists();
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const response = await getRolesRequest();
-        if (response?.data) {
-          setRoles(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      }
-    };
-    fetchRoles();
-  }, []);
-
+  const initialValues:Partial<Artist> ={
+    artist_name: '',
+    image:'',
+    roleIds: [],
+    bio: '',
+  };
   const onSubmit = async (values: Artist, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     setSubmitting(true);
-    const formData = createFormData(values);
 
     try {
-      await createArtist(formData);
+      await createArtist({...values, id: Date.now() });
       closePopup();
+      onArtistAdded?.(values);
     } catch (error) {
       console.error('Error adding artist:', error);
       setError(t('error.addArtist'));
@@ -59,18 +53,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
     }
   };
 
-  const createFormData = (values: Artist) => {
-    const formData = new FormData();
-    for (const key in values) {
-      const value = values[key as keyof Artist];
-      if (key === 'roleIds') {
-        formData.append(key, value.toString() ?? '');
-      } else {
-        formData.append(key, value as string);
-      }
-    }
-    return formData;
-  };
 
   const renderField = (name: string, label: string, type: string = 'text', autoComplete: string = 'on') => (
     <Field name={name}>
@@ -126,9 +108,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
           enableReinitialize
           validationSchema={Yup.object().shape({
             artist_name: Yup.string().required(t('validation.artistNameRequired')),
-            username: Yup.string(),
-            email: Yup.string().email(t('validation.invalidEmail')),
-            password: Yup.string().min(6, t('validation.passwordMin')),
             bio: Yup.string(),
             image: Yup.mixed(),
             roleIds: Yup.array().of(Yup.string()).required(t('validation.roleRequired')),
@@ -139,19 +118,25 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
             <Form>
               <Stack spacing={2} margin={2}>
                 {renderField('artist_name', 'artist_name')}
-                {renderField('username', 'username')}
-                {renderField('email', 'email')}
-                {renderField('password', 'password', 'password', 'current-password')}
                 <FileUpload />
+
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>{t('addArtist.selectRole')}</InputLabel>
-                  <Field name="roleIds" as={Select} multiple value={values.roleIds}>
-                    {roles.map(role => (
+                  <Select
+                    multiple
+                    value={values.roleIds}
+                    onChange={(e) => setFieldValue('roleIds', e.target.value)}
+                    renderValue={(selected) =>
+                      (selected as number[]).map((roleId) => roles.find((r) => r.id === roleId)?.label).join(', ')
+                    }
+                  >
+                    {roles.map((role) => (
                       <MenuItem key={role.id} value={role.id}>
                         {role.label}
                       </MenuItem>
                     ))}
-                  </Field>
+                  </Select>
+
                 </FormControl>
                 <TextField
                   label={t('addArtist.bio')}
@@ -159,6 +144,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
                   multiline
                   rows={4}
                   variant="outlined"
+                  onChange={(e) => setFieldValue('bio', e.target.value)}
                 />
                 {renderSocialLinks(fields)}
                 {error && <div className="text-red-500">{error}</div>}
@@ -184,7 +170,7 @@ const renderSocialLinks = (fields: string[]) => {
       {({ field, form }: { field: any; form: any }) => (
         <TextField
           {...field}
-          label={useTranslation()(linkField)}
+          label={linkField.replace('_link', '').toUpperCase()}
           variant="outlined"
           error={Boolean(form.errors[linkField] && form.touched[linkField])}
           helperText={form.errors[linkField] && form.touched[linkField] && form.errors[linkField]}
