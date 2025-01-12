@@ -9,6 +9,7 @@ import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
+import { artistData } from '@/data/artistData';
 
 interface ArtistsSectionProps {}
 
@@ -31,6 +32,15 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
 
   const closePopup = useCallback(() => {}, []);
 
+  const transformedArtists = useMemo(() => 
+    artistData.map(artist => ({
+      ...artist,
+      Roles: artist.roles,
+      roleIds: [] as number[],
+      image: null
+    })), 
+  []);
+
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">
       <div className="mb-4 mx-auto z-50">
@@ -41,7 +51,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
           <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={closePopup} />
         )}
       </div>
-      <ArtistList artists={memoizedArtists} />
+      <ArtistList artists={transformedArtists} />
       <Background />
     </section>
   );

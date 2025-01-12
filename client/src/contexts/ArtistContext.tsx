@@ -24,11 +24,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     if (storedArtists) {
       setArtists(JSON.parse(storedArtists));
     } else {
-      const defaultArtists = [
-        { id: 1, artist_name: 'Artist 1', image: null, roleIds: [1, 2], Roles: ['Producer / DJ'], bio: 'Bio 1' },
-        { id: 2, artist_name: 'Artist 2', image: null, roleIds: [2], Roles: ['DJ'], bio: 'Bio 2' },
-      ];
-      setArtists(defaultArtists);
+      setArtists
     }
     return Promise.resolve();
   }, []);
