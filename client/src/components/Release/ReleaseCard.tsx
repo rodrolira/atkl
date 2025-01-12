@@ -14,6 +14,7 @@ import { Release } from '@/types/interfaces/Release';
 import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
+import { getImageUrlReleases } from '@/utils/utils';
 
 interface ReleaseCardProps {
   release: Release;
@@ -22,9 +23,13 @@ interface ReleaseCardProps {
 const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { t } = useTranslation();
   const [currentRelease, setCurrentRelease] = useState<Release | null>(release);
-  const { deleteRelease, setReleases, releases } = useReleases();
+  const { setReleases, releases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+
+  const imageUrl = useMemo(() => {
+    return currentRelease?.imageKey ? getImageUrlReleases(currentRelease.imageKey) : '/images/placeholder.png';
+  }, [currentRelease?.imageKey]);
 
   useEffect(() => {
     const releaseFromContext = releases.find((r) => r.id === release.id);
@@ -32,7 +37,8 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
       setCurrentRelease(releaseFromContext);
     }
   }, [release.id, releases]);
-  
+
+
   const handleDelete = useCallback(async () => {
     if (
       window.confirm(
@@ -116,7 +122,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
           {artistLinks}
           <Link to={`/releases/${currentRelease.id}`}>
             <img
-              src={`https://atkl-server.onrender.com/${currentRelease.cover_image_url}`}
+              src={imageUrl}
               alt={currentRelease.title}
               className="w-full"
               loading="lazy"
@@ -159,3 +165,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 };
 
 export default ReleaseCard;
+function deleteRelease(id: number) {
+  throw new Error('Function not implemented.');
+}
+

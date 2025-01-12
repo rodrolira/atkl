@@ -1,10 +1,8 @@
 // components/ReleaseList.tsx
 import React, { useMemo, memo } from 'react';
-import ReleaseCard from './ReleaseCard'; // Asegúrate de tener un componente ReleaseCard correctamente tipado
+import ReleaseCard from './ReleaseCard'; // Asegúrate de que ReleaseCard esté correctamente tipado
 import { Release } from '@/types/interfaces/Release';
 
-
-// Define las props para el componente ReleaseList
 interface ReleaseListProps {
   releases: Release[];
 }

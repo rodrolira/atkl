@@ -4,9 +4,10 @@ import { Genre } from "./Genre";
 export interface Release {
     id: number;
     title: string;
-    artist_id: number | string;
-    cover_image_url: string;
-    genre_id: number | string;
+    imageKey: string;
+    genre?:{
+        name: string;
+    }
     release_type: string;
     release_date?: string;
     bandcamp_link?: string;
@@ -15,6 +16,8 @@ export interface Release {
     youtube_link?: string;
     soundcloud_link?: string;
     beatport_link?: string;
+    artist?: Artist[];
+    artists: Artist[];
     [key: string]: any;
 }
 
@@ -27,12 +30,15 @@ export interface UseReleaseReturn {
 }
 
 export interface ReleaseContextType {
-    releases: Release[];
-    loading: boolean;
-    error: string | null;
-    fetchReleases: () => Promise<void>;
-    createRelease: (release: Release) => void;
-    updateRelease: (id: number, updatedRelease: Partial<Release>) => void;
-    deleteRelease: (id: number) => Promise<void>;
-    setReleases: React.Dispatch<React.SetStateAction<Release[]>>;
-}
+        releases: Release[];
+        loading: boolean;
+        error: string | null;
+        fetchReleases: () => Promise<void>;
+        fetchRelease: (id: number) => Promise<Release>;
+        createRelease: (release: Release) => Promise<void>;
+        updateRelease: (id: number, updatedRelease: Partial<Release>) => Promise<void>;
+        deleteRelease: (id: number) => Promise<void>;
+        setReleases: React.Dispatch<React.SetStateAction<Release[]>>;
+        clearReleases: () => void;
+    }
+    

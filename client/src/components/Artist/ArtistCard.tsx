@@ -11,7 +11,8 @@ import { Button } from 'react-bootstrap';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
-
+import { getImageUrlArtists } from '@/utils/utils'; // Importar la función que obtiene la URL de la imagen
+import { artistData } from '@/data/artistData'; // Importar los datos de los artistas
 
 interface ArtistCardProps {
   artist: Artist
@@ -25,12 +26,24 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
+  // Obtén la URL de la imagen desde S3
+  const imageUrl = useMemo(() => {
+    return currentArtist.imageKey ? getImageUrlArtists(currentArtist.imageKey) : '/images/placeholder.png';
+  }, [currentArtist.imageKey]);
+
   useEffect(() => {
-    const artistFromContext = artists.find((a) => a.id === artist.id);
+    const artistFromContext = artistData.find((a) => a.id === artist.id);
     if (artistFromContext) {
-      setCurrentArtist(artistFromContext);
+      setCurrentArtist({
+        ...artistFromContext,
+        Roles: artistFromContext.roles,
+        roleIds: [] as number[],
+        image: null,
+      });
     }
-  }, [artist.id, artists]);
+  }, [artist.id]);
+
+
 
   // Manejo de eliminación de artista
   const handleDelete = useCallback(() => {
@@ -56,7 +69,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
   const rolesText = useMemo(() => {
     if (currentArtist.Roles && currentArtist.Roles.length > 0) {
-      return currentArtist.Roles.map((role) => typeof role === 'object' ? role.label : `${role}`).join(' / ');
+      return currentArtist.Roles.map((role) =>
+        typeof role === 'object' ? role.label : `${role}`)
+        .join(' / ');
     }
     return t('no_roles_assigned');
   }, [currentArtist.Roles, t]);
@@ -88,7 +103,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
-              src={typeof currentArtist.image === 'string' ? currentArtist.image : '/images/placeholder.png'}
+              src={imageUrl} // Usar la URL obtenida de la función getImageUrl
               alt={currentArtist.artist_name}
               loading="lazy"
             />

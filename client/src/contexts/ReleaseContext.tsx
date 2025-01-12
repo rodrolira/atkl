@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback, useEffect } from 'react';
+// contexts/ReleaseContext.tsx
+import React, { createContext, useContext, useMemo, ReactNode, useState, useEffect } from 'react';
 import { Release, ReleaseContextType } from '@/types/interfaces/Release';
+import { releaseData } from '@/data/releaseData'; // Asegúrate de importar los datos predeterminados
 
 export const ReleaseContext = createContext<ReleaseContextType | undefined>(undefined);
 
@@ -14,64 +16,56 @@ export const useReleases = () => {
 export const ReleaseProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [releases, setReleases] = useState<Release[]>([]);
 
-  // Cargar lanzamientos desde el almacenamiento local o usar los predeterminados
-  const fetchReleases = useCallback(async () => {
-    const storedReleases = localStorage.getItem('releases');
-    if (storedReleases) {
-      setReleases(JSON.parse(storedReleases));
-    } else {
-      const defaultReleases = [
-        { id: 1, title: 'Release 1', artist_id: 1, cover_image_url: '', genre_id: 1, release_type: 'Single', release_date: '2023-01-01' },
-        { id: 2, title: 'Release 2', artist_id: 2, cover_image_url: '', genre_id: 2, release_type: 'EP', release_date: '2023-02-01' },
-      ];
-      setReleases(defaultReleases);
-    }
-  }, []);
+    // Función para borrar los lanzamientos
+    const clearReleases = () => {
+      localStorage.removeItem('releases'); // Elimina 'releases' del localStorage
+      setReleases([]); // Vacía el estado de releases
+    };
 
-  // Guardar los lanzamientos en localStorage cada vez que se actualicen
-  useEffect(() => {
-    if (releases.length > 0) {
-      localStorage.setItem('releases', JSON.stringify(releases));
-    }
-  }, [releases]);
-
-  // Crear un nuevo lanzamiento
-  const createRelease = (release: Release) => {
-    const newRelease = { ...release, id: Date.now() }; // Asigna un ID único
-    setReleases([...releases, newRelease]); // Actualiza el estado
-  };
-
-  // Actualizar un lanzamiento existente
-  const updateRelease = (id: number, updatedRelease: Partial<Release>) => {
-    setReleases((prevReleases) =>
-      prevReleases.map((release) =>
-        release.id === id ? { ...release, ...updatedRelease } : release
-      )
-    );
-  };
-
-  // Eliminar un lanzamiento
-  const deleteRelease = async (id: number): Promise<void> => {
+  // Función para cargar los lanzamientos
+  const fetchReleases = (): Promise<void> => {
     return new Promise((resolve) => {
-      setReleases((prevReleases) => {
-        const updatedReleases = prevReleases.filter((release) => release.id !== id); // Filtra el lanzamiento a eliminar
-        resolve(); // Resuelve la promesa
-        return updatedReleases; // Devuelve la lista actualizada
-      });
+      const storedReleases = localStorage.getItem('releases');
+      if (storedReleases) {
+        setReleases(JSON.parse(storedReleases));
+      } else {
+        setReleases(releaseData);  // Usar datos predeterminados si no hay datos en localStorage
+      }
+      resolve(); // Terminar la promesa
     });
   };
 
+  // Crear un nuevo lanzamiento y actualizar el estado y localStorage
+  const createRelease = async (newRelease: Release): Promise<void> => {
+    const updatedReleases = [...releases, newRelease];
+    setReleases(updatedReleases);
+    localStorage.setItem('releases', JSON.stringify(updatedReleases));
+    return Promise.resolve();
+  };
 
-  const contextValue = useMemo(() => ({
-    releases,
-    setReleases,
-    fetchReleases,
-    createRelease,
-    updateRelease,
-    deleteRelease,
-    loading: false,
-    error: null,
-  }), [releases, fetchReleases]);
+  
+  useEffect(() => {
+    fetchReleases(); // Cargar los lanzamientos al montar el componente
+  }, []);
 
-  return <ReleaseContext.Provider value={contextValue}>{children}</ReleaseContext.Provider>;
+  return (
+    <ReleaseContext.Provider value={{
+      releases,
+      fetchReleases,
+      createRelease,
+      setReleases,
+      clearReleases,
+      loading: false,
+      error: null,
+      fetchRelease: async (id) => releases.find(r => r.id === id) || releases[0],
+      updateRelease: async (id, release) => {
+        setReleases(prev => prev.map(r => r.id === id ? { ...r, ...release } : r));
+      },
+      deleteRelease: async (id) => {
+        setReleases(prev => prev.filter(r => r.id !== id));
+      }
+    }}>
+      {children}
+    </ReleaseContext.Provider>
+  );
 };
