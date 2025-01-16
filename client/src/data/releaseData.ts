@@ -11,7 +11,7 @@ export const releaseData: Release[] = [
         imageKey: 'insanity_700x700.webp',
         artists: [
             {
-                id: 1, artist_name: 'Rodro', artist_image_url: 'uploads/artists/rodro.jpg',
+                id: 1, artist_name: 'RODRO', artist_image_url: 'uploads/artists/rodro.jpg',
                 Roles: [],
                 roleIds: [],
                 image: null
@@ -27,13 +27,13 @@ export const releaseData: Release[] = [
     },
     {
         id: 2,
-        title: 'Industrial Vibes EP',
-        genre: { name: 'Industrial Techno' },
+        title: 'Crying',
+        genre: { name: 'Dark Techno' },
         release_type: 'Single',
-        imageKey: 'uploads/releases/cover2.jpg',
+        imageKey: 'uploads/releases/Crying_700x700.webp',
         artists: [
             {
-                id: 2, artist_name: 'DJ X', artist_image_url: 'uploads/artists/dj_x.jpg',
+                id: 2, artist_name: 'TAXDOG', artist_image_url: 'uploads/artists/dj_x.jpg',
                 Roles: [],
                 roleIds: [],
                 image: null
