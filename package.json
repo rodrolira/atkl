@@ -18,6 +18,8 @@
     "@astrojs/react": "^3.6.3",
     "@aws-sdk/client-dynamodb": "^3.705.0",
     "@aws-sdk/client-secrets-manager": "^3.699.0",
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
     "@loglib/tracker": "^0.8.0",
     "@million/lint": "^1.0.13",
     "@supabase/supabase-js": "^2.46.1",
