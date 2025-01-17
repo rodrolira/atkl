@@ -2,11 +2,11 @@ import { Role } from "./Role";
 
 
 export interface Artist {
-    id: number;
+    id?: number;
     artist_name: string;
-    image: string | File | null;
-    Roles: Role[] | string[];
-    roleIds: number[];
+    image?: string | File | null;
+    Roles?: Role[] | string[];
+    roleIds?: number[];
     bio?: string;
     twitter_link?: string;
     instagram_link?: string;

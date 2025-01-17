@@ -3,7 +3,7 @@ export const artistData = [
         id: 1,
         artist_name: 'RODRO',
         imageKey: 'rodro.webp',
-        bio: 'Rodro es un DJ y productor de música que ha trabajado en varios proyectos de música electrónica y ambiental. Su estilo de música es mixto, combinando elementos de pop, trance y ambiental. Rodro es conocido por su habilidad para capturar el momento y transmitirlo a través de su música.',
+        bio: 'RODRO es un DJ y productor de música que ha trabajado en varios proyectos de música electrónica y ambiental. Su estilo de música es mixto, combinando elementos de pop, trance y ambiental. Rodro es conocido por su habilidad para capturar el momento y transmitirlo a través de su música.',
         roles: ['DJ', 'Productor'],
         twitter_link: 'https://twitter.com/rodro_music',
         instagram_link: 'https://instagram.com/rodro_music',

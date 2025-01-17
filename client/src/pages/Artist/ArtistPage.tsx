@@ -49,8 +49,8 @@ const ArtistPage: React.FC = () => {
   }
 
   // Filtrar lanzamientos relacionados con el artista actual
-  const artistReleases = releaseData.filter((release: { artists: Artist[]; }) =>
-    release.artists.some((relArtist: Artist) => relArtist.id === currentArtist.id)
+  const artistReleases = releaseData.filter((release: Release) =>
+    release.artists?.some((relArtist: Artist) => relArtist.id === currentArtist.id) ?? false
   );
 
   const openEditModal = () => setShowEditModal(true);

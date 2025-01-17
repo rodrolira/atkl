@@ -35,7 +35,7 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
           >
             {adminAuthenticated && (
               <>
-                <li className="mx-1">
+                {/* <li className="mx-1">
                   <AddArtistButton className="!capitalize" openPopup={isDialogOpen} closePopup={handleClose} onArtistAdded={handleArtistAdded}>
                     {t('add_artist')}
                   </AddArtistButton>
@@ -47,7 +47,7 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
                 </li>
                 <li className="mx-1">
                   <AddTeamMemberButton />
-                </li>
+                </li> */}
                 <li className="mx-1">
                   <Button
                     to="/admin"
