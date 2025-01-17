@@ -62,4 +62,9 @@ export default defineConfig({
     setupFiles: 'src/setupTests.js',
     clearMocks: true,
   },
+  define: {
+    'process.env': {},
+  },
+
+  
 });
