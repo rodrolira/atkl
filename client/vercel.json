@@ -6,31 +6,6 @@
         }
     ],
     "buildCommand": "npx vite build",
-    "startCommand": "npx vite dev",
-    "env": {
-        "VITE_API_URL": "http://localhost:3000"
-    },
-    "functions": {
-        "api": {
-            "handler": "api/index.js",
-            "runtime": "nodejs16"
-        }
-    },
-    "preview": {
-        "rewrites": [
-            {
-                "source": "/(.*)",
-                "destination": "/"
-            }
-        ]
-    },
-    "version": "1",
-    "name": "vitejs-template",
-    "slug": "vitejs-template",
-    "framework": "react",
-    "type": "static",
-    "node": "16",
-    "runtime": "nodejs16",
     "installCommand": "pnpm install",
     "outputDirectory": "dist"
 }
