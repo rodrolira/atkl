@@ -1,5 +1,4 @@
 import { Artist } from "./Artist";
-import { Genre } from "./Genre";
 
 export interface Release {
     id: number;
@@ -17,7 +16,7 @@ export interface Release {
     soundcloud_link?: string;
     beatport_link?: string;
     artist?: Artist[];
-    artists: Artist[];
+    artists?: Artist[];
     [key: string]: any;
 }
 

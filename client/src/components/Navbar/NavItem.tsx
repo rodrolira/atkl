@@ -7,7 +7,7 @@ interface NavItemProps {
   to: string; // The URL to navigate to
   text: string;
   isActive: boolean;
-  handleItemClick: (id: string) => void; // Update this name
+  handleItemClick: () => void;
 }
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
@@ -31,18 +31,17 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleIte
       }
     }, 0);
 
-    handleItemClick(to);
+    handleItemClick?.();
   }, [isHomePage, linkId, navigate, to, handleItemClick]);
 
   return (
     <li>
       <Link
         to={to}
-        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${
-          isActive ? 'text-green-700' : 'text-white text-shadow'
-        } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
+        onClick={handleItemClick}
+        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${isActive ? 'text-green-700' : 'text-white text-shadow'
+          } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
         aria-current={isActive ? 'page' : undefined}
-        onClick={handleClick}
       >
         {text}
       </Link>

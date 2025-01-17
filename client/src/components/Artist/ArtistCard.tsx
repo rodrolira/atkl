@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
 import { getImageUrlArtists } from '@/utils/utils'; // Importar la función que obtiene la URL de la imagen
 import { artistData } from '@/data/artistData'; // Importar los datos de los artistas
+import MusicPlayer from '../MusicPlayer/MusicPlayer';
 
 interface ArtistCardProps {
   artist: Artist
@@ -47,6 +48,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
   // Manejo de eliminación de artista
   const handleDelete = useCallback(() => {
+    if (!currentArtist.id) return;
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
       setArtists((prevArtists: Artist[]) =>
         prevArtists.filter((a) => a.id !== currentArtist.id)
@@ -60,9 +62,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   }, []);
 
   const closeEditModal = useCallback((updatedArtist?: Artist) => {
-    if (updatedArtist) {
+    if (updatedArtist?.id) {
       setCurrentArtist(updatedArtist);
-      updateArtist(updatedArtist.id, updatedArtist)
+      updateArtist(updatedArtist.id, updatedArtist);
     }
     setShowEditModal(false);
   }, [updateArtist]);
@@ -129,10 +131,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
         <ArtistLinks artist={currentArtist} />
       </BaseCard>
-
       {showEditModal && (
         <Modal onClose={() => closeEditModal()}>
-          <EditArtistModal id={currentArtist.id} onClose={closeEditModal} />
+          {currentArtist.id && <EditArtistModal id={currentArtist.id} onClose={closeEditModal} />}
         </Modal>
       )}
     </>

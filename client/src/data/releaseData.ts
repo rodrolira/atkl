@@ -33,10 +33,8 @@ export const releaseData: Release[] = [
         imageKey: 'Crying_700x700.webp',
         artists: [
             {
-                id: 2, artist_name: 'TAXDOG', artist_image_url: 'uploads/artists/dj_x.jpg',
-                Roles: [],
-                roleIds: [],
-                image: null
+                artist_name: 'TAXDOG'
+
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
@@ -55,10 +53,7 @@ export const releaseData: Release[] = [
         imageKey: 'F2023_700x700.webp',
         artists: [
             {
-                id: 3, artist_name: 'Techno Raver', artist_image_url: 'uploads/artists/techno_raver.jpg',
-                Roles: [],
-                roleIds: [],
-                image: null
+                artist_name: 'n3o'
             },
         ],
         bandcamp_link: 'https://bandcamp.com/techno-raver/acid-rave',
@@ -77,10 +72,9 @@ export const releaseData: Release[] = [
         imageKey: 'Two-Sides_700x700.webp',
         artists: [
             {
-                id: 4, artist_name: 'DJ X', artist_image_url: 'uploads/artists/dj_x.jpg',
-                Roles: [],
-                roleIds: [],
-                image: null
+                artist_name: 'BbaphometT',
+                id: 4,
+
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
@@ -94,18 +88,15 @@ export const releaseData: Release[] = [
     {
         id: 5,
         title: 'Unknown-VA-I',
-        genre: { name: 'Unknown' },
+        genre: { name: 'Hard Techno' },
         release_type: 'Single',
         imageKey: 'Unknown-VA-I.webp',
         artists: [
             {
-                id: 5, artist_name: 'Unknown Artist', artist_image_url: 'uploads/artists/unknown_artist.jpg',
-                Roles: [],
-                roleIds: [],
-                image: null
+                artist_name: 'Various Artists',
             },
         ],
-        bandcamp_link: 'https://bandcamp.com/unknown-va-i',
+        bandcamp_link: 'https://atklrecords.bandcamp.com/album/unknown-va-i-ukn001',
         spotify_link: 'https://spotify.com/album/5',
         apple_music_link: 'https://music.apple.com/album/5',
         youtube_link: 'https://youtube.com/watch?v=5',
@@ -121,10 +112,7 @@ export const releaseData: Release[] = [
         imageKey: 'zena_700x700.webp',
         artists: [
             {
-                id: 6, artist_name: 'DJ X', artist_image_url: 'uploads/artists/dj_x.jpg',
-                Roles: [],
-                roleIds: [],
-                image: null
+                artist_name: '23ones',
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',

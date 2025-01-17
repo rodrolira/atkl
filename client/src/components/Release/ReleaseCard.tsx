@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
@@ -15,6 +14,7 @@ import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
 import { getImageUrlReleases } from '@/utils/utils';
+import MusicPlayer from '../MusicPlayer/MusicPlayer';
 
 interface ReleaseCardProps {
   release: Release;
@@ -26,9 +26,14 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { setReleases, releases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [playingArtist, setPlayingArtist] = useState<Artist | null>(null);
+  const [hovered, setHovered] = useState<boolean>(false); // Estado para hover
+  const [isPlaying, setIsPlaying] = useState<boolean>(false); // Estado para controlar la reproducción
 
   const imageUrl = useMemo(() => {
-    return currentRelease?.imageKey ? getImageUrlReleases(currentRelease.imageKey) : '/images/placeholder.png';
+    return currentRelease?.imageKey
+      ? getImageUrlReleases(currentRelease.imageKey)
+      : '/images/placeholder.png';
   }, [currentRelease?.imageKey]);
 
   useEffect(() => {
@@ -37,7 +42,6 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
       setCurrentRelease(releaseFromContext);
     }
   }, [release.id, releases]);
-
 
   const handleDelete = useCallback(async () => {
     if (
@@ -54,12 +58,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         console.error('Error deleting release:', error);
       }
     }
-  }, [
-    deleteRelease,
-    setReleases,
-    release,
-    t
-  ]);
+  }, [deleteRelease, setReleases, release, t]);
 
   const openEditModal = useCallback(() => {
     setShowEditModal(true);
@@ -69,12 +68,32 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     setShowEditModal(false);
   }, []);
 
+  const handleArtistClick = (artist: Artist) => {
+    // Asume que cada artista tiene un `audio_preview_url`
+    setPlayingArtist(artist);
+    setIsPlaying(true);
+  };
+
+  const closePlayer = () => {
+    setPlayingArtist(null);
+    setIsPlaying(false);
+  };
+
   const editIcon = useMemo(() => <FontAwesomeIcon icon={faEdit} />, []);
   const trashIcon = useMemo(() => <FontAwesomeIcon icon={faTrash} />, []);
+  const playIcon = useMemo(() => <FontAwesomeIcon icon={faPlay} />, []);
 
   const artistLinks = useMemo(() => {
-    if (currentRelease?.artists && currentRelease.artists.length > 0) {
-      return currentRelease.artists.map((artist: Artist) => (
+    if (!currentRelease?.artists?.length) {
+      return (
+        <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">
+          {t('noArtists')}
+        </h3>
+      );
+    }
+    
+    return currentRelease.artists.map((artist: Artist) => (
+      artist.id ? (
         <Link
           to={`/artists/${artist.id}`}
           className="block relative"
@@ -84,14 +103,15 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             {t('artist')}: {artist.artist_name}
           </h3>
         </Link>
-      ));
-    } else {
-      return (
-        <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">
-          No Artists
-        </h3>
-      );
-    }
+      ) : (
+        <p
+          className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white"
+          key={artist.artist_name}
+        >
+          {t('artist')}: {artist.artist_name}
+        </p>
+      )
+    ));
   }, [currentRelease?.artists, t]);
 
   const memoizedButton = useMemo(() => (
@@ -106,6 +126,14 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     ) : null
   ), [currentRelease?.bandcamp_link, t]);
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
   if (!currentRelease) {
     return <div><Loading /></div>; // Render a loading state or message
   }
@@ -113,21 +141,26 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   return (
     <>
       <BaseCard className="border !border-purple-500">
-        <div className="w-full rounded-t-lg overflow-hidden relative">
+        <div
+          className="w-full rounded-t-lg overflow-hidden relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <h3 className="text-xl font-bold mt-2">{currentRelease.title}</h3>
-          {/* Display Genre and Type */}
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
           <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
-
           {artistLinks}
-          <Link to={`/releases/${currentRelease.id}`}>
-            <img
-              src={imageUrl}
-              alt={currentRelease.title}
-              className="w-full"
-              loading="lazy"
-            />
-          </Link>
+          <img
+            src={imageUrl}
+            alt={currentRelease.title}
+            className="w-full"
+            loading="lazy"
+          />
+          {hovered && !isPlaying && currentRelease?.artists && currentRelease.artists.length > 0 && (
+            <div className="absolute top-2 right-2 cursor-pointer" onClick={() => handleArtistClick(currentRelease.artists[0])}>
+              {playIcon}
+            </div>
+          )}
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">
@@ -138,7 +171,6 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               >
                 {editIcon}
               </button>
-
               <button
                 onClick={handleDelete}
                 aria-label="Delete Release"
@@ -154,18 +186,26 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         <div className="my-2">
           {memoizedButton}
         </div>
+
         {showEditModal && (
           <Modal onClose={closeEditModal}>
             <EditReleaseModal id={currentRelease.id} onClose={closeEditModal} />
           </Modal>
         )}
       </BaseCard>
+
+      {isPlaying && playingArtist && (
+        <MusicPlayer
+          audioSrc={playingArtist.audio_preview_url}
+          onClose={closePlayer}
+        />
+      )}
     </>
   );
 };
 
 export default ReleaseCard;
+
 function deleteRelease(id: number) {
   throw new Error('Function not implemented.');
 }
-
