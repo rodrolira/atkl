@@ -30,7 +30,7 @@
     "scan": "vite dev & npx react-scan@latest localhost:5173",
     "start": "vite --open",
     "host": "vite --open --host",
-    "build": "pnpm run build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
