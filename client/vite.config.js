@@ -10,12 +10,12 @@ import autoprefixer from 'autoprefixer';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    million.vite({
-      auto: true,
-    }),
-    MillionLint.vite({
-      enabled: true
-    }),
+    // million.vite({
+    //   auto: true,
+    // }),
+    // MillionLint.vite({
+    //   enabled: true
+    // }),
     react(), compression({
       brotli: true, // Enable Brotli compression
       gzip: true,    // Enable gzip compression
