@@ -5,7 +5,7 @@
             "destination": "/"
         }
     ],
-    "buildCommand": "npx vite build",
+    "buildCommand": "pnpm vite build",
     "installCommand": "pnpm install",
     "outputDirectory": "dist"
 }
