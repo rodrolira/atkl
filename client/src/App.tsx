@@ -9,15 +9,11 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import Loglib from '@loglib/tracker/react';
 import './i18n';
 import Footer from './components/Footer/Footer';
-import { Cloudinary } from "@cloudinary/url-gen";
+import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 
 const App: React.FC = () => {
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-    },
-  })
+
 
 
   useEffect(() => {
@@ -42,6 +38,7 @@ const App: React.FC = () => {
           <CssBaseline />
           <Loglib config={config} />
           <Routing />
+          <MusicPlayer />
           <Footer isAdminLogin={false} />
         </div>
       </div>

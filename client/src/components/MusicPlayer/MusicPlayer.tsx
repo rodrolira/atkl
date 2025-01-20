@@ -1,52 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
 
-interface MusicPlayerProps {
-  audioSrc: string;
-  onClose: () => void;
-  duration?: number; // Duración predeterminada en segundos
-}
-
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ audioSrc, onClose, duration = 30 }) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = React.useRef<HTMLAudioElement | null>(null);
+const MusicPlayer: React.FC = () => {
+  const { audioUrl, isVisible, setIsVisible } = useMusicPlayer();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            setIsPlaying(false);
-            audioRef.current?.pause();
-            onClose();
-            return duration;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
+    if (audioUrl && audioRef.current) {
+      audioRef.current.play();
     }
-  }, [isPlaying, duration, onClose]);
+  }, [audioUrl]);
 
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current?.pause();
-    } else {
-      audioRef.current?.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
+  if (!isVisible || !audioUrl) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 z-50 flex justify-between items-center">
-      <audio ref={audioRef} src={audioSrc} preload="auto" />
-      <button onClick={onClose} className="text-red-500 font-bold">Close</button>
-      <button onClick={handlePlayPause} className="bg-purple-500 px-4 py-2 rounded">
-        {isPlaying ? 'Pause' : 'Play'}
+    <div className="fixed bottom-0 left-0 w-full bg-gray-900 p-4 text-white shadow-lg flex items-center justify-center z-50">
+      <audio ref={audioRef} controls autoPlay className="w-full max-w-3xl">
+        <source src={audioUrl} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+      <button
+        onClick={() => setIsVisible(false)}
+        className="ml-4 text-red-500 text-lg font-bold"
+      >
+        ✖
       </button>
-      <span>{timeLeft}s remaining</span>
     </div>
   );
 };

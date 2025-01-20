@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
@@ -14,7 +14,8 @@ import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
 import { getImageUrlReleases } from '@/utils/utils';
-import MusicPlayer from '../MusicPlayer/MusicPlayer';
+import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
+
 
 interface ReleaseCardProps {
   release: Release;
@@ -26,15 +27,67 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { setReleases, releases } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const [playingArtist, setPlayingArtist] = useState<Artist | null>(null);
-  const [hovered, setHovered] = useState<boolean>(false); // Estado para hover
-  const [isPlaying, setIsPlaying] = useState<boolean>(false); // Estado para controlar la reproducción
+  const { setAudioUrl, setIsVisible, isVisible } = useMusicPlayer();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+
+  // URL de la imagen del release
   const imageUrl = useMemo(() => {
     return currentRelease?.imageKey
       ? getImageUrlReleases(currentRelease.imageKey)
       : '/images/placeholder.png';
   }, [currentRelease?.imageKey]);
+
+  const audioUrl = useMemo(() => {
+    return currentRelease?.audioKey
+      ? `https://atkl.s3.us-east-1.amazonaws.com/${encodeURIComponent(currentRelease.audioKey)}`
+      : null;
+  }, [currentRelease?.audioKey]);
+
+
+  const handleAudioToggle = () => {
+    if (!audioUrl) {
+      console.error('Audio URL not found');
+      return;
+    }
+  
+    if (audioRef.current) {
+      if (!isPlaying) {
+        audioRef.current.play();
+        setIsPlaying(true);
+        setAudioUrl(audioUrl);  // Asegura que la URL esté configurada
+        setIsVisible(true);  // Muestra el reproductor
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    } else {
+      setAudioUrl(audioUrl);
+      setIsVisible(true); 
+      setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.play();
+          setIsPlaying(true);
+        }
+      }, 100);
+    }
+  };
+    
+
+  useEffect(() => {
+    if (audioRef.current) {
+      const handleAudioEnd = () => setIsPlaying(false);
+      audioRef.current.addEventListener('ended', handleAudioEnd);
+
+
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.removeEventListener('ended', handleAudioEnd);
+        }
+      };
+    }
+  }, [audioUrl])
 
   useEffect(() => {
     const releaseFromContext = releases.find((r) => r.id === release.id);
@@ -44,11 +97,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   }, [release.id, releases]);
 
   const handleDelete = useCallback(async () => {
-    if (
-      window.confirm(
-        `¿Estás seguro de que deseas eliminar el lanzamiento ${currentRelease?.title}?`
-      )
-    ) {
+    if (window.confirm(`¿Estás seguro de que deseas eliminar el lanzamiento ${currentRelease?.title}?`)) {
       try {
         await deleteRelease(release.id);
         setReleases((prevReleases: Release[]) =>
@@ -68,99 +117,75 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     setShowEditModal(false);
   }, []);
 
-  const handleArtistClick = (artist: Artist) => {
-    // Asume que cada artista tiene un `audio_preview_url`
-    setPlayingArtist(artist);
-    setIsPlaying(true);
-  };
-
-  const closePlayer = () => {
-    setPlayingArtist(null);
-    setIsPlaying(false);
-  };
 
   const editIcon = useMemo(() => <FontAwesomeIcon icon={faEdit} />, []);
   const trashIcon = useMemo(() => <FontAwesomeIcon icon={faTrash} />, []);
-  const playIcon = useMemo(() => <FontAwesomeIcon icon={faPlay} />, []);
+
 
   const artistLinks = useMemo(() => {
-    if (!currentRelease?.artists?.length) {
-      return (
-        <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">
-          {t('noArtists')}
-        </h3>
-      );
-    }
-    
-    return currentRelease.artists.map((artist: Artist) => (
-      artist.id ? (
-        <Link
-          to={`/artists/${artist.id}`}
-          className="block relative"
-          key={artist.id}
-        >
-          <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+    if (currentRelease?.artists && currentRelease.artists.length > 0) {
+      return currentRelease.artists.map((artist: Artist) =>
+        artist.id ? (
+          <Link
+            to={`/artists/${artist.id}`}
+            className="block relative"
+            key={artist.id}
+          >
+            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+              {t('artist')}: {artist.artist_name}
+            </h3>
+          </Link>
+        ) : (
+          <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white" key={artist.artist_name}>
             {t('artist')}: {artist.artist_name}
-          </h3>
-        </Link>
-      ) : (
-        <p
-          className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white"
-          key={artist.artist_name}
-        >
-          {t('artist')}: {artist.artist_name}
-        </p>
-      )
-    ));
+          </p>
+        )
+      );
+    } else {
+      return <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">{t('noArtists')}</h3>;
+    }
   }, [currentRelease?.artists, t]);
 
   const memoizedButton = useMemo(() => (
     currentRelease?.bandcamp_link ? (
-      <Button
-        to={currentRelease.bandcamp_link}
-        className="mb-4"
-        colorClass="bg-green-500 hover:bg-green-600 text-black"
-      >
+      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-green-500 hover:bg-green-600 text-black">
         <p className="font-semibold">{t('buy')}</p>
       </Button>
     ) : null
   ), [currentRelease?.bandcamp_link, t]);
 
-  const handleMouseEnter = () => {
-    setHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
-
   if (!currentRelease) {
-    return <div><Loading /></div>; // Render a loading state or message
+    return <div><Loading /></div>; // Render loading state
   }
 
   return (
     <>
       <BaseCard className="border !border-purple-500">
-        <div
-          className="w-full rounded-t-lg overflow-hidden relative"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="w-full rounded-t-lg overflow-hidden relative">
           <h3 className="text-xl font-bold mt-2">{currentRelease.title}</h3>
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
           <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
+
           {artistLinks}
-          <img
-            src={imageUrl}
-            alt={currentRelease.title}
-            className="w-full"
-            loading="lazy"
-          />
-          {hovered && !isPlaying && currentRelease?.artists && currentRelease.artists.length > 0 && (
-            <div className="absolute top-2 right-2 cursor-pointer" onClick={() => handleArtistClick(currentRelease.artists[0])}>
-              {playIcon}
-            </div>
-          )}
+          <div className='relative w-full'>
+            <img
+              src={imageUrl}
+              alt={currentRelease.title}
+              className="w-full cursor-pointer"
+              loading="lazy"
+            />
+            <button
+              onClick={handleAudioToggle}
+              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300"
+              aria-label="Play/Pause Release"
+            >
+              <FontAwesomeIcon
+                icon={isPlaying ? faPause : faPlay}
+                className={`text-white text-5xl transition-transform duration-300 ${isPlaying ? 'rotate-180' : ''}`}  // Añadir rotación suave para la animación
+              />
+            </button>
+          </div>
+
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">
@@ -181,25 +206,25 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             </div>
           )}
         </div>
+
         <ReleaseLinks release={currentRelease} />
 
-        <div className="my-2">
-          {memoizedButton}
-        </div>
+        <div className="my-2">{memoizedButton}</div>
+
 
         {showEditModal && (
           <Modal onClose={closeEditModal}>
             <EditReleaseModal id={currentRelease.id} onClose={closeEditModal} />
           </Modal>
         )}
+
+
+        {/* Reproductor de audio oculto pero controlado por el estado */}
+        {audioUrl && (
+          <audio ref={audioRef} src={audioUrl} />
+        )}
       </BaseCard>
 
-      {isPlaying && playingArtist && (
-        <MusicPlayer
-          audioSrc={playingArtist.audio_preview_url}
-          onClose={closePlayer}
-        />
-      )}
     </>
   );
 };
