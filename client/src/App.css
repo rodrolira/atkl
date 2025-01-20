@@ -110,9 +110,21 @@ html {
   }
 }
 
-
-
-
 .nav-link.text-shadow {
   text-shadow: 1px 0 8px rgb(8, 102, 8);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.music-player {
+  animation: slideUp 0.5s ease-out forwards;
 }

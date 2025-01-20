@@ -9,6 +9,7 @@ export const releaseData: Release[] = [
         genre: { name: 'Hard Techno' },
         release_type: 'EP',
         imageKey: 'insanity_700x700.webp',
+        audioKey: 'releases/RODRO - INSANITY.mp3',
         artists: [
             {
                 id: 1, artist_name: 'RODRO', artist_image_url: 'uploads/artists/rodro.jpg',
@@ -17,7 +18,7 @@ export const releaseData: Release[] = [
                 image: null
             },
         ],
-        bandcamp_link: 'https://bandcamp.com/rodro/vol1',
+        bandcamp_link: 'https://atklrecords.bandcamp.com/track/insanity-free-download-hpn002',
         spotify_link: 'https://spotify.com/album/1',
         apple_music_link: 'https://music.apple.com/album/1',
         youtube_link: 'https://youtube.com/watch?v=1',
@@ -66,7 +67,7 @@ export const releaseData: Release[] = [
     },
     {
         id: 4,
-        title: 'Two-Sides',
+        title: 'Two Sides',
         genre: { name: 'Techno' },
         release_type: 'EP',
         imageKey: 'Two-Sides_700x700.webp',
@@ -87,7 +88,7 @@ export const releaseData: Release[] = [
     },
     {
         id: 5,
-        title: 'Unknown-VA-I',
+        title: 'Unknown VA I',
         genre: { name: 'Hard Techno' },
         release_type: 'Single',
         imageKey: 'Unknown-VA-I.webp',
