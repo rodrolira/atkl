@@ -51,6 +51,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@iconify/react": "^5.0.2",
     "@loglib/tracker": "^0.8.0",
+    "@madzadev/audio-player": "^2.1.14",
     "@million/lint": "^1.0.13",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",

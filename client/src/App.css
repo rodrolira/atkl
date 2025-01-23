@@ -125,6 +125,17 @@ html {
   }
 }
 
-.music-player {
-  animation: slideUp 0.5s ease-out forwards;
+/* styles.css */
+.audio-player {
+  background: #000;
+  color: #fff;
+  padding: 10px;
+}
+
+.audio-player button {
+  color: #ff4081;
+}
+
+.audio-player input[type="range"] {
+  width: 100px;
 }
