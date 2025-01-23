@@ -14,6 +14,8 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import i18n from './i18n';
 import { MusicPlayerProvider } from '@/contexts/MusicPlayerContext';
+import "@madzadev/audio-player/dist/index.css";
+
 
 i18n.init();
 
