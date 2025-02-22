@@ -35,26 +35,24 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     setCurrentTrackUrl
   } = useMusicPlayer();
 
-  
- // ✅ Usamos solo Cloudinary para la imagen del lanzamiento
- const imageUrl = useMemo(() => {
-  return currentRelease?.imageUrl || '/images/releases/placeholder.png';
-}, [currentRelease?.imageUrl]);
+
+  // ✅ Usamos solo Cloudinary para la imagen del lanzamiento
+  const imageUrl = useMemo(() => {
+    return currentRelease?.imageUrl || '/images/releases/placeholder.png';
+  }, [currentRelease?.imageUrl]);
 
 
-  // Obtener la URL del audio
   const audioUrl = useMemo(() => {
-    return currentRelease?.audioKey
-      ? `https://atkl.s3.us-east-1.amazonaws.com/${encodeURIComponent(currentRelease.audioKey)}`
-      : null;
-  }, [currentRelease?.audioKey]);
-
+    return currentRelease?.audioUrl || null;
+  }, [currentRelease?.audioUrl]);
+  
   // Manejo de la reproducción/pausa del audio
   const handleAudioToggle = () => {
     if (!audioUrl) {
-      console.error('Audio URL not found');
+      console.error('Audio URL not found:', currentRelease?.audioKey);
       return;
     }
+    console.log('Playing audio from:', audioUrl);
 
     if (currentTrackUrl === audioUrl && isPlaying) {
       setIsPlaying(false);
@@ -157,10 +155,10 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300"
               aria-label="Play/Pause Release"
             >
-            <FontAwesomeIcon
-              icon={isPlaying && currentTrackUrl === audioUrl ? faPause : faPlay}
-              className="text-white text-5xl"
-            />
+              <FontAwesomeIcon
+                icon={isPlaying && currentTrackUrl === audioUrl ? faPause : faPlay}
+                className="text-white text-5xl"
+              />
             </button>
           </div>
 

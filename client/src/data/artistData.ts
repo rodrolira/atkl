@@ -18,7 +18,7 @@ export const artistData = [
     {
         id: 2,
         artist_name: 'Sweet Hate',
-        imageUrl:'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740248234/artists/ezdag6xgqrp2qwkbokeb.webp', 
+        imageUrl:'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740259868/artists/ezdag6xgqrp2qwkbokeb.jpg', 
         roles: ['DJ'],
     },
     {
