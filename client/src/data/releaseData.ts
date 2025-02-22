@@ -9,7 +9,7 @@ export const releaseData: Release[] = [
         genre: { name: 'Hard Techno' },
         release_type: 'EP',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/nzduhcb7psup5lvsrwdv.webp',
-        audioKey: 'releases/RODRO - INSANITY.mp3',
+        audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740256711/releases/INSANITY/h6xvea4hzowypbztem1n.mp3',
         artists: [
             {
                 id: 1, artist_name: 'RODRO', artist_image_url: 'uploads/artists/rodro.jpg',
@@ -38,7 +38,7 @@ export const releaseData: Release[] = [
                 imageUrl: '/images/artists/placeholder.png'
             },
         ],
-        bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
+        bandcamp_link: 'https://atklrecords.bandcamp.com/track/crying-taxdog-hpn001',
         spotify_link: 'https://spotify.com/album/2',
         apple_music_link: 'https://music.apple.com/album/2',
         youtube_link: 'https://youtube.com/watch?v=2',
@@ -79,7 +79,7 @@ export const releaseData: Release[] = [
                 imageUrl: '/images/artists/placeholder.png'
             },
         ],
-        bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
+        bandcamp_link: 'https://atklrecords.bandcamp.com/album/atk003-two-sides-bbaphomett',
         spotify_link: 'https://spotify.com/album/4',
         apple_music_link: 'https://music.apple.com/album/4',
         youtube_link: 'https://youtube.com/watch?v=4',

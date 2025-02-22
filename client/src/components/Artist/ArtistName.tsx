@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './artistName.css';
 
 interface ArtistNameProps {
   name: string;
@@ -15,7 +16,7 @@ const ArtistName: React.FC<ArtistNameProps> = ({
   textSize = 'text-2xl',
 }) => (
   <Link to={`/artists/${id}`} className="flex items-center justify-center w-full hover:text-green-500">
-    <h1 className={`${textSize} font-bold`}>{name}</h1>
+    <h1 className={`${textSize} font-bold amatic-sc-bold`}>{name}</h1>
   </Link>
 );
 
