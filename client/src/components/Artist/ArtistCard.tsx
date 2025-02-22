@@ -11,9 +11,7 @@ import { Button } from 'react-bootstrap';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
-import { getImageUrlArtists } from '@/utils/utils'; // Importar la función que obtiene la URL de la imagen
 import { artistData } from '@/data/artistData'; // Importar los datos de los artistas
-import MusicPlayer from '../MusicPlayer/MusicPlayer';
 
 interface ArtistCardProps {
   artist: Artist
@@ -22,15 +20,15 @@ interface ArtistCardProps {
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
-  const { deleteArtist, setArtists, artists, updateArtist } = useArtists();
+  const { deleteArtist, setArtists, updateArtist } = useArtists();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
-  // Obtén la URL de la imagen desde S3
-  const imageUrl = useMemo(() => {
-    return currentArtist.imageKey ? getImageUrlArtists(currentArtist.imageKey) : '/images/placeholder.png';
-  }, [currentArtist.imageKey]);
+   // ✅ Usamos solo Cloudinary para las imágenes
+   const imageUrl = useMemo(() => {
+    return currentArtist?.imageUrl || '/images/artists/placeholder.png';
+  }, [currentArtist?.imageUrl]);
 
   useEffect(() => {
     const artistFromContext = artistData.find((a) => a.id === artist.id);
@@ -39,11 +37,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
         ...artistFromContext,
         Roles: artistFromContext.roles,
         roleIds: [] as number[],
-        image: null,
+        imageUrl: artistFromContext.imageUrl || '/images/artists/placeholder.png',
       });
     }
   }, [artist.id]);
-
 
 
   // Manejo de eliminación de artista

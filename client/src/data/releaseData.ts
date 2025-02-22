@@ -15,7 +15,7 @@ export const releaseData: Release[] = [
                 id: 1, artist_name: 'RODRO', artist_image_url: 'uploads/artists/rodro.jpg',
                 Roles: [],
                 roleIds: [],
-                image: null
+                imageUrl: ''
             },
         ],
         bandcamp_link: 'https://atklrecords.bandcamp.com/track/insanity-free-download-hpn002',
@@ -34,8 +34,8 @@ export const releaseData: Release[] = [
         imageKey: 'Crying_700x700.webp',
         artists: [
             {
-                artist_name: 'TAXDOG'
-
+                artist_name: 'TAXDOG',
+                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
@@ -54,7 +54,8 @@ export const releaseData: Release[] = [
         imageKey: 'F2023_700x700.webp',
         artists: [
             {
-                artist_name: 'n3o'
+                artist_name: 'n3o',
+                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://bandcamp.com/techno-raver/acid-rave',
@@ -75,7 +76,7 @@ export const releaseData: Release[] = [
             {
                 artist_name: 'BbaphometT',
                 id: 4,
-
+                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',
@@ -95,6 +96,7 @@ export const releaseData: Release[] = [
         artists: [
             {
                 artist_name: 'Various Artists',
+                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://atklrecords.bandcamp.com/album/unknown-va-i-ukn001',
@@ -114,6 +116,7 @@ export const releaseData: Release[] = [
         artists: [
             {
                 artist_name: '23ones',
+                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://bandcamp.com/djx/industrial-vibes',

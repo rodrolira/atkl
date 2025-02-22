@@ -2,17 +2,16 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'flowbite-react';
 import React from 'react';
-import { getImageUrlArtists } from '@/utils/utils'; // Asegúrate de importar la función getImageUrlArtists
 
 interface ArtistImageProps {
-  imageKey?: string;  // Hacer imageKey opcional
+  imageUrl?: string;
   alt: string;
   adminAuthenticated: boolean;
   openEditModal: () => void;
 }
 
-const ArtistImage: React.FC<ArtistImageProps> = ({ imageKey, alt, adminAuthenticated, openEditModal }) => {
-  const imageUrl = imageKey ? getImageUrlArtists(imageKey) : '/images/placeholder.png';
+const ArtistImage: React.FC<ArtistImageProps> = ({ imageUrl, alt, adminAuthenticated, openEditModal }) => {
+  const finalImageUrl = imageUrl || '/images/placeholder.png';
 
   return (
     <div className="relative p-4 pb-0 rounded-lg">
@@ -39,7 +38,7 @@ const ArtistImage: React.FC<ArtistImageProps> = ({ imageKey, alt, adminAuthentic
         </Button>
       )}
 
-      <img className="rounded-t-lg w-full" src={imageUrl} alt={alt} />
+      <img className="rounded-t-lg w-full" src={finalImageUrl} alt={alt} />
     </div>
   )
 }
