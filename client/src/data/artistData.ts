@@ -49,7 +49,7 @@ export const artistData = [
         id: 7,
         artist_name: 'VGBND',
         imageUrl:'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740248234/artists/qlb6ybjiqt6fwx8nv2te.webp',
-        roles: ['DJ', 'Productor'],
+        roles: ['DJ'],
     },
     {
         id: 8,
