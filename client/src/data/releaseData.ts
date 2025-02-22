@@ -8,7 +8,7 @@ export const releaseData: Release[] = [
         title: 'INSANITY',
         genre: { name: 'Hard Techno' },
         release_type: 'EP',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/nzduhcb7psup5lvsrwdv.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/INSANITY/nzduhcb7psup5lvsrwdv.webp',
         audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740256711/releases/INSANITY/h6xvea4hzowypbztem1n.mp3',
         artists: [
             {
@@ -31,7 +31,7 @@ export const releaseData: Release[] = [
         title: 'Crying',
         genre: { name: 'Dark Techno' },
         release_type: 'Single',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252309/releases/vwbkeqdndikoqjseog7g.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252309/releases/CRYING/vwbkeqdndikoqjseog7g.webp',
         audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740257055/releases/CRYING/fl2efkym4qryuoxbrrsc.mp3',
         artists: [
             {
@@ -52,7 +52,7 @@ export const releaseData: Release[] = [
         title: 'F2023',
         genre: { name: 'Acid Techno' },
         release_type: 'Album',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/anclmaeeeev5qi4bjqox.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/F2023/anclmaeeeev5qi4bjqox.webp',
         artists: [
             {
                 artist_name: 'n3o',
@@ -72,7 +72,7 @@ export const releaseData: Release[] = [
         title: 'Two Sides',
         genre: { name: 'Techno' },
         release_type: 'EP',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252311/releases/gwctd2yyxyrnlxnexzhh.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252311/releases/TWO%20SIDES/gwctd2yyxyrnlxnexzhh.webp',
         artists: [
             {
                 artist_name: 'BbaphometT',
@@ -93,7 +93,7 @@ export const releaseData: Release[] = [
         title: 'Unknown VA I',
         genre: { name: 'Hard Techno' },
         release_type: 'Single',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/vcr97troogn8jh2x1yb7.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/UKN001/vcr97troogn8jh2x1yb7.webp',
         artists: [
             {
                 artist_name: 'Various Artists',
@@ -113,7 +113,7 @@ export const releaseData: Release[] = [
         title: 'Zena',
         genre: { name: 'Techno' },
         release_type: 'EP',
-        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/hybo5olpu1qylpuc5mlq.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/zena/hybo5olpu1qylpuc5mlq.webp',
         artists: [
             {
                 artist_name: '23ones',
