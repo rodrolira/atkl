@@ -32,6 +32,7 @@ export const releaseData: Release[] = [
         genre: { name: 'Dark Techno' },
         release_type: 'Single',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252309/releases/vwbkeqdndikoqjseog7g.webp',
+        audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740257055/releases/CRYING/fl2efkym4qryuoxbrrsc.mp3',
         artists: [
             {
                 artist_name: 'TAXDOG',
@@ -127,5 +128,20 @@ export const releaseData: Release[] = [
         beatport_link: 'https://beatport.com/track/6',
         release_date: '2024-06-01',
     },
-    // Agregar más lanzamientos aquí si es necesario
+    // Agregar más lanzamientos aquí si es necesario}
+
+    {
+        id: 7,
+        title: 'Satisfication',
+        genre: { name: 'Hard Techno' },
+        release_type: 'EP',
+        artists: [
+            {
+                artist_name: 'thunder21',
+                imageUrl: '/images/artists/placeholder.png'
+            },
+        ],
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252311/releases/SATISFACTION/kxkt1libtemk7y5urwtt.webp',
+        audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740257044/releases/SATISFACTION/qyberebj3zp1lqbohd5s.mp3',
+    }
 ];
