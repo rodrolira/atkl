@@ -3,7 +3,7 @@ import { Artist } from "./Artist";
 export interface Release {
     id: number;
     title: string;
-    imageKey: string;
+    imageUrl: string;
     genre?:{
         name: string;
     }

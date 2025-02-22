@@ -35,12 +35,12 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     setCurrentTrackUrl
   } = useMusicPlayer();
 
-  // Obtener la imagen del release
-  const imageUrl = useMemo(() => {
-    return currentRelease?.imageKey
-      ? getImageUrlReleases(currentRelease.imageKey)
-      : '/images/placeholder.png';
-  }, [currentRelease?.imageKey]);
+  
+ // ✅ Usamos solo Cloudinary para la imagen del lanzamiento
+ const imageUrl = useMemo(() => {
+  return currentRelease?.imageUrl || '/images/releases/placeholder.png';
+}, [currentRelease?.imageUrl]);
+
 
   // Obtener la URL del audio
   const audioUrl = useMemo(() => {
