@@ -8,7 +8,7 @@ export const releaseData: Release[] = [
         title: 'INSANITY',
         genre: { name: 'Hard Techno' },
         release_type: 'EP',
-        imageKey: 'insanity_700x700.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/nzduhcb7psup5lvsrwdv.webp',
         audioKey: 'releases/RODRO - INSANITY.mp3',
         artists: [
             {
@@ -31,7 +31,7 @@ export const releaseData: Release[] = [
         title: 'Crying',
         genre: { name: 'Dark Techno' },
         release_type: 'Single',
-        imageKey: 'Crying_700x700.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252309/releases/vwbkeqdndikoqjseog7g.webp',
         artists: [
             {
                 artist_name: 'TAXDOG',
@@ -48,10 +48,10 @@ export const releaseData: Release[] = [
     },
     {
         id: 3,
-        title: 'Acid Rave Anthems',
+        title: 'F2023',
         genre: { name: 'Acid Techno' },
         release_type: 'Album',
-        imageKey: 'F2023_700x700.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/anclmaeeeev5qi4bjqox.webp',
         artists: [
             {
                 artist_name: 'n3o',
@@ -71,7 +71,7 @@ export const releaseData: Release[] = [
         title: 'Two Sides',
         genre: { name: 'Techno' },
         release_type: 'EP',
-        imageKey: 'Two-Sides_700x700.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252311/releases/gwctd2yyxyrnlxnexzhh.webp',
         artists: [
             {
                 artist_name: 'BbaphometT',
@@ -92,7 +92,7 @@ export const releaseData: Release[] = [
         title: 'Unknown VA I',
         genre: { name: 'Hard Techno' },
         release_type: 'Single',
-        imageKey: 'Unknown-VA-I.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/vcr97troogn8jh2x1yb7.webp',
         artists: [
             {
                 artist_name: 'Various Artists',
@@ -112,7 +112,7 @@ export const releaseData: Release[] = [
         title: 'Zena',
         genre: { name: 'Techno' },
         release_type: 'EP',
-        imageKey: 'zena_700x700.webp',
+        imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/hybo5olpu1qylpuc5mlq.webp',
         artists: [
             {
                 artist_name: '23ones',

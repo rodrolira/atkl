@@ -41,7 +41,7 @@ const ArtistPage: React.FC = () => {
     ...artistData.find((artist) => artist.id === +id),
     Roles: artistData.find((artist) => artist.id === +id)?.roles || [],
     roleIds: [] as number[],
-    image: null
+    imageUrl: artistData.find((artist) => artist.id === +id)?.imageUrl || '',
   } as Artist;
 
   if (!currentArtist) {
