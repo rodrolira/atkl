@@ -28,6 +28,10 @@ export default defineConfig({
       ],
     },
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+    exclude: ['lodash', 'lodash-es'],
+  },  
   server: {
     configureServer: (server) => {
       server.middlewares.use((req, res, next) => {
