@@ -53,6 +53,7 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
     rollupOptions: {
+      input: 'src/main.tsx',
       assetFileNames:(assetInfo) => {
         if (assetInfo.name === '_headers' ) return '_headers';
         return assetInfo.name;
