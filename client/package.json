@@ -30,8 +30,7 @@
     "scan": "vite dev & npx react-scan@latest localhost:5173",
     "start": "vite --open",
     "host": "vite --open --host",
-    "build": "pnpm build",
-    "install": "vite install && pnpm install",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -40,7 +39,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cover": "vitest run --coverage",
-    "vercel-build": "pnpm build"
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "@cloudinary/react": "^1.14.0",
