@@ -2,7 +2,7 @@ import MillionLint from '@million/lint';
 import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import path from 'path';
+import * as path from 'path';
 import compression from 'vite-plugin-compression';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
@@ -28,10 +28,6 @@ export default defineConfig({
       ],
     },
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['lodash', 'lodash-es'],
-  },  
   server: {
     configureServer: (server) => {
       server.middlewares.use((req, res, next) => {
@@ -55,9 +51,7 @@ export default defineConfig({
     target: 'esnext',
     outDir: 'dist',
     sourcemap: true,
-    emptyOutDir: true,
     rollupOptions: {
-      input: 'src/main.tsx',
       assetFileNames:(assetInfo) => {
         if (assetInfo.name === '_headers' ) return '_headers';
         return assetInfo.name;
@@ -85,6 +79,5 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: 'src/setupTests.js',
     clearMocks: true,
-  },
-  base: './'
+  }
 });
