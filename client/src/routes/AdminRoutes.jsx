@@ -1,21 +1,17 @@
 import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-import { useAdminAuth } from '../contexts/AdminAuthContext';
-import Loading from '@/components/atoms/Loading/Loading';
+import { Route, Switch } from 'react-router-dom';
+import AdminDashboard from '@/pages/Admin/AdminDashboard';
+// import AdminReleases from '@/pages/Admin/AdminReleases';
+// import AdminArtists from '@/pages/Admin/AdminArtists';
+
 
 const AdminRoutes = () => {
-  const { isAuthenticated: adminAuthenticated, loading: adminLoading } =
-    useAdminAuth();
-
-  if (adminLoading) {
-    // Render a loading spinner or nothing while loading
-    return <div><Loading/></div>;
-  }
-
-  return adminAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/admin/login" replace />
+  return (
+    <Switch>
+      <Route exact path="/admin" component={AdminDashboard} />
+      {/* <Route path="/admin/releases" component={AdminReleases} />
+      <Route path="/admin/artists" component={AdminArtists} /> */}
+    </Switch>
   );
 };
 

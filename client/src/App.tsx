@@ -13,8 +13,9 @@ import { MusicPlaylistProvider } from "@/contexts/MusicPlaylistContext";
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 const App: React.FC = () => {
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
-    console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+    console.log('VITE_API_URL:', VITE_API_URL);
   }, []);
 
   const config = useMemo(() => ({ id: "atkl" }), []);
@@ -25,9 +26,8 @@ const App: React.FC = () => {
     }),
     []
   );
-
   return (
-    <BrowserRouter future={future}>
+    <BrowserRouter>
       <MusicPlayerProvider> {/* 🔹 Aseguramos que `MusicPlayerProvider` envuelve todo */}
         <MusicPlaylistProvider>
           <div id="app" className="flex min-h-screen">

@@ -6,7 +6,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Icon for logout
 import './CircularButtons.css'; // Import styles for circular buttons
 import AddArtistForm from '@/components/Artist/AddArtistForm';
 import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm'; // Import form
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '../../types/interfaces/Artist';
@@ -82,7 +82,7 @@ export const AddReleaseButton: React.FC = React.memo(() => {
 // Button for logout
 export const AdminLogoutButton: React.FC = React.memo(() => {
   const { signout, isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const handleLogout = useCallback(async () => {
     await signout(); // Call your logout function

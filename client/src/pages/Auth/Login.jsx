@@ -10,14 +10,14 @@ import {
 } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React from 'react';
 import AuthOutlet from './AuthOutlet';
 
 function Login() {
   const email = React.useRef(null);
   const password = React.useRef(null);
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
