@@ -39,7 +39,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cover": "vitest run --coverage",
-    "vercel-build": "vite build"
+    "vercel-build": "pnpm build"
   },
   "dependencies": {
     "@cloudinary/react": "^1.14.0",
