@@ -1,24 +1,36 @@
-// components/ReleaseList.tsx
-import React, { useMemo, memo } from 'react';
-import ReleaseCard from './ReleaseCard'; // Asegúrate de que ReleaseCard esté correctamente tipado
+import React, { useMemo, memo, useEffect, useState } from 'react';
+import ReleaseCard from './ReleaseCard'; 
 import { Release } from '@/types/interfaces/Release';
+import { releaseData } from "@/data/releaseData";
+import useFetchCloudinaryTracks from "@/hooks/useFetchCloudinaryTracks";
 
-interface ReleaseListProps {
-  releases: Release[];
-}
+const ReleaseList: React.FC = () => {
+  const { tracks, loading, error } = useFetchCloudinaryTracks();
+  const [updatedReleases, setUpdatedReleases] = useState<Release[]>(releaseData);
 
-const ReleaseList: React.FC<ReleaseListProps> = ({ releases }) => {
+  useEffect(() => {
+    if (!loading && tracks.length > 0) {
+      setUpdatedReleases((prevReleases) =>
+        prevReleases.map((release) =>
+          release.title === "Unknown VA I"
+            ? { ...release, tracks: [...(release.tracks || []), ...tracks] } // 🔹 Concatenar en caso de que ya tenga tracks
+            : release
+        )
+      );
+    }
+  }, [tracks, loading]);
+
   const memoizedReleaseCards = useMemo(
     () =>
-      releases.map((release, index) => (
+      updatedReleases.map((release, index) => (
         <ReleaseCard key={release.id || index} release={release} />
       )),
-    [releases]
+    [updatedReleases] // 🔹 Ahora depende de updatedReleases
   );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-50">
-      {memoizedReleaseCards}
+      {loading ? <p>Cargando tracks...</p> : memoizedReleaseCards}
     </div>
   );
 };

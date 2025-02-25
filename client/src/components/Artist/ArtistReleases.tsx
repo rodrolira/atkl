@@ -15,7 +15,7 @@ const ArtistReleases: React.FC<ArtistReleasesProps> = ({ artist, releases }) => 
 
   // Filtrar lanzamientos relacionados con el artista
   const artistReleases = releases.filter((release) =>
-    release.artists.some((relArtist: Artist) => relArtist.id === artist.id)
+    release.artists?.some((relArtist: Artist) => relArtist.id === artist.id) ?? false
   );
 
   return (

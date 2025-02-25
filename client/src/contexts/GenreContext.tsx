@@ -27,7 +27,7 @@ export const GenreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Function to fetch the list of genres from the API
   const fetchGenres = useCallback(async () => {
-    const response = await fetch('/api/genres');
+    const response = await fetch('http://localhost:3000/api/genres');
     setGenres(await response.json()); // Update the genres list with the API response
     return response.json();
   }, []);

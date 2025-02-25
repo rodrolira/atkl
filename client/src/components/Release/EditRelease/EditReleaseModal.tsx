@@ -3,25 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldProps, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import Button from '@/components/Button/Button';
+import CloudinaryUpload from '@/components/Upload/CloudinaryUpload'; // 🔹 Importamos el componente de subida
+
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useGenres } from '@/contexts/GenreContext';
 import { useReleases } from '../../../contexts/ReleaseContext'
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { ReleaseFormValues } from '@/types/interfaces/Form';
 import { Release } from '@/types/interfaces/Release';
 import { Artist } from '../../../types/interfaces/Artist';
-import { SelectChangeEvent } from '@mui/material';
+import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   artist_id: Yup.string(),
-  cover_image_url: Yup.mixed(),
+  cover_image_url: Yup.string().url(),
   release_date: Yup.date(),
   description: Yup.string(),
-  genre_id: Yup.string(),
+  genre: Yup.string(),
   release_type: Yup.string(),
 });
 
@@ -32,6 +34,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
   const { releases, updateRelease, deleteRelease } = useReleases();
   const { artists, fetchArtists } = useArtists();
   const { genres } = useGenres();
+  const { isAuthenticated: adminAuthenticated } = useAdminAuth(); // 🔹 Verificamos si es admin
 
 
   const [initialValues, setInitialValues] = useState<Partial<Release>>({
@@ -40,7 +43,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
     cover_image_url: '',
     release_date: '',
     description: '',
-    genre_id: '',
+    genre: { name: '' },
     release_type: '',
     bandcamp_link: '',
     spotify_link: '',
@@ -57,8 +60,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
       setInitialValues({
         ...release,
         artist_id: String(release.artist_id),
-        genre_id: String(release.genre_id)
-      });
+        genre: release.genre ? { name: release.genre.name } : { name: '' },});
     }
     console.log('Fetching release with ID:', release_id);
 
@@ -103,32 +105,20 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ setFieldValue, isSubmitting }) => (
+        {({ setFieldValue, isSubmitting }: FormikProps<Partial<Release>>) => (
           <Form className="w-full shadow-md rounded px-8 pt-2 pb-2 mb-4 text-center">
             <Stack spacing={2} margin={2}>
               <Title className='!text-3xl mb-4 text-center font-bold text-gray-300'>{t('edit_release')}</Title>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="title"
-                  className="block !text-gray-300 font-bold mb-2 w-1/5"
-                >
-                  Title:
-                </label>
-                <Field
-                  type="text"
-                  id="title"
-                  name="title"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Title"
-                  autoComplete="off"
-                  autoFocus
-                />
-                <ErrorMessage
-                  name="title"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
+              {/* 🎵 Campo para el título */}
+              <Field
+                type="text"
+                name="title"
+                as={TextField}
+                label="Title"
+                variant="outlined"
+                fullWidth
+              />
+              <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
 
               <div className="mb-4 flex items-center justify-center">
                 <InputLabel
@@ -136,152 +126,75 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                   className="block !text-gray-300 !font-bold mb-2 w-1/5"
                 >Artist:</InputLabel>
                 <FormControl fullWidth variant="outlined">
-                {artists.length > 0 && (
-                  <Field name="artist_id"
-                  
-                  >
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        select
-                        id="artist_id"
-                        value={field.value || ''}
-                        variant="outlined"
-                        className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        size="small"
-                        InputProps={{ className: '!text-gray-700 !text-start' }}
-                        onChange={(e) => setFieldValue('artist_id', e.target.value)}
-                      >
+                  {artists.length > 0 && (
+                    <Field name="artist_id"
+
+                    >
+                      {({ field }: FieldProps) => (
+                        <TextField
+                          {...field}
+                          select
+                          id="artist_id"
+                          value={field.value || ''}
+                          variant="outlined"
+                          className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          size="small"
+                          InputProps={{ className: '!text-gray-700 !text-start' }}
+                          onChange={(e) => setFieldValue('artist_id', e.target.value)}
+                        >
                           {artists.map((artist: Artist) => (
                             <MenuItem key={artist.id} value={String(artist.id)}>
                               {artist.artist_name}
                             </MenuItem>
                           ))}
-                      </TextField>
-                    )}
-                  </Field>
-                )}
+                        </TextField>
+                      )}
+                    </Field>
+                  )}
                 </FormControl>
+              </div>
 
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <FileUploadRelease />
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="release_date"
-                  className="block text-gray-300 font-bold mb-2  w-1/5"
-                >
-                  Release Date:
-                </label>
-                <Field
-                  type="date"
-                  id="release_date"
-                  name="release_date"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center"
-                />
-                <ErrorMessage
-                  name="release_date"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="is_explicit"
-                  className="block text-gray-300 font-bold mb-2 w-1/5"
-                >
-                  Explicit Content:
-                </label>
-                <Field
-                  type="checkbox"
-                  id="is_explicit"
-                  name="is_explicit"
-                  className="mr-2 leading-tight"
-                />
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="description"
-                  className="block text-gray-300 font-bold mb-4 w-1/5"
-                >
-                  Description:
-                </label>
-                <Field
-                  as="textarea"
-                  id="description"
-                  name="description"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Description"
-                />
-                <ErrorMessage
-                  name="description"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="genres"
-                  className="block text-gray-300 font-bold mb-2 w-1/5"
-                >
-                  Genre:
-                </label>
-                <Field
-                  name="genre_id"
-                  className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
-                  {({ field, form }: { field: FieldProps; form: FormikProps<ReleaseFormValues> }) => (
-                    <Select
-                      {...field}
-                      label="Genre"
-                      variant="outlined"
-                      className="w-full shadow appearance-none border rounded py-2 px-3 !text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      size="small"
-                      fullWidth
-                      error={!!form.errors.genre_id && form.touched.genre_id}
-                      onChange={(e) => setFieldValue('genre_id', e.target.value)}
-                    >
+              {/* 📅 Fecha de lanzamiento */}
+              <Field type="date" name="release_date" as={TextField} label="Release Date" variant="outlined" fullWidth />
+              <ErrorMessage name="release_date" component="div" className="text-red-500 text-sm mt-1" />
+
+              {/* 🎵 Subir archivo a Cloudinary (solo admin) */}
+              {adminAuthenticated && (
+                <div>
+                  <h3 className="text-lg font-bold">Subir Audio/Cover</h3>
+                  <CloudinaryUpload />
+                </div>
+              )}
+
+              {/* 🎧 Género musical */}
+              <FormControl fullWidth>
+                <Field name="genre">
+                  {({ field }: any) => (
+                    <TextField {...field} variant="outlined" select fullWidth label="Genre">
+                      <MenuItem>TextField a genre</MenuItem>
                       {genres.map((genre) => (
                         <MenuItem key={genre.id} value={genre.id}>
                           {genre.name}
                         </MenuItem>
                       ))}
-                    </Select>
-                  )}
-                </Field>
-                <ErrorMessage
-                  name="genre_id"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-
-              </div>
-              <div className="mb-4 flex items-center justify-center">
-                <label
-                  htmlFor="release_type"
-                  className="block !text-gray-300 font-bold mb-2 w-1/5"
-                >
-                  Release Type:
-                </label>
-                <Field name="release_type">
-                  {({ field }: FieldProps) => (
-                    <TextField
-                      {...field}
-                      select
-                      value={field.value || ''}
-                      variant="outlined"
-                      className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      size="small"
-                    >
-                      <MenuItem value="">Select a type</MenuItem>
-                      <MenuItem value="Album">Album</MenuItem>
-                      <MenuItem value="Single">Single</MenuItem>
-                      <MenuItem value="EP">EP</MenuItem>
                     </TextField>
                   )}
                 </Field>
-              </div>
+              </FormControl>
+
+              {/* 🎵 Tipo de Release */}
+              <Field name="release_type">
+                {({ field }: any) => (
+                  <TextField {...field} select variant="outlined" fullWidth label="Release Type">
+                    <MenuItem value="Album">Album</MenuItem>
+                    <MenuItem value="Single">Single</MenuItem>
+                    <MenuItem value="EP">EP</MenuItem>
+                    <MenuItem value="Compilation">Compilation</MenuItem>
+                    <MenuItem value="V.A.">V.A</MenuItem>
+                  </TextField>
+                )}
+              </Field>
+
               <div className="mb-4 flex items-center justify-center">
                 <label
                   htmlFor="bandcamp_link"
