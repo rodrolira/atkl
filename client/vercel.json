@@ -1,13 +1,17 @@
 {
+    "version": 2,
+    "buildCommand": "pnpm run build",
+    "installCommand": "pnpm install",
+    "outputDirectory": "dist",
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/index.html"
         }
     ],
     "headers": [
         {
-            "source": "/*",
+            "source": "/(.*)",
             "headers": [
                 {
                     "key": "Strict-Transport-Security",
@@ -15,8 +19,5 @@
                 }
             ]
         }
-    ],
-    "buildCommand": "pnpm run build",
-    "installCommand": "pnpm install",
-    "outputDirectory": "dist"
+    ]
 }

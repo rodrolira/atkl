@@ -38,7 +38,8 @@
     "format+lint": "prettier \"src/**/*.{js,jsx,ts,tsx,css,scss}\" --write && eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:cover": "vitest run --coverage"
+    "test:cover": "vitest run --coverage",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.1",

@@ -9,16 +9,22 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/index.js"
+            "dest": "client/dist/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "client/dist/index.html"
         }
     ],
     "headers": [
         {
-          "source": "/*",
-          "headers": [
-            { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
-          ]
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Strict-Transport-Security",
+                    "value": "max-age=63072000; includeSubDomains; preload"
+                }
+            ]
         }
-      ]
-    
+    ]
 }
