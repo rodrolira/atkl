@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
-
-interface Track {
-  url: string;
-  title: string;
-  tags?: string[];
-}
+import { Track } from '@/types/interfaces/Track';
+import { boolean } from 'yup';
 
 interface MusicPlayerContextProps {
   trackList: Track[];
@@ -15,6 +11,9 @@ interface MusicPlayerContextProps {
   setIsPlaying: (playing: boolean) => void;
   currentTrackUrl: string | null;
   setCurrentTrackUrl: (url: string | null) => void;
+  playRelease: (tracks: Track[], isSingle: boolean) => void;
+  isSingle: boolean;
+  setIsSingle: (isSingle: boolean) => void;
 }
 
 const MusicPlayerContext = createContext<MusicPlayerContextProps | undefined>(undefined);
@@ -24,6 +23,18 @@ export const MusicPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTrackUrl, setCurrentTrackUrl] = useState<string | null>(null);
+  const [isSingle, setIsSingle] = useState<boolean>(false);
+
+  // 🔹 Reproducir un release completo
+  const playRelease = (tracks: Track[], isSingle: boolean) => {
+    if (tracks.length === 0) return;
+
+    setTrackList(tracks);
+    setCurrentTrackUrl(tracks[0].audioUrl);
+    setIsVisible(true);
+    setIsPlaying(true);
+    setIsSingle(isSingle); // Ensure isSingle is set correctly
+  };
 
   return (
     <MusicPlayerContext.Provider
@@ -36,6 +47,9 @@ export const MusicPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         setIsPlaying,
         currentTrackUrl,
         setCurrentTrackUrl,
+        playRelease,
+        isSingle,
+        setIsSingle
       }}
     >
       {children}

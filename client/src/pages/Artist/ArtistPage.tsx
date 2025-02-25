@@ -48,7 +48,6 @@ const ArtistPage: React.FC = () => {
     return <div>No se encontró el artista</div>;
   }
 
-  // Filtrar lanzamientos relacionados con el artista actual
   const artistReleases = releaseData.filter((release: Release) =>
     release.artists?.some((relArtist: Artist) => relArtist.id === currentArtist.id) ?? false
   );

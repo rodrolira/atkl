@@ -4,7 +4,7 @@ import { Role } from "./Role";
 export interface Artist {
     id?: number;
     artist_name: string;
-    imageUrl: string;
+    imageUrl?: string;
     Roles?: Role[] | string[];
     roleIds?: number[];
     bio?: string;

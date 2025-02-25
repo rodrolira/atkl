@@ -7,15 +7,12 @@ export const releaseData: Release[] = [
         id: 1,
         title: 'INSANITY',
         genre: { name: 'Hard Techno' },
-        release_type: 'EP',
+        release_type: 'Single',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/INSANITY/nzduhcb7psup5lvsrwdv.webp',
         audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740256711/releases/INSANITY/h6xvea4hzowypbztem1n.mp3',
         artists: [
             {
-                id: 1, artist_name: 'RODRO', artist_image_url: 'uploads/artists/rodro.jpg',
-                Roles: [],
-                roleIds: [],
-                imageUrl: ''
+                artist_name: 'RODRO',
             },
         ],
         bandcamp_link: 'https://atklrecords.bandcamp.com/track/insanity-free-download-hpn002',
@@ -29,14 +26,13 @@ export const releaseData: Release[] = [
     {
         id: 2,
         title: 'Crying',
-        genre: { name: 'Dark Techno' },
+        genre: { name: 'Hard Techno / Industrial' },
         release_type: 'Single',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252309/releases/CRYING/vwbkeqdndikoqjseog7g.webp',
         audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740257055/releases/CRYING/fl2efkym4qryuoxbrrsc.mp3',
         artists: [
             {
                 artist_name: 'TAXDOG',
-                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         bandcamp_link: 'https://atklrecords.bandcamp.com/track/crying-taxdog-hpn001',
@@ -51,7 +47,7 @@ export const releaseData: Release[] = [
         id: 3,
         title: 'F2023',
         genre: { name: 'Acid Techno' },
-        release_type: 'Album',
+        release_type: 'EP',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252310/releases/F2023/anclmaeeeev5qi4bjqox.webp',
         artists: [
             {
@@ -66,6 +62,11 @@ export const releaseData: Release[] = [
         soundcloud_link: 'https://soundcloud.com/techno-raver/acid-rave',
         beatport_link: 'https://beatport.com/track/3',
         release_date: '2024-03-01',
+        tracks: [
+            { id: 1, title: 'Track 1', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452381/releases/F2023/N3o_-_a01_Remixed_m9j0fy.mp3' },
+            { id: 2, title: 'Track 2', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452378/releases/F2023/N3o_-_f03_2023_Original_Mix_kh74sq.mp3' },
+        ],
+
     },
     {
         id: 4,
@@ -92,7 +93,7 @@ export const releaseData: Release[] = [
         id: 5,
         title: 'Unknown VA I',
         genre: { name: 'Hard Techno' },
-        release_type: 'Single',
+        release_type: 'Compilation',
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252312/releases/UKN001/vcr97troogn8jh2x1yb7.webp',
         artists: [
             {
@@ -107,6 +108,13 @@ export const releaseData: Release[] = [
         soundcloud_link: 'https://soundcloud.com/unknown-va-i',
         beatport_link: 'https://beatport.com/track/5',
         release_date: '2024-05-01',
+        tracks: [
+            { id: 1, title: 'Track 1', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740442698/releases/UKN001/lrwyyvwwntvlwabilc51.mp3' },
+            { id: 2, title: 'Track 2', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740442698/releases/UKN001/lrwyyvwwntvlwabilc51.mp3' },
+            { id: 3, title: 'Track 3', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740442698/releases/UKN001/lrwyyvwwntvlwabilc51.mp3' },
+            { id: 4, title: 'Track 4', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740442698/releases/UKN001/lrwyyvwwntvlwabilc51.mp3' },
+
+        ],
     },
     {
         id: 6,
@@ -134,11 +142,10 @@ export const releaseData: Release[] = [
         id: 7,
         title: 'Satisfication',
         genre: { name: 'Hard Techno' },
-        release_type: 'EP',
+        release_type: 'Single',
         artists: [
             {
                 artist_name: 'thunder21',
-                imageUrl: '/images/artists/placeholder.png'
             },
         ],
         imageUrl: 'https://res.cloudinary.com/dotfwyxwr/image/upload/v1740252311/releases/SATISFACTION/kxkt1libtemk7y5urwtt.webp',

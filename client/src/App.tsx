@@ -1,4 +1,3 @@
-// client/src/App.tsx
 import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
@@ -9,12 +8,11 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import Loglib from '@loglib/tracker/react';
 import './i18n';
 import Footer from './components/Footer/Footer';
-import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
+import { MusicPlayerProvider } from '@/contexts/MusicPlayerContext'; // 🔹 Importamos el Provider
+import { MusicPlaylistProvider } from "@/contexts/MusicPlaylistContext";
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 const App: React.FC = () => {
-  const { trackList, isVisible } = useMusicPlayer();
-
   useEffect(() => {
     console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
   }, []);
@@ -30,19 +28,23 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter future={future}>
-      <div id="app" className="flex min-h-screen">
-        <div className="layout flex-1">
-          <Analytics />
-          <SpeedInsights />
-          <CssBaseline />
-          <Loglib config={config} />
-          <Routing />
-          <Footer isAdminLogin={false} />
-        </div>
+      <MusicPlayerProvider> {/* 🔹 Aseguramos que `MusicPlayerProvider` envuelve todo */}
+        <MusicPlaylistProvider>
+          <div id="app" className="flex min-h-screen">
+            <div className="layout flex-1">
+              <Analytics />
+              <SpeedInsights />
+              <CssBaseline />
+              <Loglib config={config} />
+              <Routing />
+              <Footer isAdminLogin={false} />
+            </div>
 
-        {/* Reproductor de audio siempre visible en la parte inferior */}
-        <MusicPlayer />
-      </div>
+            {/* 🔹 Reproductor de música correctamente envuelto en su Provider */}
+            <MusicPlayer />
+          </div>
+        </MusicPlaylistProvider>
+      </MusicPlayerProvider>
     </BrowserRouter>
   );
 };

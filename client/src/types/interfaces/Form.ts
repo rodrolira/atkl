@@ -21,6 +21,7 @@ export interface ReleaseFormValues {
     youtube_link: string;
     soundcloud_link: string;
     beatport_link: string;
+    genre: { name: string };
 }
 
 export interface ReleaseFormData {

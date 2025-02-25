@@ -1,4 +1,5 @@
 import { Artist } from "./Artist";
+import { Track } from "./Track";
 
 export interface Release {
     id: number;
@@ -17,6 +18,7 @@ export interface Release {
     beatport_link?: string;
     artist?: Artist[];
     artists?: Artist[];
+    tracks?: Track[];
     [key: string]: any;
 }
 

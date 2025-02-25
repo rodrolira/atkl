@@ -75,25 +75,17 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     return t('no_roles_assigned');
   }, [currentArtist.Roles, t]);
 
-  const memoizedEditIcon = useMemo(() => (
-    <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
-  ), [faEdit]);
-
-  const memoizedDeleteIcon = useMemo(() => (
-    <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
-  ), [faTrash]);
-
   const memoizedEditButton = useMemo(() => (
     <Button aria-label={t('edit_artist')} onClick={openEditModal}>
-      {memoizedEditIcon}
+      <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
     </Button>
-  ), [t, openEditModal, memoizedEditIcon]);
+  ), [t, openEditModal]);
 
   const memoizedDeleteButton = useMemo(() => (
     <Button onClick={handleDelete} aria-label={t('delete_artist')}>
-      {memoizedDeleteIcon}
+      <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
     </Button>
-  ), [handleDelete, memoizedDeleteIcon]);
+  ), [handleDelete]);
 
   return (
     <>

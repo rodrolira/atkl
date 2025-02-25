@@ -15,6 +15,7 @@ import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
 import { getImageUrlReleases } from '@/utils/utils';
 import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
+import { Genre } from '@/types/interfaces/Genre';
 
 interface ReleaseCardProps {
   release: Release;
@@ -23,7 +24,7 @@ interface ReleaseCardProps {
 const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { t } = useTranslation();
   const [currentRelease, setCurrentRelease] = useState<Release | null>(release);
-  const { setReleases, releases } = useReleases();
+  const { setReleases, releases, deleteRelease } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const {
@@ -32,7 +33,8 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     isPlaying,
     setIsPlaying,
     currentTrackUrl,
-    setCurrentTrackUrl
+    setCurrentTrackUrl,
+    setIsSingle
   } = useMusicPlayer();
 
 
@@ -45,28 +47,30 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const audioUrl = useMemo(() => {
     return currentRelease?.audioUrl || null;
   }, [currentRelease?.audioUrl]);
-  
+
   // Manejo de la reproducción/pausa del audio
   const handleAudioToggle = () => {
-    if (!audioUrl) {
-      console.error('Audio URL not found:', currentRelease?.audioKey);
-      return;
-    }
-    console.log('Playing audio from:', audioUrl);
-
-    if (currentTrackUrl === audioUrl && isPlaying) {
-      setIsPlaying(false);
+    if (currentTrackUrl === release.audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) {
+      setIsPlaying(!isPlaying); // Alternar play/pause si es el mismo track o si pertenece al release actual
     } else {
-      setTrackList([
-        {
-          url: audioUrl,
-          title: currentRelease?.title || 'Unknown Title',
-          tags: [currentRelease?.genre?.name || 'Unknown Genre'],
-        },
-      ]);
-      setCurrentTrackUrl(audioUrl);
-      setIsVisible(true);
-      setIsPlaying(true);
+      // Pausar todos los audios antes de reproducir el nuevo
+      document.querySelectorAll('audio').forEach(audio => audio.pause());
+
+      if (release.tracks && release.tracks.length > 0) {
+        // Es un EP, compilación, álbum o VA → lista de reproducción
+        setTrackList(release.tracks);
+        setIsSingle(false);
+        setIsVisible(true);
+        setCurrentTrackUrl(release.tracks[0].audioUrl); // Reproducir primer track
+        setIsPlaying(true);
+      } else if (release.audioUrl) {
+        // Es un single → reproducir solo el track
+        setTrackList([{ id: release.id, title: release.title, audioUrl: release.audioUrl }]);
+        setIsSingle(true);
+        setIsVisible(true);
+        setCurrentTrackUrl(release.audioUrl);
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -156,7 +160,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               aria-label="Play/Pause Release"
             >
               <FontAwesomeIcon
-                icon={isPlaying && currentTrackUrl === audioUrl ? faPause : faPlay}
+                icon={isPlaying && (currentTrackUrl === audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) ? faPause : faPlay}
                 className="text-white text-5xl"
               />
             </button>
@@ -172,6 +176,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               </button>
             </div>
           )}
+
         </div>
 
         <ReleaseLinks release={currentRelease} />
@@ -188,7 +193,3 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 };
 
 export default ReleaseCard;
-
-function deleteRelease(id: number) {
-  throw new Error('Function not implemented.');
-}
