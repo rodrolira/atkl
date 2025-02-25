@@ -31,7 +31,7 @@
     "start": "vite --open",
     "host": "vite --open --host",
     "build": "pnpm build",
-    "install": "pnpm install",
+    "install": "vite install",
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
