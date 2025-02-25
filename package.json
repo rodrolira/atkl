@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
+    "install": "pnpm install",
     "dev": "nodemon index.js",
     "vercel-build": "pnpm build",
     "start-prod": "cross-env NODE_ENV=production node server/index.js",
