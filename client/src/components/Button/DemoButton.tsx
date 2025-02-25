@@ -1,11 +1,11 @@
 import React, { useCallback, memo } from 'react';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const DemoButton: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const location = useLocation();
 
   const handleButtonClick = useCallback(() => {

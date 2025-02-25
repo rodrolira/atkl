@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import CustomInput from '@/components/atoms/Input/CustomInput';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
@@ -21,7 +21,7 @@ import Loading from '../atoms/Loading/Loading';
 
 const AdminSignin: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const { signin, isAuthenticated, errors: signinErrors } = useAdminAuth();
 
   // Memoize validation schema using Yup

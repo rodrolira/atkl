@@ -1,54 +1,25 @@
 {
   "compilerOptions": {
     "typeRoots": [
-      "node_modules/@types",
-      "./typings",
-      "/client/src/app/api",
-      "/client/src/components",
-      "/client/src/types/hooks",
-      "/client/src/types",
-      "./node_modules/@types/classnames/index.d.ts"
+      "node_modules/@types"
     ],
-    "target": "ESNext", // o "ES2020" si prefieres
-    "module": "ESNext", // Esto permite usar 'import.meta'
-    "moduleResolution": "Node", // Opción común para resolver módulos
-    "esModuleInterop": true, // Asegura la interoperabilidad con CommonJS
-    "strict": true, // Opciones de chequeo estricto
-    "jsx": "react", // O "react-jsx" para JSX moderno
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "jsx": "react",
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
-    "types": ["node"],
     "paths": {
-      "@/*": [
-        "*"
-      ], // Esto permite que @ apunte a la carpeta src
-      "lodash/*": [
-        "./node_modules/lodash/*"
-      ],
-      "classnames": [
-        "./node_modules/classnames/index.d.ts"
-      ]
+      "@/*": ["*"]
     },
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
-  "include": [
-    "src/**/*",
-    "typings/", // Asegúrate de incluir esto
-    "node_modules/**/*",
-    "client/src/app/api/**/*",
-    "client/src/app/**/*",
-    "client/src/components/**/*",
-    "client/src/hooks/**/*",
-    "client/src/utils/**/*",
-    "client/src/app/queries/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/dist/*"
-  ]
+  "include": ["src/**/*", "typings/env.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }

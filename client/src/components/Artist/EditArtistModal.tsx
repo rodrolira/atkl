@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const { updateArtist, createArtist, artists } = useArtists();
   const [initialValues, setInitialValues] = useState<{
     artist_name: string;

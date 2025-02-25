@@ -1,5 +1,5 @@
 // import React, { useEffect, useState } from 'react';
-// import { Link, useParams, useNavigate } from 'react-router-dom';
+// import { Link, useParams, useHistory } from 'react-router-dom';
 // import { Formik, Form, Field, ErrorMessage } from 'formik';
 // import * as Yup from 'yup';
 // import Navbar from '@/components/Navbar/Navbar';
@@ -34,7 +34,7 @@
 
 // const EditArtist: React.FC = () => {
 //   const { id } = useParams<{ id: string }>();
-//   const navigate = useNavigate();
+//   const navigate = useHistory();
 //   const [initialValues, setInitialValues] = useState<ArtistFormValues>({
 //     artistName: '',
 //     image: '',

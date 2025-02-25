@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Stack, Typography, TextField, Button, Link } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AuthOutlet from './AuthOutlet';
 
 function Register() {
@@ -9,7 +9,7 @@ function Register() {
   const email = React.useRef(null);
   const password = React.useRef(null);
   const passwordConf = React.useRef(null);
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const registerHandler = async (e) => {
     e.preventDefault();

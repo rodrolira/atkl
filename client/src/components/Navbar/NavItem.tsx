@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface NavItemProps {
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const isHomePage = location.pathname === '/';
 
   const handleClick = useCallback((event: React.MouseEvent) => {

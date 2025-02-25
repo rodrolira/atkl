@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldProps, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import Button from '@/components/Button/Button';
@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
 const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, onClose }) => {
   const release_id = id;
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const history = useHistory();
   const { releases, updateRelease, deleteRelease } = useReleases();
   const { artists, fetchArtists } = useArtists();
   const { genres } = useGenres();
@@ -90,7 +90,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
     if (window.confirm('Are you sure you want to delete this release?')) {
       try {
         await deleteRelease(release_id);
-        navigate('/releases');
+        history.push('/releases');
       } catch (error) {
         console.error('Error deleting release:', error);
       }
