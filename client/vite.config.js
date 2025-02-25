@@ -29,6 +29,20 @@ export default defineConfig({
     },
   },
   server: {
+    configureServer: (server) => {
+      server.middlewares.use((req, res, next) => {
+        // Establecer cabeceras de seguridad
+        res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+        res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://trusted.cdn.com;");
+        res.setHeader('X-Frame-Options', 'DENY');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        res.setHeader('Permissions-Policy', 'geolocation=(), microphone=()');
+        res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+
+        next();
+      });
+    },
     host: true,
     strictPort: true,
     cors: true,
