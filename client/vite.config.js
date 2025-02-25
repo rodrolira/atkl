@@ -38,6 +38,10 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
+      assetFileNames:(assetInfo) => {
+        if (assetInfo.name === '_headers' ) return '_headers';
+        return assetInfo.name;
+      },
       external: ['lodash', 'lodash-es'],
       output: {
         manualChunks(id) {
