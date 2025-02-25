@@ -1,8 +1,7 @@
 {
     "version": 2,
-    "buildCommand": "pnpm run build",
-    "installCommand": "pnpm install",
-    "outputDirectory": "dist",
+    "buildCommand": "cd client && npm install && npm run build",
+    "outputDirectory": "client/dist",
     "rewrites": [
         {
             "source": "/(.*)",

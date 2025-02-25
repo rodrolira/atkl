@@ -2,7 +2,7 @@ import MillionLint from '@million/lint';
 import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import * as path from 'path';
+import path from 'path';
 import compression from 'vite-plugin-compression';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
@@ -51,6 +51,7 @@ export default defineConfig({
     target: 'esnext',
     outDir: 'dist',
     sourcemap: true,
+    emptyOutDir: true,
     rollupOptions: {
       assetFileNames:(assetInfo) => {
         if (assetInfo.name === '_headers' ) return '_headers';
@@ -79,5 +80,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: 'src/setupTests.js',
     clearMocks: true,
-  }
+  },
+  base: './'
 });
