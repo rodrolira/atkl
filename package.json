@@ -5,11 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "nodemon index.js",
-    "vercel-build": "vercel build",
+    "vercel-build": "pnpm build",
     "start-prod": "cross-env NODE_ENV=production node server/index.js",
-    "test": "jest"
+    "test": "jest",
+    "build": "pnpm build"
   },
   "keywords": [],
   "author": "",
