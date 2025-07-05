@@ -96,8 +96,23 @@ const MusicPlayer: React.FC = () => {
         />
       </div>
 
-      {/* Control de volumen */}
-      <div className="volume-control">
+     
+
+      {/* Lista de reproducción si NO es un single */}
+      {!isSingle && 
+      <TrackList
+       tracks={trackList} 
+       currentTrackUrl={currentTrackUrl} 
+       setCurrentTrackUrl={setCurrentTrackUrl} 
+       currentTrackIndex={currentIndex}
+       />}
+
+      {/* Botón para cerrar */}
+      <button onClick={() => setIsVisible(false)} className="close-button">
+        <FontAwesomeIcon icon={faTimes} className="icon close-icon" />
+      </button>
+       {/* Control de volumen */}
+       <div className="volume-control">
         <FontAwesomeIcon icon={volume > 0 ? faVolumeUp : faVolumeMute} className="icon volume-icon" />
         <input 
           type="range" 
@@ -109,14 +124,6 @@ const MusicPlayer: React.FC = () => {
           className="volume-slider"
         />
       </div>
-
-      {/* Lista de reproducción si NO es un single */}
-      {!isSingle && <TrackList tracks={trackList} currentTrackUrl={currentTrackUrl} setCurrentTrackUrl={setCurrentTrackUrl} />}
-
-      {/* Botón para cerrar */}
-      <button onClick={() => setIsVisible(false)} className="close-button">
-        <FontAwesomeIcon icon={faTimes} className="icon close-icon" />
-      </button>
     </div>
   );
 };

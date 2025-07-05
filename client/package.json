@@ -81,6 +81,7 @@
     "react-magic-motion": "^1.1.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^5.3.4",
+    "swiper": "^11.2.4",
     "tinify": "^1.8.0",
     "underscore": "^1.13.7",
     "yup": "^1.6.1"

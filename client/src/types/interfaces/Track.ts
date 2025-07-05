@@ -6,4 +6,5 @@ export interface Track {
   id: number;
   title: string;
   audioUrl: string;
+  duration?: string;
 }
