@@ -8,13 +8,15 @@ interface TrackListProps {
   currentTrackUrl: string | null;
   setCurrentTrackUrl: (url: string | null) => void;
   currentTrackIndex: number;
+  setCurrentIndex: (index: number) => void;
 }
 
 const TrackList: React.FC<TrackListProps> = ({ 
   tracks, 
   currentTrackUrl, 
   setCurrentTrackUrl,
-  currentTrackIndex
+  currentTrackIndex,
+  setCurrentIndex
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -52,6 +54,7 @@ const TrackList: React.FC<TrackListProps> = ({
                 key={track.id} 
                 onClick={() => {
                   setCurrentTrackUrl(track.audioUrl);
+                  setCurrentIndex(index);
                   setIsExpanded(false);
                 }}
                 className={`track-item ${index === currentTrackIndex ? 'current-track' : ''}`}

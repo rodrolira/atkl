@@ -105,6 +105,7 @@ const MusicPlayer: React.FC = () => {
        currentTrackUrl={currentTrackUrl} 
        setCurrentTrackUrl={setCurrentTrackUrl} 
        currentTrackIndex={currentIndex}
+       setCurrentIndex={setCurrentIndex}
        />}
 
       {/* Botón para cerrar */}
