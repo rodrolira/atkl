@@ -63,8 +63,8 @@ export const releaseData: Release[] = [
         beatport_link: 'https://beatport.com/track/3',
         release_date: '2024-03-01',
         tracks: [
-            { id: 1, title: 'Track 1', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452381/releases/F2023/N3o_-_a01_Remixed_m9j0fy.mp3' },
-            { id: 2, title: 'Track 2', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452378/releases/F2023/N3o_-_f03_2023_Original_Mix_kh74sq.mp3' },
+            { id: 1, title: 'a01 (Remixed)', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452381/releases/F2023/N3o_-_a01_Remixed_m9j0fy.mp3' },
+            { id: 2, title: 'f03 2023 (Original Mix)', audioUrl: 'https://res.cloudinary.com/dotfwyxwr/video/upload/v1740452378/releases/F2023/N3o_-_f03_2023_Original_Mix_kh74sq.mp3' },
         ],
 
     },

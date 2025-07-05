@@ -10,6 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 import { artistData } from '@/data/artistData';
+// Importaciones de Swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
 
 interface ArtistsSectionProps {}
 

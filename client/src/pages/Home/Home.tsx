@@ -12,11 +12,16 @@ const AboutSection = React.lazy(() => import('@/components/sections/AboutSection
 const DemosSection = React.lazy(() => import('@/components/sections/DemoSection'));
 const ContactSection = React.lazy(() => import('@/components/sections/ContactSection'));
 
+interface CustomLocation extends Location {
+  state: {
+    scrollToDemos?: boolean;
+  };
+}
 
 const Home: React.FC = memo(() => {
   const { t } = useTranslation(); // Hook de traducción
 
-  const location = useLocation();
+  const location = useLocation() as CustomLocation;
 
 
   useEffect(() => {
