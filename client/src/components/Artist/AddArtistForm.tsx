@@ -46,10 +46,9 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
 
   const onSubmit = async (values: Artist, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     setSubmitting(true);
-    const formData = createFormData(values);
 
     try {
-      await createArtist(formData);
+      await createArtist(values);
       closePopup();
     } catch (error) {
       console.error('Error adding artist:', error);
@@ -57,19 +56,6 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const createFormData = (values: Artist) => {
-    const formData = new FormData();
-    for (const key in values) {
-      const value = values[key as keyof Artist];
-      if (key === 'roleIds') {
-        formData.append(key, value.toString() ?? '');
-      } else {
-        formData.append(key, value as string);
-      }
-    }
-    return formData;
   };
 
   const renderField = (name: string, label: string, type: string = 'text', autoComplete: string = 'on') => (
@@ -184,7 +170,7 @@ const renderSocialLinks = (fields: string[]) => {
       {({ field, form }: { field: any; form: any }) => (
         <TextField
           {...field}
-          label={useTranslation()(linkField)}
+          label={useTranslation().t(linkField)}
           variant="outlined"
           error={Boolean(form.errors[linkField] && form.touched[linkField])}
           helperText={form.errors[linkField] && form.touched[linkField] && form.errors[linkField]}
