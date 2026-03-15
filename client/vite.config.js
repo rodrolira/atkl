@@ -14,7 +14,7 @@ export default defineConfig({
       auto: true,
     }),
     MillionLint.vite({
-      enabled: true
+      enabled: false  // desactivado: evita TypeError con Hono en el servidor de lint
     }),
     react(), compression({
       brotli: true, // Enable Brotli compression
