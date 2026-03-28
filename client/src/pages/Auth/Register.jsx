@@ -9,7 +9,7 @@ function Register() {
   const email = React.useRef(null);
   const password = React.useRef(null);
   const passwordConf = React.useRef(null);
-  const navigate = useHistory();
+  const history = useHistory();
 
   const registerHandler = async (e) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ function Register() {
         <Link
           variant="body2"
           sx={{ display: 'inline', ml: 1 }}
-          onClick={() => navigate('/login')}
+          onClick={() => history.push('/login')}
         >
           Sign In
         </Link>

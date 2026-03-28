@@ -15,20 +15,6 @@ const OtherPagesNavbarLinks: React.FC = () => {
   const handleItemClick = useCallback((to: string) => {
     setNavbarOpen(false);
     setActiveItem(to);
-
-    if (to === '/') {
-      // Scroll to top for home
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // Scroll to section
-      const sectionId = to.replace('/', '');
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        console.error(`No section found with ID: ${sectionId}`);
-      }
-    }
   }, []);
 
   useEffect(() => {
@@ -58,7 +44,7 @@ const OtherPagesNavbarLinks: React.FC = () => {
                   activeItem === link.to ||
                   (link.to === '/' && activeItem === '')
                 }
-                handleItemClick={(id) => console.log(`Navigating to: ${id}`)} // Pass the function
+                handleItemClick={() => handleItemClick(link.to)}
               />
             ))}
           </ul>

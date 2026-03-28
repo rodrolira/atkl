@@ -8,27 +8,36 @@ import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
 import DemoButton from '@/components/Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-import { Link } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const NavbarMenuMobile: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
+  const history = useHistory();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleItemClick = (id: string, to: string) => {
-    setIsOpen(false); // Close the menu when an item is clicked
-    if (id) {
+    setIsOpen(false);
+    const isHomePage = location.pathname === '/';
+
+    if (isHomePage && id) {
       const section = document.getElementById(id);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
+      } else if (id === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         console.warn(`No section found with ID: ${id}`);
       }
+      return;
     }
+
+    history.push(to);
   };
 
   return (
