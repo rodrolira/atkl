@@ -13,9 +13,14 @@ interface ArtistReleasesProps {
 const ArtistReleases: React.FC<ArtistReleasesProps> = ({ artist, releases }) => {
   const { t } = useTranslation();
 
-  // Filtrar lanzamientos relacionados con el artista
+  const normalizedArtistName = artist.artist_name.trim().toLowerCase();
   const artistReleases = releases.filter((release) =>
-    release.artists?.some((relArtist: Artist) => relArtist.id === artist.id) ?? false
+    release.artists?.some((relArtist: Artist) => {
+      const matchesId = relArtist.id !== undefined && relArtist.id === artist.id;
+      const matchesName = relArtist.artist_name?.trim().toLowerCase() === normalizedArtistName;
+
+      return matchesId || matchesName;
+    }) ?? false
   );
 
   return (

@@ -12,27 +12,27 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
-  const navigate = useHistory();
+  const history = useHistory();
   const isHomePage = location.pathname === '/';
 
   const handleClick = useCallback((event: React.MouseEvent) => {
-    event.preventDefault(); // Prevents the default anchor click behavior
+    event.preventDefault();
 
     setTimeout(() => {
       if (isHomePage) {
-        // If on Home page, scroll to the section
         const section = document.getElementById(linkId);
-        if (section) {
+        if (linkId !== 'home' && section) {
           section.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else {
-        // If on other pages, navigate to the route
-        navigate(to);
+        history.push(to);
       }
     }, 0);
 
     handleItemClick();
-  }, [isHomePage, linkId, navigate, to, handleItemClick]);
+  }, [handleItemClick, history, isHomePage, linkId, to]);
 
   return (
     <li>

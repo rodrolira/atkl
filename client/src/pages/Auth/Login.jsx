@@ -17,7 +17,7 @@ import AuthOutlet from './AuthOutlet';
 function Login() {
   const email = React.useRef(null);
   const password = React.useRef(null);
-  const navigate = useHistory();
+  const history = useHistory();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -77,7 +77,7 @@ function Login() {
         <Link
           variant="body2"
           textAlign="right"
-          onClick={() => navigate('/forgot-password')}
+          onClick={() => history.push('/forgot-password')}
         >
           Forgot password?
         </Link>
@@ -93,7 +93,7 @@ function Login() {
         <Link
           variant="body2"
           sx={{ display: 'inline', ml: 1 }}
-          onClick={() => navigate('/register')}
+          onClick={() => history.push('/register')}
         >
           Register
         </Link>

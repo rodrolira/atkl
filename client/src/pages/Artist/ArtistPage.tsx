@@ -48,8 +48,14 @@ const ArtistPage: React.FC = () => {
     return <div>No se encontró el artista</div>;
   }
 
+  const normalizedArtistName = currentArtist.artist_name.trim().toLowerCase();
   const artistReleases = releaseData.filter((release: Release) =>
-    release.artists?.some((relArtist: Artist) => relArtist.id === currentArtist.id) ?? false
+    release.artists?.some((relArtist: Artist) => {
+      const matchesId = relArtist.id !== undefined && relArtist.id === currentArtist.id;
+      const matchesName = relArtist.artist_name?.trim().toLowerCase() === normalizedArtistName;
+
+      return matchesId || matchesName;
+    }) ?? false
   );
 
   const openEditModal = () => setShowEditModal(true);

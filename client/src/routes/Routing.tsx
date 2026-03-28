@@ -24,9 +24,9 @@ const Routing: React.FC = React.memo(() => {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route path="/artists" component={ArtistsPage} />
-      <Route path="/releases" component={ReleasesPage} />
+      <Route exact path="/artists" component={ArtistsPage} />
       <Route path="/artists/:id" component={ArtistPage} />
+      <Route path="/releases" component={ReleasesPage} />
       <Route path="/about" component={AboutPage} />
       {/* <Route path='/login' element={<LoginArtistPage />} /> */}
       <Route

@@ -33,6 +33,17 @@ const Home: React.FC = memo(() => {
     }
   }, [location.state?.scrollToDemos]);
 
+  useEffect(() => {
+    if (!location.hash) {
+      return;
+    }
+
+    const section = document.getElementById(location.hash.replace('#', ''));
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location.hash]);
+
   return (
     <>
       <Suspense fallback={<Loading />}>

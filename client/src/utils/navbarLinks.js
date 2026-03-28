@@ -3,7 +3,6 @@ const links = [
     to: '/',
     id: 'home',
     authRequired: false,
-    
   },
   {
     to: '/artists',
@@ -21,12 +20,12 @@ const links = [
     authRequired: false,
   },
   {
-    to: '/services',
-    id: 'services',
+    to: '/#demo',
+    id: 'demo',
     authRequired: false,
   },
   {
-    to: '/contact',
+    to: '/#contact',
     id: 'contact',
     authRequired: false,
   },
