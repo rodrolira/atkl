@@ -1,23 +1,23 @@
 import React, { useCallback, memo } from 'react';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const DemoButton: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const history = useHistory();
   const location = useLocation();
 
   const handleButtonClick = useCallback(() => {
     if (location.pathname !== '/') {
-      navigate('/', { state: { scrollToDemos: true } });
+      history.push('/', { scrollToDemos: true });
     } else {
       const demosSection = document.getElementById('demo');
       if (demosSection) {
         demosSection.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }, [location.pathname, navigate]);
+  }, [history, location.pathname]);
 
   return (
     <div className="sm:h-full md:block lg:h-[60%] xl:h-auto cursor-pointer">

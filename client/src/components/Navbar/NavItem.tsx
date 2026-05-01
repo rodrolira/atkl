@@ -1,48 +1,45 @@
 import React, { memo, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 
 interface NavItemProps {
-  linkId: string; // The ID of the section to scroll to
-  to: string; // The URL to navigate to
+  linkId: string;
+  to: string;
   text: string;
   isActive: boolean;
-  handleItemClick: (id: string) => void; // Update this name
+  handleItemClick: () => void;
 }
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const history = useHistory();
   const isHomePage = location.pathname === '/';
 
   const handleClick = useCallback((event: React.MouseEvent) => {
-    event.preventDefault(); // Prevents the default anchor click behavior
+    event.preventDefault();
 
     setTimeout(() => {
       if (isHomePage) {
-        // If on Home page, scroll to the section
         const section = document.getElementById(linkId);
-        if (section) {
+        if (linkId !== 'home' && section) {
           section.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else {
-        // If on other pages, navigate to the route
-        navigate(to);
+        history.push(to);
       }
     }, 0);
 
-    handleItemClick(to);
-  }, [isHomePage, linkId, navigate, to, handleItemClick]);
+    handleItemClick();
+  }, [handleItemClick, history, isHomePage, linkId, to]);
 
   return (
     <li>
       <Link
         to={to}
-        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${
-          isActive ? 'text-green-700' : 'text-white text-shadow'
-        } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
-        aria-current={isActive ? 'page' : undefined}
         onClick={handleClick}
+        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${isActive ? 'text-green-700' : 'text-white text-shadow'} hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
+        aria-current={isActive ? 'page' : undefined}
       >
         {text}
       </Link>
@@ -50,5 +47,4 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleIte
   );
 };
 
-// Wrap with React.memo to prevent unnecessary re-renders
 export default memo(NavItem);

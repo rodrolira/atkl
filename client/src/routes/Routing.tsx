@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Auth/Login';
 import Register from '@/pages/Auth/Register';
@@ -11,7 +11,6 @@ import LoginAdminPage from '@/pages/Auth/LoginAdminPage';
 import AdminRoutes from './AdminRoutes';
 import AdminDashboard from '@/pages/Admin/AdminDashboard';
 import EditReleaseModal from '@/components/Release/EditRelease/EditReleaseModal';
-// import EditArtist from '@/components/Artist/EditArtist';
 import NotFound from '@/pages/NotFound';
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -22,38 +21,38 @@ const Routing: React.FC = React.memo(() => {
   const memoizedAdminRoutes = useMemo(() => <AdminRoutes />, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/artists" element={<ArtistsPage />} />
-      <Route path="/releases" element={<ReleasesPage />} />
-      <Route path="/artists/:id" element={<ArtistPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      {/* <Route path='/login' element={<LoginArtistPage />} /> */}
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/artists" component={ArtistsPage} />
+      <Route path="/artists/:id" component={ArtistPage} />
+      <Route path="/releases" component={ReleasesPage} />
+      <Route path="/about" component={AboutPage} />
       <Route
         path="/admin/login"
-        element={
-          adminAuthenticated ? <Navigate to="/" /> : <LoginAdminPage />
-        }
+        render={() => (
+          adminAuthenticated ? <Redirect to="/" /> : <LoginAdminPage />
+        )}
       />
-
-      <Route path="/login" element={<Login />} />
-      {/* Admin Routes */}
-      <Route element={memoizedAdminRoutes}>
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      <Route path="/admin">
         <Route
           path="/admin"
-          element={
+          render={() => (
             adminAuthenticated ? (
               <AdminDashboard />
             ) : (
-              <Navigate to="/admin/login" />
+              <Redirect to="/admin/login" />
             )
-          }
+          )}
         />
-        <Route path="/edit-release/:id" element={<EditReleaseModal id={''} onClose={() => { }} />} />
+        <Route
+          path="/edit-release/:id"
+          render={() => <EditReleaseModal id={0} onClose={() => {}} />}
+        />
       </Route>
-      {/* Redirect to NotFound for unknown paths */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+      <Route path="*" component={NotFound} />
+    </Switch>
   );
 });
 

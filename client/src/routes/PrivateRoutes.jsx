@@ -1,22 +1,19 @@
 import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 
-const PrivateRoutes = () => {
-  const { isAuthenticated: adminAuthenticated, loading: adminLoading } =
-    useAdminAuth();
+const PrivateRoutes = ({ children }) => {
+  const { isAuthenticated: adminAuthenticated, loading: adminLoading } = useAdminAuth();
 
   if (adminLoading) {
     return <div>Loading...</div>;
   }
 
-  // If adminAuthenticated is true, redirect to the admin dashboard
   if (adminAuthenticated) {
-    return <Navigate to="/admin" replace />;
+    return <Redirect to="/admin" />;
   }
 
-  // Assuming non-admin users should have access to this route
-  return <Outlet />;
+  return children || null;
 };
 
 export default PrivateRoutes;

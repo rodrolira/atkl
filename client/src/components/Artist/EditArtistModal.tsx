@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FileUploadComponent from '../Upload/FileUploadComponent';
@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const history = useHistory();
   const [initialValues, setInitialValues] = useState<Partial<Artist>>(getInitialArtistValues(id));
   const [roles, setRoles] = useState<Role[]>([]);
   const { updateArtist, deleteArtist } = useArtists();
@@ -66,7 +66,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
     if (window.confirm('Are you sure you want to delete this artist?')) {
       try {
         await deleteArtist(id);
-        navigate('/artists');
+        history.push('/artists');
       } catch (error) {
         console.error('Error deleting artist:', error);
       }
@@ -194,3 +194,4 @@ const ActionButtons: React.FC<{ isSubmitting: boolean; onClose: () => void; onDe
 );
 
 export default EditArtistModal;
+

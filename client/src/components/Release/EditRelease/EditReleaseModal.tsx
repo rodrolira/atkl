@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldProps, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import Button from '@/components/Button/Button';
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
   const release_id = id;
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const [initialValues, setInitialValues] = useState<Partial<Release>>({
     title: '',
@@ -111,7 +111,7 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
     if (window.confirm('Are you sure you want to delete this release?')) {
       try {
         await deleteRelease(Number(release_id));
-        navigate('/releases');
+        history.push('/releases');
       } catch (error) {
         console.error('Error deleting release:', error);
       }
@@ -480,3 +480,4 @@ const EditReleaseModal: React.FC<EditReleaseModalProps> = ({ id, onClose }) => {
 }
 
 export default EditReleaseModal;
+
