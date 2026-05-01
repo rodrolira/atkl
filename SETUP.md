@@ -1,98 +1,111 @@
-# Cómo seguir trabajando en ATKL desde esta laptop
+# Arranque local de ATKL
 
-## 1. Restaurar archivos si faltan (carpeta `server/` y otros)
+## Estructura actual
 
-En el estado actual del repo muchas cosas aparecen como "deleted". Si necesitas recuperar la carpeta `server/` y el resto del código:
+- `client/`: frontend con Vite.
+- `server/`: backend con Express + Sequelize.
+- Vercel se usa para deploy del frontend compilado, no para reemplazar el backend local.
+
+## 1. Instalar dependencias
+
+Desde la raíz del proyecto:
 
 ```powershell
-# Restaurar todo lo borrado desde el último commit
-git restore .
-
-# O, si prefieres ver qué se restauró antes:
-git status
-git restore .
+pnpm install:client
+pnpm install:server
 ```
 
-Si el proyecto lo trajiste por copia (sin clonar) y no tienes el historial de la otra laptop, entonces **no** ejecutes `git restore` y sigue solo con los pasos 2 y 3 usando lo que sí tienes.
+También puedes entrar a cada carpeta y ejecutar `pnpm install` manualmente.
 
----
+## 2. Preparar variables de entorno
 
-## 2. Instalar dependencias
+El backend lee `.env` desde la raíz del proyecto. Para desarrollo local, usa al menos:
 
-Desde la **raíz del proyecto** (`atkl`):
-
-```powershell
-cd c:\Users\rlira\Desktop\Rorro\Programacion\atkl
-
-# Instalar pnpm si no lo tienes (el proyecto usa pnpm)
-npm install -g pnpm
-
-# Dependencias de la raíz (backend / scripts)
-pnpm install
-
-# Dependencias del frontend
-cd client
-pnpm install
-cd ..
+```env
+DB_NAME=atkl_records
+DB_USER=tu_usuario
+DB_PASSWORD=tu_password
+DB_HOST=localhost
+DB_PORT=5432
+PORT=3000
+RENDER=false
+DB_SSL=false
 ```
 
----
+Notas:
 
-## 3. Variables de entorno
+- `RENDER=true` activa modo deploy y también fuerza host `0.0.0.0`.
+- `DB_SSL=true` fuerza SSL para PostgreSQL.
+- Para una base local normal, deja ambos en `false`.
+- Si te conectas a una base remota que exige SSL, usa `DB_SSL=true`.
 
-- Ya tienes `.env` y `.env.production` en la raíz (no se suben a git).
-- En `client/` también hay `.env`, `.env.development`, `.env.local`, etc.
+Para el frontend, asegúrate de tener un `client/.env` o `client/.env.local` con algo similar a:
 
-Si en esta laptop **no** tienes esos archivos (porque no los copiaste), crea al menos:
+```env
+VITE_API_URL=http://localhost:3000
+```
 
-- **Raíz:** `.env` con lo que use el backend (base de datos, JWT, Cloudinary, etc.). Si tienes en la otra laptop una copia de `.env`, cópiala aquí.
-- **client/.env:** variables que use Vite (por ejemplo `VITE_API_URL` u otras que empiecen con `VITE_`).
+## 3. Levantar backend
 
-No subas nunca `.env` a git (ya está en `.gitignore`).
-
----
-
-## 4. Base de datos (si usas backend con DB)
-
-Si restauraste o tienes la carpeta `server/`:
-
-- Crea la base de datos (PostgreSQL u la que uses) en esta máquina o en un servicio en la nube.
-- Ajusta la URL y credenciales en el `.env` de la raíz.
-- Si usas migraciones (por ejemplo Sequelize):
-
-  ```powershell
-  cd server
-  npx sequelize-cli db:migrate
-  ```
-
----
-
-## 5. Ejecutar el proyecto
-
-**Solo frontend (si no tienes backend o no lo necesitas ahora):**
+Desde la raíz:
 
 ```powershell
-cd c:\Users\rlira\Desktop\Rorro\Programacion\atkl\client
+pnpm dev:server
+```
+
+O manualmente:
+
+```powershell
+cd server
 pnpm dev
 ```
 
-Abre en el navegador la URL que muestre Vite (suele ser `http://localhost:5173`).
+Resultado esperado:
 
-**Frontend + backend (cuando tengas `server/` y DB listas):**
+- `Database synchronized`
+- `Server is running on port 3000`
 
-- En una terminal: desde la raíz, `pnpm start` o `node index.js` (según cómo esté definido en `package.json`).
-- En otra terminal: `cd client && pnpm dev`.
+Si ves `The server does not support SSL connections`, revisa `.env` y confirma:
 
----
+- `RENDER=false`
+- `DB_SSL=false`
 
-## Resumen rápido
+## 4. Levantar frontend
 
-| Paso | Acción |
-|------|--------|
-| 1 | `git restore .` si quieres recuperar `server/` y archivos borrados |
-| 2 | `pnpm install` en raíz y luego `pnpm install` en `client/` |
-| 3 | Revisar/copiar `.env` en raíz y en `client/` |
-| 4 | Configurar DB y migraciones si usas backend |
-| 5 | `cd client && pnpm dev` para desarrollar el frontend |
+Desde la raíz:
 
-Si algo falla (por ejemplo que no exista `index.js` en la raíz), es probable que necesites primero el paso 1 para restaurar los archivos del repo.
+```powershell
+pnpm dev:client
+```
+
+O manualmente:
+
+```powershell
+cd client
+pnpm dev
+```
+
+Resultado esperado:
+
+- Vite levantado en `http://localhost:5173`
+
+## 5. Flujo recomendado
+
+1. Levantar backend.
+2. Confirmar que conecta a PostgreSQL.
+3. Levantar frontend.
+4. Validar login, artistas y releases.
+
+## Comandos útiles desde la raíz
+
+```powershell
+pnpm dev:client
+pnpm dev:server
+pnpm build
+pnpm preview
+```
+
+## Qué no usar
+
+- No uses `pnpm dev` en la raíz esperando levantar ambos procesos.
+- No uses `RENDER=true` con una base local sin SSL.
