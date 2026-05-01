@@ -58,7 +58,7 @@ const OtherPagesNavbarLinks: React.FC = () => {
                   activeItem === link.to ||
                   (link.to === '/' && activeItem === '')
                 }
-                handleItemClick={(id) => console.log(`Navigating to: ${id}`)} // Pass the function
+                handleItemClick={() => handleItemClick(link.to)}
               />
             ))}
           </ul>
