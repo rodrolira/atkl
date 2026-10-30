@@ -34,6 +34,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
 
   const initialValues:Partial<Artist> ={
     artist_name: '',
+    email: '',
     image:'',
     roleIds: [],
     bio: '',
@@ -42,9 +43,13 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
     setSubmitting(true);
 
     try {
-      await createArtist({...values, id: Date.now() });
+      const created = await createArtist(values);
+      if (!created) {
+        setError(t('error.addArtist'));
+        return;
+      }
       closePopup();
-      onArtistAdded?.(values);
+      onArtistAdded?.(created);
     } catch (error) {
       console.error('Error adding artist:', error);
       setError(t('error.addArtist'));
@@ -108,9 +113,10 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
           enableReinitialize
           validationSchema={Yup.object().shape({
             artist_name: Yup.string().required(t('validation.artistNameRequired')),
+            email: Yup.string().email().required(t('label.email')),
             bio: Yup.string(),
             image: Yup.mixed(),
-            roleIds: Yup.array().of(Yup.string()).required(t('validation.roleRequired')),
+            roleIds: Yup.array().min(1, t('validation.roleRequired')),
           })}
           onSubmit={onSubmit}
         >
@@ -118,6 +124,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
             <Form>
               <Stack spacing={2} margin={2}>
                 {renderField('artist_name', 'artist_name')}
+                {renderField('email', 'email', 'email')}
                 <FileUpload />
 
                 <FormControl fullWidth variant="outlined">
