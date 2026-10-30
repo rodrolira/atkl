@@ -2,10 +2,11 @@
 
 import express from 'express'
 import * as adminController from '../controllers/admin.controller.js'
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = express.Router()
 
-router.get('/admin', async (req, res) => {
+router.get('/admin', verifyTokenAdmin, async (req, res) => {
   try {
     const admins = await adminController.getAllAdmins();
     res.status(200).json({ admins: admins.map(adminController.toPublicAdmin) });
@@ -15,7 +16,7 @@ router.get('/admin', async (req, res) => {
   }
 });
 
-router.post('/admin/register', async (req, res) => {
+router.post('/admin/register', verifyTokenAdmin, async (req, res) => {
   try {
     const { username, email, password } = req.body
     const newAdmin = await adminController.createAdmin({
@@ -55,7 +56,7 @@ router.post('/admin/login', async (req, res) => {
 
 router.post('/admin/logout', adminController.logoutAdmin)
 
-router.get('/admin/profile', adminController.verifyTokenAdmin, async (req, res) => {
+router.get('/admin/profile', verifyTokenAdmin, async (req, res) => {
   try {
     const admin = await adminController.profileAdmin(req.adminId)
     res.json({ admin: adminController.toPublicAdmin(admin) })
@@ -65,11 +66,7 @@ router.get('/admin/profile', adminController.verifyTokenAdmin, async (req, res) 
   }
 })
 
-//router.get('/admin/verify', verifyTokenAdmin, (req, res) => {
-//  res.status(200).json({ message: 'Token is valid', adminId: req.admin.id })
-//})
-
-router.get('/admin/verify', adminController.verifyTokenAdmin , async (req, res) => {
+router.get('/admin/verify', verifyTokenAdmin, async (req, res) => {
   try {
     const admin = await adminController.profileAdmin(req.adminId)
     res.status(200).json({ admin: adminController.toPublicAdmin(admin) })
@@ -78,6 +75,6 @@ router.get('/admin/verify', adminController.verifyTokenAdmin , async (req, res) 
   }
 })
 
-router.delete('/admin/:username', adminController.deleteAdmin)
+router.delete('/admin/:username', verifyTokenAdmin, adminController.deleteAdmin)
 
 export default router
