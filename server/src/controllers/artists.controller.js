@@ -108,7 +108,7 @@ export const addArtist = async (req, res) => {
       res.status(201).json(newArtist);
     } catch (error) {
       console.error(`Error adding artist: ${error.message}`, error);
-      return res.status(500).json({ message: error.message, details: error.stack });
+      return res.status(500).json({ message: error.message });
     }
   });
 }

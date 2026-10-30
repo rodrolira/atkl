@@ -75,19 +75,16 @@ export const loginAdmin = async (username, password) => {
   try {
     const admin = await findAdmin({ username });
     if (!admin) {
-      console.log('Admin not found for username:', username);
       throw new Error('Admin not found')
     }
 
     const isMatch = await bcrypt.compare(password, admin.password)
-    console.log('Password match status:', isMatch);
 
     if (!isMatch) {
       throw new Error('Invalid credentials')
     }
 
     const token = createToken(admin.id)
-    console.log('Generated token:', token)
     return { token, admin };
 
   } catch (error) {
