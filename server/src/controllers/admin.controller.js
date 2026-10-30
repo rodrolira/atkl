@@ -27,6 +27,13 @@ const handleError = (res, error, message) => {
   res.status(500).json({ message: `${message}: ${error.message}` })
 }
 
+export const toPublicAdmin = (admin) => {
+  if (!admin) return admin
+  const plain = typeof admin.toJSON === 'function' ? admin.toJSON() : admin
+  const { password, ...publicAdmin } = plain
+  return publicAdmin
+}
+
 export const findAdmin = async (criteria) => {
   return await Admin.findOne({ where: criteria })
 }
