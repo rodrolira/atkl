@@ -11,7 +11,7 @@ import Background from '../Layout/Background';
 
 const ReleasesSection: React.FC = () => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const { releases, fetchReleases, createRelease } = useReleases();
+  const { fetchReleases } = useReleases();
   const { t } = useTranslation();
   
   const [isAddReleaseFormOpen, setIsAddReleaseFormOpen] = useState(false);
@@ -20,9 +20,8 @@ const ReleasesSection: React.FC = () => {
     fetchReleases(); // Esto asegura que se carguen los lanzamientos
   }, [fetchReleases]);
 
-  const handleReleaseAdded = async (newRelease: any) => {
-    await createRelease(newRelease);
-    fetchReleases(); // Recargar los lanzamientos después de agregar uno nuevo
+  const handleReleaseAdded = async () => {
+    await fetchReleases(); // Recargar los lanzamientos después de agregar uno nuevo
   };
 
   return (
@@ -39,7 +38,7 @@ const ReleasesSection: React.FC = () => {
           />
         </>
       )}
-      <ReleaseList releases={releases} />
+      <ReleaseList />
       <Background />
     </section>
   );

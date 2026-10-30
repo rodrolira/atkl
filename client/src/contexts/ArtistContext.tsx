@@ -19,7 +19,7 @@ export const useArtists = () => {
   return context;
 };
 
-const normalizeArtist = (artist: Artist): Artist => ({
+export const normalizeArtist = (artist: Artist): Artist => ({
   ...artist,
   imageUrl: artist.imageUrl || artist.image || '',
   roleIds: Array.isArray(artist.Roles)

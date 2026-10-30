@@ -9,7 +9,6 @@ import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
-import { artistData } from '@/data/artistData';
 // Importaciones de Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -21,7 +20,7 @@ interface ArtistsSectionProps {}
 
 const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const { artists, fetchArtists, createArtist } = useArtists();
+  const { artists, fetchArtists } = useArtists();
   const { t } = useTranslation();
 
   const memoizedArtists = useMemo(() => artists || [], [artists]);
@@ -32,20 +31,11 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
     }
   }, [fetchArtists, memoizedArtists.length]);
 
-  const handleArtistAdded = useCallback(async (newArtist: any) => {
-    await createArtist(newArtist);
-  }, [createArtist]);
+  const handleArtistAdded = useCallback(async () => {
+    await fetchArtists();
+  }, [fetchArtists]);
 
   const closePopup = useCallback(() => {}, []);
-
-  const transformedArtists = useMemo(() => 
-    artistData.map(artist => ({
-      ...artist,
-      Roles: artist.roles,
-      roleIds: [] as number[],
-      image: null
-    })), 
-  []);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">
@@ -57,7 +47,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = React.memo(() => {
           <AddArtistForm onArtistAdded={handleArtistAdded} openPopup={false} closePopup={closePopup} />
         )}
       </div>
-      <ArtistList artists={transformedArtists} />
+      <ArtistList artists={memoizedArtists} />
       <Background />
     </section>
   );
