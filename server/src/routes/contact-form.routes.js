@@ -14,7 +14,7 @@ router.post('/submit-form', async (req, res) => {
             service: 'gmail',
             auth: {
                 user: process.env.EMAIL,
-                pass: 'njyy jaob csid scmt'
+                pass: process.env.EMAIL_APP_PASSWORD
             }
         })
 
