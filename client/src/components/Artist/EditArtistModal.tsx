@@ -7,11 +7,8 @@ import Title from '../atoms/Title/Title';
 import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
 import FileUploadComponent from '../Upload/FileUploadComponent';
 import { useArtists } from '@/contexts/ArtistContext';
-
-const rolesMock = [
-  { id: 1, label: 'Producer' },
-  { id: 2, label: 'DJ' },
-];
+import { Role } from '@/types/interfaces/Role';
+import { getRolesRequest } from '@/app/api/roles';
 
 const SOCIAL_FIELDS = [
   'twitter_link',
@@ -54,6 +51,25 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
   const { updateArtist, createArtist, artists } = useArtists();
   const [initialValues, setInitialValues] = useState(emptyValues);
+  const [roles, setRoles] = useState<Role[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getRolesRequest()
+      .then(({ data }) => {
+        if (!cancelled) {
+          setRoles(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching roles:', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!id) {
@@ -112,7 +128,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               setFieldValue={setFieldValue}
               values={values}
               t={t}
-              roles={rolesMock}
+              roles={roles}
             />
             <FieldInput fieldName="bio" label="Bio:" as="textarea" />
             <SocialLinksInput t={t} />

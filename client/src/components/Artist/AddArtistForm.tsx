@@ -21,16 +21,32 @@ import { motion } from 'framer-motion';
 import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
 import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
+import { getRolesRequest } from '@/app/api/roles';
 
 const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
-  const [roles] = useState<Role[]>([
-    { id: 1, label: 'Producer' },
-    { id: 2, label: 'DJ' },
-  ]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const { createArtist } = useArtists();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getRolesRequest()
+      .then(({ data }) => {
+        if (!cancelled) {
+          setRoles(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching roles:', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const initialValues:Partial<Artist> ={
     artist_name: '',
