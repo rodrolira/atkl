@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "seed:admin": "node createAdmin.js",
     "vercel-build": "pnpm generate && prisma migrate deploy && next build",
     "start-prod": "NODE_ENV=production node index.js"
   },

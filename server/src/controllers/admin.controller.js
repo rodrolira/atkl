@@ -40,18 +40,10 @@ export const findAdmin = async (criteria) => {
 
 export const createAdmin = async (adminData) => {
   try {
-    const hashedPassword = await bcrypt.hash(adminData.password, 10)
-
-    const newAdmin = await Admin.create({
-      ...adminData,
-      password: hashedPassword,
-    });
-    return newAdmin;
+    // El hook beforeCreate del modelo se encarga del hashing
+    return await Admin.create(adminData)
   } catch (error) {
-    if (error.message.includes('Hashing failed')) {
-      throw new Error('Error creating admin: Hashing failed');
-    }
-    throw new Error(`Error creating admin: ${error.message}`);
+    throw new Error(`Error creating admin: ${error.message}`)
   }
 }
 
