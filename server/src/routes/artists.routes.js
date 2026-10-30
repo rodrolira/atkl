@@ -10,6 +10,7 @@ import {
   getArtistById,
   getArtistReleases,
 } from '../controllers/artists.controller.js'
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 
 const router = express.Router()
@@ -27,7 +28,7 @@ router.get('/artists/:id', getArtistById)
 router.get('/artists/:id/releases', getArtistReleases)
 
 // Ruta para agregar un artista con su foto
-router.post('/artists', (req, res) => {
+router.post('/artists', verifyTokenAdmin, (req, res) => {
   upload.parse(req, async (err, fields, files) => {
     if (err) {
       console.error('Error al procesar el archivo:', err);
@@ -65,7 +66,7 @@ router.post('/artists', (req, res) => {
 });
 
 // router.put('/artists/:artistId', upload.single('image'), updateArtist)
-router.delete('/artists/:id', deleteArtist)
+router.delete('/artists/:id', verifyTokenAdmin, deleteArtist)
 
 export default router
 
