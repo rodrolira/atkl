@@ -2,6 +2,7 @@
 import Release from '../models/release.model.js'
 import Artist from '../models/artist.model.js' // Importa el modelo Artist
 import Genre from '../models/genre.model.js' // Importa el modelo Genre
+import ReleaseArtist from '../models/release_artist.model.js'
 
 const parseArtistIds = (artistId) => {
   const values = Array.isArray(artistId)
@@ -199,6 +200,8 @@ export const deleteRelease = async (req, res) => {
     if (!release) {
       return res.status(404).json({ message: 'Release not found' })
     }
+    // Limpiar la tabla intermedia antes de borrar el release
+    await ReleaseArtist.destroy({ where: { release_id: id } })
     // Eliminar el release de la base de datos
     await Release.destroy({
       where: {
