@@ -40,6 +40,9 @@ router.post('/admin/login', async (req, res) => {
     const { token, admin } = await adminController.loginAdmin(username, password);
 
     res.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 12 * 60 * 60 * 1000, // 12hrs
     })
 
