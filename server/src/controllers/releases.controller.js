@@ -2,7 +2,19 @@
 import Release from '../models/release.model.js'
 import Artist from '../models/artist.model.js' // Importa el modelo Artist
 import Genre from '../models/genre.model.js' // Importa el modelo Genre
-import cloudinary from '../../config/cloudinary.js'
+
+const parseArtistIds = (artistId) => {
+  const values = Array.isArray(artistId)
+    ? artistId
+    : artistId !== undefined && artistId !== null && artistId !== ''
+      ? [artistId]
+      : []
+
+  return values
+    .flatMap((value) => String(value).split(','))
+    .map((value) => parseInt(value.trim(), 10))
+    .filter((value) => !Number.isNaN(value))
+}
 
 export const addRelease = async (req, res) => {
   const {
@@ -21,15 +33,9 @@ export const addRelease = async (req, res) => {
   } = req.body;
 
   try {
-    // Subir imagen a Cloudinary si está presente
-    let cover_image_url = null;
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'releases',
-        use_filename: true,
-      });
-      cover_image_url = result.secure_url; // URL segura de la imagen subida
-    }
+    // multer-storage-cloudinary ya subió la imagen y dejó su URL en file.path
+    const cover_image_url = req.file ? req.file.path : null
+    const artistIds = parseArtistIds(artist_id)
 
     // Validar campos obligatorios
     if (!title || !genre_id) {
@@ -53,9 +59,8 @@ export const addRelease = async (req, res) => {
     });
 
     // Asociar artistas con el lanzamiento
-    if (artist_id && artist_id.length > 0) {
-      const validArtistIds = artist_id.map((id) => parseInt(id)).filter((id) => !isNaN(id));
-      await newRelease.setArtists(validArtistIds);
+    if (artistIds.length > 0) {
+      await newRelease.setArtists(artistIds);
     }
 
     // Obtener el lanzamiento con los artistas asociados
@@ -138,37 +143,35 @@ export const updateRelease = async (req, res) => {
   } = req.body;
 
   try {
-    // Subir nueva imagen a Cloudinary si está presente
-    let cover_image_url = null;
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'releases',
-        use_filename: true,
-      });
-      cover_image_url = result.secure_url; // URL segura de la nueva imagen subida
-    }
+    const artistIds = parseArtistIds(artist_id)
 
     // Validar campos obligatorios
-    if (!title || !artist_id || artist_id.length === 0) {
-      return res.status(400).json({ message: 'title, release_date, and at least one artist_id are required' });
+    if (!title || artistIds.length === 0) {
+      return res.status(400).json({ message: 'title and at least one artist_id are required' });
+    }
+
+    const updateFields = {
+      title,
+      release_date,
+      description,
+      genre_id,
+      release_type,
+      bandcamp_link,
+      beatport_link,
+      spotify_link,
+      apple_music_link,
+      youtube_link,
+      soundcloud_link,
+    };
+
+    // Solo reemplazar la portada cuando se subió una nueva imagen
+    if (req.file) {
+      updateFields.cover_image_url = req.file.path;
     }
 
     // Actualizar el release
     const [affectedCount, [updatedRelease]] = await Release.update(
-      {
-        title,
-        release_date,
-        description,
-        genre_id,
-        release_type,
-        cover_image_url,
-        bandcamp_link,
-        beatport_link,
-        spotify_link,
-        apple_music_link,
-        youtube_link,
-        soundcloud_link,
-      },
+      updateFields,
       {
         where: { id },
         returning: true,
@@ -180,10 +183,7 @@ export const updateRelease = async (req, res) => {
     }
 
     // Asociar artistas con el lanzamiento
-    if (artist_id && artist_id.length > 0) {
-      const validArtistIds = artist_id.map((id) => parseInt(id)).filter((id) => !isNaN(id));
-      await updatedRelease.setArtists(validArtistIds);
-    }
+    await updatedRelease.setArtists(artistIds);
 
     res.status(200).json(updatedRelease);
   } catch (error) {
