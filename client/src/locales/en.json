@@ -208,7 +208,10 @@
         "noReleases": "No releases available"
     },
     "errors": {
-        "deleteArtist": "Failed to delete artist. Please try again."
+        "addArtist": "Failed to create artist. Please try again.",
+        "addRelease": "Failed to create release. Please try again.",
+        "deleteArtist": "Failed to delete artist. Please try again.",
+        "deleteRelease": "Failed to delete release. Please try again."
     },
     "confirmation": {
         "deleteArtist": "Are you sure you want to delete this artist?"
