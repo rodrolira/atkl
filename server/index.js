@@ -1,9 +1,14 @@
 import app from './app.js'
 import sequelize from './db/sequelize.js'
 import dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
+import { join, dirname } from 'path'
 import './src/models/associations.js'
 
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+dotenv.config({ path: join(__dirname, '..', '.env') })
 
 if (!process.env.SECRET || process.env.SECRET === 'change-me-in-production') {
   console.error(

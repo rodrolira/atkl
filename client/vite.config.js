@@ -1,5 +1,3 @@
-import MillionLint from '@million/lint';
-import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import * as path from 'path';
