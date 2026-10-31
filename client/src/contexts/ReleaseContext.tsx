@@ -91,7 +91,6 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> = ({ children })
     clearReleases,
     loading,
     error,
-    fetchRelease: async (id: number) => (releases.find((release) => release.id === id) || releases[0]) as Release,
     updateRelease,
     deleteRelease,
   }), [releases, fetchReleases, loading, error]);
