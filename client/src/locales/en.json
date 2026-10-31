@@ -64,6 +64,8 @@
         "manage_artists": "Manage Artists",
         "add_user": "Add User",
         "create_user": "Create User",
+        "create_user_hint": "Creates an artist with a login account.",
+        "create_user_success": "User and artist created successfully.",
         "edit_user": "Edit User",
         "delete_user": "Delete User",
         "manage_releases": "Manage Releases",
@@ -210,6 +212,7 @@
     "errors": {
         "addArtist": "Failed to create artist. Please try again.",
         "addRelease": "Failed to create release. Please try again.",
+        "createUser": "Failed to create user. Check the data.",
         "deleteArtist": "Failed to delete artist. Please try again.",
         "deleteRelease": "Failed to delete release. Please try again."
     },

@@ -60,7 +60,8 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return created;
     } catch (err) {
       console.error('Error creating artist:', err);
-      setError('No se pudo crear el artista');
+      const message = (err as any)?.response?.data?.message;
+      setError(message || 'No se pudo crear el artista');
       return null;
     }
   };

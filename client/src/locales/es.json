@@ -65,6 +65,8 @@
         "view_users": "Ver Usuarios",
         "add_user": "Agregar Usuario",
         "create_user": "Crear Usuario",
+        "create_user_hint": "Crea un artista con cuenta para iniciar sesión.",
+        "create_user_success": "Usuario y artista creados correctamente.",
         "add_release": "Agregar Lanzamiento",
         "edit_user": "Editar Usuario",
         "delete_user": "Eliminar Usuario",
@@ -215,6 +217,7 @@
     "errors": {
         "addArtist": "No se pudo crear el artista. Inténtalo de nuevo.",
         "addRelease": "No se pudo crear el lanzamiento. Inténtalo de nuevo.",
+        "createUser": "No se pudo crear el usuario. Revisa los datos.",
         "deleteArtist": "No se pudo eliminar el artista. Inténtalo de nuevo.",
         "deleteRelease": "No se pudo eliminar el lanzamiento. Inténtalo de nuevo."
     }

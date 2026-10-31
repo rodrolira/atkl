@@ -1,17 +1,28 @@
 import { UserFormData } from '@/types/interfaces/Form';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useArtists } from '@/contexts/ArtistContext';
+import { createArtistRequest } from '@/app/api/artists';
 
+interface CreateUserFormProps {
+  onCreated?: () => void;
+}
 
+const emptyValues: UserFormData = {
+  artist_name: '',
+  username: '',
+  email: '',
+  password: '',
+};
 
-const CreateUserForm: React.FC = () => {
+const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
   const { t } = useTranslation();
+  const { fetchArtists } = useArtists();
 
-  const [formData, setFormData] = useState<UserFormData>({
-    artist_name: '',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState<UserFormData>(emptyValues);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,14 +32,28 @@ const CreateUserForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setFormData({ artist_name: '', email: '', password: '' });
+    setError(null);
+    setSuccess(null);
+    setSubmitting(true);
+
+    try {
+      await createArtistRequest(formData);
+      await fetchArtists();
+      setSuccess(t('admin.create_user_success'));
+      setFormData(emptyValues);
+      onCreated?.();
+    } catch (err: any) {
+      setError(err?.response?.data?.message || t('errors.createUser'));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <p className="text-sm text-gray-300">{t('admin.create_user_hint')}</p>
       <div>
         <label
           htmlFor="artist_name"
@@ -41,6 +66,23 @@ const CreateUserForm: React.FC = () => {
           id="artist_name"
           name="artist_name"
           value={formData.artist_name}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="username"
+          className="block text-sm font-medium text-gray-300"
+        >
+          {t('label.username')}
+        </label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
           onChange={handleChange}
           required
           className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
@@ -77,12 +119,16 @@ const CreateUserForm: React.FC = () => {
           value={formData.password}
           onChange={handleChange}
           required
+          minLength={6}
           className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
         />
       </div>
+      {error && <div className="text-red-500 text-sm">{error}</div>}
+      {success && <div className="text-[#8bd685] text-sm">{success}</div>}
       <button
         type="submit"
-        className="w-full px-4 py-2 bg-[#2e7728] text-white rounded-md hover:bg-[#3a9934] focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+        disabled={submitting}
+        className="w-full px-4 py-2 bg-[#2e7728] text-white rounded-md hover:bg-[#3a9934] focus:outline-none focus:ring-2 focus:ring-[#8bd685] disabled:opacity-50"
       >
         {t('admin.create_user')}
       </button>

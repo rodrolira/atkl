@@ -156,7 +156,7 @@ const AdminDashboard: React.FC = () => {
       case 'create-user':
         return (
           <ContentSection title={t('admin.add_user')}>
-            <CreateUserForm />
+            <CreateUserForm onCreated={fetchArtists} />
           </ContentSection>
         );
       case 'releases':
