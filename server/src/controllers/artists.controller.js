@@ -66,9 +66,22 @@ const findArtistWithRoles = (id) =>
   })
 
 export const addArtist = async (artistData) => {
+  if (!artistData.artist_name || !artistData.email) {
+    const error = new Error('artist_name y email son obligatorios')
+    error.status = 400
+    throw error
+  }
+
   let newUserId = null
 
   if (artistData.email && artistData.username && artistData.password) {
+    const existingUser = await User.findOne({ where: { email: artistData.email } })
+    if (existingUser) {
+      const error = new Error('Ya existe una cuenta con ese email')
+      error.status = 409
+      throw error
+    }
+
     const newUser = await User.create({
       username: artistData.username,
       email: artistData.email,

@@ -39,7 +39,7 @@ router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, re
     res.status(201).json(artist)
   } catch (error) {
     console.error('Error adding artist:', error)
-    res.status(500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: error.message })
   }
 })
 
@@ -55,7 +55,7 @@ router.put('/artists/:id', verifyTokenAdmin, upload.single('image'), async (req,
     res.status(200).json(artist)
   } catch (error) {
     console.error('Error updating artist:', error)
-    res.status(500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: error.message })
   }
 })
 
