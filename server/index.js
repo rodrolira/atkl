@@ -5,6 +5,13 @@ import './src/models/associations.js'
 
 dotenv.config()
 
+if (!process.env.SECRET || process.env.SECRET === 'change-me-in-production') {
+  console.error(
+    'FATAL: SECRET no está configurado o tiene el valor por defecto. Define una SECRET segura en .env antes de iniciar.'
+  )
+  process.exit(1)
+}
+
 const isRender = process.env.RENDER === 'true'
 const host = isRender ? '0.0.0.0' : 'localhost'
 

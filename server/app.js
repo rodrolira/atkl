@@ -46,8 +46,9 @@ app.use(cors({
   origin: (origin, callback) => {
     console.log('Origen de la solicitud:', origin); // Log para ver el origen
 
-    // Permite solicitudes de cualquier origen como Postman
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Rechaza origin null (ej. file:// o scripts sin origen) para reducir
+    // superficie de ataque. Solo permite orígenes explícitamente listados.
+    if (origin && allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       callback(new Error('No permitido por CORS'))
