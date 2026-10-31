@@ -6,6 +6,7 @@ import Role from '../models/role.model.js'
 import bcrypt from 'bcryptjs'
 import ArtistRoles from '../models/artist_role.model.js'
 import ReleaseArtist from '../models/release_artist.model.js'
+import sequelize from '../../db/sequelize.js'
 
 const ARTIST_FIELDS = [
   'artist_name',
@@ -49,20 +50,22 @@ const parseRoleIds = (roleIds) => {
   return []
 }
 
-const replaceArtistRoles = async (artistId, roleIds) => {
-  await ArtistRoles.destroy({ where: { artist_id: artistId } })
+const replaceArtistRoles = async (artistId, roleIds, transaction) => {
+  await ArtistRoles.destroy({ where: { artist_id: artistId }, transaction })
 
   const ids = parseRoleIds(roleIds)
   if (ids.length > 0) {
     await ArtistRoles.bulkCreate(
-      ids.map((roleId) => ({ artist_id: artistId, role_id: roleId }))
+      ids.map((roleId) => ({ artist_id: artistId, role_id: roleId })),
+      { transaction }
     )
   }
 }
 
-const findArtistWithRoles = (id) =>
+const findArtistWithRoles = (id, transaction) =>
   Artist.findByPk(id, {
     include: [{ model: Role, as: 'Roles', through: { attributes: [] } }],
+    transaction,
   })
 
 export const addArtist = async (artistData) => {
@@ -72,34 +75,45 @@ export const addArtist = async (artistData) => {
     throw error
   }
 
-  let newUserId = null
+  return sequelize.transaction(async (transaction) => {
+    let newUserId = null
 
-  if (artistData.email && artistData.username && artistData.password) {
-    const existingUser = await User.findOne({ where: { email: artistData.email } })
-    if (existingUser) {
-      const error = new Error('Ya existe una cuenta con ese email')
-      error.status = 409
-      throw error
+    if (artistData.email && artistData.username && artistData.password) {
+      const existingUser = await User.findOne({
+        where: { email: artistData.email },
+        transaction,
+      })
+      if (existingUser) {
+        const error = new Error('Ya existe una cuenta con ese email')
+        error.status = 409
+        throw error
+      }
+
+      const newUser = await User.create(
+        {
+          username: artistData.username,
+          email: artistData.email,
+          password: await bcrypt.hash(artistData.password, 10),
+        },
+        { transaction }
+      )
+      newUserId = newUser.id
     }
 
-    const newUser = await User.create({
-      username: artistData.username,
-      email: artistData.email,
-      password: await bcrypt.hash(artistData.password, 10),
-    })
-    newUserId = newUser.id
-  }
+    const artist = await Artist.create(
+      {
+        ...pickArtistFields(artistData),
+        user_id: newUserId,
+      },
+      { transaction }
+    )
 
-  const artist = await Artist.create({
-    ...pickArtistFields(artistData),
-    user_id: newUserId,
+    if (artistData.roleIds !== undefined) {
+      await replaceArtistRoles(artist.id, artistData.roleIds, transaction)
+    }
+
+    return findArtistWithRoles(artist.id, transaction)
   })
-
-  if (artistData.roleIds !== undefined) {
-    await replaceArtistRoles(artist.id, artistData.roleIds)
-  }
-
-  return findArtistWithRoles(artist.id)
 }
 
 export const updateArtist = async (id, artistData) => {
