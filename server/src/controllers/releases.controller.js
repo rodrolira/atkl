@@ -88,7 +88,12 @@ export const getReleases = async (req, res) => {
         {
           model: Artist,
           as: 'artists',
-        }
+        },
+        {
+          model: Genre,
+          as: 'genre',
+          attributes: ['id', 'name'],
+        },
       ],
     })
     res.status(200).json(releases)
