@@ -8,20 +8,7 @@ const router = express.Router()
 
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body
-    const newUser = await userController.createUser({
-      username,
-      email,
-      password,
-    })
-    res.status(201).json({
-      message: 'User registered successfully',
-      user: {
-        id: newUser.id,
-        username: newUser.username,
-        email: newUser.email,
-      },
-    })
+    await userController.register(req, res)
   } catch (error) {
     console.error('Error registering user:', error)
     res.status(500).json({ message: 'Server Error' })
@@ -30,29 +17,18 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body
-    const token = await userController.loginUser(username, password)
-
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 12 * 60 * 60 * 1000, // 12hrs
-    })
-
-    res.json({ message: 'Login successful', user: { username } })
+    await userController.login(req, res)
   } catch (error) {
     console.error('Error logging in user:', error)
     res.status(401).json({ message: 'Invalid credentials' })
   }
 })
 
-router.post('/logout', userController.logoutUser)
+router.post('/logout', userController.logout)
 
 router.get('/profile', verifyTokenUser, async (req, res) => {
   try {
-    const user = await userController.profileUser(req.userId)
-    res.json({ user })
+    await userController.profile(req, res)
   } catch (error) {
     console.error('Error fetching user profile:', error)
     res.status(500).json({ message: 'Server Error' })
@@ -60,11 +36,9 @@ router.get('/profile', verifyTokenUser, async (req, res) => {
 })
 
 router.get('/verify', async (req, res) => {
-  const { token } = req.cookies
   try {
-    const user = await userController.verifyTokenUser(token)
-    res.json({ user })
-    } catch (error) {
+    await userController.verify(req, res)
+  } catch (error) {
     res.status(401).json({ message: 'Unauthorized' })
   }
 })

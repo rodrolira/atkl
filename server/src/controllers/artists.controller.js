@@ -1,156 +1,37 @@
 // controllers/artists.controller.js
-import Artist from '../models/artist.model.js'
-import User from '../models/user.model.js'
-import Release from '../models/release.model.js'
-import Role from '../models/role.model.js'
-import bcrypt from 'bcryptjs'
-import ArtistRoles from '../models/artist_role.model.js'
-import ReleaseArtist from '../models/release_artist.model.js'
-import sequelize from '../../db/sequelize.js'
+import {
+  addArtist as addArtistService,
+  updateArtist as updateArtistService,
+  deleteArtist as deleteArtistService,
+  getArtists as getArtistsService,
+  getArtistById as getArtistByIdService,
+  getArtistReleases as getArtistReleasesService,
+} from '../services/artistService.js'
 
-const ARTIST_FIELDS = [
-  'artist_name',
-  'email',
-  'bio',
-  'image',
-  'bandcamp_link',
-  'facebook_link',
-  'instagram_link',
-  'soundcloud_link',
-  'twitter_link',
-  'youtube_link',
-  'spotify_link',
-  'apple_music_link',
-  'beatport_link',
-]
-
-const pickArtistFields = (data) => {
-  const fields = {}
-  for (const key of ARTIST_FIELDS) {
-    if (data[key] !== undefined) {
-      fields[key] = data[key]
-    }
-  }
-  return fields
-}
-
-const parseRoleIds = (roleIds) => {
-  if (Array.isArray(roleIds)) {
-    return roleIds.flatMap((roleId) => parseRoleIds(roleId))
-  }
-  if (typeof roleIds === 'number' && !Number.isNaN(roleIds)) {
-    return [roleIds]
-  }
-  if (typeof roleIds === 'string' && roleIds.trim() !== '') {
-    return roleIds
-      .split(',')
-      .map((roleId) => parseInt(roleId.trim(), 10))
-      .filter((roleId) => !Number.isNaN(roleId))
-  }
-  return []
-}
-
-const replaceArtistRoles = async (artistId, roleIds, transaction) => {
-  await ArtistRoles.destroy({ where: { artist_id: artistId }, transaction })
-
-  const ids = parseRoleIds(roleIds)
-  if (ids.length > 0) {
-    await ArtistRoles.bulkCreate(
-      ids.map((roleId) => ({ artist_id: artistId, role_id: roleId })),
-      { transaction }
-    )
+export const addArtist = async (req, res) => {
+  try {
+    const artist = await addArtistService(req.body)
+    res.status(201).json(artist)
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message })
   }
 }
 
-const findArtistWithRoles = (id, transaction) =>
-  Artist.findByPk(id, {
-    include: [{ model: Role, as: 'Roles', through: { attributes: [] } }],
-    transaction,
-  })
-
-export const addArtist = async (artistData) => {
-  if (!artistData.artist_name || !artistData.email) {
-    const error = new Error('artist_name y email son obligatorios')
-    error.status = 400
-    throw error
+export const updateArtist = async (req, res) => {
+  try {
+    const artist = await updateArtistService(req.params.id, req.body)
+    res.status(200).json(artist)
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message })
   }
-
-  return sequelize.transaction(async (transaction) => {
-    let newUserId = null
-
-    if (artistData.email && artistData.username && artistData.password) {
-      const existingUser = await User.findOne({
-        where: { email: artistData.email },
-        transaction,
-      })
-      if (existingUser) {
-        const error = new Error('Ya existe una cuenta con ese email')
-        error.status = 409
-        throw error
-      }
-
-      const newUser = await User.create(
-        {
-          username: artistData.username,
-          email: artistData.email,
-          password: await bcrypt.hash(artistData.password, 10),
-        },
-        { transaction }
-      )
-      newUserId = newUser.id
-    }
-
-    const artist = await Artist.create(
-      {
-        ...pickArtistFields(artistData),
-        user_id: newUserId,
-      },
-      { transaction }
-    )
-
-    if (artistData.roleIds !== undefined) {
-      await replaceArtistRoles(artist.id, artistData.roleIds, transaction)
-    }
-
-    return findArtistWithRoles(artist.id, transaction)
-  })
-}
-
-export const updateArtist = async (id, artistData) => {
-  const fields = pickArtistFields(artistData)
-
-  if (Object.keys(fields).length > 0) {
-    await Artist.update(fields, { where: { id } })
-  }
-
-  if (artistData.roleIds !== undefined) {
-    await replaceArtistRoles(id, artistData.roleIds)
-  }
-
-  return findArtistWithRoles(id)
 }
 
 export const deleteArtist = async (req, res) => {
-  const { id } = req.params
-
   try {
-    const artist = await Artist.findOne({ where: { id } })
-    if (!artist) {
-      return res.status(404).json({ message: 'Artist not found' })
-    }
-
-    await ArtistRoles.destroy({ where: { artist_id: artist.id } })
-    await ReleaseArtist.destroy({ where: { artist_id: artist.id } })
-    await Artist.destroy({ where: { id: artist.id } })
-
-    if (artist.user_id) {
-      await User.destroy({ where: { id: artist.user_id } })
-    }
-
+    await deleteArtistService(req.params.id)
     res.status(200).json({ message: 'Artist and user account deleted successfully' })
   } catch (error) {
-    console.error('Error deleting artist:', error)
-    res.status(500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: error.message })
   }
 }
 
@@ -158,72 +39,27 @@ export const getArtists = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1)
     const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100)
-    const offset = (page - 1) * limit
-
-    const { count, rows: artists } = await Artist.findAndCountAll({
-      include: [{
-        model: Role,
-        as: 'Roles',
-        through: { attributes: [] },
-      }],
-      limit,
-      offset,
-    })
-
-    res.status(200).json({
-      artists,
-      pagination: {
-        total: count,
-        page,
-        limit,
-        totalPages: Math.ceil(count / limit),
-      },
-    })
+    const result = await getArtistsService(page, limit)
+    res.status(200).json(result)
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
 }
 
 export const getArtistById = async (req, res) => {
-  const { id } = req.params
-
-  if (!id || isNaN(Number(id))) {
-    return res.status(400).json({ message: 'Invalid or missing artist ID' })
-  }
-
   try {
-    const artist = await Artist.findByPk(id, {
-      include: [{ model: Role, as: 'Roles' }],
-    })
-    if (!artist) {
-      return res.status(404).json({ message: 'Artist not found' })
-    }
+    const artist = await getArtistByIdService(req.params.id)
     res.status(200).json(artist)
   } catch (error) {
-    console.error(`Error fetching artist with ID ${id}:`, error)
-    res.status(500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: error.message })
   }
 }
 
 export const getArtistReleases = async (req, res) => {
-  const { id } = req.params
-
-  if (!id || isNaN(Number(id))) {
-    return res.status(400).json({ message: 'Invalid or missing artist ID' })
-  }
-
   try {
-    const artist = await Artist.findByPk(id, {
-      include: { model: Release, as: 'releases' },
-    })
-
-    if (!artist) {
-      return res.status(404).json({ message: 'Artist not found' })
-    }
-
-    res.status(200).json(artist.releases)
+    const releases = await getArtistReleasesService(req.params.id)
+    res.status(200).json(releases)
   } catch (error) {
-    console.error(`Error fetching releases for artist ${id}:`, error)
-    res.status(500).json({ message: 'Internal server error' })
+    res.status(error.status || 500).json({ message: error.message })
   }
 }
