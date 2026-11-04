@@ -10,9 +10,9 @@ const __dirname = dirname(__filename)
 
 dotenv.config({ path: join(__dirname, '..', '.env') })
 
-if (!process.env.SECRET || process.env.SECRET === 'change-me-in-production') {
+if (!process.env.SECRET || process.env.SECRET === 'change-me' || process.env.SECRET === 'change-me-in-production') {
   console.error(
-    'FATAL: SECRET no está configurado o tiene el valor por defecto. Define una SECRET segura en .env antes de iniciar.'
+    'FATAL: SECRET no está configurado o tiene un valor inseguro. Define una SECRET segura y única en .env antes de iniciar.'
   )
   process.exit(1)
 }
