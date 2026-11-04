@@ -1,11 +1,10 @@
 // middleware/auth.middleware.js
-
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const verifyTokenUser = (req, res, next) => {
+export const authenticate = (requiredRole = null) => (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
 
   if (!token) {
@@ -16,16 +15,24 @@ export const verifyTokenUser = (req, res, next) => {
     if (err) {
       if (err.name === 'TokenExpiredError') {
         return res.status(401).json({ message: 'Token expired' })
-      } else {
-        return res.status(401).json({ message: 'Unauthorized' })
       }
+      return res.status(401).json({ message: 'Unauthorized' })
     }
 
-    if (decoded.role !== 'user' || !decoded.userId) {
+    if (requiredRole && decoded.role !== requiredRole) {
+      return res.status(403).json({ message: 'Forbidden: insufficient role' })
+    }
+
+    if (!decoded.userId) {
       return res.status(401).json({ message: 'Unauthorized' })
     }
 
     req.userId = decoded.userId
+    req.userRole = decoded.role
     next()
   })
 }
+
+export const verifyTokenUser = authenticate('user')
+export const verifyTokenAdmin = authenticate('admin')
+export const verifyTokenAny = authenticate()
