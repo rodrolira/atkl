@@ -62,14 +62,14 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
       >
         <button
           type="button"
-          className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-green-700 hover:text-white"
+          className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-[#1A1A1A] hover:text-metallic-gray border border-metallic-gray/30"
         >
           {mainFlag}
         </button>
 
         <div
           className={classNames(
-            'lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-green-700 max-[320px]:ms-2',
+            'lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-[#0A0A0A] max-[320px]:ms-2 border border-metallic-gray/30',
             { 'block': isMenuVisible, 'hidden': !isMenuVisible }
           )}
           role="menu"
@@ -79,8 +79,8 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
               <button
                 type="button"
                 className={classNames(
-                  'block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-green-600 rounded-t-xl',
-                  { '!bg-green-600': selectedLanguage === 'en' }
+                  'block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-[#1A1A1A] hover:text-metallic-gray rounded-t-xl',
+                  { '!bg-[#1A1A1A]': selectedLanguage === 'en' }
                 )}
                 onClick={() => handleChangeLanguage('en')}
               >
@@ -93,8 +93,8 @@ const LanguageMenu: React.FC<LanguageMenuProps> = () => {
               <button
                 type="button"
                 className={classNames(
-                  'block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-green-600 rounded-b-xl',
-                  { '!bg-green-600': selectedLanguage === 'es' }
+                  'block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-[#1A1A1A] hover:text-metallic-gray rounded-b-xl',
+                  { '!bg-[#1A1A1A]': selectedLanguage === 'es' }
                 )}
                 onClick={() => handleChangeLanguage('es')}
               >

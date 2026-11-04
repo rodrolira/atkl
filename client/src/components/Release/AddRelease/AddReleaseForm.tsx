@@ -226,7 +226,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
+          className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center bg-metallic-gray text-black hover:bg-white"
         >
           {isSubmitting ? 'Adding...' : 'Add'}
         </button>

@@ -21,13 +21,13 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
   const { t } = useTranslation();
 
   return (
-    <div className="w-full overflow-x-auto border border-[#2e7728] rounded">
+    <div className="w-full overflow-x-auto border border-metallic-gray/30 rounded">
       {releases.length === 0 ? (
         <div className="text-white p-4">{t('availability.no_releases')}.</div>
       ) : (
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-[#194116]">
+            <tr className="bg-[#0A0A0A]">
               <th className="px-4 py-3 text-center w-1/4 text-white text-sm font-medium">
                 {t('releaseName')}
               </th>
@@ -37,18 +37,18 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
               <th className="px-4 py-3 text-center w-1/4 text-white text-sm font-medium">
                 {t('releaseDate')}
               </th>
-              <th className="px-4 py-3 text-center w-1/4 text-[#8bd685] text-sm font-medium">
+              <th className="px-4 py-3 text-center w-1/4 text-metallic-gray text-sm font-medium">
                 {t('action')}
               </th>
             </tr>
           </thead>
           <tbody>
             {releases.map((release) => (
-              <tr key={release.id} className="border-t border-t-[#2e7728]">
+              <tr key={release.id} className="border-t border-t-metallic-gray/30">
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
                   {release.title}
                 </td>
-                <td className="px-4 py-3 text-[#8bd685] text-sm">
+                <td className="px-4 py-3 text-metallic-gray text-sm">
                   {release.artists.map((artist: Artist, index: number) => (
                     <span key={artist.id}>
                       {artist.artist_name}
@@ -61,13 +61,13 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
                 </td>
                 <td className="px-4 py-3 w-1/4 text-center">
                   <button
-                    className="text-xl mx-2 text-yellow-400 hover:text-yellow-500"
+                    className="text-xl mx-2 text-metallic-gray hover:text-white"
                     onClick={() => onEdit(release)}
                   >
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
                   <button
-                    className="text-red-400 hover:text-red-500 text-xl mx-2"
+                    className="text-gray-400 hover:text-white text-xl mx-2"
                     onClick={() => onDelete(release.id)}
                     type="button"
                     aria-label="Delete"

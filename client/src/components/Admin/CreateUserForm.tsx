@@ -53,11 +53,11 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-sm text-gray-300">{t('admin.create_user_hint')}</p>
+      <p className="text-sm text-metallic-gray">{t('admin.create_user_hint')}</p>
       <div>
         <label
           htmlFor="artist_name"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           {t('label.artist_name')}
         </label>
@@ -68,13 +68,13 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
           value={formData.artist_name}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <div>
         <label
           htmlFor="username"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           {t('label.username')}
         </label>
@@ -85,13 +85,13 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
           value={formData.username}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           {t('label.email')}
         </label>
@@ -102,13 +102,13 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
           value={formData.email}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           {t('label.password')}
         </label>
@@ -120,15 +120,15 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreated }) => {
           onChange={handleChange}
           required
           minLength={6}
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
-      {error && <div className="text-red-500 text-sm">{error}</div>}
-      {success && <div className="text-[#8bd685] text-sm">{success}</div>}
+      {error && <div className="text-red-400 text-sm">{error}</div>}
+      {success && <div className="text-metallic-gray text-sm">{success}</div>}
       <button
         type="submit"
         disabled={submitting}
-        className="w-full px-4 py-2 bg-[#2e7728] text-white rounded-md hover:bg-[#3a9934] focus:outline-none focus:ring-2 focus:ring-[#8bd685] disabled:opacity-50"
+        className="w-full px-4 py-2 bg-metallic-gray text-black rounded-md hover:bg-white focus:outline-none focus:ring-1 focus:ring-metallic-gray disabled:opacity-50 uppercase tracking-wider font-semibold"
       >
         {t('admin.create_user')}
       </button>

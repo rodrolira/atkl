@@ -55,13 +55,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
   const memoizedEditButton = useMemo(() => (
     <Button aria-label={t('edit_artist')} onClick={openEditModal}>
-      <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
+      <FontAwesomeIcon icon={faEdit} className="text-metallic-gray hover:text-white text-xl mx-2" />
     </Button>
   ), [t, openEditModal]);
 
   const memoizedDeleteButton = useMemo(() => (
     <Button onClick={handleDelete} aria-label={t('delete_artist')}>
-      <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
+      <FontAwesomeIcon icon={faTrash} className="text-gray-400 hover:text-white text-xl mx-2" />
     </Button>
   ), [handleDelete]);
 

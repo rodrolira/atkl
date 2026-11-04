@@ -111,7 +111,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
       return currentRelease.artists.map((artist: Artist) =>
         artist.id ? (
           <Link to={`/artists/${artist.id}`} className="block relative" key={artist.id}>
-            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-metallic-gray">
               {t('artist')}: {artist.artist_name}
             </h3>
           </Link>
@@ -128,7 +128,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   const memoizedButton = useMemo(() => (
     currentRelease?.bandcamp_link ? (
-      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-green-500 hover:bg-green-600 text-black">
+      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-metallic-gray text-black hover:bg-white">
         <p className="font-semibold">{t('buy')}</p>
       </Button>
     ) : null
@@ -140,9 +140,9 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   return (
     <>
-      <BaseCard className="border !border-purple-500">
+      <BaseCard className="border border-metallic-gray/30">
         <div className="w-full rounded-t-lg overflow-hidden relative">
-          <h3 className="text-xl font-bold mt-2">{currentRelease.title}</h3>
+          <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase">{currentRelease.title}</h3>
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
           <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
 
@@ -168,10 +168,10 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">
-              <button className="text-xl mx-2 text-yellow-400 hover:text-yellow-500" onClick={openEditModal}>
+              <button className="text-xl mx-2 text-metallic-gray hover:text-white" onClick={openEditModal}>
                 {editIcon}
               </button>
-              <button className="text-red-400 hover:text-red-500 text-xl mx-2" onClick={handleDelete}>
+              <button className="text-gray-400 hover:text-white text-xl mx-2" onClick={handleDelete}>
                 {trashIcon}
               </button>
             </div>

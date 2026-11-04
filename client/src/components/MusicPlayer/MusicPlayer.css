@@ -6,10 +6,10 @@
   left: 0;
   right: 0;
   height: 90px;
-  background: linear-gradient(180deg, #121212 0%, #0a0a0a 100%);
-  border-top: 1px solid #2a2a2a;
+  background: linear-gradient(180deg, #000000 0%, #0A0A0A 100%);
+  border-top: 1px solid #9A9A9A;
   color: #fff;
-  font-family: 'Dosis', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family: 'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@
 }
 
 .expand-button:hover {
-  background: #1db954;
+  background: #9A9A9A;
 }
 
 /* Información de la pista */
@@ -151,16 +151,16 @@
   appearance: none;
   width: 12px;
   height: 12px;
-  background: #1db954;
+  background: #9A9A9A;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(29, 185, 84, 0.4);
+  box-shadow: 0 0 6px rgba(154, 154, 154, 0.4);
 }
 
 .progress-slider::-moz-range-thumb {
   width: 12px;
   height: 12px;
-  background: #1db954;
+  background: #9A9A9A;
   border-radius: 50%;
   cursor: pointer;
   border: none;
@@ -214,17 +214,17 @@
 .play-button {
   width: 40px;
   height: 40px;
-  background: #1db954;
-  color: #000;
+  background: #FFFFFF;
+  color: #000000;
 }
 
 .play-button:hover {
-  background: #1ed760;
+  background: #9A9A9A;
   transform: scale(1.05);
 }
 
 .play-button.playing {
-  background: #1db954;
+  background: #FFFFFF;
 }
 
 .play-button:active {
@@ -275,7 +275,7 @@
   appearance: none;
   width: 10px;
   height: 10px;
-  background: #1db954;
+  background: #9A9A9A;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -283,7 +283,7 @@
 .volume-slider::-moz-range-thumb {
   width: 10px;
   height: 10px;
-  background: #1db954;
+  background: #9A9A9A;
   border-radius: 50%;
   cursor: pointer;
   border: none;
@@ -374,11 +374,11 @@
 
 .track-item.current-track {
   background: #2a2a2a;
-  color: #1db954;
+  color: #FFFFFF;
 }
 
 .track-item.current-track .track-number {
-  color: #1db954;
+  color: #FFFFFF;
 }
 
 .track-number {

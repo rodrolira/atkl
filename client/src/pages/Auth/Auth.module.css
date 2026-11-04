@@ -1,7 +1,6 @@
 .auth {
-  background-image: linear-gradient(
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  box-shadow: 0 5px 20px 3px var(--secondary-color);
+  background-color: #000000;
+  box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.5);
+  border: 1px solid #9A9A9A;
+  color: #FFFFFF;
 }

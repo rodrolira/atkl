@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowAddArtist(true)}
-                className="btn btn-save h-10 px-4 font-bold !bg-[#24db13] text-[#122e0f]"
+                className="btn btn-save h-10 px-4 font-bold bg-metallic-gray text-black hover:bg-white"
               >
                 {t('add_artist')}
               </button>
@@ -166,7 +166,7 @@ const AdminDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentView('create-release')}
-                className="btn btn-save h-10 px-4 font-bold !bg-[#24db13] text-[#122e0f]"
+                className="btn btn-save h-10 px-4 font-bold bg-metallic-gray text-black hover:bg-white"
               >
                 {t('admin.add_release')}
               </button>
@@ -194,7 +194,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#122e0f] text-white min-h-screen">
+    <div className="bg-[#0A0A0A] text-white min-h-screen">
       <Navbar />
       <div className="flex flex-col md:flex-row h-[calc(100vh-5rem)] mt-20">
         <Sidebar

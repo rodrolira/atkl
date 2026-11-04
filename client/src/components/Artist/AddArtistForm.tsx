@@ -174,7 +174,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
+                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center bg-metallic-gray text-black hover:bg-white"
                 >
                   {t('submit')}
                 </button>

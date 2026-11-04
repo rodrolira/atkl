@@ -19,7 +19,18 @@ export default {
       desktop: '1280px',
     },
     extend: {
-      fontSize: {
+    colors: {
+      black: '#000000',
+      white: '#FFFFFF',
+      'metallic-gray': '#9A9A9A',
+      'metallic-gray-dark': '#4A4A4A',
+    },
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+      display: ['"Inter Tight"', 'sans-serif'],
+      mono: ['"JetBrains Mono"', 'monospace'],
+    },
+    fontSize: {
         xxs: '.6rem',
         xs: '.75rem',
         sm: '.875rem',

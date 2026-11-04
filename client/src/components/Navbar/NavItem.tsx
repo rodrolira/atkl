@@ -39,8 +39,8 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleIte
       <Link
         to={to}
         onClick={handleClick}
-        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${isActive ? 'text-green-700' : 'text-white text-shadow'
-          } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
+        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded tracking-wider uppercase ${isActive ? 'text-metallic-gray' : 'text-white text-shadow'
+          } hover:bg-gray-800 hover:text-metallic-gray md:hover:bg-transparent border-gray-800`}
         aria-current={isActive ? 'page' : undefined}
       >
         {text}

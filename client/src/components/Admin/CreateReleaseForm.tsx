@@ -2,7 +2,6 @@ import { ReleaseFormData } from '@/types/interfaces/Form';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 
-
 const CreateReleaseForm: React.FC = () => {
   const [formData, setFormData] = useState<ReleaseFormData>({
     release_name: '',
@@ -29,7 +28,7 @@ const CreateReleaseForm: React.FC = () => {
       <div>
         <label
           htmlFor="release_name"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           Release Name
         </label>
@@ -40,13 +39,13 @@ const CreateReleaseForm: React.FC = () => {
           value={formData.release_name}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <div>
         <label
           htmlFor="artist_name"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           Artist Name
         </label>
@@ -57,13 +56,13 @@ const CreateReleaseForm: React.FC = () => {
           value={formData.artist_name}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <div>
         <label
           htmlFor="release_date"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-metallic-gray"
         >
           Release Date
         </label>
@@ -74,12 +73,12 @@ const CreateReleaseForm: React.FC = () => {
           value={formData.release_date}
           onChange={handleChange}
           required
-          className="mt-1 block w-full px-3 py-2 bg-[#1a3d14] border border-[#2e7728] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+          className="mt-1 block w-full px-3 py-2 bg-[#0A0A0A] border border-metallic-gray/30 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-metallic-gray"
         />
       </div>
       <button
         type="submit"
-        className="w-full px-4 py-2 bg-[#2e7728] text-white rounded-md hover:bg-[#3a9934] focus:outline-none focus:ring-2 focus:ring-[#8bd685]"
+        className="w-full px-4 py-2 bg-metallic-gray text-black rounded-md hover:bg-white focus:outline-none focus:ring-1 focus:ring-metallic-gray uppercase tracking-wider font-semibold"
       >
         Create Release
       </button>

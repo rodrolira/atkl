@@ -25,7 +25,7 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, onClick, active }) => (
   <button
     onClick={onClick}
-    className={`flex items-center gap-3 px-3 py-2 w-full text-left ${active ? 'bg-[#22581d]' : ''}`}
+    className={`flex items-center gap-3 px-3 py-2 w-full text-left ${active ? 'bg-[#1A1A1A] border-r-2 border-r-metallic-gray' : ''}`}
   >
     <div className="text-white">{icon}</div>
     <p className="text-white text-sm font-medium leading-normal">{text}</p>
@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onItemClick, current
 
   return (
     <div
-      className={`mt-6 fixed inset-y-0 left-0 bg-[#122e0f] p-4 w-64 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-[80%]'
+      className={`mt-6 fixed inset-y-0 left-0 bg-[#0A0A0A] p-4 w-64 border-r border-r-metallic-gray/30 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-[80%]'
         } md:translate-x-0 md:relative md:flex md:flex-col md:justify-between lg:justify-start h-[calc(100vh-5rem)] top-20 sm:top-0 z-0`}
     >
       <button onClick={onClose} className="md:hidden absolute top-4 right-4 text-white text-2xl"
@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onItemClick, current
             <h1 className="text-white text-base font-medium leading-normal">
               {t('admin.admin_dashboard')}
             </h1>
-            <p className="text-[#8bd685] text-sm font-normal leading-normal">
+            <p className="text-metallic-gray text-sm font-normal leading-normal">
               {t('admin.manage_users')}
             </p>
           </div>

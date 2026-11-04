@@ -62,14 +62,14 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
 
   return (
     <footer className={`relative footer w-full ${footerClass}`}>
-      <div className="mx-auto w-full max-w-full 2xl:max-w-7xl border-t border-green-600">
+      <div className="mx-auto w-full max-w-full 2xl:max-w-7xl border-t border-metallic-gray/30">
         <div className="mx-auto grid w-full grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-4">
           {sitemap.map(({ title, links }, index) => (
             <div key={index} className="w-full">
               {useMemo(() => (
                 <Typography
                   variant="h2"
-                  color='#09B309'   // #00af00
+                  color='#FFFFFF'
                   fontWeight={'bold'}
                   className="mb-4 font-bold uppercase xs:text-3xl md:text-4xl"
                 >
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
             </div>
           ))}
         </div>
-        <div className="flex w-full flex-col items-center justify-center border-t px-4 border-green-600 py-4 md:flex-row md:justify-between">
+        <div className="flex w-full flex-col items-center justify-center border-t px-4 border-metallic-gray/30 py-4 md:flex-row md:justify-between">
           {useMemo(() => (
             <Typography
               variant="body1"
@@ -108,7 +108,7 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="ATKL Records"
-                className="hover:text-green-600"
+                className="hover:text-metallic-gray"
               >
                 ATKL Records
               </Link>

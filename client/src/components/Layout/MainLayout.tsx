@@ -15,7 +15,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           backgroundBlendMode: 'darken',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundColor: '#122e0f',
+          backgroundColor: '#000000',
           minHeight: {
             xs: '100vh',
           },

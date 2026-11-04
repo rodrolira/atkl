@@ -53,9 +53,7 @@ const Home: React.FC = memo(() => {
           <div
             className={`${styles.parallaxContainer} flex relative h-screen overflow-hidden z-50`}
           >
-            <div
-              className={`${styles.parallaxContent} inset-0 bg-gradient-to-b from-transparent to-[#122e0f] backdrop-blur-md`}
-            >
+            <div className={`${styles.parallaxContent} inset-0`}>
               {/* Contenido del encabezado aquí */}
               <div className={`${styles.container} h-full`}>
                 <section
