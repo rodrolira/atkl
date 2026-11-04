@@ -29,33 +29,49 @@ Si el build falla con `"useHistory" is not exported`, hay una versión 6/7 de
 
 ## 2. Preparar variables de entorno
 
-El backend lee `.env` desde la raíz del proyecto. Para desarrollo local, usa al menos:
+Copia `.env.example` a `.env` en la raíz del proyecto y completa los valores:
 
-```env
-DB_NAME=atkl_records
-DB_USER=tu_usuario
-DB_PASSWORD=tu_password
-DB_HOST=localhost
-DB_PORT=5432
-PORT=3000
-RENDER=false
-DB_SSL=false
+```bash
+cp .env.example .env
 ```
 
-Notas:
+El backend lee `.env` desde la raíz del proyecto. Las variables obligatorias son:
 
-- `RENDER=true` activa modo deploy y también fuerza host `0.0.0.0`.
-- `DB_SSL=true` fuerza SSL para PostgreSQL.
-- Para una base local normal, deja ambos en `false`.
-- Si te conectas a una base remota que exige SSL, usa `DB_SSL=true`.
+| Variable | Descripción | Ejemplo |
+|----------|-------------|---------|
+| `DB_NAME` | Nombre de la base de datos PostgreSQL | `atkl_records` |
+| `DB_USER` | Usuario de PostgreSQL | `postgres` |
+| `DB_PASSWORD` | Contraseña de PostgreSQL | `tu_password` |
+| `DB_HOST` | Host de PostgreSQL | `localhost` |
+| `DB_PORT` | Puerto de PostgreSQL | `5432` |
+| `PORT` | Puerto del servidor | `3000` |
+| `RENDER` | Modo deploy en Render/Vercel | `false` |
+| `DB_SSL` | Forzar SSL en PostgreSQL | `false` |
+| `SECRET` | Secreto JWT (mínimo 32 caracteres, **obligatorio**) | `tu-secreto-aleatorio` |
+| `EMAIL` | Cuenta Gmail para nodemailer | `tu-cuenta@gmail.com` |
+| `EMAIL_APP_PASSWORD` | Contraseña de aplicación Gmail | `tu-app-password` |
+| `ADMIN_USERNAME` | Usuario admin inicial | `admin` |
+| `ADMIN_EMAIL` | Email admin inicial | `admin@example.com` |
+| `ADMIN_PASSWORD` | Contraseña admin inicial | `tu-password` |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | `tu-cloud` |
+| `CLOUDINARY_API_KEY` | Cloudinary API key | `tu-api-key` |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | `tu-api-secret` |
+| `AWS_BUCKET_NAME` | Bucket S3 (opcional) | `tu-bucket` |
+| `AWS_REGION` | Región S3 (opcional) | `us-east-1` |
+| `AWS_PUBLIC_KEY` | AWS Access Key ID (opcional) | `tu-access-key` |
+| `AWS_SECRET_KEY` | AWS Secret Access Key (opcional) | `tu-secret-key` |
 
-Para el frontend, asegúrate de tener un `client/.env` o `client/.env.local` con algo similar a:
+Para el frontend, crea `client/.env` o `client/.env.local`:
 
 ```env
 VITE_API_URL=http://localhost:3000/api
+VITE_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
+VITE_CLOUDINARY_FOLDER=your-folder
 ```
 
 La URL debe terminar en `/api`, que es donde el backend monta las rutas.
+
+**Importante:** `SECRET` no tiene valor por defecto. Si no lo defines o usas `change-me`, el servidor no arrancará (ver `server/index.js`).
 
 ## 3. Levantar backend
 
