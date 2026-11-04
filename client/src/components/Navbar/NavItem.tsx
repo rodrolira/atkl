@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface NavItemProps {
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   const handleClick = useCallback((event: React.MouseEvent) => {
@@ -27,12 +27,12 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleIte
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else {
-        history.push(to);
+        navigate(to);
       }
     }, 0);
 
     handleItemClick();
-  }, [handleItemClick, history, isHomePage, linkId, to]);
+  }, [handleItemClick, navigate, isHomePage, linkId, to]);
 
   return (
     <li>

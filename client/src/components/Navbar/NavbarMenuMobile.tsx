@@ -8,13 +8,13 @@ import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
 import DemoButton from '@/components/Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavbarMenuMobile: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const toggleMenu = () => {
@@ -37,7 +37,7 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
       return;
     }
 
-    history.push(to);
+    navigate(to);
   };
 
   return (

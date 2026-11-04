@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import Button from './Button';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { useTranslation } from 'react-i18next';
 
 const AdminLogoutButton: React.FC = () => {
   const { signout } = useAdminAuth();
-  const navigate = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleLogout = useCallback(async () => {
