@@ -156,14 +156,29 @@ export const deleteArtist = async (req, res) => {
 
 export const getArtists = async (req, res) => {
   try {
-    const artists = await Artist.findAll({
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1)
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100)
+    const offset = (page - 1) * limit
+
+    const { count, rows: artists } = await Artist.findAndCountAll({
       include: [{
         model: Role,
         as: 'Roles',
         through: { attributes: [] },
       }],
+      limit,
+      offset,
     })
-    res.status(200).json(artists)
+
+    res.status(200).json({
+      artists,
+      pagination: {
+        total: count,
+        page,
+        limit,
+        totalPages: Math.ceil(count / limit),
+      },
+    })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

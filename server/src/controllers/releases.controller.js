@@ -83,7 +83,11 @@ export const addRelease = async (req, res) => {
 
 export const getReleases = async (req, res) => {
   try {
-    const releases = await Release.findAll({
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1)
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100)
+    const offset = (page - 1) * limit
+
+    const { count, rows: releases } = await Release.findAndCountAll({
       include: [
         {
           model: Artist,
@@ -95,8 +99,19 @@ export const getReleases = async (req, res) => {
           attributes: ['id', 'name'],
         },
       ],
+      limit,
+      offset,
     })
-    res.status(200).json(releases)
+
+    res.status(200).json({
+      releases,
+      pagination: {
+        total: count,
+        page,
+        limit,
+        totalPages: Math.ceil(count / limit),
+      },
+    })
   } catch (error) {
     if (error.message === 'Artist is not associated to Release!') {
       res.status(400).json({ message: 'Artist is not associated to Release!' })
