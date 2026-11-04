@@ -13,8 +13,6 @@ import genreRoutes from './src/routes/genre.routes.js'
 import contactFormRoutes from './src/routes/contact-form.routes.js'
 import rolesRouter from './src/routes/roles.routes.js'
 import discographyRoutes from './src/routes/discography.routes.js'
-import uploadRoutes from './src/routes/upload.routes.js'
-import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url';
 
@@ -74,8 +72,6 @@ app.use('/api', contactFormRoutes)
 app.use('/api', genreRoutes)
 app.use('/api', rolesRouter)
 app.use('/api', discographyRoutes)
-app.use('/api', uploadRoutes)
-
 
 
 app.get('/', (req, res) => {
