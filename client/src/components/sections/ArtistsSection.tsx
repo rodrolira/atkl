@@ -9,16 +9,16 @@ import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
 const ArtistsSection: React.FC = React.memo(() => {
-  const { artists, fetchArtists } = useArtists();
+  const { artists, fetchArtists, loading, error } = useArtists();
   const { t } = useTranslation();
 
   const memoizedArtists = useMemo(() => artists || [], [artists]);
 
   useEffect(() => {
-    if (memoizedArtists.length === 0) {
+    if (memoizedArtists.length === 0 && !loading && !error) {
       fetchArtists();
     }
-  }, [fetchArtists, memoizedArtists.length]);
+  }, [fetchArtists, memoizedArtists.length, loading, error]);
 
   return (
     <section className="grid grid-cols-1 gap-4 p-4 sm:p-16 relative z-50" id="artists">
@@ -27,7 +27,7 @@ const ArtistsSection: React.FC = React.memo(() => {
           <Title>{t('artistSection.title')}</Title>
         </Link>
       </div>
-      <ArtistList artists={memoizedArtists} />
+      <ArtistList artists={memoizedArtists} loading={loading} error={error} />
       <Background />
     </section>
   );

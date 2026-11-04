@@ -8,11 +8,11 @@ import { Link } from 'react-router-dom';
 import Background from '../Layout/Background';
 
 const ReleasesSection: React.FC = () => {
-  const { fetchReleases } = useReleases();
+  const { fetchReleases, loading, error } = useReleases();
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchReleases(); // Esto asegura que se carguen los lanzamientos
+    fetchReleases();
   }, [fetchReleases]);
 
   return (
@@ -21,6 +21,9 @@ const ReleasesSection: React.FC = () => {
         <Title>{t('releaseSection.title')}</Title>
       </Link>
       <ReleaseList />
+      {error && (
+        <div className="col-span-full text-red-400 text-center p-4">{error}</div>
+      )}
       <Background />
     </section>
   );
