@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
+import Admin from '../models/admin.model.js'
 
-export const createToken = (userId) => {
-  return jwt.sign({ userId, role: 'user' }, process.env.SECRET, {
+export const createToken = (userId, role = 'user') => {
+  return jwt.sign({ userId, role }, process.env.SECRET, {
     expiresIn: '12h',
   })
 }
@@ -26,9 +27,18 @@ export const findUserByUsername = async (username) => {
 }
 
 export const loginUser = async (username, password) => {
-  const user = await User.findOne({ where: { username } })
+  // Buscar en usuarios regulares
+  let user = await User.findOne({ where: { username } })
+  let role = 'user'
+
   if (!user) {
-    throw new Error('User not found')
+    // Buscar en administradores
+    user = await Admin.findOne({ where: { username } })
+    role = 'admin'
+  }
+
+  if (!user) {
+    throw new Error('Invalid credentials')
   }
 
   const isMatch = await bcrypt.compare(password, user.password)
@@ -36,7 +46,7 @@ export const loginUser = async (username, password) => {
     throw new Error('Invalid credentials')
   }
 
-  return createToken(user.id)
+  return createToken(user.id, role)
 }
 
 export const profileUser = async (userId) => {
