@@ -1,18 +1,12 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import Admin from '../models/admin.model.js'
+import User from '../models/user.model.js'
 
-export const createToken = (adminId) => {
-  if (!adminId) {
-    throw new Error('adminId is required')
+export const createToken = (userId) => {
+  if (!userId) {
+    throw new Error('userId is required')
   }
-
-  const payload = {
-    adminId: adminId,
-    role: 'admin',
-  }
-
-  return jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
+  return jwt.sign({ userId, role: 'admin' }, process.env.SECRET, { expiresIn: '1h' })
 }
 
 export const toPublicAdmin = (admin) => {
@@ -22,54 +16,30 @@ export const toPublicAdmin = (admin) => {
   return publicAdmin
 }
 
-export const findAdmin = async (criteria) => {
-  return await Admin.findOne({ where: criteria })
-}
+export const findAdmin = async (criteria) => User.findOne({ where: { ...criteria, role: 'admin' } })
 
-export const createAdmin = async (adminData) => {
-  return await Admin.create(adminData)
-}
+export const createAdmin = async (adminData) => User.create({ ...adminData, role: 'admin' })
 
-export const findAdminByEmail = async (email) => {
-  const admin = await Admin.findOne({ where: { email } })
-  if (!admin) {
-    throw new Error('Admin not found')
-  }
-  return admin
-}
+export const findAdminByEmail = async (email) => User.findOne({ where: { email, role: 'admin' } })
 
-export const findAdminByUsername = async (username) => {
-  const admin = await Admin.findOne({ where: { username } })
-  if (!admin) {
-    throw new Error('Admin not found')
-  }
-  return admin
-}
+export const findAdminByUsername = async (username) =>
+  User.findOne({ where: { username, role: 'admin' } })
 
-export const getAllAdmins = async () => {
-  return await Admin.findAll()
-}
+export const getAllAdmins = async () => User.findAll({ where: { role: 'admin' } })
 
 export const loginAdmin = async (username, password) => {
-  const admin = await Admin.findOne({ where: { username } })
-  if (!admin) {
-    throw new Error('Admin not found')
-  }
+  const admin = await User.findOne({ where: { username, role: 'admin' } })
+  if (!admin) throw new Error('Admin not found')
 
   const isMatch = await bcrypt.compare(password, admin.password)
-  if (!isMatch) {
-    throw new Error('Invalid credentials')
-  }
+  if (!isMatch) throw new Error('Invalid credentials')
 
-  const token = createToken(admin.id)
-  return { token, admin }
+  return { token: createToken(admin.id), admin }
 }
 
 export const profileAdmin = async (adminId) => {
-  const admin = await Admin.findByPk(adminId)
-  if (!admin) {
-    throw new Error('Admin not found')
-  }
+  const admin = await User.findByPk(adminId)
+  if (!admin) throw new Error('Admin not found')
   return admin
 }
 
@@ -79,12 +49,8 @@ export const logoutAdmin = (res) => {
 }
 
 export const deleteAdmin = async (username) => {
-  const admin = await Admin.findOne({ where: { username } })
-  if (!admin) {
-    const error = new Error('Admin not found')
-    error.status = 404
-    throw error
-  }
-  await Admin.destroy({ where: { username } })
+  const admin = await User.findOne({ where: { username, role: 'admin' } })
+  if (!admin) throw new Error('Admin not found')
+  await admin.destroy()
   return { message: 'Admin deleted successfully' }
 }
