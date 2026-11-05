@@ -10,6 +10,7 @@ import {
   deleteRelease,
 } from '../controllers/releases.controller.js';
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js';
+import { cacheMiddleware } from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
@@ -25,9 +26,9 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
-// Rutas
-router.get('/releases', getReleases);
-router.get('/releases/:id', getReleaseById);
+// Rutas con caché para lecturas
+router.get('/releases', cacheMiddleware('releases'), getReleases);
+router.get('/releases/:id', cacheMiddleware('release'), getReleaseById);
 
 router.post('/releases', verifyTokenAdmin, upload.single('cover_image_url'), addRelease);
 
