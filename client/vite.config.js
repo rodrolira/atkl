@@ -1,65 +1,41 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import * as path from 'path';
-import compression from 'vite-plugin-compression';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    // million.vite({
-    //   auto: true,
-    // }),
-    // MillionLint.vite({
-    //   enabled: true
-    // }),
-    react(), compression({
-      brotli: true, // Enable Brotli compression
-      gzip: true,    // Enable gzip compression
-    })],
+  plugins: [react()],
   css: {
     postcss: {
-      plugins: [
-        tailwindcss(),
-        autoprefixer(),
-      ],
+      plugins: [tailwindcss(), autoprefixer()],
     },
   },
   server: {
-    configureServer: (server) => {
-      server.middlewares.use((req, res, next) => {
-        // Establecer cabeceras de seguridad
-        res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-        res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://trusted.cdn.com;");
-        res.setHeader('X-Frame-Options', 'DENY');
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        res.setHeader('Permissions-Policy', 'geolocation=(), microphone=()');
-        res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
-
-        next();
-      });
-    },
     host: true,
     strictPort: true,
-    cors: true,
   },
   build: {
-    target: 'esnext',
+    target: 'es2020',
     outDir: 'dist',
-    sourcemap: true,
+    // Sin sourcemaps públicos: antes se publicaban 13 MB de código fuente.
+    sourcemap: false,
     rollupOptions: {
-      assetFileNames:(assetInfo) => {
-        if (assetInfo.name === '_headers' ) return '_headers';
-        return assetInfo.name;
-      },
-      external: ['lodash', 'lodash-es'],
       output: {
+        // Separamos las librerías grandes para no servir un único vendor de 1 MB.
         manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('@mui') || id.includes('@emotion')) return 'mui';
+          if (id.includes('@fortawesome') || id.includes('react-icons') || id.includes('@iconify'))
+            return 'icons';
+          if (id.includes('framer-motion')) return 'motion';
+          if (id.includes('i18next')) return 'i18n';
+          if (id.includes('react-bootstrap') || id.includes('flowbite')) return 'ui';
+          if (id.includes('formik') || id.includes('yup')) return 'forms';
+          if (id.includes('react-dom') || id.includes('react-router') || id.includes('/react/'))
+            return 'react';
+          return 'vendor';
         },
       },
     },
@@ -77,5 +53,5 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: 'src/setupTests.js',
     clearMocks: true,
-  }
+  },
 });

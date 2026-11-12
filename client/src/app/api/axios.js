@@ -14,4 +14,23 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+// Si el token expiró o fue revocado, limpiamos la sesión en vez de dejar la UI
+// como "logueada" con un token muerto.
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status;
+    const isAuthEndpoint = error?.config?.url?.includes('/login');
+
+    if (status === 401 && !isAuthEndpoint && localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.replace('/admin/login');
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default instance;
