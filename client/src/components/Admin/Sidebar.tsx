@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUser, FaUserMinus, FaUserPlus, FaCompactDisc } from 'react-icons/fa';
+import { FaUser, FaUserMinus, FaUserPlus, FaCompactDisc, FaPlus } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 
@@ -89,6 +89,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onItemClick, current
           text={t('admin.releases')}
           onClick={() => onItemClick('releases')}
           active={currentView === 'releases'}
+        />
+        <SidebarItem
+          icon={<FaPlus />}
+          text={t('admin.add_release')}
+          onClick={() => onItemClick('create-release')}
+          active={currentView === 'create-release'}
         />
       </nav>
     </div>

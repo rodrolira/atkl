@@ -37,43 +37,20 @@ describe('createAdmin', () => {
   };
 
   test('successfully creates admin with valid data', async () => {
-    // Arrange
-    const mockHashedPassword = 'hashedPassword123';
-    const mockCreatedAdmin = { ...validAdminData, password: mockHashedPassword };
-    bcrypt.hash.mockResolvedValue(mockHashedPassword);
-    Admin.create.mockResolvedValue(mockCreatedAdmin);
+    const mockCreatedAdmin = { id: 1, ...validAdminData };
+    Admin.create.mockResolvedValueOnce(mockCreatedAdmin);
 
-    // Act
     const result = await createAdmin(validAdminData);
 
-    // Assert
-    expect(bcrypt.hash).toHaveBeenCalledWith(validAdminData.password, 10);
-    expect(Admin.create).toHaveBeenCalledWith({
-      username: validAdminData.username,
-      email: validAdminData.email,
-      password: mockHashedPassword
-    });
+    // El hashing ocurre en el hook beforeCreate del modelo
+    expect(Admin.create).toHaveBeenCalledWith(validAdminData);
     expect(result).toEqual(mockCreatedAdmin);
   });
 
   test('throws error when admin creation fails', async () => {
-    // Arrange
-    const mockError = new Error('Duplicate key');
-    const mockHashedPassword = 'hashedPassword123';
-    bcrypt.hash.mockResolvedValue(mockHashedPassword);
-    Admin.create.mockRejectedValue(mockError);
+    Admin.create.mockRejectedValueOnce(new Error('Duplicate key'));
 
-    // Act & Assert
     await expect(createAdmin(validAdminData)).rejects.toThrow('Error creating admin: Duplicate key');
-  });
-
-  test('handles bcrypt hashing failure', async () => {
-    // Arrange
-    const hashError = new Error('Error creating admin: Hashing failed');
-    bcrypt.hash.mockRejectedValue(hashError);
-
-    // Act & Assert
-    await expect(createAdmin(validAdminData)).rejects.toThrow('Error creating admin: Hashing failed');
   });
 });
 

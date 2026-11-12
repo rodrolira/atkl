@@ -21,19 +21,36 @@ import { motion } from 'framer-motion';
 import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
 import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
+import { getRolesRequest } from '@/app/api/roles';
 
 const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
-  const [roles] = useState<Role[]>([
-    { id: 1, label: 'Producer' },
-    { id: 2, label: 'DJ' },
-  ]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const { createArtist } = useArtists();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getRolesRequest()
+      .then(({ data }) => {
+        if (!cancelled) {
+          setRoles(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching roles:', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const initialValues:Partial<Artist> ={
     artist_name: '',
+    email: '',
     image:'',
     roleIds: [],
     bio: '',
@@ -42,9 +59,13 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
     setSubmitting(true);
 
     try {
-      await createArtist({...values, id: Date.now() });
+      const created = await createArtist(values);
+      if (!created) {
+        setError(t('error.addArtist'));
+        return;
+      }
       closePopup();
-      onArtistAdded?.(values);
+      onArtistAdded?.(created);
     } catch (error) {
       console.error('Error adding artist:', error);
       setError(t('error.addArtist'));
@@ -108,9 +129,10 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
           enableReinitialize
           validationSchema={Yup.object().shape({
             artist_name: Yup.string().required(t('validation.artistNameRequired')),
+            email: Yup.string().email().required(t('label.email')),
             bio: Yup.string(),
             image: Yup.mixed(),
-            roleIds: Yup.array().of(Yup.string()).required(t('validation.roleRequired')),
+            roleIds: Yup.array().min(1, t('validation.roleRequired')),
           })}
           onSubmit={onSubmit}
         >
@@ -118,6 +140,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
             <Form>
               <Stack spacing={2} margin={2}>
                 {renderField('artist_name', 'artist_name')}
+                {renderField('email', 'email', 'email')}
                 <FileUpload />
 
                 <FormControl fullWidth variant="outlined">

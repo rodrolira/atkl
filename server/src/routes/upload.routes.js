@@ -1,6 +1,7 @@
 import express from 'express'
 import { uploadFile, readFile } from '../../s3.js'
 import formidable from 'formidable';
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = express.Router()
 const upload = formidable({
@@ -10,7 +11,7 @@ const upload = formidable({
 });
 
 // Endpoint to upload images
-router.post('/upload', (req, res) => {
+router.post('/upload', verifyTokenAdmin, (req, res) => {
     // Parse the form data and handle file upload
     upload.parse(req, (err, fields, files) => {
         if (err) {

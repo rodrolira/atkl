@@ -17,6 +17,16 @@ pnpm install:server
 
 También puedes entrar a cada carpeta y ejecutar `pnpm install` manualmente.
 
+El cliente fija `react-router-dom` 5.x en su `pnpm-lock.yaml`. Instálalo siempre
+desde `client/` para respetar ese lockfile:
+
+```powershell
+pnpm --dir client install --frozen-lockfile
+```
+
+Si el build falla con `"useHistory" is not exported`, hay una versión 6/7 de
+`react-router-dom` en `client/node_modules`: repite el comando anterior.
+
 ## 2. Preparar variables de entorno
 
 El backend lee `.env` desde la raíz del proyecto. Para desarrollo local, usa al menos:
@@ -42,8 +52,10 @@ Notas:
 Para el frontend, asegúrate de tener un `client/.env` o `client/.env.local` con algo similar a:
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:3000/api
 ```
+
+La URL debe terminar en `/api`, que es donde el backend monta las rutas.
 
 ## 3. Levantar backend
 

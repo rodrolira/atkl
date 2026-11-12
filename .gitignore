@@ -2,8 +2,9 @@ t
 .vercel
 .vscode
 node_modules
-dist    
+dist
 build
+coverage
 
 vercelignore
 .gitignore

@@ -9,6 +9,7 @@ import {
   updateRelease,
   deleteRelease,
 } from '../controllers/releases.controller.js';
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js';
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'releases',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
     public_id: (req, file) => `${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`,
   },
 });
@@ -28,9 +29,9 @@ const upload = multer({ storage });
 router.get('/releases', getReleases);
 router.get('/releases/:id', getReleaseById);
 
-router.post('/releases', upload.single('cover_image_url'), addRelease);
+router.post('/releases', verifyTokenAdmin, upload.single('cover_image_url'), addRelease);
 
-router.put('/releases/:id', upload.single('cover_image_url'), updateRelease);
-router.delete('/releases/:id', deleteRelease);
+router.put('/releases/:id', verifyTokenAdmin, upload.single('cover_image_url'), updateRelease);
+router.delete('/releases/:id', verifyTokenAdmin, deleteRelease);
 
 export default router;

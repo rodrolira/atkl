@@ -8,6 +8,9 @@ import ArtistsTable from '@/components/Admin/ArtistsTable';
 import ReleasesTable from '@/components/Admin/ReleasesTable';
 import CreateUserForm from '@/components/Admin/CreateUserForm';
 import EditArtistModal from '@/components/Artist/EditArtistModal';
+import AddArtistForm from '@/components/Artist/AddArtistForm';
+import AddReleaseForm from '@/components/Release/AddRelease/AddReleaseForm';
+import EditReleaseModal from '@/components/Release/EditRelease/EditReleaseModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useTranslation } from 'react-i18next';
@@ -18,17 +21,17 @@ import { Release } from '@/types/interfaces/Release';
 
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [currentView, setCurrentView] = useState<string>('view-users');
+  const [currentView, setCurrentView] = useState<string>('users');
   const [currentArtist, setCurrentArtist] = useState<Artist | null>(null);
   const [currentRelease, setCurrentRelease] = useState<Release | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showAddArtist, setShowAddArtist] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedArtists, setSelectedArtists] = useState<Artist[]>([]);
-  const [selectedReleases, setSelectedReleases] = useState<Release[]>([]);
 
   const { t } = useTranslation();
-  const { artists, fetchArtists, setArtists } = useArtists();
-  const { releases, fetchReleases, setReleases } = useReleases();
+  const { artists, fetchArtists, deleteArtist } = useArtists();
+  const { releases, fetchReleases, deleteRelease } = useReleases();
 
 
   useEffect(() => {
@@ -61,42 +64,130 @@ const AdminDashboard: React.FC = () => {
     setCurrentRelease(null);
   }, []);
 
+  const handleDeleteArtist = useCallback(async (id: number) => {
+    const artist = artists.find((item) => item.id === id);
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar al artista ${artist?.artist_name ?? id}?`)) {
+      return;
+    }
+    try {
+      await deleteArtist(id);
+      setSelectedArtists((prev) => prev.filter((item) => item.id !== id));
+    } catch {
+      setError(t('errors.deleteArtist'));
+    }
+  }, [artists, deleteArtist, t]);
+
+  const handleDeleteSelectedArtists = useCallback(async () => {
+    if (selectedArtists.length === 0) {
+      return;
+    }
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar ${selectedArtists.length} artista(s)?`)) {
+      return;
+    }
+    try {
+      for (const artist of selectedArtists) {
+        await deleteArtist(artist.id);
+      }
+      setSelectedArtists([]);
+    } catch {
+      setError(t('errors.deleteArtist'));
+    }
+  }, [selectedArtists, deleteArtist, t]);
+
+  const handleDeleteRelease = useCallback(async (id: number) => {
+    const release = releases.find((item) => item.id === id);
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar el lanzamiento ${release?.title ?? id}?`)) {
+      return;
+    }
+    try {
+      await deleteRelease(id);
+    } catch {
+      setError(t('errors.deleteRelease'));
+    }
+  }, [releases, deleteRelease, t]);
 
   const renderContent = () => {
     switch (currentView) {
-      case 'view-users':
+      case 'users':
         return (
           <ContentSection title={t('artists')}>
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={() => setShowAddArtist(true)}
+                className="btn btn-save h-10 px-4 font-bold !bg-[#24db13] text-[#122e0f]"
+              >
+                {t('add_artist')}
+              </button>
+            </div>
             <ArtistsTable
               artists={artists}
               onEdit={handleEditArtist}
               selectedArtists={selectedArtists}
-              setSelectedArtists={setSelectedArtists as React.Dispatch<React.SetStateAction<Artist[]>>} // Add this line
-              isDeleteMode={true} onDelete={function (id: number): void {
-                throw new Error('Function not implemented.');
-              } }            />
+              setSelectedArtists={setSelectedArtists}
+              isDeleteMode={false}
+              onDelete={handleDeleteArtist}
+            />
+          </ContentSection>
+        );
+      case 'delete-user':
+        return (
+          <ContentSection title={t('admin.delete_user')}>
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={handleDeleteSelectedArtists}
+                disabled={selectedArtists.length === 0}
+                className="btn h-10 px-4 font-bold bg-red-500 text-white disabled:opacity-50"
+              >
+                {t('delete')} ({selectedArtists.length})
+              </button>
+            </div>
+            <ArtistsTable
+              artists={artists}
+              onEdit={handleEditArtist}
+              selectedArtists={selectedArtists}
+              setSelectedArtists={setSelectedArtists}
+              isDeleteMode={true}
+              onDelete={handleDeleteArtist}
+            />
           </ContentSection>
         );
       case 'create-user':
         return (
           <ContentSection title={t('admin.add_user')}>
-            <CreateUserForm />
+            <CreateUserForm onCreated={fetchArtists} />
           </ContentSection>
         );
-      case 'view-releases':
+      case 'releases':
         return (
           <ContentSection title={t('admin.releases')}>
-            <ReleasesTable releases={releases} onEdit={(release: any) => handleEditRelease(release as Release)} onDelete={function (releaseId: number): void {
-              throw new Error('Function not implemented.');
-            } } />
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={() => setCurrentView('create-release')}
+                className="btn btn-save h-10 px-4 font-bold !bg-[#24db13] text-[#122e0f]"
+              >
+                {t('admin.add_release')}
+              </button>
+            </div>
+            <ReleasesTable
+              releases={releases}
+              onEdit={handleEditRelease}
+              onDelete={handleDeleteRelease}
+            />
           </ContentSection>
         );
       case 'create-release':
         return (
           <ContentSection title={t('admin.add_release')}>
-            < > </>
+            <AddReleaseForm
+              open={true}
+              closePopup={() => setCurrentView('releases')}
+              onReleaseAdded={() => fetchReleases()}
+            />
           </ContentSection>
-        )
+        );
       default:
         return null;
     }
@@ -135,11 +226,24 @@ const AdminDashboard: React.FC = () => {
           {renderContent()}
         </main>
       </div>
-      {showEditModal && (currentArtist) && (
+      <AddArtistForm
+        openPopup={showAddArtist}
+        closePopup={() => setShowAddArtist(false)}
+        onArtistAdded={() => fetchArtists()}
+      />
+      {showEditModal && currentArtist && (
         <Modal onClose={closeEditModal}>
           <EditArtistModal
             onClose={closeEditModal}
-            id={currentArtist?.id}
+            id={currentArtist.id}
+          />
+        </Modal>
+      )}
+      {showEditModal && currentRelease && (
+        <Modal onClose={closeEditModal}>
+          <EditReleaseModal
+            onClose={closeEditModal}
+            id={currentRelease.id}
           />
         </Modal>
       )}

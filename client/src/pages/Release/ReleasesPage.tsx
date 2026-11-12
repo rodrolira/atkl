@@ -1,10 +1,7 @@
 // ReleasesPage.tsx
 
 import React, { Suspense } from 'react'; // Importa React y Suspense
-import Button from '@/components/Button/Button';
-import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Navbar from '@/components/Navbar/Navbar';
-import { useTranslation } from 'react-i18next';
 import Loading from '@/components/atoms/Loading/Loading';
 
 // Importa ReleaseSection usando importación dinámica
@@ -13,9 +10,6 @@ const ReleaseSection = React.lazy(
 );
 
 const ReleasesPage: React.FC = React.memo(() => {
-  const { t } = useTranslation();
-  const { isAuthenticated: isAdmin } = useAdminAuth();
-
   return (
     <div>
       <Navbar />

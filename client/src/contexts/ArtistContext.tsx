@@ -1,10 +1,15 @@
 import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback, useEffect } from 'react';
 import { Artist, ArtistContextType } from '@/types/interfaces/Artist';
+import { Role } from '@/types/interfaces/Role';
+import {
+  getArtistsRequest,
+  createArtistRequest,
+  updateArtistRequest,
+  deleteArtistRequest,
+} from '@/app/api/artists';
 
-// Create the context with a default value
 export const ArtistContext = createContext<ArtistContextType | undefined>(undefined);
 
-// Custom hook to use the ArtistContext
 export const useArtists = () => {
   const context = useContext(ArtistContext);
 
@@ -14,59 +19,76 @@ export const useArtists = () => {
   return context;
 };
 
-// ArtistProvider component
+export const normalizeArtist = (artist: Artist): Artist => ({
+  ...artist,
+  imageUrl: artist.imageUrl || artist.image || '',
+  roleIds: Array.isArray(artist.Roles)
+    ? artist.Roles
+        .filter((role): role is Role => typeof role === 'object')
+        .map((role) => role.id)
+    : artist.roleIds || [],
+});
+
 export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Cargar artistas desde el almacenamiento local o usar los predeterminados
-  const fetchArtists = useCallback(() => {
-    const storedArtists = localStorage.getItem('artists');
-    if (storedArtists) {
-      setArtists(JSON.parse(storedArtists));
-    } else {
-      setArtists
+  const fetchArtists = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await getArtistsRequest();
+      setArtists(data.map(normalizeArtist));
+    } catch (err) {
+      console.error('Error fetching artists:', err);
+      setError('No se pudieron cargar los artistas');
+    } finally {
+      setLoading(false);
     }
-    return Promise.resolve();
   }, []);
 
-  // Guardar los artistas en localStorage cada vez que se actualicen
   useEffect(() => {
-    if (artists.length > 0) {
-      localStorage.setItem('artists', JSON.stringify(artists));
-    }
-  }, [artists]);
+    fetchArtists();
+  }, [fetchArtists]);
 
-  // Crear un nuevo artista
   const createArtist = async (artist: Artist): Promise<Artist | null> => {
     try {
-      const newArtist = { ...artist, id: Date.now() }; // Asigna un ID único
-      setArtists((prevArtists) => [...prevArtists, newArtist]); // Actualiza el estado
-      return newArtist; // Devuelve el nuevo artista
-    } catch (error) {
-      console.error('Error creating artist:', error);
-      return null; // Resuelve con null en caso de error
+      const { data } = await createArtistRequest(artist);
+      const created = normalizeArtist(data);
+      setArtists((prevArtists) => [...prevArtists, created]);
+      return created;
+    } catch (err) {
+      console.error('Error creating artist:', err);
+      const message = (err as any)?.response?.data?.message;
+      setError(message || 'No se pudo crear el artista');
+      return null;
     }
   };
 
-  // Actualizar un artista existente
   const updateArtist = async (id: number, updatedArtist: Partial<Artist>): Promise<void> => {
-    setArtists((prevArtists) => {
-      const artistIndex = prevArtists.findIndex((artist) => artist.id === id);
-      if (artistIndex !== -1) {
-        const updatedArtists = [...prevArtists];
-        updatedArtists[artistIndex] = { ...updatedArtists[artistIndex], ...updatedArtist };
-        return updatedArtists; // Devuelve la lista actualizada
-      }
-      return prevArtists; // Devuelve el estado anterior si no se encuentra el artista
-    });
+    try {
+      const { data } = await updateArtistRequest(id, updatedArtist);
+      const saved = normalizeArtist(data);
+      setArtists((prevArtists) =>
+        prevArtists.map((artist) => (artist.id === id ? saved : artist))
+      );
+    } catch (err) {
+      console.error('Error updating artist:', err);
+      setError('No se pudo actualizar el artista');
+      throw err;
+    }
   };
 
-  // Eliminar un artista
   const deleteArtist = async (id: number): Promise<void> => {
-    setArtists((prevArtists) => {
-      const updatedArtists = prevArtists.filter((artist) => artist.id !== id);
-      return updatedArtists; // Devuelve la lista actualizada
-    });
+    try {
+      await deleteArtistRequest(id);
+      setArtists((prevArtists) => prevArtists.filter((artist) => artist.id !== id));
+    } catch (err) {
+      console.error('Error deleting artist:', err);
+      setError('No se pudo eliminar el artista');
+      throw err;
+    }
   };
 
   const contextValue = useMemo(() => ({
@@ -76,9 +98,9 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     createArtist,
     updateArtist,
     deleteArtist,
-    error: null,
-    loading: false,
-  }), [artists]);
+    error,
+    loading,
+  }), [artists, fetchArtists, error, loading]);
 
   return <ArtistContext.Provider value={contextValue}>{children}</ArtistContext.Provider>;
 };

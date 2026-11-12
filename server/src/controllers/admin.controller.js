@@ -27,24 +27,23 @@ const handleError = (res, error, message) => {
   res.status(500).json({ message: `${message}: ${error.message}` })
 }
 
+export const toPublicAdmin = (admin) => {
+  if (!admin) return admin
+  const plain = typeof admin.toJSON === 'function' ? admin.toJSON() : admin
+  const { password, ...publicAdmin } = plain
+  return publicAdmin
+}
+
 export const findAdmin = async (criteria) => {
   return await Admin.findOne({ where: criteria })
 }
 
 export const createAdmin = async (adminData) => {
   try {
-    const hashedPassword = await bcrypt.hash(adminData.password, 10)
-
-    const newAdmin = await Admin.create({
-      ...adminData,
-      password: hashedPassword,
-    });
-    return newAdmin;
+    // El hook beforeCreate del modelo se encarga del hashing
+    return await Admin.create(adminData)
   } catch (error) {
-    if (error.message.includes('Hashing failed')) {
-      throw new Error('Error creating admin: Hashing failed');
-    }
-    throw new Error(`Error creating admin: ${error.message}`);
+    throw new Error(`Error creating admin: ${error.message}`)
   }
 }
 
@@ -76,19 +75,16 @@ export const loginAdmin = async (username, password) => {
   try {
     const admin = await findAdmin({ username });
     if (!admin) {
-      console.log('Admin not found for username:', username);
       throw new Error('Admin not found')
     }
 
     const isMatch = await bcrypt.compare(password, admin.password)
-    console.log('Password match status:', isMatch);
 
     if (!isMatch) {
       throw new Error('Invalid credentials')
     }
 
     const token = createToken(admin.id)
-    console.log('Generated token:', token)
     return { token, admin };
 
   } catch (error) {
@@ -108,23 +104,6 @@ export const profileAdmin = async (adminId) => {
   } catch (error) {
     throw new Error(`Error fetching admin profile: ${error.message}`)
   }
-}
-
-export const verifyTokenAdmin = (req, res, next) => {
-  const token = req.cookies.token ?? req.headers.authorization?.split(' ')[1]
-
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' })
-  }
-
-  jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: 'Unauthorized' })
-    }
-
-    req.adminId = decoded.adminId
-    next()
-  })
 }
 
 export const logoutAdmin = async (req, res) => {

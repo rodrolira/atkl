@@ -6,7 +6,18 @@ import { useTranslation } from 'react-i18next';
 import { ReleasesTableProps } from '@/types/props/Admin/ReleasesTableProps';
 import { Artist } from '@/types/interfaces/Artist';
 
-const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit }) => {
+const formatReleaseDate = (value?: string) => {
+  if (!value) {
+    return '—';
+  }
+  const [year, month, day] = String(value).slice(0, 10).split('-');
+  if (!year || !month || !day) {
+    return '—';
+  }
+  return `${day}/${month}/${year}`;
+};
+
+const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelete }) => {
   const { t } = useTranslation();
 
   return (
@@ -46,7 +57,7 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit }) => {
                   ))}
                 </td>
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
-                  {release.release_date}
+                  {formatReleaseDate(release.release_date)}
                 </td>
                 <td className="px-4 py-3 w-1/4 text-center">
                   <button
@@ -57,6 +68,10 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit }) => {
                   </button>
                   <button
                     className="text-red-400 hover:text-red-500 text-xl mx-2"
+                    onClick={() => onDelete(release.id)}
+                    type="button"
+                    aria-label="Delete"
+                    title="delete"
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>

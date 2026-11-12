@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "npx run build",
+    "buildCommand": "pnpm run build",
     "installCommand": "pnpm install",
     "outputDirectory": "dist",
     "rewrites": [
