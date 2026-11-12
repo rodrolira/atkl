@@ -51,7 +51,7 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
       onTeamMemberAdded && onTeamMemberAdded(newTeamMember); // Llamamos al callback con el nuevo miembro
     } catch (error) {
       console.error('Error adding team member:', error);
-      setError(t('error.addTeamMember'));
+      setError(t('errors.addTeamMember'));
       actions.setSubmitting(false);
     }
   };

@@ -40,7 +40,8 @@ const toFormData = (artist) => {
   return formData;
 };
 
-export const getArtistsRequest = () => api.get('/artists');
+// Igual que en releases: el API pagina de a 20 (máximo 100).
+export const getArtistsRequest = () => api.get('/artists', { params: { limit: 100 } });
 
 export const getArtistRequest = (id) => api.get(`/artists/${id}`);
 

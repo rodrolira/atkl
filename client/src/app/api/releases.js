@@ -36,7 +36,9 @@ const toFormData = (release) => {
   return formData;
 };
 
-export const getReleasesRequest = () => api.get('/releases');
+// El API pagina de a 20 por defecto (máximo 100). Sin este límite el catálogo
+// se cortaba en los primeros 20 lanzamientos sin que nada lo indicara.
+export const getReleasesRequest = () => api.get('/releases', { params: { limit: 100 } });
 
 export const getReleaseRequest = (id) => api.get(`/releases/${id}`);
 

@@ -61,14 +61,14 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
     try {
       const created = await createArtist(values);
       if (!created) {
-        setError(t('error.addArtist'));
+        setError(t('errors.addArtist'));
         return;
       }
       closePopup();
       onArtistAdded?.(created);
     } catch (error) {
       console.error('Error adding artist:', error);
-      setError(t('error.addArtist'));
+      setError(t('errors.addArtist'));
     } finally {
       setSubmitting(false);
     }

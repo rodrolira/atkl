@@ -39,7 +39,9 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setError(null);
     try {
       const { data } = await getArtistsRequest();
-      setArtists(data.map(normalizeArtist));
+      // El API pagina: devuelve { artists, pagination }. Toleramos ambas formas.
+      const list = Array.isArray(data) ? data : (data?.artists ?? []);
+      setArtists(list.map(normalizeArtist));
     } catch (err) {
       console.error('Error fetching artists:', err);
       setError('No se pudieron cargar los artistas');

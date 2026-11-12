@@ -21,12 +21,7 @@
     url(/img/header.jpg);
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  /* Textura de ruido/grano sutil sobre el fondo */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)),
-    url(/img/header.jpg),
-    url('/assets/atkl.jpeg');
-  background-blend-mode: overlay, normal, soft-light;
+  background-blend-mode: overlay, normal;
 }
 
 .container {

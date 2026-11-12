@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { memo } from 'react';
 import ReleaseCard from './ReleaseCard';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useTranslation } from 'react-i18next';
@@ -24,17 +24,11 @@ const ReleaseList: React.FC = () => {
     return <p>{t('availability.no_releases')}</p>;
   }
 
-  const memoizedReleaseCards = useMemo(
-    () =>
-      releases.map((release) => (
-        <ReleaseCard key={release.id} release={release} />
-      )),
-    [releases]
-  );
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-50">
-      {memoizedReleaseCards}
+      {releases.map((release) => (
+        <ReleaseCard key={release.id} release={release} />
+      ))}
     </div>
   );
 };

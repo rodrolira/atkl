@@ -52,7 +52,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
       }
     } catch (err) {
       console.error('Error creating release:', err);
-      setError(t('error.addRelease'));
+      setError(t('errors.addRelease'));
     } finally {
       actions.setSubmitting(false);
     }

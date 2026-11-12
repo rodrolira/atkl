@@ -82,7 +82,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   }, [release.id, releases]);
 
   const handleDelete = useCallback(async () => {
-    if (window.confirm(`¿Estás seguro de que deseas eliminar el lanzamiento ${currentRelease?.title}?`)) {
+    if (window.confirm(t('delete_release_confirmation', { title: currentRelease?.title }))) {
       try {
         await deleteRelease(release.id);
         setReleases((prevReleases: Release[]) =>
@@ -92,7 +92,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         console.error('Error deleting release:', error);
       }
     }
-  }, [setReleases, release, currentRelease?.title]);
+  }, [setReleases, release, currentRelease?.title, deleteRelease, t]);
 
   const openEditModal = useCallback(() => {
     setShowEditModal(true);
@@ -151,13 +151,15 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             <img
               src={imageUrl}
               alt={currentRelease.title}
-              className="w-full cursor-pointer"
+              className="w-full aspect-square object-cover cursor-pointer"
               loading="lazy"
+              decoding="async"
             />
             <button
+              type="button"
               onClick={handleAudioToggle}
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300"
-              aria-label="Play/Pause Release"
+              className="absolute inset-0 flex items-center justify-center bg-black/30 md:bg-black/50 opacity-100 md:opacity-0 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white transition-opacity duration-300"
+              aria-label={`${t('play')} — ${currentRelease.title}`}
             >
               <FontAwesomeIcon
                 icon={isPlaying && (currentTrackUrl === audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) ? faPause : faPlay}

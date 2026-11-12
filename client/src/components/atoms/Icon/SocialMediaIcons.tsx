@@ -5,8 +5,8 @@ import {
   faInstagram,
   faSoundcloud,
   faBandcamp,
+  faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
-import { Icon } from '@iconify/react';
 
 const SocialMediaIcons: React.FC = React.memo(() => (
   <div className="flex gap-4 text-white sm:justify-center z-10 px-4">
@@ -47,12 +47,7 @@ const SocialMediaIcons: React.FC = React.memo(() => (
       aria-label='View on YouTube'
     >
       <i>
-        <Icon
-          icon="simple-icons:beatport"
-          width="2em"
-          height="2em"
-          style={{ color: 'white' }}
-        />
+        <FontAwesomeIcon icon={faYoutube} size="2x" />
       </i>
     </Link>
   </div>

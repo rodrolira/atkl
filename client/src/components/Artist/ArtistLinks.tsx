@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTwitter,
@@ -9,101 +9,58 @@ import {
   faYoutube,
   faSpotify,
 } from '@fortawesome/free-brands-svg-icons';
-import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { Artist } from '@/types/interfaces/Artist';
+import { safeExternalUrl } from '@/utils/utils';
 
 interface ArtistLinksProps {
-  artist: Artist
+  artist: Artist;
 }
 
-const ArtistLinks: React.FC<ArtistLinksProps> = React.memo(({ artist }) => {
-  const memoizedFaTwitter = useMemo(() => faTwitter, [faTwitter]);
-  const memoizedFaInstagram = useMemo(() => faInstagram, [faInstagram]);
-  const memoizedFaFacebook = useMemo(() => faFacebook, [faFacebook]);
-  const memoizedFaSoundcloud = useMemo(() => faSoundcloud, [faSoundcloud]);
-  const memoizedFaBandcamp = useMemo(() => faBandcamp, [faBandcamp]);
-  const memoizedFaYoutube = useMemo(() => faYoutube, [faYoutube]);
-  const memoizedFaSpotify = useMemo(() => faSpotify, [faSpotify]);
+const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => {
+  const links = [
+    { url: artist.twitter_link, label: 'Twitter', icon: <FontAwesomeIcon icon={faTwitter} /> },
+    { url: artist.instagram_link, label: 'Instagram', icon: <FontAwesomeIcon icon={faInstagram} /> },
+    { url: artist.facebook_link, label: 'Facebook', icon: <FontAwesomeIcon icon={faFacebook} /> },
+    { url: artist.soundcloud_link, label: 'SoundCloud', icon: <FontAwesomeIcon icon={faSoundcloud} /> },
+    { url: artist.bandcamp_link, label: 'Bandcamp', icon: <FontAwesomeIcon icon={faBandcamp} /> },
+    { url: artist.youtube_link, label: 'YouTube', icon: <FontAwesomeIcon icon={faYoutube} /> },
+    { url: artist.spotify_link, label: 'Spotify', icon: <FontAwesomeIcon icon={faSpotify} /> },
+    {
+      url: artist.apple_music_link,
+      label: 'Apple Music',
+      icon: <Icon icon="simple-icons:applemusic" width="1em" height="1em" />,
+    },
+    {
+      url: artist.beatport_link,
+      label: 'Beatport',
+      icon: <Icon icon="simple-icons:beatport" width="1em" height="1em" />,
+    },
+  ];
 
-  const memoizedTwitterIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaTwitter} />,
-    [memoizedFaTwitter]
-  );
-  
-  const memoizedInstagramIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaInstagram} />,
-    [memoizedFaInstagram]
-  );
-  
-  const memoizedFacebookIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaFacebook} />,
-    [memoizedFaFacebook]
-  );
-  
-  const memoizedSoundcloudIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaSoundcloud} />,
-    [memoizedFaSoundcloud]
-  );
-  
-  const memoizedBandcampIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaBandcamp} />,
-    [memoizedFaBandcamp]
-  );
-  
-  const memoizedYoutubeIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaYoutube} />,
-    [memoizedFaYoutube]
-  );
-  
-  const memoizedSpotifyIcon = useMemo(
-    () => <FontAwesomeIcon icon={memoizedFaSpotify} />,
-    [memoizedFaSpotify]
-  );
+  const visible = links
+    .map((link) => ({ ...link, url: safeExternalUrl(link.url) }))
+    .filter((link) => link.url);
 
-  const memoizedAppleMusicIcon = useMemo(
-    () => (
-      <Icon
-        icon="simple-icons:applemusic"
-        width="1em"
-        height="1em"
-        className="text-gray-400 hover:text-white"
-      />
-    ),
-    []
-  );
-
-  const memoizedBeatportIcon = useMemo(
-    () => (
-      <Icon
-        icon="simple-icons:beatport"
-        width="1em"
-        height="1em"
-        className="text-gray-400 hover:text-white"
-      />
-    ),
-    []
-  );
-
-  const socialLink = (icon: React.ReactNode, className: string) => (
-    <Link className={className}>
-      {icon}
-    </Link>
-  );
+  if (visible.length === 0) return null;
 
   return (
     <div className="flex flex-wrap space-x-2 text-2xl items-center justify-center py-2 z-10 relative">
-      {artist.twitter_link && socialLink(memoizedTwitterIcon, "text-gray-400 hover:text-white")}
-      {artist.instagram_link && socialLink(memoizedInstagramIcon, "text-gray-400 hover:text-white")}
-      {artist.facebook_link && socialLink(memoizedFacebookIcon, "text-gray-400 hover:text-white")}
-      {artist.soundcloud_link && socialLink(memoizedSoundcloudIcon, "text-gray-400 hover:text-white")}
-      {artist.bandcamp_link && socialLink(memoizedBandcampIcon, "text-gray-400 hover:text-white")}
-      {artist.youtube_link && socialLink(memoizedYoutubeIcon, "text-gray-400 hover:text-white")}
-      {artist.spotify_link && socialLink(memoizedSpotifyIcon, "text-gray-400 hover:text-white")}
-      {artist.apple_music_link && socialLink(memoizedAppleMusicIcon, "text-gray-400 hover:text-white")}
-      {artist.beatport_link && socialLink(memoizedBeatportIcon, "text-gray-400 hover:text-white")}
+      {visible.map((link) => (
+        <a
+          key={link.label}
+          href={link.url as string}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${artist.artist_name} — ${link.label}`}
+          title={link.label}
+          className="text-gray-400 hover:text-white focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        >
+          {link.icon}
+        </a>
+      ))}
     </div>
   );
-});
+};
 
 export default React.memo(ArtistLinks);

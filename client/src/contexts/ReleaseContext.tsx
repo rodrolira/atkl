@@ -33,7 +33,9 @@ export const ReleaseProvider: React.FC<{ children: ReactNode }> = ({ children })
     setError(null);
     try {
       const { data } = await getReleasesRequest();
-      setReleases(data.map(normalizeRelease));
+      // El API pagina: devuelve { releases, pagination }. Toleramos ambas formas.
+      const list = Array.isArray(data) ? data : (data?.releases ?? []);
+      setReleases(list.map(normalizeRelease));
     } catch (err) {
       console.error('Error fetching releases:', err);
       setError('No se pudieron cargar los lanzamientos');

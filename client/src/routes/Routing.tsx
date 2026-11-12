@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Auth/Login';
@@ -8,18 +8,14 @@ import ArtistsPage from '@/pages/Artist/ArtistsPage';
 import ArtistPage from '@/pages/Artist/ArtistPage';
 import ReleasesPage from '@/pages/Release/ReleasesPage';
 import LoginAdminPage from '@/pages/Auth/LoginAdminPage';
-import AdminRoutes from './AdminRoutes';
 import AdminDashboard from '@/pages/Admin/AdminDashboard';
-import EditReleaseModal from '@/components/Release/EditRelease/EditReleaseModal';
-// import EditArtist from '@/components/Artist/EditArtist';
 import NotFound from '@/pages/NotFound';
+import Loading from '@/components/atoms/Loading/Loading';
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 const Routing: React.FC = React.memo(() => {
-  const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-
-  const memoizedAdminRoutes = useMemo(() => <AdminRoutes />, []);
+  const { isAuthenticated: adminAuthenticated, loading: adminLoading } = useAdminAuth();
 
   return (
     <Routes>
@@ -37,18 +33,17 @@ const Routing: React.FC = React.memo(() => {
       />
 
       <Route path="/login" element={<Login />} />
-      {/* Admin Routes */}
+      {/* Admin Routes: esperamos a que termine la verificación del token para
+          no redirigir a login a un admin con sesión válida. */}
       <Route path="/admin" element={
-        adminAuthenticated ? (
+        adminLoading ? (
+          <Loading />
+        ) : adminAuthenticated ? (
           <AdminDashboard />
         ) : (
           <Navigate to="/admin/login" replace />
         )
       } />
-      <Route 
-        path="/edit-release/:id" 
-        element={<EditReleaseModal id={0} onClose={() => {}} />} 
-      />
       {/* Redirect to NotFound for unknown paths */}
       <Route path="*" element={<NotFound />} />
     </Routes>
