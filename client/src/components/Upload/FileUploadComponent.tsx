@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useField } from 'formik';
-import { FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 interface FileUploadComponentProps {
   name: string;
@@ -11,6 +10,7 @@ interface FileUploadComponentProps {
 const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, setFieldValue }) => {
   const [, meta] = useField(name);
   const [preview, setPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const previewUrl = useRef<string | null>(null);
 
   useEffect(() => () => {
@@ -26,9 +26,10 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
     }
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.');
+      setFileError('Selecciona un archivo de imagen válido.');
       return;
     }
+    setFileError(null);
 
     if (previewUrl.current) {
       URL.revokeObjectURL(previewUrl.current);
@@ -41,16 +42,20 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
   };
 
   return (
-    <FormGroup className="mb-3">
-      <FormLabel htmlFor={name}>{label}:</FormLabel>
-      <FormControl
+    <div className="mb-3">
+      <label className="block mb-1" htmlFor={name}>{label}:</label>
+      <input
+        id={name}
+        name={name}
         type="file"
         accept="image/*"
         onChange={handleChange}
         aria-invalid={!!meta.error && meta.touched}
+        className="block w-full rounded border border-gray-300 p-2"
       />
+      {fileError && <p role="alert" className="text-red-400 mt-1">{fileError}</p>}
       {preview && <img src={preview} alt="Preview" className="mt-3 w-32 h-32 object-cover" />}
-    </FormGroup>
+    </div>
   );
 };
 

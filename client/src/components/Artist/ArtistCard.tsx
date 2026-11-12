@@ -7,7 +7,6 @@ import Modal from '@/components/Modal/Modal';
 import EditArtistModal from './EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
-import { Button } from 'react-bootstrap';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
@@ -54,16 +53,16 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   }, [artist.Roles, t]);
 
   const memoizedEditButton = useMemo(() => (
-    <Button aria-label={t('edit_artist')} onClick={openEditModal}>
+    <button type="button" aria-label={t('edit_artist')} onClick={openEditModal}>
       <FontAwesomeIcon icon={faEdit} className="text-metallic-gray hover:text-white text-xl mx-2" />
-    </Button>
+    </button>
   ), [t, openEditModal]);
 
   const memoizedDeleteButton = useMemo(() => (
-    <Button onClick={handleDelete} aria-label={t('delete_artist')}>
+    <button type="button" onClick={handleDelete} aria-label={t('delete_artist')}>
       <FontAwesomeIcon icon={faTrash} className="text-gray-400 hover:text-white text-xl mx-2" />
-    </Button>
-  ), [handleDelete]);
+    </button>
+  ), [handleDelete, t]);
 
   return (
     <>

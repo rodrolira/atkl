@@ -13,9 +13,11 @@ const ReleasesPage: React.FC = React.memo(() => {
   return (
     <div>
       <Navbar />
-      <Suspense fallback={<Loading />}>
-        <ReleaseSection /> {/* Renderiza el componente ReleaseSection */}
-      </Suspense>
+      <main>
+        <Suspense fallback={<Loading />}>
+          <ReleaseSection />
+        </Suspense>
+      </main>
     </div>
   );
 });
