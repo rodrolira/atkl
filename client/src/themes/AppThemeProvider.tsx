@@ -1,48 +1,43 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   PaletteOptions,
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
-import { selectMode } from '@/features/user/userSlice';
+import { useThemeMode } from '@/contexts/ThemeModeContext';
+import { token, tokenAlpha } from './tokens';
 
 interface AppThemeProviderProps {
   children: React.ReactNode;
 }
 
 const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
-  const mode = useSelector(selectMode) || 'light';
-  // Agrega validación y control de errores para responsiveFontSizes
-  let theme = createTheme({
+  // Antes leía `selectMode` de Redux pero no lo usaba: la paleta estaba fija
+  // en oscuro con hex hardcodeados. Ahora sigue al mismo contexto que Tailwind
+  // y toma los valores de las variables CSS, así los dos cambian juntos.
+  const { mode } = useThemeMode();
+
+  const theme = useMemo(() => {
+    const t = (name: Parameters<typeof token>[0]) => token(name, mode);
+
+    let built = createTheme({
     palette: {
-      mode: 'dark',
-      primary: { main: '#FFFFFF' },
-      secondary: { main: '#9A9A9A' },
+      mode,
+      primary: { main: t('accent'), contrastText: '#FFFFFF' },
+      secondary: { main: t('muted') },
       background: {
-        default: '#000000',
-        paper: '#000000',
+        default: t('bg'),
+        paper: t('surface'),
       },
       text: {
-        primary: '#FFFFFF',
-        secondary: '#9A9A9A',
-        disabled: '#4A4A4A',
+        primary: t('text'),
+        secondary: t('muted'),
+        disabled: tokenAlpha('muted', mode, 0.5),
       },
-      grey: {
-        50: '#000000',
-        100: '#0A0A0A',
-        200: '#1A1A1A',
-        300: '#2A2A2A',
-        400: '#4A4A4A',
-        500: '#6A6A6A',
-        600: '#8A8A8A',
-        700: '#9A9A9A',
-        800: '#BEBEBE',
-        900: '#FFFFFF',
-      },
+      divider: tokenAlpha('muted', mode, 0.3),
       gradient: {
-        metallic: 'linear-gradient(180deg, #000000 0%, #1A1A1A 100%)',
+        metallic: `linear-gradient(180deg, ${t('bg')} 0%, ${t('surface')} 100%)`,
       },
     } as PaletteOptions,
 
@@ -145,13 +140,17 @@ const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
     },
   });
 
-  try{
-    theme = responsiveFontSizes(theme);
-  } catch (error) {
-    console.error('Error appling responsiveFontSizes:', error);
-  }
-  
-return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-}
+    try {
+      built = responsiveFontSizes(built);
+    } catch (error) {
+      console.error('Error aplicando responsiveFontSizes:', error);
+    }
+
+    return built;
+    // Se reconstruye solo al cambiar de modo; antes se recreaba en cada render.
+  }, [mode]);
+
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};
 
 export default AppThemeProvider;
