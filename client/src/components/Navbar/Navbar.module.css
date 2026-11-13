@@ -6,8 +6,10 @@
   top: 0;
   width: 100%;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.85);
-  border-bottom: 1px solid #9A9A9A;
+  /* Atado a los tokens: con rgba(0,0,0,.85) fijo el navbar quedaba negro
+     tambien en modo claro. El 0.85 mantiene el efecto del backdrop-filter. */
+  background-color: rgb(var(--bg) / 0.85);
+  border-bottom: 1px solid rgb(var(--muted) / 0.6);
 }
 
 .navbarLogoWrapper {

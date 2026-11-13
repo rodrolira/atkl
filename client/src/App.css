@@ -1,22 +1,48 @@
+/* Tokens semánticos del tema. Se declaran como canales RGB separados por
+   espacio (no como #hex) para que Tailwind pueda aplicarles los modificadores
+   de opacidad: rgb(var(--bg) / <alpha-value>) habilita bg-black/30 y similares.
+
+   :root es el modo CLARO y .dark el OSCURO, que es el que lleva el sitio por
+   defecto (index.html pone la clase antes de pintar). Los nombres black/white/
+   metallic-gray apuntan a estos mismos tokens en tailwind.config.js: el código
+   ya los usaba como fondo y texto, así que invierten solos con el tema. */
 :root {
-  /* Negro y rojo. Antes el fondo iba de verde (7,81,18) a violeta (34,15,46)
-     y el loader era azul: colores fuera de la paleta de la marca. */
-  --primary-color: #000000;
-  --secondary-color: #2A0000;
-  --blood: #e10600;
-  --blood-dark: #5a0000;
-  --loader-color: var(--blood);
-  --loader-bg: #1a1a1a;
+  --bg: 255 255 255;
+  --surface: 244 244 244;
+  --text: 10 10 10;
+  /* En claro el gris tiene que ser el oscuro: #9A9A9A sobre blanco da 2,85:1
+     y no llega a AA. #4A4A4A da 9,06:1. */
+  --muted: 74 74 74;
+  --accent: 225 6 0;
+  --accent-hover: 176 5 0;
+
+  --loader-bg: 228 228 228;
+}
+
+.dark {
+  --bg: 0 0 0;
+  --surface: 17 17 17;
+  --text: 255 255 255;
+  --muted: 154 154 154;
+  --accent: 225 6 0;
+  /* Sobre negro el hover va más claro, no más oscuro. */
+  --accent-hover: 255 45 26;
+
+  --loader-bg: 26 26 26;
+}
+
+/* Alias de compatibilidad para el CSS que todavía usa variables sueltas. */
+:root {
+  --blood: rgb(var(--accent));
+  --loader-color: rgb(var(--accent));
 }
 
 /* Estilos generales para móviles pequeños (mobile-first) */
-body,
+/* El fondo del body lo define main.css, que es la hoja global (la que tiene
+   las directivas de @tailwind). Tener la regla en los dos lados hacia que
+   ganara la de main.css segun el orden de importacion. */
 html {
   margin: 0;
-  background-image: linear-gradient(
-    var(--primary-color),
-    var(--secondary-color)
-  );
 }
 
 .App,

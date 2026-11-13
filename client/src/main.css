@@ -11,10 +11,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000000;
-  background-image: radial-gradient(circle, #1A1A1A 1px, transparent 1px), linear-gradient(#0A0A0A 0%, #000000 100%);
+  /* Atado a los tokens de App.css. Antes era #000000 con un degradado y una
+     trama de puntos en #1A1A1A fijos, y esta regla le ganaba a la de App.css,
+     asi que el fondo seguia negro en modo claro.
+     La trama usa el token del texto con opacidad baja para que se lea como
+     puntos oscuros sobre claro y claros sobre oscuro. */
+  background-color: rgb(var(--bg));
+  background-image:
+    radial-gradient(circle, rgb(var(--text) / 0.1) 1px, transparent 1px),
+    linear-gradient(rgb(var(--bg)) 0%, rgb(var(--accent) / 0.1) 100%);
   background-size: 20px 20px, 100% 100%;
-  color: #FFFFFF;
+  color: rgb(var(--text));
   overflow-x: hidden;
 }
 
@@ -25,20 +32,11 @@ code {
 
 a {
   z-index: 1000000;
-  color: #FFFFFF;
+  /* Tokens: en modo claro un link blanco sobre blanco era invisible. */
+  color: rgb(var(--text));
   text-decoration: none;
 }
 
 a:hover {
-  color: #9A9A9A;
+  color: rgb(var(--accent));
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-a {
-  z-index: 1000000;
-}
-

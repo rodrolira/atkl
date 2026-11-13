@@ -8,6 +8,7 @@ import {
   AddReleaseButton,
   AdminLogoutButton,
 } from '@/components/Button/CircularButtons';
+import ThemeToggle from './ThemeToggle';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
 const Navbar: React.FC = React.memo(() => {
@@ -47,18 +48,20 @@ const Navbar: React.FC = React.memo(() => {
           )}
 
           {/* Navbar menu for mobile view */}
-          <div className="w-full flex items-center justify-end h-1/2 sm:hidden">
+          <div className="w-full flex items-center justify-end gap-1 h-1/2 sm:hidden">
+            <ThemeToggle />
             {memoizedNavbarMenuMobile}
           </div>
         </div>
 
         {/* Navbar menu for larger screens */}
-        <div className="hidden md:flex md:flex-row w-auto">
-          <NavbarMenu 
-            isDialogOpen={false} 
-            handleClose={handleClose} 
-            handleArtistAdded={handleArtistAdded} 
+        <div className="hidden md:flex md:flex-row md:items-center w-auto">
+          <NavbarMenu
+            isDialogOpen={false}
+            handleClose={handleClose}
+            handleArtistAdded={handleArtistAdded}
           />
+          <ThemeToggle className="mr-3" />
         </div>
       </div>
     </nav>

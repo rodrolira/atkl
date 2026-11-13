@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx}',
@@ -20,16 +21,34 @@ export default {
     },
     extend: {
     colors: {
-      // Paleta del manual de marca (src/assets/atkl.jpeg): negro principal,
-      // blanco para logo y texto, gris metálico de acento.
-      black: '#000000',
-      white: '#FFFFFF',
-      'metallic-gray': '#9A9A9A',
-      'metallic-gray-dark': '#4A4A4A',
-      // Rojo de acento. No está en el manual: se suma como color de énfasis
-      // sobre el negro, reemplazando los verdes y violetas sueltos que había.
-      blood: '#E10600',
-      'blood-dark': '#5A0000',
+      // Tokens semánticos. Los valores viven en src/App.css como canales RGB,
+      // con :root = modo claro y .dark = modo oscuro, así que estos nombres
+      // cambian solos con el tema. El formato rgb(var(--x) / <alpha-value>)
+      // es lo que mantiene vivos los modificadores de opacidad (bg-bg/30).
+      bg: 'rgb(var(--bg) / <alpha-value>)',
+      surface: 'rgb(var(--surface) / <alpha-value>)',
+      text: 'rgb(var(--text) / <alpha-value>)',
+      muted: 'rgb(var(--muted) / <alpha-value>)',
+      accent: 'rgb(var(--accent) / <alpha-value>)',
+      'accent-hover': 'rgb(var(--accent-hover) / <alpha-value>)',
+
+      // Nombres heredados del manual de marca. El código ya los usaba como
+      // fondo y texto (bg-black + text-white), no como colores literales, así
+      // que apuntan a los mismos tokens y ~50 archivos invierten sin tocarlos.
+      // Para código nuevo conviene usar los nombres semánticos de arriba.
+      black: 'rgb(var(--bg) / <alpha-value>)',
+      white: 'rgb(var(--text) / <alpha-value>)',
+      'metallic-gray': 'rgb(var(--muted) / <alpha-value>)',
+      'metallic-gray-dark': 'rgb(var(--muted) / <alpha-value>)',
+      blood: 'rgb(var(--accent) / <alpha-value>)',
+      'blood-dark': 'rgb(var(--accent-hover) / <alpha-value>)',
+
+      // Literales que NO deben invertir: overlays sobre imagen y textos sobre
+      // la portada, que siempre van sobre un fondo oscuro propio.
+      'pure-black': '#000000',
+      'pure-white': '#FFFFFF',
+      transparent: 'transparent',
+      current: 'currentColor',
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
