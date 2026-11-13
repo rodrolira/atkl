@@ -15,8 +15,12 @@ const Logo: React.FC<LogoProps> = memo(({ isAdminSignin }) => {
     >
       <img
         alt="ATKL Records logo"
-        src="/logo.jpg"
-        className={`max-w-full max-h-full object-contain invert ${
+        src="/logo.png"
+        // El archivo es verde con fondo transparente. `invert` solo lo volvía
+        // magenta — justo la variante que el manual de marca prohíbe
+        // ("No cambiar colores"). `brightness-0` lo aplana a silueta negra y
+        // el `invert` la pasa a blanca, que es el uso correcto sobre negro.
+        className={`max-w-full max-h-full object-contain brightness-0 invert ${
           isAdminSignin ? 'w-full h-full' : 'md:mx-0'
         }`}
       />

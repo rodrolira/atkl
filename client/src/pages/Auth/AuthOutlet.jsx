@@ -21,9 +21,10 @@ function AuthOutlet({ children, header }) {
           </Typography>
         ) : (
           <img
-            src="/logo.jpg"
+            src="/logo.png"
             alt="ATKL Records logo"
-            style={{ width: '60px', height: 'auto', filter: 'invert(1)' }}
+            // brightness(0) antes de invert: si no, el logo verde sale magenta.
+            style={{ width: '60px', height: 'auto', filter: 'brightness(0) invert(1)' }}
           />
         )}
         {children}
