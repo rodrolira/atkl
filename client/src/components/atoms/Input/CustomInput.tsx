@@ -7,7 +7,6 @@ import {
   InputBase,
   Typography,
 } from '@mui/material';
-import { colors } from '@/themes/theme';
 import CustomTextInput from './CustomTextInput';
 
 // Define the props type for the CustomInput component
@@ -67,14 +66,17 @@ const CustomInput = React.memo(React.forwardRef<HTMLInputElement, CustomInputPro
         }}
         value={value}
         sx={{
-          bgcolor: colors.green[800],
+          // Resto de la paleta vieja: estos campos eran verdes (colors.green de theme.jsx)
+          // y quedaban fuera del negro y rojo del resto del sitio.
+          bgcolor: '#111111',
           color: 'white',
           p: 1,
           paddingX: 1,
           borderRadius: '5px',
           border: '1px solid',
-          borderColor: colors.green[700],
+          borderColor: '#4A4A4A',
           height: '30px',
+          '&:focus-within': { borderColor: '#E10600' },
         }}
         endAdornment={
           type === 'password' &&

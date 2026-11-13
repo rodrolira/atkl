@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@/pages/Home/Home';
-import Login from '@/pages/Auth/Login';
-import Register from '@/pages/Auth/Register';
 import AboutPage from '@/pages/About/AboutPage';
 import ArtistsPage from '@/pages/Artist/ArtistsPage';
 import ArtistPage from '@/pages/Artist/ArtistPage';
 import ReleasesPage from '@/pages/Release/ReleasesPage';
-import LoginAdminPage from '@/pages/Auth/LoginAdminPage';
-import AdminDashboard from '@/pages/Admin/AdminDashboard';
 import NotFound from '@/pages/NotFound';
 import Loading from '@/components/atoms/Loading/Loading';
+
+// El panel de administración y los formularios de sesión los ve una sola
+// persona, pero viajaban en el mismo bundle que la portada. Se cargan al
+// entrar a su ruta. Las páginas públicas quedan en carga directa a propósito:
+// diferirlas solo agregaría un parpadeo en la primera pintura.
+//
+// Nota: esto divide por ruta, no por librería. El intento anterior de separar
+// por librería (manualChunks en vite.config) dejaba React en un chunk distinto
+// del de los paquetes que leen sus internals y rompía la página entera.
+const Login = React.lazy(() => import('@/pages/Auth/Login'));
+const Register = React.lazy(() => import('@/pages/Auth/Register'));
+const LoginAdminPage = React.lazy(() => import('@/pages/Auth/LoginAdminPage'));
+const AdminDashboard = React.lazy(() => import('@/pages/Admin/AdminDashboard'));
 
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
@@ -18,6 +27,7 @@ const Routing: React.FC = React.memo(() => {
   const { isAuthenticated: adminAuthenticated, loading: adminLoading } = useAdminAuth();
 
   return (
+    <Suspense fallback={<Loading />}>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/artists" element={<ArtistsPage />} />
@@ -47,6 +57,7 @@ const Routing: React.FC = React.memo(() => {
       {/* Redirect to NotFound for unknown paths */}
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </Suspense>
   );
 });
 

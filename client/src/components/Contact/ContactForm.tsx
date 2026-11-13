@@ -58,7 +58,7 @@ const ContactForm: React.FC = () => {
               {t('name')}
             </label>
             <input
-              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               name="name"
@@ -73,7 +73,7 @@ const ContactForm: React.FC = () => {
               {t('email')}
             </label>
             <input
-              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               name="email"
@@ -88,7 +88,7 @@ const ContactForm: React.FC = () => {
               {t('description_optional')}
             </label>
             <textarea
-              className="shadow appearance-none border border-purple-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               name="description"
               value={formData.description}
@@ -98,7 +98,7 @@ const ContactForm: React.FC = () => {
           <div className="flex items-center justify-between mx-auto">
             <button
               disabled={isSubmitting}
-              className="bg-[#881CBA] hover:bg-purple-700 text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blood hover:bg-blood-dark text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               {isSubmitting ? t('submitting') : t('submit')}
