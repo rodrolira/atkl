@@ -8,7 +8,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed:admin": "node createAdmin.js",
-    "vercel-build": "pnpm generate && prisma migrate deploy && next build",
+    "seed:generos": "node scripts/seed-generos.js",
+    "importar:bandcamp": "node scripts/importar-bandcamp.js",
     "start-prod": "NODE_ENV=production node index.js"
   },
   "keywords": [],
