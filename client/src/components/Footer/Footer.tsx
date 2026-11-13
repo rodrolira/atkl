@@ -14,7 +14,7 @@ type FooterColumn = { title: string; links: FooterLink[] };
 const SOCIAL = {
   instagram: 'https://www.instagram.com/atkl.records/',
   soundcloud: 'https://soundcloud.com/atkl.records',
-  bandcamp: 'https://www.bandcamp.com/atkl.records',
+  bandcamp: 'https://atklrecords.bandcamp.com',
   youtube: 'https://www.youtube.com/channel/UC-9-kyTW8ZkZNDHQyHvryaw',
 };
 

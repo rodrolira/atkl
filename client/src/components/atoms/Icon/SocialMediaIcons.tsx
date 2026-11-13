@@ -31,7 +31,7 @@ const SocialMediaIcons: React.FC = React.memo(() => (
       </i>
     </Link>
     <Link
-      to="https://www.bandcamp.com/atkl.records"
+      to="https://atklrecords.bandcamp.com"
       target="_blank"
       rel="noopener noreferrer"
       aria-label='View on Bandcamp'
