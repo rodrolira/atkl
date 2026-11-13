@@ -3,8 +3,8 @@ import express from 'express'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import dotenv from 'dotenv'
 import rateLimit from 'express-rate-limit'
+import { loadEnv } from './config/loadEnv.js'
 import authRoutes from './src/routes/auth.routes.js'
 import artistsRoutes from './src/routes/artists.routes.js'
 import releasesRoutes from './src/routes/releases.routes.js'
@@ -14,7 +14,7 @@ import contactFormRoutes from './src/routes/contact-form.routes.js'
 import rolesRouter from './src/routes/roles.routes.js'
 import discographyRoutes from './src/routes/discography.routes.js'
 
-dotenv.config()
+loadEnv()
 
 const app = express()
 const isProduction = process.env.NODE_ENV === 'production'

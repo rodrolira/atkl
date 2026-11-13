@@ -1,8 +1,8 @@
 import express from 'express'
 import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
+import { loadEnv } from '../../config/loadEnv.js'
 
-dotenv.config()
+loadEnv()
 
 const router = express.Router()
 

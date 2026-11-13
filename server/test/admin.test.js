@@ -3,7 +3,7 @@ import { createToken, findAdmin, createAdmin, loginAdmin, findAdminByUsername, f
 import Admin from '../src/models/admin.model.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
+import { loadEnv } from '../config/loadEnv.js';
 
 jest.mock('bcryptjs');
 
@@ -12,7 +12,7 @@ jest.mock('../src/models/admin.model.js', () => ({
   create: jest.fn()
 }));
 
-dotenv.config();
+loadEnv();
 
 describe('createToken', () => {
   it('should create valid JWT token when given valid adminId', () => {

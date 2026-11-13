@@ -1,8 +1,8 @@
-import dotenv from 'dotenv'
+import { loadEnv } from './config/loadEnv.js'
 import sequelize from './db/sequelize.js'
 import Admin from './src/models/admin.model.js'
 
-dotenv.config()
+loadEnv()
 
 const { ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
 

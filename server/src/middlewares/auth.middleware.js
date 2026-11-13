@@ -1,8 +1,8 @@
 // middleware/auth.middleware.js
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+import { loadEnv } from '../../config/loadEnv.js'
 
-dotenv.config()
+loadEnv()
 
 export const authenticate = (requiredRole = null) => (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
