@@ -26,6 +26,9 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
+      bcryptjs:
+        specifier: ^2.4.3
+        version: 2.4.3
       cloudinary:
         specifier: ^2.5.1
         version: 2.5.1
@@ -132,9 +135,6 @@ importers:
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
-      bcryptjs:
-        specifier: ^2.4.3
-        version: 2.4.3
       eslint:
         specifier: ^8.57.1
         version: 8.57.1
@@ -2469,6 +2469,7 @@ packages:
 
   'server@file:':
     resolution: {directory: '', type: directory}
+    engines: {node: '>=20'}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
@@ -5349,12 +5350,14 @@ snapshots:
       '@testing-library/jest-dom': 6.6.3
       '@testing-library/react': 16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
+      bcryptjs: 2.4.3
       cloudinary: 2.5.1
       cookie-parser: 1.4.7
       cors: 2.8.5
       dotenv: 16.4.7
       express: 4.21.2
       express-fileupload: 1.5.1
+      express-rate-limit: 8.7.4(express@4.21.2)
       formidable: 3.5.2
       is-boolean-object: 1.2.0
       jsonwebtoken: 9.0.2
