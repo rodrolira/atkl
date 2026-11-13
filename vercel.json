@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "pnpm install --dir client",
+  "installCommand": "pnpm install --dir client --prod=false",
   "buildCommand": "pnpm --dir client run build",
   "outputDirectory": "client/dist",
   "rewrites": [
