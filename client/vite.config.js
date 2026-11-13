@@ -21,24 +21,14 @@ export default defineConfig({
     outDir: 'dist',
     // Sin sourcemaps públicos: antes se publicaban 13 MB de código fuente.
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        // Separamos las librerías grandes para no servir un único vendor de 1 MB.
-        manualChunks(id) {
-          if (!id.includes('node_modules')) return undefined;
-          if (id.includes('@mui') || id.includes('@emotion')) return 'mui';
-          if (id.includes('@fortawesome') || id.includes('react-icons') || id.includes('@iconify'))
-            return 'icons';
-          if (id.includes('framer-motion')) return 'motion';
-          if (id.includes('i18next')) return 'i18n';
-          if (id.includes('react-bootstrap') || id.includes('flowbite')) return 'ui';
-          if (id.includes('formik') || id.includes('yup')) return 'forms';
-          if (id.includes('react-dom') || id.includes('react-router') || id.includes('/react/'))
-            return 'react';
-          return 'vendor';
-        },
-      },
-    },
+    // Sin manualChunks a mano. El config anterior repartía las dependencias por
+    // nombre de ruta y dejaba React en un chunk distinto del de los paquetes que
+    // leen sus internals (use-sync-external-store, react-transition-group...).
+    // Esos chunks inicializaban antes que React y reventaban con
+    // "Cannot read properties of undefined (reading 'useSyncExternalStore')",
+    // dejando TODA la página en blanco. Rollup ya conoce el grafo de
+    // dependencias y ordena los chunks solo; los imports dinámicos del código
+    // (secciones del home) siguen generando chunks por separado igual.
   },
   resolve: {
     alias: {
