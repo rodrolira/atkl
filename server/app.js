@@ -37,12 +37,20 @@ app.use((req, res, next) => {
   next()
 })
 
-// Lista de orígenes permitidos producción y desarrollo
+// Lista de orígenes permitidos producción y desarrollo.
+// CORS_ORIGINS (separados por coma) permite sumar dominios sin tocar código:
+// hace falta porque las URLs de preview de Vercel cambian en cada deploy y un
+// frontend nuevo, si no, queda bloqueado hasta redesplegar el servidor.
 const allowedOrigins = [
   'http://localhost:5173',
+  'http://localhost:4173',
   'https://atkl.vercel.app',
   'https://atkl.onrender.com',
   'http://localhost:42423',
+  ...(process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean),
 ]
 
 app.use(
