@@ -19,7 +19,24 @@ export default {
       desktop: '1280px',
     },
     extend: {
-      fontSize: {
+    colors: {
+      // Paleta del manual de marca (src/assets/atkl.jpeg): negro principal,
+      // blanco para logo y texto, gris metálico de acento.
+      black: '#000000',
+      white: '#FFFFFF',
+      'metallic-gray': '#9A9A9A',
+      'metallic-gray-dark': '#4A4A4A',
+      // Rojo de acento. No está en el manual: se suma como color de énfasis
+      // sobre el negro, reemplazando los verdes y violetas sueltos que había.
+      blood: '#E10600',
+      'blood-dark': '#5A0000',
+    },
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+      display: ['"Inter Tight"', 'sans-serif'],
+      mono: ['"JetBrains Mono"', 'monospace'],
+    },
+    fontSize: {
         xxs: '.6rem',
         xs: '.75rem',
         sm: '.875rem',

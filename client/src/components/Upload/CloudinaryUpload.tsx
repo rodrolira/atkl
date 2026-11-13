@@ -8,6 +8,7 @@ const CloudinaryUpload: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   if (!adminAuthenticated) {
     return <p className="text-red-500">🚫 No tienes permisos para subir archivos.</p>;
@@ -20,8 +21,12 @@ const CloudinaryUpload: React.FC = () => {
   };
 
   const handleUpload = async () => {
-    if (files.length === 0) return alert("Selecciona al menos un archivo para subir.");
+    if (files.length === 0) {
+      setUploadError('Selecciona al menos un archivo para subir.');
+      return;
+    }
 
+    setUploadError(null);
     setUploading(true);
     const uploadedFiles: string[] = [];
 
@@ -32,30 +37,36 @@ const CloudinaryUpload: React.FC = () => {
       formData.append("folder", import.meta.env.VITE_CLOUDINARY_FOLDER || "");
 
       try {
+        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
         const response = await fetch(
-          'https://res.cloudinary.com/dotfwyxwr/image/upload/releases/sample.jpg',
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           { method: "POST", body: formData }
         );
 
+        if (!response.ok) throw new Error(`Cloudinary respondió ${response.status}`);
+
         const data = await response.json();
-        uploadedFiles.push(data.secure_url);
+        if (data.secure_url) uploadedFiles.push(data.secure_url);
       } catch (error) {
-        console.error("Error al subir el archivo:", error);
+        setUploadError(error instanceof Error ? error.message : 'Error al subir el archivo');
       }
     }
 
     setUploadedUrls((prevUrls) => [...prevUrls, ...uploadedFiles]);
     setUploading(false);
-    alert("Archivos subidos correctamente!");
   };
 
   return (
     <div className="upload-container">
-      <input type="file" multiple onChange={handleFileChange} />
+      <input type="file" multiple accept="image/*,audio/*" onChange={handleFileChange} />
       <Button onClick={handleUpload} disabled={uploading}>
         {uploading ? <CircularProgress size={24} /> : "Subir Archivos"}
       </Button>
-      
+
+      {uploadError && (
+        <p role="alert" className="text-red-400">{uploadError}</p>
+      )}
+
       {uploadedUrls.length > 0 && (
         <div>
           <h3>Archivos Subidos:</h3>

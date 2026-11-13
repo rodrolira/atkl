@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from 'react'; // Import useEffect and useState
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Title from '@/components/atoms/Title/Title';
 import Navbar from '@/components/Navbar/Navbar';
-import TeamMemberCard from '@/components/Team/TeamMemberCard'; // Adjust the import path as necessary
 
 function AboutPage() {
   const { t } = useTranslation();
-  const [teamMembers, setTeamMembers] = useState([]); // State to hold team members
-
-  useEffect(() => {
-    // Datos locales para los miembros del equipo
-    const localTeamMembers = [
-      { id: 1, name: 'John Doe', role: 'CEO', bio: 'Leader and visionary.', imageUrl: 'https://example.com/john.jpg' },
-      { id: 2, name: 'Jane Smith', role: 'CTO', bio: 'Tech expert and strategist.', imageUrl: 'https://example.com/jane.jpg' },
-      { id: 3, name: 'Alice Johnson', role: 'CFO', bio: 'Financial guru and operations leader.', imageUrl: 'https://example.com/alice.jpg' },
-      // Agregar más miembros si es necesario
-    ];
-
-    setTeamMembers(localTeamMembers); // Establecer los miembros del equipo en el estado
-  }, []);
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-black text-white">
+      <main className="min-h-screen bg-black text-white">
         <section id="about" className="container mx-auto p-4 sm:p-16">
           <Title>{t('aboutSection.title')}</Title>
           <p className="text-sm sm:text-xl">
@@ -46,17 +32,11 @@ function AboutPage() {
               {t('aboutSection.visionText')}
             </p>
 
-            <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4">
-              {t('aboutSection.teamTitle')}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> {/* Grid layout for cards */}
-              {teamMembers.map((member) => (
-                <TeamMemberCard key={member.id} teamMember={member} /> // Render TeamMemberCard for each member
-              ))}
-            </div>
+            {/* El equipo se mostrará cuando se conecte /api/team.
+                Antes había datos de ejemplo (John Doe / example.com) visibles en producción. */}
           </div>
         </section>
-      </div>
+      </main>
     </>
   );
 }

@@ -1,70 +1,34 @@
-import MillionLint from '@million/lint';
-import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import * as path from 'path';
-import compression from 'vite-plugin-compression';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    // million.vite({
-    //   auto: true,
-    // }),
-    // MillionLint.vite({
-    //   enabled: true
-    // }),
-    react(), compression({
-      brotli: true, // Enable Brotli compression
-      gzip: true,    // Enable gzip compression
-    })],
+  plugins: [react()],
   css: {
     postcss: {
-      plugins: [
-        tailwindcss(),
-        autoprefixer(),
-      ],
+      plugins: [tailwindcss(), autoprefixer()],
     },
   },
   server: {
-    configureServer: (server) => {
-      server.middlewares.use((req, res, next) => {
-        // Establecer cabeceras de seguridad
-        res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-        res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://trusted.cdn.com;");
-        res.setHeader('X-Frame-Options', 'DENY');
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        res.setHeader('Permissions-Policy', 'geolocation=(), microphone=()');
-        res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
-
-        next();
-      });
-    },
     host: true,
     strictPort: true,
-    cors: true,
   },
   build: {
-    target: 'esnext',
+    target: 'es2020',
     outDir: 'dist',
-    sourcemap: true,
-    rollupOptions: {
-      assetFileNames:(assetInfo) => {
-        if (assetInfo.name === '_headers' ) return '_headers';
-        return assetInfo.name;
-      },
-      external: ['lodash', 'lodash-es'],
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
-      },
-    },
+    // Sin sourcemaps públicos: antes se publicaban 13 MB de código fuente.
+    sourcemap: false,
+    // Sin manualChunks a mano. El config anterior repartía las dependencias por
+    // nombre de ruta y dejaba React en un chunk distinto del de los paquetes que
+    // leen sus internals (use-sync-external-store, react-transition-group...).
+    // Esos chunks inicializaban antes que React y reventaban con
+    // "Cannot read properties of undefined (reading 'useSyncExternalStore')",
+    // dejando TODA la página en blanco. Rollup ya conoce el grafo de
+    // dependencias y ordena los chunks solo; los imports dinámicos del código
+    // (secciones del home) siguen generando chunks por separado igual.
   },
   resolve: {
     alias: {
@@ -79,5 +43,5 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: 'src/setupTests.js',
     clearMocks: true,
-  }
+  },
 });

@@ -11,7 +11,7 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Form, Field, FieldProps } from 'formik';
+import { Formik, Form, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useArtists } from '@/contexts/ArtistContext';
@@ -19,7 +19,6 @@ import { useGenres } from '@/contexts/GenreContext';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
 import { useTranslation } from 'react-i18next';
 import CustomTextInput from '@/components/atoms/Input/CustomTextInput';
-import Button from '@/components/Button/Button';
 
 interface AddReleaseFormProps {
   open: boolean;
@@ -37,41 +36,25 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
   const { createRelease } = useReleases(); // Contexto de releases
   const { artists, fetchArtists } = useArtists();
   const { genres, fetchGenres } = useGenres();
-  const [customArtists, setCustomArtists] = useState<string[]>([]);
 
   useEffect(() => {
     fetchArtists();
     fetchGenres();
   }, [fetchArtists, fetchGenres]);
 
-  const handleAddCustomArtist = () => {
-    setCustomArtists((prev) => [...prev, '']);
-  };
-
-  const handleCustomArtistChange = (index: number, value: string) => {
-    setCustomArtists((prev) => {
-      const updatedArtists = [...prev];
-      updatedArtists[index] = value;
-      return updatedArtists;
-    });
-  };
-
   const onSubmit = async (values: any, actions: any) => {
-    // Combina artistas seleccionados y personalizados
-    const allArtists = [...values.artist_id, ...customArtists.filter(Boolean)];
-
-    // Crear un nuevo release localmente
-    const newRelease = {
-      ...values,
-      artist_id: allArtists,
-      id: Date.now(), // Generar ID único
-    };
-
-    createRelease(newRelease); // Llama al método del contexto para guardar el release
-    actions.resetForm();
-    closePopup();
-    if (onReleaseAdded) {
-      onReleaseAdded(newRelease);
+    try {
+      await createRelease(values);
+      actions.resetForm();
+      closePopup();
+      if (onReleaseAdded) {
+        onReleaseAdded(values);
+      }
+    } catch (err) {
+      console.error('Error creating release:', err);
+      setError(t('errors.addRelease'));
+    } finally {
+      actions.setSubmitting(false);
     }
   };
 
@@ -120,9 +103,9 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Title is required'),
             release_date: Yup.date().required('Release date is required'),
-            genre_id: Yup.string().required('Genre is required'),
+            genre_id: Yup.number().required('Genre is required'),
             release_type: Yup.string().required('Release type is required'),
-            artist_id: Yup.array().of(Yup.string()),
+            artist_id: Yup.array().min(1, 'At least one artist is required').of(Yup.number()),
             bandcamp_link: Yup.string(),
             beatport_link: Yup.string(),
             spotify_link: Yup.string(),
@@ -178,6 +161,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     )}
                   </Field>
                 </FormControl>
+                <ErrorMessage name="genre_id" component="div" className="text-red-500 text-sm" />
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Artist</InputLabel>
                   <Field name="artist_id">
@@ -198,14 +182,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                     )}
                   </Field>
                 </FormControl>
-                {customArtists.map((artist, index) => (
-                  <CustomTextInput
-                    key={index}
-                    label={`Custom Artist ${index + 1}`}
-                    value={artist}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCustomArtistChange(index, e.target.value)} name={''}                  />
-                ))}
-                <Button onClick={handleAddCustomArtist}>Add Custom Artist</Button>
+                <ErrorMessage name="artist_id" component="div" className="text-red-500 text-sm" />
                 <FileUploadRelease />
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Release Type</InputLabel>
@@ -249,7 +226,7 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center !bg-[#24db13] text-[#122e0f]"
+          className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center bg-metallic-gray text-black hover:bg-white"
         >
           {isSubmitting ? 'Adding...' : 'Add'}
         </button>

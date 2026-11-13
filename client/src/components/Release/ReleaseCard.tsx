@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
@@ -13,8 +13,7 @@ import { Release } from '@/types/interfaces/Release';
 import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
-import { getImageUrlReleases } from '@/utils/utils';
-import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
+import BandcampPlayer from './BandcampPlayer';
 import { Genre } from '@/types/interfaces/Genre';
 
 interface ReleaseCardProps {
@@ -27,52 +26,18 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { setReleases, releases, deleteRelease } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const {
-    setTrackList,
-    setIsVisible,
-    isPlaying,
-    setIsPlaying,
-    currentTrackUrl,
-    setCurrentTrackUrl,
-    setIsSingle
-  } = useMusicPlayer();
 
-
-  // ✅ Usamos solo Cloudinary para la imagen del lanzamiento
+  // La BD guarda la URL completa de la portada, venga de Cloudinary (subida
+  // desde el panel admin) o del CDN de Bandcamp (importada del sello).
   const imageUrl = useMemo(() => {
     return currentRelease?.imageUrl || '/images/releases/placeholder.png';
   }, [currentRelease?.imageUrl]);
 
-
-  const audioUrl = useMemo(() => {
-    return currentRelease?.audioUrl || null;
-  }, [currentRelease?.audioUrl]);
-
-  // Manejo de la reproducción/pausa del audio
-  const handleAudioToggle = () => {
-    if (currentTrackUrl === release.audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) {
-      setIsPlaying(!isPlaying); // Alternar play/pause si es el mismo track o si pertenece al release actual
-    } else {
-      // Pausar todos los audios antes de reproducir el nuevo
-      document.querySelectorAll('audio').forEach(audio => audio.pause());
-
-      if (release.tracks && release.tracks.length > 0) {
-        // Es un EP, compilación, álbum o VA → lista de reproducción
-        setTrackList(release.tracks);
-        setIsSingle(false);
-        setIsVisible(true);
-        setCurrentTrackUrl(release.tracks[0].audioUrl); // Reproducir primer track
-        setIsPlaying(true);
-      } else if (release.audioUrl) {
-        // Es un single → reproducir solo el track
-        setTrackList([{ id: release.id, title: release.title, audioUrl: release.audioUrl }]);
-        setIsSingle(true);
-        setIsVisible(true);
-        setCurrentTrackUrl(release.audioUrl);
-        setIsPlaying(true);
-      }
-    }
-  };
+  // El audio lo sirve Bandcamp. Antes acá había un handleAudioToggle que leía
+  // release.audioUrl / release.tracks: ninguno de los dos existe en la API
+  // (no hay columna de audio en la BD), así que el botón de play nunca hizo
+  // nada. Se reemplazó por el reproductor embebido de Bandcamp.
+  const bandcampAlbumId = currentRelease?.bandcamp_album_id;
 
   useEffect(() => {
     const releaseFromContext = releases.find((r) => r.id === release.id);
@@ -82,7 +47,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   }, [release.id, releases]);
 
   const handleDelete = useCallback(async () => {
-    if (window.confirm(`¿Estás seguro de que deseas eliminar el lanzamiento ${currentRelease?.title}?`)) {
+    if (window.confirm(t('delete_release_confirmation', { title: currentRelease?.title }))) {
       try {
         await deleteRelease(release.id);
         setReleases((prevReleases: Release[]) =>
@@ -92,7 +57,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         console.error('Error deleting release:', error);
       }
     }
-  }, [setReleases, release, currentRelease?.title]);
+  }, [setReleases, release, currentRelease?.title, deleteRelease, t]);
 
   const openEditModal = useCallback(() => {
     setShowEditModal(true);
@@ -111,7 +76,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
       return currentRelease.artists.map((artist: Artist) =>
         artist.id ? (
           <Link to={`/artists/${artist.id}`} className="block relative" key={artist.id}>
-            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-purple-500">
+            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-metallic-gray">
               {t('artist')}: {artist.artist_name}
             </h3>
           </Link>
@@ -128,7 +93,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   const memoizedButton = useMemo(() => (
     currentRelease?.bandcamp_link ? (
-      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-green-500 hover:bg-green-600 text-black">
+      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-metallic-gray text-black hover:bg-white">
         <p className="font-semibold">{t('buy')}</p>
       </Button>
     ) : null
@@ -140,9 +105,9 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   return (
     <>
-      <BaseCard className="border !border-purple-500">
+      <BaseCard className="border border-metallic-gray/30">
         <div className="w-full rounded-t-lg overflow-hidden relative">
-          <h3 className="text-xl font-bold mt-2">{currentRelease.title}</h3>
+          <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase">{currentRelease.title}</h3>
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
           <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
 
@@ -151,27 +116,27 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             <img
               src={imageUrl}
               alt={currentRelease.title}
-              className="w-full cursor-pointer"
+              className="w-full aspect-square object-cover"
               loading="lazy"
+              decoding="async"
             />
-            <button
-              onClick={handleAudioToggle}
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300"
-              aria-label="Play/Pause Release"
-            >
-              <FontAwesomeIcon
-                icon={isPlaying && (currentTrackUrl === audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) ? faPause : faPlay}
-                className="text-white text-5xl"
-              />
-            </button>
           </div>
+
+          {bandcampAlbumId && (
+            <BandcampPlayer
+              albumId={bandcampAlbumId}
+              title={currentRelease.title}
+              bandcampLink={currentRelease.bandcamp_link}
+              trackCount={currentRelease.bandcamp_track_count}
+            />
+          )}
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">
-              <button className="text-xl mx-2 text-yellow-400 hover:text-yellow-500" onClick={openEditModal}>
+              <button className="text-xl mx-2 text-metallic-gray hover:text-white" onClick={openEditModal}>
                 {editIcon}
               </button>
-              <button className="text-red-400 hover:text-red-500 text-xl mx-2" onClick={handleDelete}>
+              <button className="text-gray-400 hover:text-white text-xl mx-2" onClick={handleDelete}>
                 {trashIcon}
               </button>
             </div>

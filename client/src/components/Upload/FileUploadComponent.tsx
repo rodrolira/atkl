@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useField } from 'formik';
-import { FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 interface FileUploadComponentProps {
   name: string;
@@ -9,9 +8,16 @@ interface FileUploadComponentProps {
 }
 
 const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, setFieldValue }) => {
-  const [field, meta] = useField(name);
+  const [, meta] = useField(name);
   const [preview, setPreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const previewUrl = useRef<string | null>(null);
+
+  useEffect(() => () => {
+    if (previewUrl.current) {
+      URL.revokeObjectURL(previewUrl.current);
+    }
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -20,39 +26,36 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
     }
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.');
+      setFileError('Selecciona un archivo de imagen válido.');
       return;
     }
+    setFileError(null);
 
-    setLoading(true);
-    const reader = new FileReader();
+    if (previewUrl.current) {
+      URL.revokeObjectURL(previewUrl.current);
+    }
 
-    reader.onload = () => {
-      const result = reader.result as string;
-      setPreview(result); // Vista previa local de la imagen.
-      setFieldValue(name, result); // Actualiza el campo en Formik.
-      setLoading(false);
-    };
-
-    reader.onerror = () => {
-      alert('Error reading file.');
-      setLoading(false);
-    };
-
-    reader.readAsDataURL(file); // Convertir imagen a base64.
+    const objectUrl = URL.createObjectURL(file);
+    previewUrl.current = objectUrl;
+    setPreview(objectUrl);
+    setFieldValue(name, file);
   };
 
   return (
-    <FormGroup className="mb-3">
-      <FormLabel htmlFor={name}>{label}:</FormLabel>
-      <FormControl
+    <div className="mb-3">
+      <label className="block mb-1" htmlFor={name}>{label}:</label>
+      <input
+        id={name}
+        name={name}
         type="file"
+        accept="image/*"
         onChange={handleChange}
         aria-invalid={!!meta.error && meta.touched}
+        className="block w-full rounded border border-gray-300 p-2"
       />
-      {loading && <p>Uploading...</p>}
+      {fileError && <p role="alert" className="text-red-400 mt-1">{fileError}</p>}
       {preview && <img src={preview} alt="Preview" className="mt-3 w-32 h-32 object-cover" />}
-    </FormGroup>
+    </div>
   );
 };
 

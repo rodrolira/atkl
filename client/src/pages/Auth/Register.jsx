@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Stack, Typography, TextField, Button, Link } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthOutlet from './AuthOutlet';
 
 function Register() {
@@ -9,7 +9,7 @@ function Register() {
   const email = React.useRef(null);
   const password = React.useRef(null);
   const passwordConf = React.useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const registerHandler = async (e) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ function Register() {
         <Link
           variant="body2"
           sx={{ display: 'inline', ml: 1 }}
-          onClick={() => history.push('/login')}
+          onClick={() => navigate('/login')}
         >
           Sign In
         </Link>

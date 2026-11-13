@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
-import dotenv from "dotenv";
+import { loadEnv } from '../config/loadEnv.js'
 
-dotenv.config();
+loadEnv()
 
 export function createAccessToken (payload) {
   return new Promise((resolve, reject) => {

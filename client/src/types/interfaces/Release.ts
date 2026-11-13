@@ -11,6 +11,10 @@ export interface Release {
     release_type: string;
     release_date?: string;
     bandcamp_link?: string;
+    /** ID numérico del álbum en Bandcamp, para el reproductor embebido. */
+    bandcamp_album_id?: string;
+    /** Cantidad de tracks: define el alto del iframe de Bandcamp. */
+    bandcamp_track_count?: number;
     spotify_link?: string;
     apple_music_link?: string;
     youtube_link?: string;
@@ -22,20 +26,11 @@ export interface Release {
     [key: string]: any;
 }
 
-export interface UseReleaseReturn {
-    release: Release | null;
-    error: string | null;
-    fetchRelease: (releaseId: number) => Promise<void>;
-    updateRelease: (releaseId: number, updatedRelease: Partial<Release>) => Promise<void>;
-    deleteRelease: (releaseId: number) => Promise<void>;
-}
-
 export interface ReleaseContextType {
         releases: Release[];
         loading: boolean;
         error: string | null;
         fetchReleases: () => Promise<void>;
-        fetchRelease: (id: number) => Promise<Release>;
         createRelease: (release: Release) => Promise<void>;
         updateRelease: (id: number, updatedRelease: Partial<Release>) => Promise<void>;
         deleteRelease: (id: number) => Promise<void>;

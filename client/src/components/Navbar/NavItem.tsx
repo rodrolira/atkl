@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface NavItemProps {
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleItemClick }) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   const handleClick = useCallback((event: React.MouseEvent) => {
@@ -27,20 +27,20 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to, handleIte
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else {
-        history.push(to);
+        navigate(to);
       }
     }, 0);
 
     handleItemClick();
-  }, [handleItemClick, history, isHomePage, linkId, to]);
+  }, [handleItemClick, navigate, isHomePage, linkId, to]);
 
   return (
     <li>
       <Link
         to={to}
         onClick={handleClick}
-        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded ${isActive ? 'text-green-700' : 'text-white text-shadow'
-          } hover:bg-gray-700 hover:text-green-600 md:hover:bg-transparent border-gray-700`}
+        className={`nav-link block xl:text-2xl lg:text-xl md:text-lg rounded tracking-wider uppercase ${isActive ? 'text-metallic-gray' : 'text-white text-shadow'
+          } hover:bg-gray-800 hover:text-metallic-gray md:hover:bg-transparent border-gray-800`}
         aria-current={isActive ? 'page' : undefined}
       >
         {text}

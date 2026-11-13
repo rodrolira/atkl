@@ -69,8 +69,12 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ teamMember }) => {
           <Link to={`/team/${currentTeamMember.id}`} className="block relative z-0">
             <img
               className="rounded-t-lg w-full h-auto object-cover"
-              src={`http://localhost:3000/${currentTeamMember.image}`}
+              // La BD guarda la URL completa de Cloudinary. Antes esto le
+              // pegaba http://localhost:3000/ delante, lo que rompía la imagen
+              // en cualquier entorno que no fuera el localhost del dev.
+              src={currentTeamMember.image || '/images/artists/placeholder.png'}
               alt={currentTeamMember.member_name}
+              loading="lazy"
             />
           </Link>
 

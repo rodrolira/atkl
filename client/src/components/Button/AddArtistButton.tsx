@@ -31,7 +31,7 @@ const AddArtistButton: React.FC<AddArtistButtonProps> = () => {
       <Button
         onClick={handleOpen}
         fontWeight="font-bold"
-        colorClass="bg-[#24db13] text-[#051403]"
+        colorClass="bg-metallic-gray text-black hover:bg-white"
       >
         {t('addArtist.title')}
       </Button>

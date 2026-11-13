@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -8,66 +7,104 @@ import Title from '../atoms/Title/Title';
 import { EditArtistModalProps } from '@/types/props/Form/ArtistFormProps';
 import FileUploadComponent from '../Upload/FileUploadComponent';
 import { useArtists } from '@/contexts/ArtistContext';
+import { Role } from '@/types/interfaces/Role';
+import { getRolesRequest } from '@/app/api/roles';
 
-const rolesMock = [
-  { id: 1, label: 'Producer' },
-  { id: 2, label: 'DJ' },
+const SOCIAL_FIELDS = [
+  'twitter_link',
+  'instagram_link',
+  'facebook_link',
+  'soundcloud_link',
+  'bandcamp_link',
+  'youtube_link',
+  'spotify_link',
+  'apple_music_link',
+  'beatport_link',
 ];
+
+const emptyValues = {
+  artist_name: '',
+  email: '',
+  image: '' as string | File,
+  roleIds: [] as number[],
+  bio: '',
+  twitter_link: '',
+  instagram_link: '',
+  facebook_link: '',
+  soundcloud_link: '',
+  bandcamp_link: '',
+  youtube_link: '',
+  spotify_link: '',
+  apple_music_link: '',
+  beatport_link: '',
+};
 
 const validationSchema = Yup.object().shape({
   artist_name: Yup.string().required('Artist name is required'),
+  email: Yup.string().email().required('Email is required'),
   image: Yup.mixed(),
-  roles: Yup.array().required('Role is required'),
+  roleIds: Yup.array().min(1, 'Role is required'),
   bio: Yup.string(),
 });
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
-  const navigate = useHistory();
   const { updateArtist, createArtist, artists } = useArtists();
-  const [initialValues, setInitialValues] = useState<{
-    artist_name: string;
-    image: string | File | null;
-    roles: number[];
-    bio: string;
-  }>({
-    artist_name: '',
-    image: null,
-    roles: [],
-    bio: '',
-  });
+  const [initialValues, setInitialValues] = useState(emptyValues);
+  const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
-    if (id) {
-      // Aquí deberías obtener el artista desde el estado global o API
-      const artist = artists.find((artist) => artist.id === id);
-      if (artist) {
-        setInitialValues({
-          artist_name: artist.artist_name,
-          image: artist.image || '',
-          roles: artist.roleIds,
-          bio: artist.bio || '',
-        });
-      }
+    let cancelled = false;
+
+    getRolesRequest()
+      .then(({ data }) => {
+        if (!cancelled) {
+          setRoles(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching roles:', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!id) {
+      return;
     }
-  }, [id, artists]);  // Añadir artists a las dependencias
 
+    const artist = artists.find((item) => item.id === id);
+    if (artist) {
+      setInitialValues({
+        ...emptyValues,
+        artist_name: artist.artist_name,
+        email: artist.email || '',
+        image: artist.imageUrl || artist.image || '',
+        roleIds: artist.roleIds || [],
+        bio: artist.bio || '',
+        ...SOCIAL_FIELDS.reduce(
+          (links, field) => ({ ...links, [field]: artist[field] || '' }),
+          {} as Record<string, string>
+        ),
+      });
+    }
+  }, [id, artists]);
 
-  const handleSubmit = async (values: any) => {
-    try{
+  const handleSubmit = async (values: typeof emptyValues) => {
+    try {
       if (id) {
-        // Si id está presente, se actualiza el artista.
         await updateArtist(id, values);
       } else {
-        // Si no hay id, se crea un nuevo artista.
         await createArtist(values);
       }
       onClose();
-      } catch (error) {
-        console.error('Error al guardar el artista:', error);
+    } catch (error) {
+      console.error('Error al guardar el artista:', error);
     }
   };
-
 
   return (
     <div className="flex flex-col items-center justify-center z-50 relative">
@@ -81,6 +118,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
           <Form className="form-style">
             <Title className="title-style">{t('edit_artist')}</Title>
             <FieldInput fieldName="artist_name" label={t('artistName')} placeholder="Artist Name" />
+            <FieldInput fieldName="email" label="Email" placeholder="artist@email.com" />
             <FileUploadComponent
               name='image'
               label="Image"
@@ -90,7 +128,7 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
               setFieldValue={setFieldValue}
               values={values}
               t={t}
-              roles={rolesMock}
+              roles={roles}
             />
             <FieldInput fieldName="bio" label="Bio:" as="textarea" />
             <SocialLinksInput t={t} />
@@ -135,18 +173,17 @@ const RolesSelection: React.FC<{
   <FormControl className="mb-4" fullWidth variant="outlined">
     <InputLabel>{t('addArtist.selectRole')}:</InputLabel>
     <Field
-      name="roles"
+      name="roleIds"
       as={Select}
       multiple
-      value={values.roles || []}
+      value={values.roleIds || []}
       className="w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center"
       onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
         setFieldValue(
-          'roles',
-          Array.isArray(e.target.value) ? e.target.value : [] // Asegura que se asigna un array.
+          'roleIds',
+          Array.isArray(e.target.value) ? e.target.value : []
         )
       }
-      
     >
       {roles.map((role) => (
         <MenuItem key={role.id} value={role.id}>
@@ -154,23 +191,13 @@ const RolesSelection: React.FC<{
         </MenuItem>
       ))}
     </Field>
-    <ErrorMessage name="roles" component="div" className="error-message" />
+    <ErrorMessage name="roleIds" component="div" className="error-message" />
   </FormControl>
 );
 
 const SocialLinksInput: React.FC<{ t: any }> = ({ t }) => (
   <>
-    {[
-      'twitter_link',
-      'instagram_link',
-      'facebook_link',
-      'soundcloud_link',
-      'bandcamp_link',
-      'youtube_link',
-      'spotify_link',
-      'apple_music_link',
-      'beatport_link',
-    ].map((link) => (
+    {SOCIAL_FIELDS.map((link) => (
       <FieldInput key={link} fieldName={link} label={t(`social_links.${link}`)} />
     ))}
   </>

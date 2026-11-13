@@ -8,7 +8,7 @@ export const FormSX = {
   userSelect: 'none',
   overflow: 'hidden',
   position: 'absolute',
-  borderRadius: '10px',
+  borderRadius: 0,
   transition: 'transform 0.3s',
   width: { xs: '90%', sm: 400 },
   transform: 'translate(-50%, -50%)',
@@ -20,15 +20,16 @@ export const FormSX = {
   button: {
     height: '3rem',
     color: 'white',
-    textShadow: '1px 1px 1px rgba(0, 0, 0, 0.6)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    fontWeight: '600',
   },
 
   a: {
     fontWeight: '500',
     lineHeight: 1.5,
-    color: 'primary.main',
+    color: '#FFFFFF',
     transition: 'color 0.3s',
-    textShadow: '1px 1px 1px rgba(0, 0, 0, 0.6)',
   },
 
   '@keyframes wawes': {
@@ -54,7 +55,7 @@ export const FormSX = {
     left: '75%',
     animation: 'wawes 6s linear infinite',
     background:
-      'linear-gradient(90deg, rgba(0, 101, 243, 0.2) 0%, rgba(0, 120, 255, 0.4) 100%)',
+      'linear-gradient(90deg, rgba(26, 26, 26, 0.2) 0%, rgba(42, 42, 42, 0.4) 100%)',
   },
 
   '&::after': {
@@ -62,25 +63,38 @@ export const FormSX = {
     left: '70%',
     animation: 'wawes 8s linear infinite',
     background:
-      'linear-gradient(90deg, rgba(0, 110, 255, 0.5) 0%, rgba(0, 120, 255, 0.3) 100%)',
+      'linear-gradient(90deg, rgba(74, 74, 74, 0.5) 0%, rgba(154, 154, 154, 0.3) 100%)',
   },
 
   '& span': {
     fontSize: '0.75rem',
+    color: '#9A9A9A',
   },
   '& input': {
     fontSize: '16px',
-    borderRadius: '5px',
+    borderRadius: 0,
+    color: '#FFFFFF',
+    '&::placeholder': {
+      color: '#9A9A9A',
+    },
   },
   '& label.Mui-focused ': {
     pt: 0.2,
+    color: '#FFFFFF',
   },
   '& .MuiFormLabel-root': {
     fontSize: '16px',
+    color: '#9A9A9A',
   },
   '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#9A9A9A',
+    },
     '&:hover fieldset': {
-      borderColor: 'primary.main',
+      borderColor: '#FFFFFF',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#FFFFFF',
     },
   },
 };

@@ -17,6 +17,7 @@ const ContactForm: React.FC = () => {
   });
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,25 +26,28 @@ const ContactForm: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
     try {
-      const response = await sendContactForm(formData);
-
-      if (!response.ok) {
-        throw new Error(t('error_submitting_form'));
-      }
-
+      await sendContactForm(formData);
       setFormData({ name: '', email: '', description: '' });
       setFormSubmitted(true);
-      console.log(t('form_sent_success'));
-    } catch (error) {
-      console.error(t('error_submitting_form'), error);
+    } catch {
+      setSubmitError(t('error_submitting_form'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div>
       {formSubmitted && (
-        <div className="text-green-600 font-bold text-center bg-green-100 w-fit p-2 mx-auto rounded">{t('form_sent_success')}</div>
+        <div role="status" className="text-metallic-gray font-bold text-center bg-[#0A0A0A] w-fit p-2 mx-auto rounded border border-metallic-gray/30">{t('form_sent_success')}</div>
+      )}
+      {submitError && (
+        <div role="alert" className="text-red-400 font-bold text-center bg-[#0A0A0A] w-fit p-2 mx-auto rounded border border-red-400/30">{submitError}</div>
       )}
       <div className="max-w-md mx-auto rounded sm:px-8 sm:pt-6 sm:pb-8 p-4 mb-4">
         <h2 className="text-2xl font-bold mb-4 text-center">{t('subscribe')}</h2>
