@@ -11,6 +11,10 @@ export interface Release {
     release_type: string;
     release_date?: string;
     bandcamp_link?: string;
+    /** ID numérico del álbum en Bandcamp, para el reproductor embebido. */
+    bandcamp_album_id?: string;
+    /** Cantidad de tracks: define el alto del iframe de Bandcamp. */
+    bandcamp_track_count?: number;
     spotify_link?: string;
     apple_music_link?: string;
     youtube_link?: string;

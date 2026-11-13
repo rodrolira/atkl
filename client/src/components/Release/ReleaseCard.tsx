@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
@@ -13,8 +13,7 @@ import { Release } from '@/types/interfaces/Release';
 import Loading from '../atoms/Loading/Loading';
 import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
-import { getImageUrlReleases } from '@/utils/utils';
-import { useMusicPlayer } from '@/contexts/MusicPlayerContext';
+import BandcampPlayer from './BandcampPlayer';
 import { Genre } from '@/types/interfaces/Genre';
 
 interface ReleaseCardProps {
@@ -27,52 +26,18 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   const { setReleases, releases, deleteRelease } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const {
-    setTrackList,
-    setIsVisible,
-    isPlaying,
-    setIsPlaying,
-    currentTrackUrl,
-    setCurrentTrackUrl,
-    setIsSingle
-  } = useMusicPlayer();
 
-
-  // ✅ Usamos solo Cloudinary para la imagen del lanzamiento
+  // La BD guarda la URL completa de la portada, venga de Cloudinary (subida
+  // desde el panel admin) o del CDN de Bandcamp (importada del sello).
   const imageUrl = useMemo(() => {
     return currentRelease?.imageUrl || '/images/releases/placeholder.png';
   }, [currentRelease?.imageUrl]);
 
-
-  const audioUrl = useMemo(() => {
-    return currentRelease?.audioUrl || null;
-  }, [currentRelease?.audioUrl]);
-
-  // Manejo de la reproducción/pausa del audio
-  const handleAudioToggle = () => {
-    if (currentTrackUrl === release.audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) {
-      setIsPlaying(!isPlaying); // Alternar play/pause si es el mismo track o si pertenece al release actual
-    } else {
-      // Pausar todos los audios antes de reproducir el nuevo
-      document.querySelectorAll('audio').forEach(audio => audio.pause());
-
-      if (release.tracks && release.tracks.length > 0) {
-        // Es un EP, compilación, álbum o VA → lista de reproducción
-        setTrackList(release.tracks);
-        setIsSingle(false);
-        setIsVisible(true);
-        setCurrentTrackUrl(release.tracks[0].audioUrl); // Reproducir primer track
-        setIsPlaying(true);
-      } else if (release.audioUrl) {
-        // Es un single → reproducir solo el track
-        setTrackList([{ id: release.id, title: release.title, audioUrl: release.audioUrl }]);
-        setIsSingle(true);
-        setIsVisible(true);
-        setCurrentTrackUrl(release.audioUrl);
-        setIsPlaying(true);
-      }
-    }
-  };
+  // El audio lo sirve Bandcamp. Antes acá había un handleAudioToggle que leía
+  // release.audioUrl / release.tracks: ninguno de los dos existe en la API
+  // (no hay columna de audio en la BD), así que el botón de play nunca hizo
+  // nada. Se reemplazó por el reproductor embebido de Bandcamp.
+  const bandcampAlbumId = currentRelease?.bandcamp_album_id;
 
   useEffect(() => {
     const releaseFromContext = releases.find((r) => r.id === release.id);
@@ -151,22 +116,20 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             <img
               src={imageUrl}
               alt={currentRelease.title}
-              className="w-full aspect-square object-cover cursor-pointer"
+              className="w-full aspect-square object-cover"
               loading="lazy"
               decoding="async"
             />
-            <button
-              type="button"
-              onClick={handleAudioToggle}
-              className="absolute inset-0 flex items-center justify-center bg-black/30 md:bg-black/50 opacity-100 md:opacity-0 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white transition-opacity duration-300"
-              aria-label={`${t('play')} — ${currentRelease.title}`}
-            >
-              <FontAwesomeIcon
-                icon={isPlaying && (currentTrackUrl === audioUrl || (release.tracks && release.tracks.some(track => track.audioUrl === currentTrackUrl))) ? faPause : faPlay}
-                className="text-white text-5xl"
-              />
-            </button>
           </div>
+
+          {bandcampAlbumId && (
+            <BandcampPlayer
+              albumId={bandcampAlbumId}
+              title={currentRelease.title}
+              bandcampLink={currentRelease.bandcamp_link}
+              trackCount={currentRelease.bandcamp_track_count}
+            />
+          )}
 
           {adminAuthenticated && (
             <div className="absolute top-2 right-2 flex space-x-2">

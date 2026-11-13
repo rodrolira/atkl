@@ -33,6 +33,8 @@ export const addRelease = async (releaseData, filePath) => {
     release_type,
     cover_image_url: filePath || null,
     bandcamp_link: releaseData.bandcamp_link,
+    bandcamp_album_id: releaseData.bandcamp_album_id || null,
+    bandcamp_track_count: releaseData.bandcamp_track_count || null,
     beatport_link: releaseData.beatport_link,
     spotify_link: releaseData.spotify_link,
     apple_music_link: releaseData.apple_music_link,
@@ -117,6 +119,15 @@ export const updateRelease = async (id, releaseData, filePath) => {
 
   if (filePath) {
     updateFields.cover_image_url = filePath
+  }
+
+  // Solo se tocan si vienen en la petición. Un formulario que no manda estos
+  // campos (cualquier form viejo del panel) no debe borrar el reproductor.
+  if (releaseData.bandcamp_album_id !== undefined) {
+    updateFields.bandcamp_album_id = releaseData.bandcamp_album_id || null
+  }
+  if (releaseData.bandcamp_track_count !== undefined) {
+    updateFields.bandcamp_track_count = releaseData.bandcamp_track_count || null
   }
 
   const [affectedCount] = await Release.update(updateFields, { where: { id } })

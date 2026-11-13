@@ -7,6 +7,9 @@ const RELEASE_FIELDS = [
   'genre_id',
   'release_type',
   'bandcamp_link',
+  // Sin esto, editar un release desde el panel admin no lo manda y el servidor
+  // lo pone en null (updateRelease hace `|| null`), borrando el reproductor.
+  'bandcamp_album_id',
   'beatport_link',
   'spotify_link',
   'apple_music_link',
