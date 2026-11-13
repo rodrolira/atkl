@@ -1,9 +1,16 @@
 import app from './app.js'
 import sequelize from './db/sequelize.js'
-import dotenv from 'dotenv'
+import { loadEnv } from './config/loadEnv.js'
 import './src/models/associations.js'
 
-dotenv.config()
+loadEnv()
+
+if (!process.env.SECRET || process.env.SECRET === 'change-me' || process.env.SECRET === 'change-me-in-production') {
+  console.error(
+    'FATAL: SECRET no está configurado o tiene un valor inseguro. Define una SECRET segura y única en .env antes de iniciar.'
+  )
+  process.exit(1)
+}
 
 const isRender = process.env.RENDER === 'true'
 const host = isRender ? '0.0.0.0' : 'localhost'

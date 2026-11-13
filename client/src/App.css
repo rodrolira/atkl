@@ -1,8 +1,12 @@
 :root {
-  --primary-color: rgb(7, 81, 18);
-  --secondary-color: rgb(34, 15, 46);
-  --loader-color: #3498db;
-  --loader-bg: #f3f3f3;
+  /* Negro y rojo. Antes el fondo iba de verde (7,81,18) a violeta (34,15,46)
+     y el loader era azul: colores fuera de la paleta de la marca. */
+  --primary-color: #000000;
+  --secondary-color: #2A0000;
+  --blood: #e10600;
+  --blood-dark: #5a0000;
+  --loader-color: var(--blood);
+  --loader-bg: #1a1a1a;
 }
 
 /* Estilos generales para móviles pequeños (mobile-first) */
@@ -32,9 +36,9 @@ html {
 
 .loader {
   border: 16px solid var(--loader-bg);
-  /* Light grey */
+  /* Gris muy oscuro, para que el aro no destaque sobre el fondo negro */
   border-top: 16px solid var(--loader-color);
-  /* Blue */
+  /* Rojo de acento */
   border-radius: 50%;
   width: 80px;
   /* Ajustado para pantallas pequeñas */
@@ -111,7 +115,7 @@ html {
 }
 
 .nav-link.text-shadow {
-  text-shadow: 1px 0 8px rgb(8, 102, 8);
+  text-shadow: 1px 0 8px var(--blood);
 }
 
 @keyframes slideUp {
@@ -133,7 +137,7 @@ html {
 }
 
 .audio-player button {
-  color: #ff4081;
+  color: var(--blood);
 }
 
 .audio-player input[type="range"] {

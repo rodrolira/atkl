@@ -3,14 +3,13 @@ import {
   Box,
   Button,
   Checkbox,
-  colors,
   FormControlLabel,
   Typography,
   Grid,
 } from '@mui/material';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import CustomInput from '@/components/atoms/Input/CustomInput';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '@/components/atoms/Logo/Logo';
@@ -21,7 +20,7 @@ import Loading from '../atoms/Loading/Loading';
 
 const AdminSignin: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useHistory();
+  const navigate = useNavigate();
   const { signin, isAuthenticated, errors: signinErrors } = useAdminAuth();
 
   // Memoize validation schema using Yup
@@ -57,14 +56,14 @@ const AdminSignin: React.FC = () => {
 
   // Memoize sx prop for outer Box
   const outerBoxSx = useMemo(() => ({
-    backgroundColor: 'rgba(22, 163, 74, 0.1)',
-    color: 'black',
+    backgroundColor: '#000000',
+    color: '#FFFFFF',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     blockSize: '100%',
-    borderRadius: '10px',
-    border: '1px solid rgba(22, 163, 74, 0.2)',
+    borderRadius: 0,
+    border: '1px solid #9A9A9A',
   }), []);
 
   // Memoize sx prop for inner Box (width: 80%)
@@ -132,8 +131,16 @@ const AdminSignin: React.FC = () => {
   const buttonSx = useMemo(() => ({
     mt: 1,
     mb: 2.5,
-    boxShadow: `0 0 15px ${colors.green[500]}`,
+    boxShadow: `0 0 15px rgba(154, 154, 154, 0.3)`,
     minWidth: '25%',
+    backgroundColor: '#9A9A9A',
+    color: '#000000',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    fontWeight: '600',
+    '&:hover': {
+      backgroundColor: '#FFFFFF',
+    },
   }), []);
 
   // Memoize the Grid component

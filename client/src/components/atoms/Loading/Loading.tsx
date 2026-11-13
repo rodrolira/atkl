@@ -13,13 +13,10 @@ const Loading: React.FC = () => {
             alignItems="center"
             justifyContent="center"
             minHeight="100vh"
-            bgcolor="linear-gradient(
-    var(--primary-color),
-    var(--secondary-color)
-  )"
+            bgcolor="#000000"
         >
-            <CircularProgress color="secondary" role='progressbar' title="Loading" size={60} thickness={5} />
-            <Typography variant="h6" color="primary" mt={2}>
+            <CircularProgress color="inherit" role='progressbar' title="Loading" size={60} thickness={5} sx={{ color: '#FFFFFF' }} />
+            <Typography variant="h6" color="inherit" mt={2} sx={{ color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 {t('loading')}
             </Typography>
         </Box>

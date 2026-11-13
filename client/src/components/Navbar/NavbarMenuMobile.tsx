@@ -8,13 +8,13 @@ import links from '@/utils/navbarLinks';
 import './NavbarMenuMobile.css';
 import DemoButton from '@/components/Button/DemoButton';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavbarMenuMobile: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const toggleMenu = () => {
@@ -37,7 +37,7 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
       return;
     }
 
-    history.push(to);
+    navigate(to);
   };
 
   return (
@@ -58,7 +58,7 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
               color="inherit"
               aria-label="menu"
               onClick={toggleMenu}
-              className="menu-button !bg-green-900 hover:bg-green-500"
+              className="menu-button !bg-[#1A1A1A] hover:bg-[#9A9A9A] border border-metallic-gray/30"
               size="small"
             >
               {isOpen ? <CloseIcon /> : <MenuIcon />}
@@ -66,7 +66,7 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
           </div>
 
           {isOpen && (
-            <div className="menu-content border-l-2 border-t-2 border-b-2 border-green-600 rounded-bl-lg z-20 ">
+            <div className="menu-content border-l-2 border-t-2 border-b-2 border-metallic-gray rounded-bl-lg z-20 ">
               <ul className="menu-list">
                 {links.map((link, index) => (
                   <li key={link.id}>
@@ -77,7 +77,7 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
                       {t(`navbar.${link.id}`)}
                     </button>
                     {index !== links.length - 1 && (
-                      <hr className="border-t-2 border-green-600 overflow-hidden" />
+                      <hr className="border-t-2 border-metallic-gray overflow-hidden" />
                     )}
                   </li>
                 ))}

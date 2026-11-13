@@ -1,27 +1,21 @@
 /* Mobile-first styles */
 .navbarWrapper {
-  /* Cambiado a camelCase */
-  -webkit-backdrop-filter: blur(200px); /* Soporte para Safari */
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 100 ;
-  /* background-color: rgba(18, 46, 15, 0.8);*/
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid #9A9A9A;
 }
 
 .navbarLogoWrapper {
-  /* Cambiado a camelCase */
   justify-content: start;
   align-items: center;
   width: 20%;
-  filter: invert();
-}
-
-.navbarMenuWrapper {
-  /* Cambiado a camelCase */
-  display: flex;
-  justify-content: center;
+  padding: 0.5rem;
+  filter: none;
 }
 
 .navbarWrapper .flex {
@@ -31,7 +25,7 @@
 }
 
 .navbarLogo img {
-  width: 50%; /* Tamaño del logo en móviles */
+  width: 50%;
 }
 
 .navbarMenu {
@@ -40,8 +34,15 @@
 }
 
 .navbarMenu a {
-  color: #8bd685; /* Verde claro */
+  color: #FFFFFF;
   padding: 0 10px;
   text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
+.navbarMenu a:hover {
+  color: #9A9A9A;
+}

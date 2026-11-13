@@ -21,14 +21,6 @@ export interface Artist {
 
   }
 
-  export interface UseArtistReturn {
-    artist: Artist | null;
-    error: string | null;
-    fetchArtist: (artistId: number) => Promise<void>;
-    updateArtist: (artistId: number, updatedArtist: Partial<Artist>) => Promise<void>;
-    deleteArtist: (artistId: number) => Promise<void>;
-  }
-  
   export interface ArtistContextType {
     artists: Artist[];
     fetchArtists: () => Promise<void>;

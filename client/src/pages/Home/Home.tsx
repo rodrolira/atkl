@@ -49,13 +49,11 @@ const Home: React.FC = memo(() => {
       <Suspense fallback={<Loading />}>
 
         <Navbar />
-        <div id="home">
+        <main id="home">
           <div
             className={`${styles.parallaxContainer} flex relative h-screen overflow-hidden z-50`}
           >
-            <div
-              className={`${styles.parallaxContent} inset-0 bg-gradient-to-b from-transparent to-[#122e0f] backdrop-blur-md`}
-            >
+            <div className={`${styles.parallaxContent} inset-0`}>
               {/* Contenido del encabezado aquí */}
               <div className={`${styles.container} h-full`}>
                 <section
@@ -64,10 +62,12 @@ const Home: React.FC = memo(() => {
                 >
                   <div>
                     <img
-                      alt="main"
+                      alt="ATKL Records"
                       className="mt-0 mx-auto md:mt-16 lg:mt-24 md:w-1/2 sm:w-3/4 xl:w-2/5 lg:w-1/2 inverted md:inset-0"
                       src="/img/main.webp"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
                     />
                   </div>
                   <div className="text-center mx-auto w-full text-white flex flex-col lg:mb-24">
@@ -94,7 +94,7 @@ const Home: React.FC = memo(() => {
           <ErrorBoundary>
             <ContactSection />
           </ErrorBoundary>
-        </div>
+        </main>
       </Suspense>
     </>
 

@@ -123,13 +123,13 @@ const ReleaseForm: React.FC<ReleaseFormProps> = ({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-[#24db13] text-[#122e0f]"
+              className="bg-metallic-gray text-black hover:bg-white"
             >
               Submit
             </Button>
             <Button
               onClick={handleClose}
-              className="bg-[#22581d] text-white"
+              className="bg-[#1A1A1A] text-white hover:bg-metallic-gray"
             >
               Close
             </Button>

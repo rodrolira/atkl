@@ -40,6 +40,20 @@ const Release = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    // ID numérico del álbum en Bandcamp, el único dato que el reproductor
+    // embebido necesita y que NO viene en la URL pública. El audio se queda
+    // en Bandcamp: acá no se guarda ni se sirve ningún archivo.
+    bandcamp_album_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    // El iframe de Bandcamp no se autoajusta (es cross-origin), así que el alto
+    // se calcula desde la cantidad de tracks. Sin esto la lista queda cortada
+    // o sobra un hueco negro debajo.
+    bandcamp_track_count: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     beatport_link: {
       type: DataTypes.STRING,
       allowNull: true,

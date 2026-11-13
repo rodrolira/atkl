@@ -28,36 +28,36 @@ export const colors = {
     200: '#a7aeb5',
     300: '#7b8591',
     400: '#4f5d6c',
-    500: '#122e0f',
-    600: '#1c2a39',
-    700: '#151f2b',
-    800: '#0e151c',
-    900: '#070a0e',
+    500: '#000000',
+    600: '#1A1A1A',
+    700: '#2A2A2A',
+    800: '#4A4A4A',
+    900: '#9A9A9A',
   },
   background: {
-    100: '#d2d2d5',
-    200: '#a5a5ab',
-    300: '#797780',
-    400: '#4c4a56',
-    500: '#1f1d2c',
-    600: '#191723',
-    700: '#13111a',
-    800: '#0c0c12',
-    900: '#060609',
+    100: '#000000',
+    200: '#0A0A0A',
+    300: '#1A1A1A',
+    400: '#2A2A2A',
+    500: '#4A4A4A',
+    600: '#6A6A6A',
+    700: '#8A8A8A',
+    800: '#BEBEBE',
+    900: '#FFFFFF',
   },
 };
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: colors.green[500],
+      main: '#FFFFFF',
     },
     background: {
-      default: '#122e0f',
+      default: '#000000',
     },
   },
   typography: {
-    fontFamily: ['sans-serif'].join(' '),
+    fontFamily: ['"Inter Tight"', 'Inter', 'sans-serif'].join(' '),
     textAlign: 'center',
   },
 });

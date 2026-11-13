@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
-import dotenv from 'dotenv';
+import { loadEnv } from './loadEnv.js';
 
-dotenv.config();
+loadEnv();
 
 // Configuración de Cloudinary
 cloudinary.config({

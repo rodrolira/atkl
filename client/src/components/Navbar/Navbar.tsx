@@ -25,7 +25,7 @@ const Navbar: React.FC = React.memo(() => {
 
   return (
     <nav
-      className={`${styles.navbarWrapper} shadow-lg min-h-16  sm:min-h-20 xs:min-h-12 lg:h-24 border-b-2 border-b-green-600`}
+      className={`${styles.navbarWrapper} shadow-lg min-h-16  sm:min-h-20 xs:min-h-12 lg:h-24 border-b border-b-metallic-gray`}
       style={{ zIndex: 1000 }}
     >
       <div className="h-full flex items-center justify-between">

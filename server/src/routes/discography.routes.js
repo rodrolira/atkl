@@ -1,12 +1,13 @@
 // routes/discography.routes.js
 import { Router } from 'express'
 import Discography from '../models/discography.model.js'
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = Router()
 
 // Crear varios tracks a partir de datos CSV
 // Crear varios tracks a partir de datos CSV
-router.post('/discography/bulk', async (req, res) => {
+router.post('/discography/bulk', verifyTokenAdmin, async (req, res) => {
     try {
         const tracks = req.body
         if (!Array.isArray(tracks)) {
@@ -33,7 +34,7 @@ router.post('/discography/bulk', async (req, res) => {
 })
 
 // Crear un nuevo track
-router.post('/discography', async (req, res) => {
+router.post('/discography', verifyTokenAdmin, async (req, res) => {
     try {
         const track = await Discography.create(req.body)
         res.status(201).json(track)
@@ -66,7 +67,7 @@ router.get('/discography/:id', async (req, res) => {
 })
 
 // Actualizar un track por ID
-router.put('/discography/:id', async (req, res) => {
+router.put('/discography/:id', verifyTokenAdmin, async (req, res) => {
     try {
         const [updated] = await Discography.update(req.body, {
             where: { id: req.params.id }
@@ -83,7 +84,7 @@ router.put('/discography/:id', async (req, res) => {
 })
 
 // Eliminar un track por ID
-router.delete('/discography/:id', async (req, res) => {
+router.delete('/discography/:id', verifyTokenAdmin, async (req, res) => {
     try {
         const deleted = await Discography.destroy({
             where: { id: req.params.id }

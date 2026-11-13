@@ -2,8 +2,9 @@ t
 .vercel
 .vscode
 node_modules
-dist    
+dist
 build
+coverage
 
 vercelignore
 .gitignore
@@ -22,3 +23,7 @@ client/public/img/releases
 .eslintrc.cjs
 server/uploads/
 uploads
+# Variables de entorno (nunca commitear: usar .env.example como plantilla)
+.env.*
+!.env.example
+*.bak

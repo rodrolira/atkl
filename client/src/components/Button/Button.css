@@ -7,62 +7,63 @@
   color: #fff;
   padding: 10px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  /* Transición suave del color de fondo */
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 .btn-save {
-  background-color: #007bff !important;
-  /* Azul */
+  background-color: #9A9A9A !important;
 }
 
 .btn-buy {
-  background-color: #12f334 !important;
-  /* Verde brillante */
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
 }
 
 .btn-add {
-  background-color: #11c101 !important;
-  /* Verde toxico */
+  background-color: #1A1A1A !important;
+  border: 1px solid #9A9A9A !important;
 }
 
 .btn-delete {
-  background-color: #dc3545 !important;
-  /* Rojo */
+  background-color: #4A4A4A !important;
 }
 
 .btn-back {
-  background-color: #6c757d !important;
-  /* Gris */
+  background-color: #1A1A1A !important;
+  border: 1px solid #9A9A9A !important;
 }
 
 .btn-cancel {
-  background-color: #ffc107 !important;
-  /* Amarillo */
+  background-color: #4A4A4A !important;
 }
 
-/* Efecto hover */
 .btn-save:hover,
 .btn-buy:hover,
 .btn-add:hover,
 .btn-delete:hover,
 .btn-back:hover,
 .btn-cancel:hover {
-  filter: brightness(85%);
-  /* Reduce la luminosidad al pasar el mouse */
+  filter: brightness(110%);
 }
 
 .btn-dashboard {
-  background-color: #2c5282;
+  background-color: #1A1A1A;
   color: #fff;
   padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid #9A9A9A;
+  border-radius: 0;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 .btn-dashboard:hover {
-  background-color: #1a365d;
+  background-color: #9A9A9A;
+  color: #000000;
 }

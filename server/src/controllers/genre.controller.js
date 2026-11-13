@@ -1,70 +1,56 @@
 // controllers/genre.controller.js
-import Genre  from "../models/genre.model.js";
+import {
+  getAllGenres as getAllGenresService,
+  getGenreById as getGenreByIdService,
+  createGenre as createGenreService,
+  updateGenre as updateGenreService,
+  deleteGenre as deleteGenreService,
+} from '../services/genreService.js'
 
-const getAllGenres = async (req, res) => {
+export const getAllGenres = async (req, res) => {
   try {
-    const genres = await Genre.findAll();
-    res.status(200).json(genres);
+    const genres = await getAllGenresService()
+    res.status(200).json(genres)
   } catch (error) {
-    console.error("Error fetching genres:", error);
-    res.status(500).json({ error: "Unable to fetch genres" });
+    res.status(500).json({ error: 'Unable to fetch genres' })
   }
-};
+}
 
-const getGenreById = async (req, res) => {
-  const { id } = req.params;
+export const getGenreById = async (req, res) => {
   try {
-    const genre = await Genre.findByPk(id);
-    if (!genre) {
-      return res.status(404).json({ error: "Genre not found" });
-    }
-    res.json(genre);
+    const genre = await getGenreByIdService(req.params.id)
+    res.json(genre)
   } catch (error) {
-    res.status(500).json({ error: "Unable to fetch genre" });
+    res.status(error.status || 500).json({ error: 'Unable to fetch genre' })
   }
-};
+}
 
-const createGenre = async (req, res) => {
-  const { name } = req.body;
+export const createGenre = async (req, res) => {
   try {
-    const newGenre = await Genre.create({ name });
-    res.status(201).json(newGenre);
+    const newGenre = await createGenreService(req.body)
+    res.status(201).json(newGenre)
   } catch (error) {
-    res.status(500).json({ error: "Unable to create genre" });
+    res.status(error.status || 500).json({ error: 'Unable to create genre' })
   }
-};
+}
 
-const updateGenre = async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
+export const updateGenre = async (req, res) => {
   try {
-    const [updated] = await Genre.update({ name }, {
-      where: { id }
-    });
-    if (!updated) {
-      return res.status(404).json({ error: "Genre not found" });
-    }
-    const updatedGenre = await Genre.findByPk(id);
-    res.json(updatedGenre);
+    const updatedGenre = await updateGenreService(req.params.id, req.body)
+    res.json(updatedGenre)
   } catch (error) {
-    res.status(500).json({ error: "Unable to update genre" });
+    res.status(error.status || 500).json({ error: 'Unable to update genre' })
   }
-};
+}
 
-const deleteGenre = async (req, res) => {
-  const { id } = req.params;
+export const deleteGenre = async (req, res) => {
   try {
-    const deleted = await Genre.destroy({
-      where: { id }
-    });
-    if (!deleted) {
-      return res.status(404).json({ error: "Genre not found" });
-    }
-    res.json({ message: "Genre deleted successfully" });
+    await deleteGenreService(req.params.id)
+    res.json({ message: 'Genre deleted successfully' })
   } catch (error) {
-    res.status(500).json({ error: "Unable to delete genre" });
+    res.status(error.status || 500).json({ error: 'Unable to delete genre' })
   }
-};
+}
 
 export default {
   getAllGenres,
@@ -72,4 +58,4 @@ export default {
   createGenre,
   updateGenre,
   deleteGenre,
-};
+}

@@ -8,9 +8,9 @@ const ArtistsPage: React.FC = React.memo(() => {
   return (
     <div>
       <Navbar />
-      <div className="">
+      <main>
         <ArtistsSection />
-      </div>
+      </main>
     </div>
   );
 });

@@ -1,12 +1,13 @@
-/* 
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
-Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none'
-Referrer-Policy: no-referrer
-Permissions-Policy: geolocation=(), microphone=()
-Cross-Origin-Embedder-Policy: require-corp
-Cross-Origin-Opener-Policy: same-origin
-Cross-Origin-Resource-Policy: same-origin
-X-Permitted-Cross-Domain-Policies: none
-Clear-Site-Data: "cache", "cookies", "storage", "executionContexts"
+# Solo lo usan Netlify / Cloudflare Pages. En Vercel manda vercel.json.
+# Se mantiene sincronizado con vercel.json para que un cambio de hosting no rompa el sitio.
+# OJO: no agregar Clear-Site-Data aquí (borraría el token de sesión en cada carga)
+# ni Cross-Origin-Embedder-Policy (bloquea imágenes/audio de Cloudinary).
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  Cross-Origin-Opener-Policy: same-origin
+  X-Permitted-Cross-Domain-Policies: none
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https:; frame-src https://bandcamp.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests

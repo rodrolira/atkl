@@ -32,6 +32,7 @@ export interface ReleaseFormData {
 
 export interface UserFormData {
     artist_name: string;
+    username: string;
     email: string;
     password: string;
 }

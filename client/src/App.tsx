@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import Routing from './routes/Routing';
@@ -13,19 +13,7 @@ import { MusicPlaylistProvider } from "@/contexts/MusicPlaylistContext";
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 const App: React.FC = () => {
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
-  useEffect(() => {
-    console.log('VITE_API_URL:', VITE_API_URL);
-  }, []);
-
   const config = useMemo(() => ({ id: "atkl" }), []);
-  const future = useMemo(
-    () => ({
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    }),
-    []
-  );
   return (
     <BrowserRouter>
       <MusicPlayerProvider> {/* 🔹 Aseguramos que `MusicPlayerProvider` envuelve todo */}

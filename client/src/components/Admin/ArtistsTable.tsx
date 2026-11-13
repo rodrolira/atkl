@@ -38,13 +38,13 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
   };
 
   return (
-    <div className="w-full overflow-x-auto border border-[#2e7728] rounded">
+    <div className="w-full overflow-x-auto border border-metallic-gray/30 rounded">
       {artists.length === 0 ? (
         <div className="text-white p-4">{t('availability.no_artists')}.</div>
       ) : (
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-[#194116]">
+            <tr className="bg-[#0A0A0A]">
               {isDeleteMode && (
                 <th className="px-4 py-3 text-center w-1/12 text-white text-sm font-medium">
                   <label htmlFor="selectAllCheckbox" className="sr-only">Select All</label> {/* sr-only hides the label visually, but it will still be accessible */}
@@ -52,7 +52,7 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                     id="selectAllCheckbox"
                     onChange={handleSelectAll}
                     type="checkbox"
-                    className="text-[#8bd685] bg-[#194116] border-[#2e7728] border"
+                    className="text-metallic-gray bg-[#0A0A0A] border-metallic-gray/30 border"
                     checked={selectedArtists.length === artists.length}
                   />
                 </th>
@@ -67,14 +67,14 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                 {t('roles')}
               </th>
               {/* Nueva columna de roles */}
-              <th className="px-4 py-3 text-center w-1/4 text-[#8bd685] text-sm font-medium">
+              <th className="px-4 py-3 text-center w-1/4 text-metallic-gray text-sm font-medium">
                 {t('actions')}
               </th>
             </tr>
           </thead>
           <tbody>
             {artists.map((artist) => (
-              <tr key={artist.id} className="border-t border-t-[#2e7728]">
+              <tr key={artist.id} className="border-t border-t-metallic-gray/30">
                 {isDeleteMode && (
                   <td className="px-4 py-3 w-1/12 text-center">
                     <label htmlFor={`selectArtistCheckbox-${artist.id}`} className="sr-only">Select {artist.name}</label> {/* Provide a label */}
@@ -90,7 +90,7 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
                   {artist.artist_name}
                 </td>
-                <td className="px-4 py-3 w-1/4 text-[#8bd685] text-sm">
+                <td className="px-4 py-3 w-1/4 text-metallic-gray text-sm">
                   {artist.email}
                 </td>
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
@@ -103,7 +103,7 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                 </td>
                 <td className="px-4 py-3 w-1/4 text-center">
                   <button
-                    className="text-xl mx-2 text-yellow-400 hover:text-yellow-500"
+                    className="text-xl mx-2 text-metallic-gray hover:text-white"
                     onClick={() => onEdit(artist)}
                     type="button"
                     aria-label="Edit"
@@ -114,7 +114,7 @@ const ArtistsTable: React.FC<ArtistsTableProps> = ({
                   <button
                     onClick={() => onDelete(artist.id)}
                     type="button"
-                    className="text-red-400 hover:text-red-500 text-xl mx-2"
+                    className="text-gray-400 hover:text-white text-xl mx-2"
                     aria-label="Delete"
                     aria-labelledby='delete' title='delete'
                   >

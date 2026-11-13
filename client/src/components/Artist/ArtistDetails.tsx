@@ -17,7 +17,7 @@ const ArtistDetails: React.FC<{ artist: Artist; adminAuthenticated: boolean; ope
     : 'No roles assigned';
 
   return (
-    <div className="sm:w-1/3 sm:px-4 sm:pt-4 sm:border-r border-green-600 text-center text-white">
+    <div className="sm:w-1/3 sm:px-4 sm:pt-4 sm:border-r border-metallic-gray text-center text-white">
       <ArtistImage
         imageUrl={artist.imageUrl}
         alt={artist.artist_name}
@@ -26,7 +26,7 @@ const ArtistDetails: React.FC<{ artist: Artist; adminAuthenticated: boolean; ope
       />
       <div className="px-4">
         <div className="bg-black w-full h-auto relative rounded-b-lg">
-          <h1 className="text-2xl font-semibold tracking-tight text-white text-center py-1 border-y border-green-600">
+          <h1 className="text-2xl font-semibold tracking-tight text-white text-center py-1 border-y border-metallic-gray">
             {rolesText}
           </h1>
           <ArtistLinks artist={artist} />

@@ -3,28 +3,54 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ATKL Records — Independent record label</title>
+  <meta name="description"
+    content="ATKL Records: independent record label. Explore our artists, releases, discography and send your demos." />
+  <link rel="canonical" href="https://atkl.vercel.app/" />
+  <meta name="theme-color" content="#000000" />
+
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ATKL Records" />
+  <meta property="og:title" content="ATKL Records — Independent record label" />
+  <meta property="og:description"
+    content="Independent record label. Explore our artists, releases and discography." />
+  <meta property="og:url" content="https://atkl.vercel.app/" />
+  <meta property="og:image" content="https://atkl.vercel.app/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ATKL Records — Independent record label" />
+  <meta name="twitter:description"
+    content="Independent record label. Explore our artists, releases and discography." />
+  <meta name="twitter:image" content="https://atkl.vercel.app/logo.png" />
+
+  <!-- Fuentes: un solo request para ambas familias -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
-  <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
-  <title>ATKL Records</title>
-  <meta property="twitter:image" content="Twitter link preview image URL" />
-  <meta property="twitter:title" content="Twitter link preview title" />
-  <meta property="twitter:description" content="Twitter link preview description" />
-  <meta property="description" content="Search engine description" />
-  <meta property="og:image" content="Link preview image URL" />
-  <meta property="og:title" content="Link preview title" />
-  <meta property="og:url" content="Canonical link preview URL" />
-  <meta property="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600&family=Amatic+SC:wght@400;700&display=swap" />
+
+  <!-- Imagen del hero: es el LCP -->
+  <link rel="preload" as="image" href="/img/main.webp" fetchpriority="high" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RecordLabel",
+      "name": "ATKL Records",
+      "url": "https://atkl.vercel.app/",
+      "logo": "https://atkl.vercel.app/logo.png",
+      "genre": "Electronic"
+    }
+  </script>
 </head>
 
 <body>
-  <div id="root" role="main"></div>
+  <div id="root"></div>
   <div id="modal-root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

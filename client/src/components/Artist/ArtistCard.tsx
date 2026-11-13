@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -7,11 +7,9 @@ import Modal from '@/components/Modal/Modal';
 import EditArtistModal from './EditArtistModal';
 import { useArtists } from '@/contexts/ArtistContext';
 import ArtistLinks from './ArtistLinks';
-import { Button } from 'react-bootstrap';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
-import { artistData } from '@/data/artistData'; // Importar los datos de los artistas
 
 interface ArtistCardProps {
   artist: Artist
@@ -19,83 +17,62 @@ interface ArtistCardProps {
 
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
-  const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
-  const { deleteArtist, setArtists, updateArtist } = useArtists();
+  const { deleteArtist } = useArtists();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
-   // ✅ Usamos solo Cloudinary para las imágenes
-   const imageUrl = useMemo(() => {
-    return currentArtist?.imageUrl || '/images/artists/placeholder.png';
-  }, [currentArtist?.imageUrl]);
-
-  useEffect(() => {
-    const artistFromContext = artistData.find((a) => a.id === artist.id);
-    if (artistFromContext) {
-      setCurrentArtist({
-        ...artistFromContext,
-        Roles: artistFromContext.roles,
-        roleIds: [] as number[],
-        imageUrl: artistFromContext.imageUrl || '/images/artists/placeholder.png',
-      });
-    }
-  }, [artist.id]);
-
+  // ✅ Usamos solo Cloudinary para las imágenes
+  const imageUrl = useMemo(() => {
+    return artist.imageUrl || artist.image || '/images/artists/placeholder.png';
+  }, [artist.imageUrl, artist.image]);
 
   // Manejo de eliminación de artista
   const handleDelete = useCallback(() => {
-    if (!currentArtist.id) return;
+    if (!artist.id) return;
     if (window.confirm(t('delete_confirmation', { artistName: artist.artist_name }))) {
-      setArtists((prevArtists: Artist[]) =>
-        prevArtists.filter((a) => a.id !== currentArtist.id)
-      );
-      deleteArtist(currentArtist.id);
+      deleteArtist(artist.id);
     }
-  }, [t, deleteArtist, setArtists, currentArtist.id, currentArtist.artist_name]);
+  }, [t, deleteArtist, artist.id, artist.artist_name]);
 
   const openEditModal = useCallback(() => {
     setShowEditModal(true);
   }, []);
 
-  const closeEditModal = useCallback((updatedArtist?: Artist) => {
-    if (updatedArtist?.id) {
-      setCurrentArtist(updatedArtist);
-      updateArtist(updatedArtist.id, updatedArtist);
-    }
+  const closeEditModal = useCallback(() => {
     setShowEditModal(false);
-  }, [updateArtist]);
+  }, []);
 
   const rolesText = useMemo(() => {
-    if (currentArtist.Roles && currentArtist.Roles.length > 0) {
-      return currentArtist.Roles.map((role) =>
+    if (artist.Roles && artist.Roles.length > 0) {
+      return artist.Roles.map((role) =>
         typeof role === 'object' ? role.label : `${role}`)
         .join(' / ');
     }
     return t('no_roles_assigned');
-  }, [currentArtist.Roles, t]);
+  }, [artist.Roles, t]);
 
   const memoizedEditButton = useMemo(() => (
-    <Button aria-label={t('edit_artist')} onClick={openEditModal}>
-      <FontAwesomeIcon icon={faEdit} className="text-yellow-400 hover:text-yellow-500 text-xl mx-2" />
-    </Button>
+    <button type="button" aria-label={t('edit_artist')} onClick={openEditModal}>
+      <FontAwesomeIcon icon={faEdit} className="text-metallic-gray hover:text-white text-xl mx-2" />
+    </button>
   ), [t, openEditModal]);
 
   const memoizedDeleteButton = useMemo(() => (
-    <Button onClick={handleDelete} aria-label={t('delete_artist')}>
-      <FontAwesomeIcon icon={faTrash} className="text-red-400 hover:text-red-500 text-xl mx-2" />
-    </Button>
-  ), [handleDelete]);
+    <button type="button" onClick={handleDelete} aria-label={t('delete_artist')}>
+      <FontAwesomeIcon icon={faTrash} className="text-gray-400 hover:text-white text-xl mx-2" />
+    </button>
+  ), [handleDelete, t]);
 
   return (
     <>
       <BaseCard>
         <div className="w-full rounded-t-lg relative">
-          <Link to={`/artists/${currentArtist.id}`} className="block relative z-0" rel='preload'>
+          <Link to={`/artists/${artist.id}`} className="block relative z-0" rel='preload'>
             <img
               className="rounded-t-lg w-full h-96 object-cover"
               src={imageUrl} // Usar la URL obtenida de la función getImageUrl
-              alt={currentArtist.artist_name}
+              alt={artist.artist_name}
               loading="lazy"
             />
           </Link>
@@ -108,9 +85,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           )}
         </div>
 
-        <Link to={`/artists/${currentArtist.id}`} className="block">
+        <Link to={`/artists/${artist.id}`} className="block">
           <p className="text-2xl font-bold tracking-tight text-white text-center mb-2">
-            {currentArtist.artist_name}
+            {artist.artist_name}
           </p>
         </Link>
 
@@ -118,11 +95,11 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           {rolesText}
         </div>
 
-        <ArtistLinks artist={currentArtist} />
+        <ArtistLinks artist={artist} />
       </BaseCard>
       {showEditModal && (
-        <Modal onClose={() => closeEditModal()}>
-          {currentArtist.id && <EditArtistModal id={currentArtist.id} onClose={closeEditModal} />}
+        <Modal onClose={closeEditModal}>
+          {artist.id && <EditArtistModal id={artist.id} onClose={closeEditModal} />}
         </Modal>
       )}
     </>

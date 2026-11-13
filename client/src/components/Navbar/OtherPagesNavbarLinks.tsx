@@ -33,7 +33,7 @@ const OtherPagesNavbarLinks: React.FC = () => {
       <div className="hidden lg:flex xs:flex md:block md:w-auto md:order-1">
         <div className="flex items-center justify-center w-full">
 
-        <ul className="items-center justify-center text-lg text-green-50 font-semibold flex p-0 w-full space-x-3 sm:space-x-4 rtl:space-x-reverse md:space-x-6 lg:space-x-8 xl:space-x-10 flex-row mt-0">
+        <ul className="items-center justify-center text-lg text-white font-semibold flex p-0 w-full space-x-3 sm:space-x-4 rtl:space-x-reverse md:space-x-6 lg:space-x-8 xl:space-x-10 flex-row mt-0 tracking-wider uppercase">
         {filteredLinks.map((link) => (
               <NavItem
                 key={link.to}

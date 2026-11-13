@@ -1,0 +1,60 @@
+# Blueprint de Render para la API (server/). El frontend va en Vercel, que lo
+# construye con el vercel.json de la raíz; este archivo no lo toca.
+#
+# Para usarlo: Render -> New -> Blueprint -> elegir este repo. Render lee todo
+# lo de abajo y solo pide los cuatro valores marcados `sync: false`, que son
+# secretos y por eso no viven en el repo.
+#
+# Los valores de esos cuatro están en tu .env local:
+#   DATABASE_URL            la base de Neon que ya tiene los 15 releases
+#   SECRET                  firma de los JWT; index.js no arranca sin esto
+#   CLOUDINARY_API_KEY      subidas desde el panel admin
+#   CLOUDINARY_API_SECRET   idem
+services:
+  - type: web
+    name: atkl-api
+    runtime: node
+    plan: free
+    # Más cerca de Chile que oregon. Conviene que coincida con la región de la
+    # base de datos: cada consulta cruza esa distancia.
+    region: virginia
+    rootDir: server
+    # `sequelize.sync()` crea las tablas al arrancar, así que no hay paso de
+    # migración. Ver el comentario en server/config/config.js: las migraciones
+    # de sequelize-cli están desfasadas y fallan sobre una base vacía.
+    buildCommand: pnpm install --frozen-lockfile
+    startCommand: node index.js
+    # app.js responde "Home Page" en /. Sin healthCheckPath Render usa un
+    # escaneo de puerto, que funciona igual, pero así el estado es explícito.
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Decide si el servidor escucha en 0.0.0.0 o en localhost (index.js).
+      # Render la define sola, pero explícita evita que un cambio silencioso
+      # deje el servicio sin responder.
+      - key: RENDER
+        value: "true"
+      # Orígenes permitidos además de los fijos de app.js. Las URLs de preview
+      # de Vercel cambian en cada deploy: si necesitás una, agregala acá
+      # separada por coma.
+      - key: CORS_ORIGINS
+        value: https://atkl.vercel.app
+      # El cloud name no es secreto: ya viaja en el bundle del cliente.
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dotfwyxwr
+      # sync: false -> Render los pide al crear el servicio y nunca quedan en
+      # el repo ni en el historial de git.
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      # Formulario de contacto. Opcionales: sin ellas el resto del sitio anda.
+      - key: EMAIL
+        sync: false
+      - key: EMAIL_APP_PASSWORD
+        sync: false

@@ -51,7 +51,7 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
       onTeamMemberAdded && onTeamMemberAdded(newTeamMember); // Llamamos al callback con el nuevo miembro
     } catch (error) {
       console.error('Error adding team member:', error);
-      setError(t('error.addTeamMember'));
+      setError(t('errors.addTeamMember'));
       actions.setSubmitting(false);
     }
   };
@@ -127,7 +127,7 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
                 {error && <div className="text-red-500">{error}</div>}
                 <Button
                   type="submit"
-                  colorClass="bg-[#24db13] text-[#122e0f]"
+                  colorClass="bg-metallic-gray text-black hover:bg-white"
                   disabled={isSubmitting}
                   variant="contained"
                   className="mx-auto flex justify-center"
