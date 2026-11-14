@@ -2,24 +2,16 @@
    espacio (no como #hex) para que Tailwind pueda aplicarles los modificadores
    de opacidad: rgb(var(--bg) / <alpha-value>) habilita bg-black/30 y similares.
 
-   :root es el modo CLARO y .dark el OSCURO, que es el que lleva el sitio por
-   defecto (index.html pone la clase antes de pintar). Los nombres black/white/
-   metallic-gray apuntan a estos mismos tokens en tailwind.config.js: el código
-   ya los usaba como fondo y texto, así que invierten solos con el tema. */
+   El sitio es oscuro y punto: no hay modo claro. Los tokens se conservan igual
+   porque son el único lugar donde vive la paleta — tailwind.config.js, el tema
+   de MUI y los parámetros del embed de Bandcamp leen de acá, así que cambiar
+   un color es cambiar una línea.
+
+   Los nombres black/white/metallic-gray de Tailwind apuntan a estos tokens: el
+   código ya los usaba como fondo y texto, no como colores literales. */
 :root {
-  --bg: 255 255 255;
-  --surface: 244 244 244;
-  --text: 10 10 10;
-  /* En claro el gris tiene que ser el oscuro: #9A9A9A sobre blanco da 2,85:1
-     y no llega a AA. #4A4A4A da 9,06:1. */
-  --muted: 74 74 74;
-  --accent: 225 6 0;
-  --accent-hover: 176 5 0;
+  color-scheme: dark;
 
-  --loader-bg: 228 228 228;
-}
-
-.dark {
   --bg: 0 0 0;
   --surface: 17 17 17;
   --text: 255 255 255;
@@ -29,10 +21,8 @@
   --accent-hover: 255 45 26;
 
   --loader-bg: 26 26 26;
-}
 
-/* Alias de compatibilidad para el CSS que todavía usa variables sueltas. */
-:root {
+  /* Alias para el CSS que todavía usa variables sueltas. */
   --blood: rgb(var(--accent));
   --loader-color: rgb(var(--accent));
 }

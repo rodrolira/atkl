@@ -18,10 +18,9 @@ const Logo: React.FC<LogoProps> = memo(({ isAdminSignin }) => {
         src="/logo.png"
         // El archivo es verde con fondo transparente. `invert` a secas lo
         // volvía magenta: la variante que el manual de marca prohíbe
-        // ("No cambiar colores"). `brightness-0` lo aplana a silueta negra, y
-        // `dark:invert` la pasa a blanca solo en modo oscuro. Son los dos usos
-        // aprobados del manual: negro sobre claro, blanco sobre negro.
-        className={`max-w-full max-h-full object-contain brightness-0 dark:invert ${
+        // ("No cambiar colores"). `brightness-0` lo aplana a silueta negra y el
+        // `invert` la pasa a blanca, que es el uso del manual sobre fondo negro.
+        className={`max-w-full max-h-full object-contain brightness-0 invert ${
           isAdminSignin ? 'w-full h-full' : 'md:mx-0'
         }`}
       />

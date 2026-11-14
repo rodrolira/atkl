@@ -5,7 +5,6 @@ import {
   createTheme,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import { useThemeMode } from '@/contexts/ThemeModeContext';
 import { token, tokenAlpha } from './tokens';
 
 interface AppThemeProviderProps {
@@ -13,17 +12,14 @@ interface AppThemeProviderProps {
 }
 
 const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
-  // Antes leía `selectMode` de Redux pero no lo usaba: la paleta estaba fija
-  // en oscuro con hex hardcodeados. Ahora sigue al mismo contexto que Tailwind
-  // y toma los valores de las variables CSS, así los dos cambian juntos.
-  const { mode } = useThemeMode();
-
+  // La paleta sale de las variables CSS de App.css, no de hex duplicados acá:
+  // ese es el único lugar donde vive el color, y Tailwind lee los mismos.
   const theme = useMemo(() => {
-    const t = (name: Parameters<typeof token>[0]) => token(name, mode);
+    const t = (name: Parameters<typeof token>[0]) => token(name);
 
     let built = createTheme({
     palette: {
-      mode,
+      mode: 'dark' as const,
       primary: { main: t('accent'), contrastText: '#FFFFFF' },
       secondary: { main: t('muted') },
       background: {
@@ -33,9 +29,9 @@ const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
       text: {
         primary: t('text'),
         secondary: t('muted'),
-        disabled: tokenAlpha('muted', mode, 0.5),
+        disabled: tokenAlpha('muted', 0.5),
       },
-      divider: tokenAlpha('muted', mode, 0.3),
+      divider: tokenAlpha('muted', 0.3),
       gradient: {
         metallic: `linear-gradient(180deg, ${t('bg')} 0%, ${t('surface')} 100%)`,
       },
@@ -147,8 +143,8 @@ const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
     }
 
     return built;
-    // Se reconstruye solo al cambiar de modo; antes se recreaba en cada render.
-  }, [mode]);
+    // El tema no depende de nada reactivo: se arma una sola vez.
+  }, []);
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

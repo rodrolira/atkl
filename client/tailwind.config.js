@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Sin modo claro: el sitio es oscuro y los tokens traen un solo juego de
+  // valores. Se deja en 'class' igual para que un `dark:` que se cuele no se
+  // active solo por prefers-color-scheme, que seria no determinista.
   darkMode: 'class',
   content: [
     './index.html',

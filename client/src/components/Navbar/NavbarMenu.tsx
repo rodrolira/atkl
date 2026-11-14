@@ -30,7 +30,7 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
       <div className="flex items-end h-12 px-2 flex-col">
         <div className="z-10 flex divide-y rounded-lg text-center items-end h-full justify-end">
           <ul
-            className="text-sm hidden sm:flex text-white dark:text-white sm:font-normal"
+            className="text-sm hidden sm:flex text-text sm:font-normal"
             aria-labelledby="dropdownHoverButton"
           >
             {adminAuthenticated && (
