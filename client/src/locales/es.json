@@ -115,7 +115,8 @@
     "myReleasesSection": "Mis lanzamientos",
     "myProfileSection": "Mi perfil",
     "mySettingsSection": "Mis configuraciones",
-    "admin_dashboard": "Panel de Administrador"
+    "admin_dashboard": "Panel de Administrador",
+    "menu": "Menú"
   },
   "validation": {
     "artistNameRequired": "El nombre del artista es requerido",

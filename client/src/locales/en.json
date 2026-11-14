@@ -111,7 +111,8 @@
     "myReleasesSection": "My releases",
     "myProfileSection": "My profile",
     "mySettingsSection": "My settings",
-    "admin_dashboard": "Admin dashboard"
+    "admin_dashboard": "Admin dashboard",
+    "menu": "Menu"
   },
   "validation": {
     "artistNameRequired": "Artist name is required",
