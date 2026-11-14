@@ -215,7 +215,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                   type="button"
                   onClick={onClose}
                   className="btn"
-                  colorClass="bg-gray-500 hover:bg-gray-600 text-white "
+                  variant="secondary"
                 >
                   <p className="font-semibold">Cancel</p>
                 </Button>
@@ -228,7 +228,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                 </button>
                 <Button
                   type="button"
-                  colorClass="bg-red-500 hover:bg-red-600 text-white"
+                  variant="primary"
                   className="btn"
                   onClick={handleDelete}
                 >

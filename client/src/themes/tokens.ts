@@ -41,3 +41,13 @@ export const token = (name: TokenName, mode: 'dark' | 'light'): string =>
 /** Mismo token con opacidad, para bordes y superficies tenues. */
 export const tokenAlpha = (name: TokenName, mode: 'dark' | 'light', alpha: number): string =>
   `rgb(${readChannels(name, mode)} / ${alpha})`;
+
+/**
+ * Token como hex SIN el '#'. Lo pide el embed de Bandcamp en sus parámetros
+ * bgcol y linkcol, que no aceptan rgb() ni el numeral.
+ */
+export const tokenHex = (name: TokenName, mode: 'dark' | 'light'): string =>
+  readChannels(name, mode)
+    .split(/\s+/)
+    .map((c) => Math.max(0, Math.min(255, Number(c))).toString(16).padStart(2, '0'))
+    .join('');

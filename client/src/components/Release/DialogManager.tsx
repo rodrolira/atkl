@@ -13,7 +13,7 @@ const DialogManager: React.FC<{ children:  React.ReactNode }> = ({ children }) =
       <Button
         onClick={handleOpen}
         className="btn-add mx-auto"
-        variant="contained"
+        variant="primary"
       >
         Add Release
       </Button>

@@ -242,5 +242,6 @@
   "theme_switch_to_light": "Cambiar a modo claro",
   "theme_switch_to_dark": "Cambiar a modo oscuro",
   "open_menu": "Abrir menú",
-  "close_menu": "Cerrar menú"
+  "close_menu": "Cerrar menú",
+  "bandcamp_player": "Reproductor de Bandcamp"
 }

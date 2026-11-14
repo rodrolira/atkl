@@ -93,7 +93,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   const memoizedButton = useMemo(() => (
     currentRelease?.bandcamp_link ? (
-      <Button to={currentRelease.bandcamp_link} className="mb-4" colorClass="bg-metallic-gray text-black hover:bg-white">
+      <Button to={currentRelease.bandcamp_link} className="mb-4" variant="primary">
         <p className="font-semibold">{t('buy')}</p>
       </Button>
     ) : null

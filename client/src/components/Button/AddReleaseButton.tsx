@@ -30,7 +30,7 @@ const AddReleaseButton: React.FC<AddReleaseButtonProps> = ({}) => {
       <Button
         onClick={functionOpenPopup}
         fontWeight="font-bold"
-        colorClass="bg-metallic-gray text-black hover:bg-white"
+        variant="secondary"
       >
         {t('add_release')}
       </Button>

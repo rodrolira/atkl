@@ -106,7 +106,7 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
             <div key={title} className="w-full">
               <Typography
                 variant="h2"
-                color="#FFFFFF"
+                color="text.primary"
                 fontWeight="bold"
                 className="mb-4 font-bold uppercase xs:text-3xl md:text-4xl"
               >
@@ -114,7 +114,7 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
               </Typography>
               <ul className="space-y-1">
                 {links.map(({ label, to, href }) => (
-                  <Typography key={label} component="li" color="white" className="font-normal">
+                  <Typography key={label} component="li" color="text.secondary" className="font-normal">
                     {href ? (
                       <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
                         {label}
@@ -135,7 +135,8 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
         <div className="flex w-full flex-col items-center justify-center border-t px-4 border-metallic-gray/30 py-4 md:flex-row md:justify-between">
           <Typography
             variant="body1"
-            className="!mb-2 !ms-2 text-center font-normal text-white md:mb-0"
+            className="!mb-2 !ms-2 text-center font-normal md:mb-0"
+            color="text.secondary"
           >
             &copy; {currentYear} ATKL Records. {t('rights_reserved')}
           </Typography>

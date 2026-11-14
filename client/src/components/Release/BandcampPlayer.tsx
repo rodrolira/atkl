@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { bandcampEmbedKind, bandcampEmbedHeight } from '@/utils/utils';
+import { useThemeMode } from '@/contexts/ThemeModeContext';
+import { tokenHex } from '@/themes/tokens';
 
 interface BandcampPlayerProps {
   albumId: string;
@@ -25,24 +28,48 @@ interface BandcampPlayerProps {
  * iframe se bloquea sin error visible.
  */
 const BandcampPlayer = ({ albumId, title, bandcampLink, trackCount }: BandcampPlayerProps) => {
+  const { mode } = useThemeMode();
+  const { t } = useTranslation();
   const kind = bandcampEmbedKind(bandcampLink);
+
+  // Bandcamp quiere hex sin '#'. bgcol va con la superficie de la tarjeta para
+  // que el iframe no se vea pegado encima.
+  //
+  // linkcol usa el token de texto y no el acento a propósito: el acento sobre
+  // la superficie da 3,80:1 en oscuro, y linkcol pinta el título y los enlaces
+  // buy/share, que son texto chico y necesitan 4,5:1. El rojo de la marca entra
+  // por el borde y el hover del contenedor, donde el umbral es 3:1.
+  const bgcol = tokenHex('surface', mode);
+  const linkcol = tokenHex('text', mode);
+
   const src =
     `https://bandcamp.com/EmbeddedPlayer/${kind}=${encodeURIComponent(albumId)}` +
-    '/size=large/tracklist=true/artwork=small/bgcol=000000/linkcol=ffffff/transparent=true/';
+    `/size=large/tracklist=true/artwork=small/bgcol=${bgcol}/linkcol=${linkcol}/transparent=true/`;
 
   return (
-    <iframe
-      // loading="lazy" importa: el catálogo monta 15 tarjetas y cada iframe es
-      // una petición a Bandcamp.
-      loading="lazy"
-      src={src}
-      title={`Reproductor de Bandcamp — ${title}`}
-      className="w-full border-0 block"
-      height={bandcampEmbedHeight(trackCount)}
-      seamless
+    <div
+      className="group/bc overflow-hidden rounded-md border border-muted/25
+        bg-surface transition-colors duration-200
+        hover:border-accent/70 focus-within:border-accent"
     >
-      <a href={bandcampLink ?? 'https://atklrecords.bandcamp.com'}>{title}</a>
-    </iframe>
+      <iframe
+        // El src depende del modo, así que al cambiar de tema el iframe se
+        // recarga y la reproducción vuelve a cero. Es el precio de que los
+        // colores acompañen al tema: siendo cross-origin no hay forma de
+        // repintarlo sin recargarlo.
+        key={`${kind}-${albumId}-${mode}`}
+        // loading="lazy" importa: el catálogo monta 15 tarjetas y cada iframe es
+        // una petición a Bandcamp.
+        loading="lazy"
+        src={src}
+        title={`${t('bandcamp_player')} — ${title}`}
+        className="w-full border-0 block"
+        height={bandcampEmbedHeight(trackCount)}
+        seamless
+      >
+        <a href={bandcampLink ?? 'https://atklrecords.bandcamp.com'}>{title}</a>
+      </iframe>
+    </div>
   );
 };
 

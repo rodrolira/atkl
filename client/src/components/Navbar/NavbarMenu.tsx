@@ -52,7 +52,7 @@ const NavbarMenu: React.FC<NavbarMenuProps> = ({ isDialogOpen, handleClose, hand
                   <Button
                     to="/admin"
                     className="mx-auto flex justify-center"
-                    colorClass="bg-metallic-gray text-white hover:text-black"
+                    variant="secondary"
                   >
                     {t('navbar.admin_dashboard')}
                   </Button>
