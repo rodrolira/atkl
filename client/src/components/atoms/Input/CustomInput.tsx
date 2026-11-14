@@ -122,7 +122,7 @@ const CustomInput = React.memo(React.forwardRef<HTMLInputElement, CustomInputPro
           justifyContent="center"
           width="100%"
         >
-          <Typography color="white" pb={0.3} textAlign="center">
+          <Typography color="text.primary" pb={0.3} textAlign="center">
             {label}
           </Typography>
           {memoizedInput}

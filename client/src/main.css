@@ -17,9 +17,10 @@ body {
      La trama usa el token del texto con opacidad baja para que se lea como
      puntos oscuros sobre claro y claros sobre oscuro. */
   background-color: rgb(var(--bg));
+  /* El tinte del acento va al 4%: al 10% el modo claro quedaba rosado. */
   background-image:
-    radial-gradient(circle, rgb(var(--text) / 0.1) 1px, transparent 1px),
-    linear-gradient(rgb(var(--bg)) 0%, rgb(var(--accent) / 0.1) 100%);
+    radial-gradient(circle, rgb(var(--text) / 0.08) 1px, transparent 1px),
+    linear-gradient(rgb(var(--bg)) 0%, rgb(var(--accent) / 0.04) 100%);
   background-size: 20px 20px, 100% 100%;
   color: rgb(var(--text));
   overflow-x: hidden;

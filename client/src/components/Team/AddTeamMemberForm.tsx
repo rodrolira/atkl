@@ -127,9 +127,8 @@ const AddTeamMemberForm: React.FC<AddTeamMemberFormProps> = React.memo(({
                 {error && <div className="text-red-500">{error}</div>}
                 <Button
                   type="submit"
-                  colorClass="bg-metallic-gray text-black hover:bg-white"
+                  variant="primary"
                   disabled={isSubmitting}
-                  variant="contained"
                   className="mx-auto flex justify-center"
                 >
                   {t('submit')}

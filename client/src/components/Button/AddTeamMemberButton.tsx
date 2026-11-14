@@ -24,7 +24,7 @@ const AddTeamMemberButton: React.FC = () => {
       <Button
         onClick={functionOpenPopup}
         fontWeight="font-bold"
-        colorClass="bg-metallic-gray text-black hover:bg-white"
+        variant="secondary"
       >
         {t('addTeamMember.title')}
       </Button>

@@ -17,7 +17,7 @@ const AdminLogoutButton: React.FC = () => {
   return (
     <div className="sm:h-full lg:h-[60%] xl:h-auto cursor-pointer me-1">
       <Button
-        colorClass="bg-metallic-gray text-black hover:bg-white"
+        variant="ghost"
         className="justify-center lg:text-sm md:text-xs sm:w-32 md:w-auto h-full md:font-normal lg:font-bold focus:ring-4 focus:outline-none md:m-0 lg:mx-2 text-center md:order-2"
         onClick={handleLogout}
       >

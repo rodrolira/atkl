@@ -12,11 +12,11 @@ function AuthOutlet({ children, header }) {
           ...FormSX,
           border: `1px solid #9A9A9A`,
           background: '#000000',
-          color: '#FFFFFF',
+          color: 'text.primary',
         }}
       >
         {header ? (
-          <Typography textAlign="center" variant="h2" sx={{ color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+          <Typography textAlign="center" variant="h2" sx={{ color: 'text.primary', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
             {header}
           </Typography>
         ) : (

@@ -15,8 +15,8 @@ const Loading: React.FC = () => {
             minHeight="100vh"
             bgcolor="#000000"
         >
-            <CircularProgress color="inherit" role='progressbar' title="Loading" size={60} thickness={5} sx={{ color: '#FFFFFF' }} />
-            <Typography variant="h6" color="inherit" mt={2} sx={{ color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <CircularProgress color="inherit" role='progressbar' title="Loading" size={60} thickness={5} sx={{ color: 'text.primary' }} />
+            <Typography variant="h6" color="inherit" mt={2} sx={{ color: 'text.primary', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 {t('loading')}
             </Typography>
         </Box>

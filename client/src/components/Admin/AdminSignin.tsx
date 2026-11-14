@@ -57,7 +57,7 @@ const AdminSignin: React.FC = () => {
   // Memoize sx prop for outer Box
   const outerBoxSx = useMemo(() => ({
     backgroundColor: '#000000',
-    color: '#FFFFFF',
+    color: 'text.primary',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -200,7 +200,7 @@ const AdminSignin: React.FC = () => {
                 </div>
               )}
 
-              <Box display="flex" flexDirection="row" justifyContent="center" width="100%" color="white">
+              <Box display="flex" flexDirection="row" justifyContent="center" width="100%" color="text.primary">
                 {rememberMeFormControlLabel}
               </Box>
               <Button
