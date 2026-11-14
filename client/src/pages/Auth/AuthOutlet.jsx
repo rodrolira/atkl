@@ -24,8 +24,7 @@ function AuthOutlet({ children, header }) {
             src="/logo.png"
             alt="ATKL Records logo"
             // brightness(0) antes de invert: si no, el logo verde sale magenta.
-            // La clase hace el invert solo en oscuro, igual que Logo.tsx.
-            className="brightness-0 dark:invert"
+            className="brightness-0 invert"
             style={{ width: '60px', height: 'auto' }}
           />
         )}

@@ -6,7 +6,6 @@ import store from './app/store';
 // i18n se auto-inicializa al importarse (ver ./i18n)
 import './i18n';
 import AppThemeProvider from './themes/AppThemeProvider';
-import { ThemeModeProvider } from '@/contexts/ThemeModeContext';
 import App from './App';
 import './main.css';
 import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
@@ -21,8 +20,7 @@ if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <Provider store={store}>
-        <ThemeModeProvider>
-          <AppThemeProvider>
+        <AppThemeProvider>
           <LanguageProvider>
             <AdminAuthProvider>
               <ArtistProvider>
@@ -36,8 +34,7 @@ if (rootElement) {
               </ArtistProvider>
             </AdminAuthProvider>
           </LanguageProvider>
-          </AppThemeProvider>
-        </ThemeModeProvider>
+        </AppThemeProvider>
       </Provider>
     </React.StrictMode>,
   );

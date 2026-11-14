@@ -11,26 +11,6 @@
   <link rel="canonical" href="https://atkl.vercel.app/" />
   <meta name="theme-color" content="#000000" />
 
-  <!-- Aplica el tema ANTES de pintar. Si esto se hiciera desde React, el
-       navegador pintaría un frame con el tema equivocado (destello blanco al
-       entrar en modo oscuro). Mantener sincronizado con useTheme.tsx. -->
-  <script>
-    (function () {
-      try {
-        var guardado = localStorage.getItem('atkl-theme');
-        // Con preferencia guardada manda esa. Sin ella, solo se va a claro si
-        // el sistema lo pide explícitamente: "sin preferencia" cae en oscuro,
-        // que es la estética del sello.
-        var oscuro = guardado
-          ? guardado === 'dark'
-          : !window.matchMedia('(prefers-color-scheme: light)').matches;
-        document.documentElement.classList.toggle('dark', oscuro);
-        document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
-      } catch (e) {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
 
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
