@@ -31,9 +31,12 @@ code {
     monospace;
 }
 
+/* Sin z-index acá. Había un `z-index: 1000000` global que aplicaba a TODOS los
+   anchors: como .nav-link es `relative`, el link de Contacto se pintaba encima
+   del desplegable de idioma. Al valer para todos los anchors por igual no
+   ordenaba nada entre ellos, solo los levantaba sobre el resto del contenido y
+   dejaba cualquier desplegable o modal por debajo salvo que superara el millón. */
 a {
-  z-index: 1000000;
-  /* Tokens: en modo claro un link blanco sobre blanco era invisible. */
   color: rgb(var(--text));
   text-decoration: none;
 }
