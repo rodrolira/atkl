@@ -114,7 +114,14 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
 
   return (
     <div className="flex items-center gap-1">
-      <LanguageMenu />
+      {/* El panel de abajo es z-1050 y la hamburguesa z-1100, pero el selector
+          de idioma trae z-50 propio: con el panel abierto quedaba tapado, el
+          botón no se podía tocar y el desplegable aparecía detrás de los ítems.
+          Este contenedor crea un contexto de apilado por encima del panel, así
+          que el z-50 interno pasa a medirse dentro de 1100 y no contra él. */}
+      <div className="relative z-[1100]">
+        <LanguageMenu />
+      </div>
 
       <button
         ref={botonRef}
@@ -164,8 +171,14 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
           motion-reduce:transition-none
           ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       >
-        {/* Deja respirar el navbar fijo que queda por encima. */}
-        <nav className="flex flex-1 flex-col justify-center px-6 pt-20">
+        {/* Deja respirar el navbar fijo que queda por encima. Son 128px porque
+            el navbar mide 102 en móvil: con los 80 de antes el primer ítem
+            arrancaba en y=80, así que los primeros 22px de "Inicio" quedaban
+            tapados por la barra negra.
+            Sin `overflow-y-auto` a propósito: al abrir, el panel manda el foco
+            al primer ítem, y con un contenedor scrolleable el navegador lo
+            trae a la vista y se come justo este padding. */}
+        <nav className="flex flex-1 flex-col justify-center px-6 pb-6 pt-32">
           <ul className="flex flex-col">
             {links.map((link, i) => {
               const activo = activeId === link.id;
