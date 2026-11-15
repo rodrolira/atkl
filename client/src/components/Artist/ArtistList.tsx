@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArtistCard from './ArtistCard';
+import SwipeDeck from '@/components/Layout/SwipeDeck';
 import { Artist } from '@/types/interfaces/Artist';
 import Loading from '@/components/atoms/Loading/Loading';
 
@@ -10,6 +12,7 @@ interface ArtistListProps {
 }
 
 const ArtistList: React.FC<ArtistListProps> = React.memo(({ artists, loading, error }) => {
+  const { t } = useTranslation();
   const memoizedArtists = useMemo(() => artists || [], [artists]);
 
   if (loading) {
@@ -32,11 +35,16 @@ const ArtistList: React.FC<ArtistListProps> = React.memo(({ artists, loading, er
     );
   }
 
+  // Dos por pantalla en móvil: la tarjeta de artista es foto + nombre + roles,
+  // que entra bien en media columna. El catálogo va de a una porque lleva el
+  // reproductor de Bandcamp.
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-50">
-      {memoizedArtists.map((artist, index) => (
-        <ArtistCard key={artist.id ?? `artist-${index}`} artist={artist} />
-      ))}
+    <div className="relative z-50">
+      <SwipeDeck label={t('artistSection.title')} perView={2} total={memoizedArtists.length}>
+        {memoizedArtists.map((artist, index) => (
+          <ArtistCard key={artist.id ?? `artist-${index}`} artist={artist} />
+        ))}
+      </SwipeDeck>
     </div>
   );
 });

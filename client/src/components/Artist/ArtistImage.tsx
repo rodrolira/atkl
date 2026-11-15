@@ -10,7 +10,7 @@ interface ArtistImageProps {
 }
 
 const ArtistImage: React.FC<ArtistImageProps> = ({ imageUrl, alt, adminAuthenticated, openEditModal }) => {
-  const finalImageUrl = imageUrl || '/images/placeholder.png';
+  const finalImageUrl = imageUrl || '/images/placeholder.svg';
 
   return (
     <div className="relative p-4 pb-0 rounded-lg">

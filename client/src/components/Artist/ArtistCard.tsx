@@ -24,7 +24,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
   // ✅ Usamos solo Cloudinary para las imágenes
   const imageUrl = useMemo(() => {
-    return artist.imageUrl || artist.image || '/images/artists/placeholder.png';
+    return artist.imageUrl || artist.image || '/images/placeholder.svg';
   }, [artist.imageUrl, artist.image]);
 
   // Manejo de eliminación de artista
@@ -70,7 +70,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
         <div className="w-full rounded-t-lg relative">
           <Link to={`/artists/${artist.id}`} className="block relative z-0" rel='preload'>
             <img
-              className="rounded-t-lg w-full h-96 object-cover"
+              // En móvil la tarjeta vive en media columna del carrusel: con el
+              // h-96 fijo quedaba una tira de 165x384. Proporción fija abajo,
+              // alto fijo desde md para no tocar la grilla de escritorio.
+              className="rounded-t-lg w-full aspect-[4/5] object-cover md:aspect-auto md:h-96"
               src={imageUrl} // Usar la URL obtenida de la función getImageUrl
               alt={artist.artist_name}
               loading="lazy"
@@ -85,13 +88,15 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           )}
         </div>
 
+        {/* Tipografía más chica en móvil por el mismo motivo que la imagen: a
+            24px un nombre como "Dolor de Cabeza" rompe la celda del carrusel. */}
         <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center">
-          <p className="text-2xl font-bold tracking-tight text-white text-center mb-2">
+          <p className="text-lg md:text-2xl font-bold tracking-tight text-white text-center mb-2 break-words">
             {artist.artist_name}
           </p>
         </Link>
 
-        <div className="mb-2 text-xl font-bold tracking-tight text-white text-center">
+        <div className="mb-2 text-sm md:text-xl font-bold tracking-tight text-white text-center">
           {rolesText}
         </div>
 
