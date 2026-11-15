@@ -88,8 +88,10 @@ const SITEMAP: Record<string, FooterColumn[]> = {
 
 const currentYear = new Date().getFullYear();
 
+// min-h-11 = 44px, el minimo tactil. Antes median 68x32 y quedaban chicos
+// para el dedo en movil.
 const linkClass =
-  'inline-block py-1 transition-transform hover:scale-105 hover:text-metallic-gray focus-visible:outline focus-visible:outline-2 focus-visible:outline-white';
+  'inline-flex min-h-11 items-center transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
 
 const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
   const { t, i18n } = useTranslation();
@@ -124,7 +126,7 @@ const Footer: React.FC<FooterProps> = React.memo(({ isAdminLogin }) => {
                         {label}
                       </Link>
                     ) : (
-                      <span className="inline-block py-1">{label}</span>
+                      <span className="inline-flex min-h-11 items-center">{label}</span>
                     )}
                   </Typography>
                 ))}

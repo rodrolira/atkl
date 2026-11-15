@@ -85,7 +85,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           )}
         </div>
 
-        <Link to={`/artists/${artist.id}`} className="block">
+        <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center">
           <p className="text-2xl font-bold tracking-tight text-white text-center mb-2">
             {artist.artist_name}
           </p>

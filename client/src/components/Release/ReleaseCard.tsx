@@ -75,7 +75,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
     if (currentRelease?.artists && currentRelease.artists.length > 0) {
       return currentRelease.artists.map((artist: Artist) =>
         artist.id ? (
-          <Link to={`/artists/${artist.id}`} className="block relative" key={artist.id}>
+          <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center relative" key={artist.id}>
             <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-metallic-gray">
               {t('artist')}: {artist.artist_name}
             </h3>

@@ -1,120 +1,125 @@
-import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
-import classNames from 'classnames';
+import React, { useState, useEffect, useCallback, useId, useRef, memo } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
 
-interface LanguageMenuProps {
-  className?: string;
-}
+const IDIOMAS = [
+  { code: 'en', pais: 'US', nombre: 'English' },
+  { code: 'es', pais: 'ES', nombre: 'Español' },
+] as const;
 
-const LanguageMenu: React.FC<LanguageMenuProps> = () => {
-  const { t, i18n } = useTranslation();
+/**
+ * Selector de idioma.
+ *
+ * Antes se abría con onMouseEnter/onMouseLeave: en un teléfono no hay hover,
+ * así que el menú era directamente inalcanzable y no se podía cambiar de
+ * idioma. Ahora abre por clic, que funciona con mouse, teclado y táctil.
+ */
+const LanguageMenu: React.FC = () => {
+  const { i18n } = useTranslation();
   const { changeLanguage, language } = useLanguage();
-  const [isMenuVisible, setMenuVisibility] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('language');
-    
+  const [abierto, setAbierto] = useState(false);
+  const [seleccionado, setSeleccionado] = useState<string>(language || 'en');
+
+  const menuId = useId();
+  const contenedorRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('language');
-    setSelectedLanguage(savedLanguage || language);
-    if (savedLanguage) {
-      i18n.changeLanguage(savedLanguage);
-    }
+    const guardado = localStorage.getItem('language');
+    setSeleccionado(guardado || language);
+    if (guardado) i18n.changeLanguage(guardado);
   }, [i18n, language]);
 
-  // Memoized language change handler
-  const handleChangeLanguage = useCallback((languageCode: string) => {
-    changeLanguage(languageCode);
-    setSelectedLanguage(languageCode);
-    i18n.changeLanguage(languageCode);
-    localStorage.setItem('language', languageCode);
-    setMenuVisibility(false);
-  }, [changeLanguage, i18n]);
+  // Cerrar al hacer clic fuera y con Escape.
+  useEffect(() => {
+    if (!abierto) return;
+    const onClickFuera = (e: MouseEvent) => {
+      if (!contenedorRef.current?.contains(e.target as Node)) setAbierto(false);
+    };
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setAbierto(false);
+    };
+    document.addEventListener('mousedown', onClickFuera);
+    document.addEventListener('keydown', onEscape);
+    return () => {
+      document.removeEventListener('mousedown', onClickFuera);
+      document.removeEventListener('keydown', onEscape);
+    };
+  }, [abierto]);
 
-  // Memoized ReactCountryFlag for US
-  const usFlag = useMemo(() => (
-    <ReactCountryFlag
-      className="max-[320px]:!me-0 flag-icon !w-auto"
-      countryCode="US"
-      svg
-      title="US"
-      alt="Flag of the United States"
-    />
-  ), []);
+  const elegir = useCallback(
+    (code: string) => {
+      changeLanguage(code);
+      setSeleccionado(code);
+      i18n.changeLanguage(code);
+      localStorage.setItem('language', code);
+      setAbierto(false);
+    },
+    [changeLanguage, i18n]
+  );
 
-  // Memoized main ReactCountryFlag to prevent unnecessary re-renders
-  const mainFlag = useMemo(() => (
-    <ReactCountryFlag
-      alt={selectedLanguage === 'en' ? 'US' : 'es'}
-      className="max-[320px]:ms-[0.5rem] flag-icon h-[1em] !w-auto"
-      countryCode={selectedLanguage === 'en' ? 'US' : 'ES'}
-      svg
-      title={selectedLanguage === 'en' ? 'US' : 'es'}
-    />
-  ), [selectedLanguage]);
+  const actual = IDIOMAS.find((l) => l.code === seleccionado) ?? IDIOMAS[0];
 
   return (
-    <div className="relative z-50">
-      <div
-        className="h-full"
-        onMouseEnter={() => setMenuVisibility(true)}
-        onMouseLeave={() => setMenuVisibility(false)}
+    <div className="relative z-50" ref={contenedorRef}>
+      <button
+        type="button"
+        onClick={() => setAbierto((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={abierto}
+        aria-controls={menuId}
+        // El botón medía 20x16: por debajo del mínimo táctil de 44px.
+        aria-label={`${actual.nombre} — cambiar idioma`}
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md
+          border border-muted/30 text-text
+          transition-colors duration-200
+          hover:border-accent hover:text-accent
+          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:outline-accent"
       >
-        <button
-          type="button"
-          className="max-[320px]:ms-2 md:text-xs inline-flex items-center font-medium justify-center h-full mx-4 my-2 lg:text-sm text-white rounded-t-lg cursor-pointer hover:bg-[#1A1A1A] hover:text-metallic-gray border border-metallic-gray/30"
-        >
-          {mainFlag}
-        </button>
+        <ReactCountryFlag
+          countryCode={actual.pais}
+          svg
+          title={actual.pais}
+          alt={actual.nombre}
+          className="!h-4 !w-auto"
+        />
+      </button>
 
-        <div
-          className={classNames(
-            'lg:text-sm md:text-xs z-50 absolute top-0 text-base list-none w-full divide-y divide-gray-100 rounded-b-xl rounded-t-xl hover:rounded-t-xl shadow bg-[#0A0A0A] max-[320px]:ms-2 border border-metallic-gray/30',
-            { 'block': isMenuVisible, 'hidden': !isMenuVisible }
-          )}
-          role="menu"
-        >
-          <ul className="font-medium" role="none">
-            <li>
-              <button
-                type="button"
-                className={classNames(
-                  'block px-2 py-2 lg:text-sm md:text-xs w-full text-white hover:bg-[#1A1A1A] hover:text-metallic-gray rounded-t-xl',
-                  { '!bg-[#1A1A1A]': selectedLanguage === 'en' }
-                )}
-                onClick={() => handleChangeLanguage('en')}
-              >
-                <div className="inline-flex items-center">
-                  {usFlag}
-                </div>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={classNames(
-                  'block px-2 py-2 text-sm w-full text-white hover:rounded-b-xl hover:bg-[#1A1A1A] hover:text-metallic-gray rounded-b-xl',
-                  { '!bg-[#1A1A1A]': selectedLanguage === 'es' }
-                )}
-                onClick={() => handleChangeLanguage('es')}
-              >
-                <div className="inline-flex items-center">
-                  <ReactCountryFlag
-                    className="max-[320px]:!me-0 lg:text-sm md:text-xs flag-icon !w-auto"
-                    countryCode="ES"
-                    svg
-                    title="ES"
-                    alt="Flag of Spain"  
-                  />
-                </div>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <ul
+        id={menuId}
+        role="menu"
+        className={`absolute right-0 top-full mt-1 min-w-[7rem] list-none overflow-hidden
+          rounded-md border border-muted/30 bg-surface p-0 shadow-lg
+          ${abierto ? 'block' : 'hidden'}`}
+      >
+        {IDIOMAS.map((l) => (
+          <li key={l.code} role="none">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => elegir(l.code)}
+              aria-current={seleccionado === l.code ? 'true' : undefined}
+              className={`flex min-h-11 w-full items-center gap-2 px-3 text-left text-sm
+                transition-colors duration-150
+                focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2
+                focus-visible:outline-accent
+                ${seleccionado === l.code ? 'text-accent' : 'text-text hover:text-accent'}`}
+            >
+              <ReactCountryFlag
+                countryCode={l.pais}
+                svg
+                title={l.pais}
+                alt={l.nombre}
+                className="!h-4 !w-auto"
+              />
+              {l.nombre}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-// Wrap the component with React.memo
 export default memo(LanguageMenu);

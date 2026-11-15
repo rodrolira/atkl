@@ -54,7 +54,7 @@ const ArtistLinks: React.FC<ArtistLinksProps> = ({ artist }) => {
           rel="noopener noreferrer"
           aria-label={`${artist.artist_name} — ${link.label}`}
           title={link.label}
-          className="text-gray-400 hover:text-white focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {link.icon}
         </a>
