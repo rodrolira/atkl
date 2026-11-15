@@ -63,7 +63,14 @@ const Home: React.FC = memo(() => {
                   <div>
                     <img
                       alt="ATKL Records"
-                      className="mt-0 mx-auto md:mt-16 lg:mt-24 md:w-1/2 sm:w-3/4 xl:w-2/5 lg:w-1/2 inverted md:inset-0"
+                      // El archivo es trazo negro sobre fondo transparente, así
+                      // que sobre el hero oscuro no se veía. No existe una
+                      // variante blanca: `brightness-0` lo aplana a silueta y
+                      // `invert` la pasa a blanca, igual que el componente Logo
+                      // del navbar. Es el uso que marca el manual sobre negro.
+                      // La clase `inverted` que estaba acá no existe en ningún
+                      // stylesheet: nunca hizo nada.
+                      className="mt-0 mx-auto md:mt-16 lg:mt-24 md:w-1/2 sm:w-3/4 xl:w-2/5 lg:w-1/2 brightness-0 invert md:inset-0"
                       src="/img/main.webp"
                       loading="eager"
                       fetchPriority="high"
