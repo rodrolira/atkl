@@ -98,7 +98,7 @@ const ContactForm: React.FC = () => {
           <div className="flex items-center justify-between mx-auto">
             <button
               disabled={isSubmitting}
-              className="bg-blood hover:bg-blood-dark text-white mx-auto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="inline-flex min-h-11 items-center justify-center mx-auto rounded-full px-5 font-bold uppercase tracking-[0.1em] bg-accent text-pure-white transition-colors duration-200 hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text disabled:opacity-40 disabled:pointer-events-none"
               type="submit"
             >
               {isSubmitting ? t('submitting') : t('submit')}
