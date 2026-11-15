@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Sin imagen">
+  <!-- Placeholder de marca. SVG y no PNG para que escale sin pesar nada y
+       sirva igual al 166px del carrusel que al tamaño de la grilla.
+       Composición centrada a propósito: las tarjetas usan object-cover con
+       proporciones distintas (4/5 en artistas, 1/1 en releases), así que el
+       recorte se come los bordes y lo del centro siempre sobrevive. -->
+  <rect width="400" height="400" fill="#000000"/>
+  <rect x="0.5" y="0.5" width="399" height="399" fill="none" stroke="#9A9A9A" stroke-opacity="0.25"/>
+  <g fill="none" stroke="#9A9A9A" stroke-opacity="0.35" stroke-width="2">
+    <circle cx="200" cy="178" r="54"/>
+    <circle cx="200" cy="178" r="6" stroke-opacity="0.6"/>
+  </g>
+  <rect x="170" y="252" width="60" height="2" fill="#E10600"/>
+  <text x="200" y="290" text-anchor="middle"
+        font-family="'JetBrains Mono', ui-monospace, monospace"
+        font-size="17" letter-spacing="7" fill="#9A9A9A" fill-opacity="0.75">ATKL</text>
+</svg>

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import ReleaseCard from './ReleaseCard';
+import SwipeDeck from '@/components/Layout/SwipeDeck';
 import { useReleases } from '@/contexts/ReleaseContext';
 import { useTranslation } from 'react-i18next';
 import Loading from '@/components/atoms/Loading/Loading';
@@ -24,11 +25,16 @@ const ReleaseList: React.FC = () => {
     return <p>{t('availability.no_releases')}</p>;
   }
 
+  // De a una por pantalla en móvil, con la siguiente asomando. No van dos como
+  // en artistas porque la tarjeta lleva el embed de Bandcamp en `size=large`
+  // con lista de tracks: a media columna el reproductor queda inusable.
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-50">
-      {releases.map((release) => (
-        <ReleaseCard key={release.id} release={release} />
-      ))}
+    <div className="relative z-50">
+      <SwipeDeck label={t('releaseSection.title')} perView={1} total={releases.length}>
+        {releases.map((release) => (
+          <ReleaseCard key={release.id} release={release} />
+        ))}
+      </SwipeDeck>
     </div>
   );
 };

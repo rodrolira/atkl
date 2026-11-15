@@ -72,7 +72,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ teamMember }) => {
               // La BD guarda la URL completa de Cloudinary. Antes esto le
               // pegaba http://localhost:3000/ delante, lo que rompía la imagen
               // en cualquier entorno que no fuera el localhost del dev.
-              src={currentTeamMember.image || '/images/artists/placeholder.png'}
+              src={currentTeamMember.image || '/images/placeholder.svg'}
               alt={currentTeamMember.member_name}
               loading="lazy"
             />

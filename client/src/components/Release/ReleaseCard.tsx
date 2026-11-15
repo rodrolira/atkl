@@ -30,7 +30,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   // La BD guarda la URL completa de la portada, venga de Cloudinary (subida
   // desde el panel admin) o del CDN de Bandcamp (importada del sello).
   const imageUrl = useMemo(() => {
-    return currentRelease?.imageUrl || '/images/releases/placeholder.png';
+    return currentRelease?.imageUrl || '/images/placeholder.svg';
   }, [currentRelease?.imageUrl]);
 
   // El audio lo sirve Bandcamp. Antes acá había un handleAudioToggle que leía
