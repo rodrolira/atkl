@@ -30,24 +30,34 @@ const BandcampPlayer = ({ albumId, title, bandcampLink, trackCount }: BandcampPl
   const { t } = useTranslation();
   const kind = bandcampEmbedKind(bandcampLink);
 
-  // Bandcamp quiere hex sin '#'. bgcol va con la superficie de la tarjeta para
-  // que el iframe no se vea pegado encima.
+  // El embed va en tema CLARO aunque el sitio sea oscuro, y es a propósito.
   //
-  // linkcol usa el token de texto y no el acento a propósito: el acento sobre
-  // la superficie da 3,80:1, y linkcol pinta el título y los enlaces buy/share,
-  // que son texto chico y necesitan 4,5:1. El rojo de la marca entra por el
-  // borde y el hover del contenedor, donde el umbral es 3:1.
-  const bgcol = tokenHex('surface');
-  const linkcol = tokenHex('text');
+  // Bandcamp no acepta una paleta: `bgcol` solo elige entre dos temas según su
+  // luminancia, y los grises de cada tema son fijos. En el tema oscuro la
+  // tracklist se pinta #666 sobre #222 = 2,77:1, por debajo del 4,5:1 que
+  // necesita ese texto; medido con bgcol 000000, 111111 y 333333, los tres dan
+  // exactamente lo mismo. No hay parámetro para corregirlo.
+  //
+  // En el tema claro la tracklist es #333 sobre blanco = 12,6:1, y el rojo de
+  // la marca como linkcol (título y buy/share) da 5,0:1. La paleta entra por
+  // el acento y por el borde del contenedor.
+  //
+  // Bandcamp quiere el hex sin '#'.
+  const bgcol = 'ffffff';
+  const linkcol = tokenHex('accent');
 
+  // Sin `transparent=true`: con él el player no llena el ancho del iframe y
+  // asoma el fondo oscuro del contenedor al costado del bloque blanco.
   const src =
     `https://bandcamp.com/EmbeddedPlayer/${kind}=${encodeURIComponent(albumId)}` +
-    `/size=large/tracklist=true/artwork=small/bgcol=${bgcol}/linkcol=${linkcol}/transparent=true/`;
+    `/size=large/tracklist=true/artwork=small/bgcol=${bgcol}/linkcol=${linkcol}/`;
 
   return (
     <div
+      // bg-pure-white y no bg-surface: el embed es claro, y con las esquinas
+      // redondeadas + overflow-hidden el fondo del contenedor asoma detrás.
       className="group/bc overflow-hidden rounded-md border border-muted/25
-        bg-surface transition-colors duration-200
+        bg-pure-white transition-colors duration-200
         hover:border-accent/70 focus-within:border-accent"
     >
       <iframe
