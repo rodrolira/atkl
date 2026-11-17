@@ -1,4 +1,4 @@
-import Release from "../../interfaces/Release";
+import { Release } from "../../interfaces/Release";
 
 export interface ReleasesTableProps {
     releases: Release[];

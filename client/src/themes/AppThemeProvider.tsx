@@ -95,11 +95,6 @@ const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
         letterSpacing: '0.1em',
         textTransform: 'uppercase',
       },
-      mono: {
-        fontFamily: '"JetBrains Mono", monospace',
-        fontSize: '14px',
-        fontWeight: '400',
-      },
     },
     components: {
       MuiCssBaseline: {
