@@ -22,6 +22,8 @@ export interface Release {
     beatport_link?: string;
     artist?: Artist[];
     artists?: Artist[];
+    /** Crédito en texto, sobrevive al borrado de la ficha del artista. */
+    artist_credit?: string;
     tracks?: Track[];
     [key: string]: any;
 }

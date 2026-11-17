@@ -153,6 +153,20 @@ export const deleteArtist = async (id) => {
     throw error
   }
 
+  // Antes de romper el vínculo, dejar el nombre escrito en cada release que
+  // quedaría sin crédito. Borrar la ficha del artista es una decisión de
+  // catálogo; que el disco pierda a quien lo hizo es pérdida de información.
+  // Solo se completa donde está vacío: si ya hay un crédito cargado a mano,
+  // ese gana.
+  const vinculos = await ReleaseArtist.findAll({ where: { artist_id: artist.id } })
+  const releaseIds = vinculos.map((v) => v.release_id)
+  if (releaseIds.length > 0) {
+    await Release.update(
+      { artist_credit: artist.artist_name },
+      { where: { id: releaseIds, artist_credit: null } }
+    )
+  }
+
   await ArtistRoles.destroy({ where: { artist_id: artist.id } })
   await ReleaseArtist.destroy({ where: { artist_id: artist.id } })
   await Artist.destroy({ where: { id: artist.id } })

@@ -86,10 +86,18 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
           </p>
         )
       );
+    } else if (currentRelease?.artist_credit) {
+      // La ficha del artista ya no existe (se borró del panel) pero el disco
+      // salió a su nombre. Sin link: no hay página a dónde ir.
+      return (
+        <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white">
+          {t('artist')}: {currentRelease.artist_credit}
+        </p>
+      );
     } else {
       return <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">{t('noArtists')}</h3>;
     }
-  }, [currentRelease?.artists, t]);
+  }, [currentRelease?.artists, currentRelease?.artist_credit, t]);
 
   const memoizedButton = useMemo(() => (
     currentRelease?.bandcamp_link ? (
