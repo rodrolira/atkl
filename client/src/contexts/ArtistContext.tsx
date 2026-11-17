@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback, useEffect } from 'react';
-import { Artist, ArtistContextType } from '@/types/interfaces/Artist';
+import { Artist, ArtistContextType, NuevoArtist } from '@/types/interfaces/Artist';
 import { Role } from '@/types/interfaces/Role';
 import {
   getArtistsRequest,
@@ -54,7 +54,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     fetchArtists();
   }, [fetchArtists]);
 
-  const createArtist = async (artist: Artist): Promise<Artist | null> => {
+  const createArtist = async (artist: NuevoArtist): Promise<Artist | null> => {
     try {
       const { data } = await createArtistRequest(artist);
       const created = normalizeArtist(data);

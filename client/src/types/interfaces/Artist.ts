@@ -2,7 +2,10 @@ import { Role } from "./Role";
 
 
 export interface Artist {
-    id?: number;
+    // Requerido a propósito: un artista que viene del API siempre lo tiene, y
+    // tenerlo opcional obligaba a guardas por `undefined` en cada tabla y cada
+    // borrado. Para el alta, donde el id todavía no existe, está NuevoArtist.
+    id: number;
     artist_name: string;
     imageUrl?: string;
     Roles?: Role[] | string[];
@@ -21,11 +24,14 @@ export interface Artist {
 
   }
 
+  /** Artista todavía sin guardar: el id lo asigna la base. */
+  export type NuevoArtist = Omit<Artist, 'id'>;
+
   export interface ArtistContextType {
     artists: Artist[];
     fetchArtists: () => Promise<void>;
     setArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
-    createArtist: (artist: Artist) => Promise<Artist | null>;
+    createArtist: (artist: NuevoArtist) => Promise<Artist | null>;
     updateArtist: (id: number, updatedArtist: Partial<Artist>) => Promise<void>; // Asegúrate de que esto sea una Promise
     deleteArtist: (id: number) => Promise<void>;
     error: string | null;

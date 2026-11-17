@@ -12,26 +12,24 @@ const AboutSection = React.lazy(() => import('@/components/sections/AboutSection
 const DemosSection = React.lazy(() => import('@/components/sections/DemoSection'));
 const ContactSection = React.lazy(() => import('@/components/sections/ContactSection'));
 
-interface CustomLocation extends Location {
-  state: {
-    scrollToDemos?: boolean;
-  };
-}
-
 const Home: React.FC = memo(() => {
   const { t } = useTranslation(); // Hook de traducción
 
-  const location = useLocation() as CustomLocation;
+  const location = useLocation();
 
+  // react-router tipa `state` como `any`: el cast acota lo único que se manda
+  // acá. Antes esto era una interfaz que extendía `Location`, pero agarraba el
+  // Location del DOM (window.location), no el de react-router.
+  const { scrollToDemos } = (location.state ?? {}) as { scrollToDemos?: boolean };
 
   useEffect(() => {
-    if (location.state?.scrollToDemos) {
+    if (scrollToDemos) {
       const demosSection = document.getElementById('demo');
       if (demosSection) {
         demosSection.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }, [location.state?.scrollToDemos]);
+  }, [scrollToDemos]);
 
   useEffect(() => {
     if (!location.hash) {
