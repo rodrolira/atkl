@@ -138,7 +138,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                         variant="outlined"
                         size="small"
                         fullWidth
-                        InputProps={{ className: '!text-gray-700 !text-start' }}
+                        InputProps={{ className: '!text-start' }}
                         SelectProps={{
                           multiple: true,
                           onChange: (event) => setFieldValue('artist_id', event.target.value),

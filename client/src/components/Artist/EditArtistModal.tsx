@@ -158,7 +158,7 @@ const FieldInput: React.FC<{ fieldName: string; label: string; placeholder?: str
       id={fieldName}
       name={fieldName}
       as={as}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center"
+      className="input-style shadow appearance-none w-full py-2 px-3 leading-tight text-center"
     />
     <ErrorMessage name={fieldName} component="div" className="error-message" />
   </div>
@@ -177,7 +177,9 @@ const RolesSelection: React.FC<{
       as={Select}
       multiple
       value={values.roleIds || []}
-      className="w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center"
+      // Sin color acá: el Select es de MUI y el tema ya está en modo oscuro.
+      // `text-gray-700` le pisaba el color del tema y lo dejaba ilegible.
+      className="w-full py-2 px-3 leading-tight text-center"
       onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
         setFieldValue(
           'roleIds',
