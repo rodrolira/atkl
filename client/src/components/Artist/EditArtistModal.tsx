@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -39,13 +39,52 @@ const emptyValues = {
   beatport_link: '',
 };
 
-const validationSchema = Yup.object().shape({
-  artist_name: Yup.string().required('Artist name is required'),
-  email: Yup.string().email().required('Email is required'),
-  image: Yup.mixed(),
-  roleIds: Yup.array().min(1, 'Role is required'),
-  bio: Yup.string(),
-});
+/**
+ * Recibe `t` porque los mensajes estaban escritos en inglés a mano y el panel
+ * está en español: el usuario leía "Role is required" en medio de un
+ * formulario traducido. Las claves ya existían, las usa AddArtistForm.
+ */
+const buildValidationSchema = (t: (key: string) => string) =>
+  Yup.object().shape({
+    artist_name: Yup.string().required(t('validation.artistNameRequired')),
+    email: Yup.string().email(t('validation.invalidEmail')).required(t('validation.emailRequired')),
+    image: Yup.mixed(),
+    roleIds: Yup.array().min(1, t('validation.roleRequired')),
+    bio: Yup.string(),
+  });
+
+/**
+ * Lleva la vista al primer campo que frenó el guardado.
+ *
+ * El modal es más alto que la pantalla y el botón Save queda al final, así
+ * que cuando la validación fallaba el mensaje salía arriba, fuera de la
+ * vista, y el botón se sentía muerto: el caso típico es un artista sin rol
+ * asignado, que no puede guardarse hasta elegir uno.
+ */
+const ScrollAlPrimerError: React.FC = () => {
+  const { submitCount, isValidating, isValid, errors } = useFormikContext<typeof emptyValues>();
+
+  useEffect(() => {
+    // Mientras valida, `errors` todavía puede estar vacío.
+    if (submitCount === 0 || isValidating || isValid) return;
+
+    const campo = Object.keys(errors)[0];
+    if (!campo) return;
+
+    const nodo =
+      (document.getElementsByName(campo)[0] as HTMLElement | undefined) ??
+      (document.getElementById(campo) as HTMLElement | null) ??
+      undefined;
+
+    nodo?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    nodo?.focus?.();
+    // `errors` cambia de identidad en cada render: el disparador es el intento
+    // de guardar, no cada tecla.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitCount, isValidating, isValid]);
+
+  return null;
+};
 
 const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { t } = useTranslation();
@@ -111,11 +150,12 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
       <Formik
         initialValues={initialValues}
         enableReinitialize
-        validationSchema={validationSchema}
+        validationSchema={buildValidationSchema(t)}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form className="form-style">
+            <ScrollAlPrimerError />
             <Title className="title-style">{t('edit_artist')}</Title>
             <FieldInput fieldName="artist_name" label={t('artistName')} placeholder="Artist Name" />
             <FieldInput fieldName="email" label="Email" placeholder="artist@email.com" />
