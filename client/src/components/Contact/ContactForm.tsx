@@ -58,7 +58,7 @@ const ContactForm: React.FC = () => {
               {t('name')}
             </label>
             <input
-              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="input-style shadow appearance-none w-full py-2 px-3 leading-tight"
               id="name"
               type="text"
               name="name"
@@ -73,7 +73,7 @@ const ContactForm: React.FC = () => {
               {t('email')}
             </label>
             <input
-              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="input-style shadow appearance-none w-full py-2 px-3 leading-tight"
               id="email"
               type="email"
               name="email"
@@ -88,7 +88,7 @@ const ContactForm: React.FC = () => {
               {t('description_optional')}
             </label>
             <textarea
-              className="shadow appearance-none border border-metallic-gray-dark rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="input-style shadow appearance-none w-full py-2 px-3 leading-tight"
               id="description"
               name="description"
               value={formData.description}
