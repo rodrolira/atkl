@@ -3,17 +3,21 @@ import { bandcampEmbedKind, bandcampEmbedHeight } from '../utils';
 
 describe('bandcampEmbedHeight', () => {
     it('crece una fila por track', () => {
-        expect(bandcampEmbedHeight(2) - bandcampEmbedHeight(1)).toBe(27);
-        expect(bandcampEmbedHeight(10) - bandcampEmbedHeight(9)).toBe(27);
+        expect(bandcampEmbedHeight(2) - bandcampEmbedHeight(1)).toBe(33);
+        expect(bandcampEmbedHeight(10) - bandcampEmbedHeight(9)).toBe(33);
     });
 
-    // Valores medidos contra el embed real a 580px de ancho. Con 155px la fila
-    // se corta; con 170 entra. Si Bandcamp cambia su layout, esto falla acá y
-    // no en silencio sobre la página.
+    // Valores medidos contra el embed real en su tema CLARO, buscando el alto
+    // mínimo sin scroll interno: 1 track necesita 170 y 10 tracks 470 (a 350 y
+    // a 480px de ancho da lo mismo). La fórmula da 176 y 473.
+    //
+    // El tema oscuro usaba filas de 27 en vez de 33; estos números solo valen
+    // mientras BandcampPlayer mande un bgcol claro. Si Bandcamp cambia su
+    // layout, falla acá y no en silencio sobre la página.
     it('coincide con los altos medidos en el embed real', () => {
-        expect(bandcampEmbedHeight(1)).toBe(170);
-        expect(bandcampEmbedHeight(2)).toBe(197);
-        expect(bandcampEmbedHeight(10)).toBe(413);
+        expect(bandcampEmbedHeight(1)).toBe(176);
+        expect(bandcampEmbedHeight(2)).toBe(209);
+        expect(bandcampEmbedHeight(10)).toBe(473);
     });
 
     it('sin dato trata el release como de un track', () => {
