@@ -49,12 +49,9 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
                   {release.title}
                 </td>
                 <td className="px-4 py-3 text-metallic-gray text-sm">
-                  {release.artists.map((artist: Artist, index: number) => (
-                    <span key={artist.id}>
-                      {artist.artist_name}
-                      {index < release.artists.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}
+                  {release.artists?.length
+                    ? release.artists.map((artist: Artist) => artist.artist_name).join(', ')
+                    : release.artist_credit || '—'}
                 </td>
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
                   {formatReleaseDate(release.release_date)}

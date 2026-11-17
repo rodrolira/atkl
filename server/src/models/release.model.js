@@ -36,6 +36,19 @@ const Release = sequelize.define(
       type: DataTypes.ENUM('Album', 'EP', 'Single', 'V.A', 'Compilation'),
       allowNull: false,
     },
+    // Crédito del artista como texto, independiente de la tabla `artists`.
+    //
+    // La ficha de un artista se puede borrar desde el panel, pero el crédito de
+    // un release es un hecho histórico: el disco siguió saliendo a nombre de
+    // quien lo hizo. Antes el vínculo vivía solo en ReleaseArtists y al borrar
+    // la ficha el release quedaba mostrando "sin artistas".
+    //
+    // La relación con `artists` se mantiene y sigue siendo la que da el enlace
+    // clickeable. Esta columna es el respaldo que sobrevive al borrado.
+    artist_credit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     bandcamp_link: {
       type: DataTypes.STRING,
       allowNull: true,

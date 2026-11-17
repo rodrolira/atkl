@@ -10,6 +10,9 @@
  * Lo que NO se puede sacar de Bandcamp y queda en null: genre_id y los links de
  * Spotify/Beatport/Apple/YouTube. Se completan desde el panel admin.
  */
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
+
 const LABEL = 'https://atklrecords.bandcamp.com'
 const UA = 'atkl-site-importer/1.0 (+https://atklrecords.bandcamp.com)'
 
@@ -170,6 +173,10 @@ const main = async () => {
       bandcamp_link: r.url,
       bandcamp_album_id: r.bandcamp_album_id,
       bandcamp_track_count: r.n_tracks,
+      // El crédito se guarda en el release además de vincular la ficha: si
+      // después se borra el artista desde el panel, el disco conserva a nombre
+      // de quién salió.
+      artist_credit: r.artista,
     })
 
     if (r.artista) {
@@ -194,7 +201,15 @@ const main = async () => {
   await sequelize.close()
 }
 
-main().catch((e) => {
-  console.error('\nFALLÓ:', e.message)
-  process.exit(1)
-})
+// Solo corre si se invoca directamente. Sin esta guarda, cualquier módulo que
+// importe leerRelease disparaba una importación completa del catálogo al
+// cargarse, leyendo el --commit del proceso que lo importó.
+const invocadoDirecto =
+  process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+
+if (invocadoDirecto) {
+  main().catch((e) => {
+    console.error('\nFALLÓ:', e.message)
+    process.exit(1)
+  })
+}
