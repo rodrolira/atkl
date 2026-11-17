@@ -5,12 +5,20 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import cloudinary from '../../config/cloudinary.js'
 import {
   getArtists,
-  addArtist,
   deleteArtist,
-  updateArtist,
   getArtistById,
   getArtistReleases,
 } from '../controllers/artists.controller.js'
+// POST y PUT llaman al servicio, no al controlador: son los dos únicos que
+// pasan por multer y necesitan meter `req.file.path` en los datos, cosa que el
+// controlador no hace. Antes importaban `addArtist`/`updateArtist` del
+// controlador y los llamaban con (datos) y (id, datos); como el controlador
+// tiene firma (req, res), terminaba ejecutando `res.status(...)` sobre un
+// objeto de datos y el PUT respondía 500 "res.status is not a function".
+import {
+  addArtist as addArtistService,
+  updateArtist as updateArtistService,
+} from '../services/artistService.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = express.Router()
@@ -32,7 +40,7 @@ router.get('/artists/:id/releases', getArtistReleases)
 
 router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, res) => {
   try {
-    const artist = await addArtist({
+    const artist = await addArtistService({
       ...req.body,
       image: req.file ? req.file.path : undefined,
     })
@@ -45,7 +53,7 @@ router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, re
 
 router.put('/artists/:id', verifyTokenAdmin, upload.single('image'), async (req, res) => {
   try {
-    const artist = await updateArtist(req.params.id, {
+    const artist = await updateArtistService(req.params.id, {
       ...req.body,
       image: req.file ? req.file.path : undefined,
     })
