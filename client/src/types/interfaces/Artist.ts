@@ -31,7 +31,7 @@ export interface Artist {
     artists: Artist[];
     fetchArtists: () => Promise<void>;
     setArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
-    createArtist: (artist: NuevoArtist) => Promise<Artist | null>;
+    createArtist: (artist: NuevoArtist) => Promise<Artist>;
     updateArtist: (id: number, updatedArtist: Partial<Artist>) => Promise<void>; // Asegúrate de que esto sea una Promise
     deleteArtist: (id: number) => Promise<void>;
     error: string | null;

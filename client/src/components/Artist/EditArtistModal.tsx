@@ -9,6 +9,7 @@ import FileUploadComponent from '../Upload/FileUploadComponent';
 import { useArtists } from '@/contexts/ArtistContext';
 import { Role } from '@/types/interfaces/Role';
 import { getRolesRequest } from '@/app/api/roles';
+import { mensajeDeError } from '@/utils/errores';
 
 const SOCIAL_FIELDS = [
   'twitter_link',
@@ -91,6 +92,8 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   const { updateArtist, createArtist, artists } = useArtists();
   const [initialValues, setInitialValues] = useState(emptyValues);
   const [roles, setRoles] = useState<Role[]>([]);
+  const [errorServidor, setErrorServidor] = useState<string | null>(null);
+  const [guardado, setGuardado] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -133,15 +136,22 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
   }, [id, artists]);
 
   const handleSubmit = async (values: typeof emptyValues) => {
+    setErrorServidor(null);
+
     try {
       if (id) {
         await updateArtist(id, values);
       } else {
         await createArtist(values);
       }
-      onClose();
+      // Antes el modal se cerraba sin más: no había diferencia visible entre
+      // haber guardado y que el servidor hubiera fallado en silencio.
+      setGuardado(true);
+      setTimeout(onClose, 900);
     } catch (error) {
-      console.error('Error al guardar el artista:', error);
+      // Lo que diga el servidor: 400 con el campo que falló, 502 si no se
+      // pudo guardar la imagen, 500 si fue un bug. Antes solo iba a consola.
+      setErrorServidor(mensajeDeError(error, t('errors.updateArtist')));
     }
   };
 
@@ -172,10 +182,13 @@ const EditArtistModal: React.FC<EditArtistModalProps> = ({ id, onClose }) => {
             />
             <FieldInput fieldName="bio" label="Bio:" as="textarea" />
             <SocialLinksInput t={t} />
-            <ActionButtons
-              isSubmitting={isSubmitting}
-              onClose={onClose}
-            />
+            {errorServidor && (
+              <div className="error-message" role="alert">{errorServidor}</div>
+            )}
+            {guardado && (
+              <div className="exito-message" role="status">{t('addArtist.guardado')}</div>
+            )}
+            <ActionButtons isSubmitting={isSubmitting} onClose={onClose} t={t} />
           </Form>
         )}
       </Formik>
@@ -245,16 +258,19 @@ const SocialLinksInput: React.FC<{ t: any }> = ({ t }) => (
   </>
 );
 
-const ActionButtons: React.FC<{ isSubmitting: boolean; onClose: () => void }> = ({
-  isSubmitting,
-  onClose,
-}) => (
+const ActionButtons: React.FC<{
+  isSubmitting: boolean;
+  onClose: () => void;
+  t: (key: string) => string;
+}> = ({ isSubmitting, onClose, t }) => (
   <div className="flex items-center justify-between">
     <button type="button" onClick={onClose} className="btn btn-cancel h-10 mb-2">
-      Cancel
+      {t('cancel')}
     </button>
+    {/* El texto cambia mientras se envía: el disabled solo no se nota y el
+        usuario volvía a apretar creyendo que no había pasado nada. */}
     <button type="submit" className="btn btn-save h-10 mb-2" disabled={isSubmitting}>
-      Save
+      {isSubmitting ? t('guardando') : t('save')}
     </button>
   </div>
 );

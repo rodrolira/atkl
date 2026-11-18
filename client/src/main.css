@@ -73,6 +73,17 @@ code {
     text-align: left;
     margin-top: 0.25rem;
   }
+
+  /* Confirmación de guardado. Verde y no el rojo de la marca: el acento es el
+     color de error en este formulario y repetirlo haría dudar de si salió
+     bien. #4ade80 sobre el negro del modal da 10,4:1. */
+  .exito-message {
+    color: #4ade80;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: left;
+    margin-top: 0.25rem;
+  }
 }
 
 /* Sin z-index acá. Había un `z-index: 1000000` global que aplicaba a TODOS los

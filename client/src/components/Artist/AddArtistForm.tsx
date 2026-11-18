@@ -22,10 +22,12 @@ import { AddArtistFormProps } from '@/types/props/Form/ArtistFormProps';
 import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
 import { getRolesRequest } from '@/app/api/roles';
+import { mensajeDeError } from '@/utils/errores';
 
 const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
+  const [guardado, setGuardado] = useState(false);
 
   const [roles, setRoles] = useState<Role[]>([]);
   const { createArtist } = useArtists();
@@ -58,17 +60,19 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
   const onSubmit = async (values: Artist, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     setSubmitting(true);
 
+    setError(null);
+
     try {
       const created = await createArtist(values);
-      if (!created) {
-        setError(t('errors.addArtist'));
-        return;
-      }
-      closePopup();
+      // Confirmación antes de cerrar: si el diálogo desaparecía al instante,
+      // no quedaba señal de que el alta hubiera funcionado.
+      setGuardado(true);
       onArtistAdded?.(created);
+      setTimeout(closePopup, 900);
     } catch (error) {
-      console.error('Error adding artist:', error);
-      setError(t('errors.addArtist'));
+      // El motivo real lo manda el servidor (400 por campo inválido, 502 si
+      // falló la imagen). Antes se mostraba siempre el mismo texto fijo.
+      setError(mensajeDeError(error, t('errors.addArtist')));
     } finally {
       setSubmitting(false);
     }
@@ -170,13 +174,16 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
                   onChange={(e) => setFieldValue('bio', e.target.value)}
                 />
                 {renderSocialLinks(fields)}
-                {error && <div className="text-red-500">{error}</div>}
+                {error && <div className="error-message" role="alert">{error}</div>}
+                {guardado && (
+                  <div className="exito-message" role="status">{t('addArtist.guardado')}</div>
+                )}
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center bg-metallic-gray text-black hover:bg-white"
                 >
-                  {t('submit')}
+                  {isSubmitting ? t('guardando') : t('submit')}
                 </button>
               </Stack>
             </Form>

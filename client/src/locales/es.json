@@ -211,7 +211,8 @@
       "dj": "DJ",
       "producer": "Productor"
     },
-    "selectRole": "Seleccionar Rol"
+    "selectRole": "Seleccionar Rol",
+    "guardado": "Guardado"
   },
   "availability": {
     "no_artists": "No hay artistas disponibles",
@@ -228,7 +229,8 @@
     "deleteArtist": "No se pudo eliminar el artista. Inténtalo de nuevo.",
     "deleteRelease": "No se pudo eliminar el lanzamiento. Inténtalo de nuevo.",
     "addTeamMember": "No se pudo agregar al miembro del equipo",
-    "fetchData": "No se pudieron cargar los datos"
+    "fetchData": "No se pudieron cargar los datos",
+    "updateArtist": "No se pudo guardar el artista. Inténtalo de nuevo."
   },
   "action": "Acción",
   "delete_member": "Eliminar miembro",
@@ -242,5 +244,7 @@
   "rights_reserved": "Todos los derechos reservados.",
   "open_menu": "Abrir menú",
   "close_menu": "Cerrar menú",
-  "bandcamp_player": "Reproductor de Bandcamp"
+  "bandcamp_player": "Reproductor de Bandcamp",
+  "guardando": "Guardando…",
+  "cancel": "Cancelar"
 }

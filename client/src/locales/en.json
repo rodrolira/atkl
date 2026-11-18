@@ -207,7 +207,8 @@
       "role": "Role",
       "dj": "DJ",
       "producer": "Producer"
-    }
+    },
+    "guardado": "Saved"
   },
   "availability": {
     "no_artists": "No artists available",
@@ -224,7 +225,8 @@
     "deleteArtist": "Failed to delete artist. Please try again.",
     "deleteRelease": "Failed to delete release. Please try again.",
     "addTeamMember": "The team member could not be added",
-    "fetchData": "The data could not be loaded"
+    "fetchData": "The data could not be loaded",
+    "updateArtist": "Failed to save artist. Please try again."
   },
   "confirmation": {
     "deleteArtist": "Are you sure you want to delete this artist?"
@@ -242,5 +244,7 @@
   "rights_reserved": "All rights reserved.",
   "open_menu": "Open menu",
   "close_menu": "Close menu",
-  "bandcamp_player": "Bandcamp player"
+  "bandcamp_player": "Bandcamp player",
+  "guardando": "Saving…",
+  "cancel": "Cancel"
 }
