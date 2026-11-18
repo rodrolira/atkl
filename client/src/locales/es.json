@@ -117,7 +117,14 @@
     "admin_dashboard": "Panel de Administrador",
     "menu": "Menú"
   },
+  "editRelease": {
+    "artists": "Artistas",
+    "artistsPlaceholder": "Escribe un nombre y Enter",
+    "artistsHelp": "Elige a los artistas del sello de la lista. Si el artista no está en la base, escribe su nombre y apreta Enter: queda acreditado, pero sin página propia."
+  },
   "validation": {
+    "titleRequired": "El título es requerido",
+    "artistRequired": "Se requiere al menos un artista",
     "artistNameRequired": "El nombre del artista es requerido",
     "usernameRequired": "El usuario es requerido",
     "emailRequired": "El correo electrónico es requerido",
@@ -211,7 +218,8 @@
       "producer": "Productor"
     },
     "selectRole": "Seleccionar Rol",
-    "guardado": "Guardado"
+    "guardado": "Guardado",
+    "linksTitle": "Enlaces"
   },
   "availability": {
     "no_artists": "No hay artistas disponibles",
@@ -229,7 +237,8 @@
     "deleteRelease": "No se pudo eliminar el lanzamiento. Inténtalo de nuevo.",
     "addTeamMember": "No se pudo agregar al miembro del equipo",
     "fetchData": "No se pudieron cargar los datos",
-    "updateArtist": "No se pudo guardar el artista. Inténtalo de nuevo."
+    "updateArtist": "No se pudo guardar el artista. Inténtalo de nuevo.",
+    "updateRelease": "No se pudo guardar el lanzamiento. Inténtalo de nuevo."
   },
   "action": "Acción",
   "delete_member": "Eliminar miembro",
