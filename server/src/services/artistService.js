@@ -158,7 +158,15 @@ export const deleteArtist = async (id) => {
   // catálogo; que el disco pierda a quien lo hizo es pérdida de información.
   // Solo se completa donde está vacío: si ya hay un crédito cargado a mano,
   // ese gana.
-  const vinculos = await ReleaseArtist.findAll({ where: { artist_id: artist.id } })
+  // `attributes` explícito a propósito: el modelo ReleaseArtist no declara
+  // primaryKey, así que Sequelize asume una columna `id` y la pide en el
+  // SELECT. La tabla ReleaseArtists solo tiene release_id, artist_id y los
+  // timestamps, así que sin esto el borrado falla con
+  // `column "id" does not exist`.
+  const vinculos = await ReleaseArtist.findAll({
+    attributes: ['release_id'],
+    where: { artist_id: artist.id },
+  })
   const releaseIds = vinculos.map((v) => v.release_id)
   if (releaseIds.length > 0) {
     await Release.update(
