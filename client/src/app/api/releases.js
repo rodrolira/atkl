@@ -30,7 +30,20 @@ const toFormData = (release) => {
   const artistIds = release.artist_id
     ?? (release.artists || []).map((artist) => artist.id).filter(Boolean);
 
-  artistIds.forEach((artistId) => formData.append('artist_id', artistId));
+  // Se manda el campo aunque la lista esté vacía: el servidor solo toca los
+  // vínculos cuando `artist_id` viene en la petición, y sin esto no había
+  // forma de desvincular la última ficha de un lanzamiento.
+  if (artistIds.length === 0) {
+    formData.append('artist_id', '');
+  } else {
+    artistIds.forEach((artistId) => formData.append('artist_id', artistId));
+  }
+
+  // Aparte del bucle de arriba porque ese salta los strings vacíos, y vaciar
+  // el crédito es una edición válida.
+  if (release.artist_credit !== undefined) {
+    formData.append('artist_credit', release.artist_credit ?? '');
+  }
 
   if (release.cover_image_url instanceof File) {
     formData.append('cover_image_url', release.cover_image_url);

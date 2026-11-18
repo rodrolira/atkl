@@ -19,6 +19,7 @@ import { useGenres } from '@/contexts/GenreContext';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
 import { useTranslation } from 'react-i18next';
 import CustomTextInput from '@/components/atoms/Input/CustomTextInput';
+import ArtistCredits from '@/components/Release/ArtistCredits';
 
 interface AddReleaseFormProps {
   open: boolean;
@@ -73,14 +74,38 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
           flexDirection: 'column',
           position: 'relative',
           zIndex: 10,
-          backgroundColor: 'rgba(18, 46, 15, 0.9)',
+          // El verde fijo que había acá no está en la paleta del sello. Negro,
+          // borde gris y esquinas rectas, igual que el resto de los modales.
+          backgroundColor: 'rgb(var(--bg))',
+          backgroundImage: 'none',
+          border: '1px solid rgb(var(--muted) / 0.4)',
         },
       }}
     >
-      <DialogTitle sx={{ bgcolor: 'rgba(18, 46, 15, 1)', height: '10vh', textAlign: 'center' }}>
-        {t('Add Release')}
-        <IconButton sx={{ float: 'right' }} onClick={closePopup}>
-          <CloseIcon color="error" />
+      <DialogTitle
+        sx={{
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          fontWeight: 800,
+          fontSize: '1.125rem',
+          borderBottom: '1px solid rgb(var(--muted) / 0.3)',
+          paddingRight: '3.5rem',
+        }}
+      >
+        {t('add_release')}
+        <IconButton
+          aria-label={t('cancel')}
+          onClick={closePopup}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: 'rgb(var(--muted))',
+            '&:hover': { color: 'rgb(var(--accent))', backgroundColor: 'transparent' },
+          }}
+        >
+          <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -90,7 +115,9 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
             release_date: '',
             genre_id: '',
             release_type: '',
-            artist_id: [] as string[],
+            artist_id: [] as number[],
+            // Línea de crédito completa, incluidos los artistas sin ficha.
+            artist_credit: '',
             bandcamp_link: '',
             beatport_link: '',
             spotify_link: '',
@@ -105,7 +132,11 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
             release_date: Yup.date().required('Release date is required'),
             genre_id: Yup.number().required('Genre is required'),
             release_type: Yup.string().required('Release type is required'),
-            artist_id: Yup.array().min(1, 'At least one artist is required').of(Yup.number()),
+            // Sin mínimo de fichas: un lanzamiento puede ser de un invitado que
+            // no está en la base. Lo obligatorio es el crédito, que incluye a
+            // los dos tipos de artista.
+            artist_id: Yup.array().of(Yup.number()),
+            artist_credit: Yup.string().trim().required(t('validation.artistRequired')),
             bandcamp_link: Yup.string(),
             beatport_link: Yup.string(),
             spotify_link: Yup.string(),
@@ -162,27 +193,13 @@ const AddReleaseForm: React.FC<AddReleaseFormProps> = ({
                   </Field>
                 </FormControl>
                 <ErrorMessage name="genre_id" component="div" className="text-red-500 text-sm" />
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Artist</InputLabel>
-                  <Field name="artist_id">
-                    {({ field }: FieldProps) => (
-                      <Select
-                        {...field}
-                        multiple
-                        label="Artist"
-                        value={values.artist_id}
-                        onChange={(e) => setFieldValue('artist_id', e.target.value)}
-                      >
-                        {artists.map((artist) => (
-                          <MenuItem key={artist.id} value={artist.id}>
-                            {artist.artist_name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  </Field>
-                </FormControl>
-                <ErrorMessage name="artist_id" component="div" className="text-red-500 text-sm" />
+                <ArtistCredits
+                  artists={artists}
+                  artistIds={values.artist_id}
+                  credit={values.artist_credit}
+                  setFieldValue={setFieldValue}
+                />
+                <ErrorMessage name="artist_credit" component="div" className="error-message" />
                 <FileUploadRelease />
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Release Type</InputLabel>

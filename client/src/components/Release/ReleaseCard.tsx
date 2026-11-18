@@ -15,6 +15,7 @@ import BaseCard from '../Layout/BaseCard';
 import { Artist } from '@/types/interfaces/Artist';
 import BandcampPlayer from './BandcampPlayer';
 import { Genre } from '@/types/interfaces/Genre';
+import { creditosSinFicha } from '@/utils/creditos';
 
 interface ReleaseCardProps {
   release: Release;
@@ -72,31 +73,38 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   // Renderizar links de artistas
   const artistLinks = useMemo(() => {
-    if (currentRelease?.artists && currentRelease.artists.length > 0) {
-      return currentRelease.artists.map((artist: Artist) =>
-        artist.id ? (
-          <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center relative" key={artist.id}>
-            <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-metallic-gray">
-              {t('artist')}: {artist.artist_name}
-            </h3>
-          </Link>
-        ) : (
-          <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white" key={artist.artist_name}>
-            {t('artist')}: {artist.artist_name}
-          </p>
-        )
-      );
-    } else if (currentRelease?.artist_credit) {
-      // La ficha del artista ya no existe (se borró del panel) pero el disco
-      // salió a su nombre. Sin link: no hay página a dónde ir.
-      return (
-        <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white">
-          {t('artist')}: {currentRelease.artist_credit}
-        </p>
-      );
-    } else {
+    const vinculados = (currentRelease?.artists ?? []) as Artist[];
+    // Nombres del crédito que no tienen ficha: invitados que no son del sello,
+    // o artistas cuya ficha se borró del panel. Van sin link porque no hay
+    // página a dónde ir.
+    const sinFicha = creditosSinFicha(currentRelease?.artist_credit, vinculados);
+
+    if (!vinculados.length && !sinFicha.length) {
       return <h3 className="text-lg lg:h-auto sm:h-min font-bold mt-2">{t('noArtists')}</h3>;
     }
+
+    return (
+      <>
+        {vinculados.map((artist: Artist) =>
+          artist.id ? (
+            <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center relative" key={artist.id}>
+              <h3 className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 hover:text-metallic-gray">
+                {t('artist')}: {artist.artist_name}
+              </h3>
+            </Link>
+          ) : (
+            <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white" key={artist.artist_name}>
+              {t('artist')}: {artist.artist_name}
+            </p>
+          )
+        )}
+        {sinFicha.map((nombre) => (
+          <p className="xs:text-lg lg:h-auto sm:h-min font-bold xs:mt-2 text-white" key={nombre}>
+            {t('artist')}: {nombre}
+          </p>
+        ))}
+      </>
+    );
   }, [currentRelease?.artists, currentRelease?.artist_credit, t]);
 
   const memoizedButton = useMemo(() => (
