@@ -20,8 +20,46 @@ import {
   updateArtist as updateArtistService,
 } from '../services/artistService.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
+import {
+  crearArtistaSchema,
+  actualizarArtistaSchema,
+  validarArtista,
+} from '../../schemas/artist.schema.js'
 
 const router = express.Router()
+
+/**
+ * Un error con `status` es una respuesta prevista (datos inválidos, no
+ * encontrado): se devuelve tal cual y no ensucia los logs. Lo que no lo trae
+ * es un bug y ahí sí queremos el stack completo en Render.
+ */
+const responderError = (res, error, contexto) => {
+  const status = error.status ?? 500
+  if (status >= 500) console.error(contexto, error)
+  res.status(status).json({ message: error.message, errores: error.errores })
+}
+
+/**
+ * Junta el cuerpo validado con la imagen.
+ *
+ * `image` sale siempre de lo que subió multer, nunca del cuerpo: si se
+ * aceptara del cliente, cualquiera podría apuntar la foto de un artista a una
+ * URL arbitraria.
+ *
+ * Si vino un archivo pero el storage no devolvió URL, la imagen se perdió. Se
+ * corta acá: antes el alta respondía 201 como si se hubiera guardado y el
+ * artista quedaba sin foto sin que nadie se enterara.
+ */
+const datosConImagen = (req, schema) => {
+  if (req.file && !req.file.path) {
+    const error = new Error('No se pudo guardar la imagen: el almacenamiento no devolvió una URL')
+    error.status = 502
+    throw error
+  }
+
+  const { image: _delCliente, ...cuerpo } = req.body
+  return validarArtista(schema, { ...cuerpo, image: req.file?.path })
+}
 
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -40,30 +78,25 @@ router.get('/artists/:id/releases', getArtistReleases)
 
 router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, res) => {
   try {
-    const artist = await addArtistService({
-      ...req.body,
-      image: req.file ? req.file.path : undefined,
-    })
+    const artist = await addArtistService(datosConImagen(req, crearArtistaSchema))
     res.status(201).json(artist)
   } catch (error) {
-    console.error('Error adding artist:', error)
-    res.status(error.status || 500).json({ message: error.message })
+    responderError(res, error, 'Error adding artist:')
   }
 })
 
 router.put('/artists/:id', verifyTokenAdmin, upload.single('image'), async (req, res) => {
   try {
-    const artist = await updateArtistService(req.params.id, {
-      ...req.body,
-      image: req.file ? req.file.path : undefined,
-    })
+    const artist = await updateArtistService(
+      req.params.id,
+      datosConImagen(req, actualizarArtistaSchema)
+    )
     if (!artist) {
       return res.status(404).json({ message: 'Artist not found' })
     }
     res.status(200).json(artist)
   } catch (error) {
-    console.error('Error updating artist:', error)
-    res.status(error.status || 500).json({ message: error.message })
+    responderError(res, error, 'Error updating artist:')
   }
 })
 

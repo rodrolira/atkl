@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, ReactNode, useState, useCallback, useEffect } from 'react';
 import { Artist, ArtistContextType, NuevoArtist } from '@/types/interfaces/Artist';
 import { Role } from '@/types/interfaces/Role';
+import { mensajeDeError } from '@/utils/errores';
 import {
   getArtistsRequest,
   createArtistRequest,
@@ -54,7 +55,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     fetchArtists();
   }, [fetchArtists]);
 
-  const createArtist = async (artist: NuevoArtist): Promise<Artist | null> => {
+  const createArtist = async (artist: NuevoArtist): Promise<Artist> => {
     try {
       const { data } = await createArtistRequest(artist);
       const created = normalizeArtist(data);
@@ -62,9 +63,11 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return created;
     } catch (err) {
       console.error('Error creating artist:', err);
-      const message = (err as any)?.response?.data?.message;
-      setError(message || 'No se pudo crear el artista');
-      return null;
+      // Se relanza además de guardarlo: el formulario necesita el motivo para
+      // mostrarlo, y devolver null a secas le obligaba a inventar un texto.
+      const mensaje = mensajeDeError(err, 'No se pudo crear el artista');
+      setError(mensaje);
+      throw err;
     }
   };
 
@@ -77,7 +80,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       );
     } catch (err) {
       console.error('Error updating artist:', err);
-      setError('No se pudo actualizar el artista');
+      setError(mensajeDeError(err, 'No se pudo actualizar el artista'));
       throw err;
     }
   };
@@ -88,7 +91,7 @@ export const ArtistProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setArtists((prevArtists) => prevArtists.filter((artist) => artist.id !== id));
     } catch (err) {
       console.error('Error deleting artist:', err);
-      setError('No se pudo eliminar el artista');
+      setError(mensajeDeError(err, 'No se pudo eliminar el artista'));
       throw err;
     }
   };
