@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +23,25 @@ import { Role } from '@/types/interfaces/Role';
 import { Artist } from '@/types/interfaces/Artist';
 import { getRolesRequest } from '@/app/api/roles';
 import { mensajeDeError } from '@/utils/errores';
+
+/**
+ * Los campos leen los tokens de App.css, los mismos que usan Tailwind y el
+ * tema de MUI. Antes el diálogo traía un verde fijo (rgba(18,46,15,.9)) que no
+ * está en la paleta del sello —negro, gris metálico y rojo— y los campos no
+ * tenían fondo propio, así que no se distinguía dónde se escribía.
+ */
+const campoSx = {
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: 'rgb(var(--surface))',
+    borderRadius: 0,
+    '& fieldset': { borderColor: 'rgb(var(--muted) / 0.4)' },
+    '&:hover fieldset': { borderColor: 'rgb(var(--muted))' },
+    '&.Mui-focused fieldset': { borderColor: 'rgb(var(--accent))', borderWidth: '1px' },
+  },
+  '& .MuiInputLabel-root': { color: 'rgb(var(--muted))' },
+  '& .MuiInputLabel-root.Mui-focused': { color: 'rgb(var(--accent))' },
+  '& .MuiOutlinedInput-input': { color: 'rgb(var(--text))' },
+};
 
 const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, closePopup, onArtistAdded }) => {
   const { t } = useTranslation();
@@ -88,6 +107,7 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
           variant="outlined"
           type={type}
           autoComplete={autoComplete}
+          sx={campoSx}
           error={Boolean(form.errors[name] && form.touched[name])}
           helperText={form.errors[name] && form.touched[name] && form.errors[name]}
         />
@@ -109,9 +129,16 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
       maxWidth="sm"
       PaperProps={{
         sx: {
-          borderRadius: '0px',
-          margin: '0',
-          backgroundColor: 'rgba(18, 46, 15, 0.9)',
+          borderRadius: 0,
+          margin: 0,
+          // Mismo tratamiento que los modales del panel (Modal.css): negro,
+          // esquinas rectas y un borde gris de 1px.
+          backgroundColor: 'rgb(var(--bg))',
+          // MUI le pone un degradado propio al Paper en modo oscuro y aclaraba
+          // el fondo por encima del token.
+          backgroundImage: 'none',
+          border: '1px solid rgb(var(--muted) / 0.4)',
+          color: 'rgb(var(--text))',
         },
         component: motion.div,
         variants: modalVariants,
@@ -121,10 +148,30 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
       }}
       scroll="body"
     >
-      <DialogTitle style={{ textAlign: 'center' }}>
+      <DialogTitle
+        sx={{
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          fontWeight: 800,
+          fontSize: '1.125rem',
+          borderBottom: '1px solid rgb(var(--muted) / 0.3)',
+          paddingRight: '3.5rem',
+        }}
+      >
         {t('addArtist.title')}
-        <IconButton style={{ float: 'right' }} onClick={closePopup}>
-          <CloseIcon color="error" />
+        <IconButton
+          aria-label={t('cancel')}
+          onClick={closePopup}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: 'rgb(var(--muted))',
+            '&:hover': { color: 'rgb(var(--accent))', backgroundColor: 'transparent' },
+          }}
+        >
+          <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -133,24 +180,25 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
           enableReinitialize
           validationSchema={Yup.object().shape({
             artist_name: Yup.string().required(t('validation.artistNameRequired')),
-            email: Yup.string().email().required(t('label.email')),
+            email: Yup.string().email(t('validation.invalidEmail')).required(t('validation.emailRequired')),
             bio: Yup.string(),
             image: Yup.mixed(),
             roleIds: Yup.array().min(1, t('validation.roleRequired')),
           })}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, setFieldValue, values }) => (
+          {({ isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form>
-              <Stack spacing={2} margin={2}>
+              <Stack spacing={2} marginY={2}>
                 {renderField('artist_name', 'artist_name')}
                 {renderField('email', 'email', 'email')}
                 <FileUpload />
 
-                <FormControl fullWidth variant="outlined">
+                <FormControl fullWidth variant="outlined" sx={campoSx} error={Boolean(errors.roleIds && touched.roleIds)}>
                   <InputLabel>{t('addArtist.selectRole')}</InputLabel>
                   <Select
                     multiple
+                    label={t('addArtist.selectRole')}
                     value={values.roleIds}
                     onChange={(e) => setFieldValue('roleIds', e.target.value)}
                     renderValue={(selected) =>
@@ -163,7 +211,9 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
                       </MenuItem>
                     ))}
                   </Select>
-
+                  {/* El rol es obligatorio y su error no se mostraba: sin uno
+                      elegido el botón de guardar no hacía nada visible. */}
+                  <ErrorMessage name="roleIds" component="div" className="error-message" />
                 </FormControl>
                 <TextField
                   label={t('addArtist.bio')}
@@ -171,20 +221,27 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
                   multiline
                   rows={4}
                   variant="outlined"
+                  sx={campoSx}
                   onChange={(e) => setFieldValue('bio', e.target.value)}
                 />
-                {renderSocialLinks(fields)}
+
+                <p className="pt-2 text-left text-xs font-semibold uppercase tracking-[0.2em] text-metallic-gray border-b border-metallic-gray/30 pb-1">
+                  {t('addArtist.linksTitle')}
+                </p>
+                {renderSocialLinks(fields, t)}
+
                 {error && <div className="error-message" role="alert">{error}</div>}
                 {guardado && (
                   <div className="exito-message" role="status">{t('addArtist.guardado')}</div>
                 )}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="mx-auto btn btn-save h-10 mt-2 font-bold flex justify-center bg-metallic-gray text-black hover:bg-white"
-                >
-                  {isSubmitting ? t('guardando') : t('submit')}
-                </button>
+                <div className="flex items-center justify-between pt-2">
+                  <button type="button" onClick={closePopup} className="btn btn-cancel h-10">
+                    {t('cancel')}
+                  </button>
+                  <button type="submit" disabled={isSubmitting} className="btn btn-save h-10">
+                    {isSubmitting ? t('guardando') : t('save')}
+                  </button>
+                </div>
               </Stack>
             </Form>
           )}
@@ -194,14 +251,17 @@ const AddArtistForm: React.FC<AddArtistFormProps> = React.memo(({ openPopup, clo
   );
 });
 
-const renderSocialLinks = (fields: string[]) => {
+const renderSocialLinks = (fields: string[], t: (key: string) => string) => {
   return fields.map((linkField, index) => (
     <Field key={index} name={linkField}>
       {({ field, form }: { field: any; form: any }) => (
         <TextField
           {...field}
-          label={linkField.replace('_link', '').toUpperCase()}
+          // Traducido en vez de `apple_music_link` → "APPLE_MUSIC": las claves
+          // ya existían, las usa el formulario de editar artista.
+          label={t(`social_links.${linkField}`)}
           variant="outlined"
+          sx={campoSx}
           error={Boolean(form.errors[linkField] && form.touched[linkField])}
           helperText={form.errors[linkField] && form.touched[linkField] && form.errors[linkField]}
         />

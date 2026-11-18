@@ -42,8 +42,13 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
   };
 
   return (
-    <div className="mb-3">
-      <label className="block mb-1" htmlFor={name}>{label}:</label>
+    <div className="mb-3 text-left">
+      {/* Mismo tratamiento que el resto de los campos del panel: gris de marca
+          sobre la superficie, esquinas rectas. Tenía `border-gray-300` y
+          `rounded`, que no son de la paleta. */}
+      <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.2em] text-metallic-gray" htmlFor={name}>
+        {label}
+      </label>
       <input
         id={name}
         name={name}
@@ -51,9 +56,11 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
         accept="image/*"
         onChange={handleChange}
         aria-invalid={!!meta.error && meta.touched}
-        className="block w-full rounded border border-gray-300 p-2"
+        className="block w-full border border-metallic-gray/40 bg-surface p-2 text-white
+          file:mr-3 file:border-0 file:bg-metallic-gray file:px-3 file:py-1 file:font-semibold
+          file:uppercase file:tracking-wider file:text-black hover:file:bg-white"
       />
-      {fileError && <p role="alert" className="text-red-400 mt-1">{fileError}</p>}
+      {fileError && <p role="alert" className="error-message">{fileError}</p>}
       {preview && <img src={preview} alt="Preview" className="mt-3 w-32 h-32 object-cover" />}
     </div>
   );
