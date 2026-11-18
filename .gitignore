@@ -27,3 +27,4 @@ uploads
 .env.*
 !.env.example
 *.bak
+graphify-out/

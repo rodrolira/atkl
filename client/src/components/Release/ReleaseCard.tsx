@@ -117,7 +117,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
         <div className="w-full rounded-t-lg overflow-hidden relative">
           <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase">{currentRelease.title}</h3>
           <p className="text-sm text-white">{currentRelease.genre?.name}</p>
-          <p className="text-sm text-white">{t('releaseType')}: {currentRelease.release_type}</p>
+          <p className="text-sm text-white">{currentRelease.release_type}</p>
 
           {artistLinks}
           <div className='relative w-full'>
