@@ -32,6 +32,7 @@ export const addRelease = async (releaseData, filePath) => {
     genre_id,
     release_type,
     cover_image_url: filePath || null,
+    artist_credit: releaseData.artist_credit || null,
     bandcamp_link: releaseData.bandcamp_link,
     bandcamp_album_id: releaseData.bandcamp_album_id || null,
     bandcamp_track_count: releaseData.bandcamp_track_count || null,
@@ -130,6 +131,14 @@ export const updateRelease = async (id, releaseData, filePath) => {
     updateFields.bandcamp_track_count = releaseData.bandcamp_track_count || null
   }
 
+  // El crédito es la línea completa de artistas, incluidos los que no tienen
+  // ficha en la base (invitados que no son del sello). Antes el panel no lo
+  // podía editar: se escribía solo al importar de Bandcamp o al borrar una
+  // ficha, así que agregar un invitado a mano era imposible.
+  if (releaseData.artist_credit !== undefined) {
+    updateFields.artist_credit = releaseData.artist_credit || null
+  }
+
   const [affectedCount] = await Release.update(updateFields, { where: { id } })
   if (affectedCount === 0) {
     const error = new Error('Release not found')
@@ -137,10 +146,12 @@ export const updateRelease = async (id, releaseData, filePath) => {
     throw error
   }
 
-  const artistIds = parseArtistIds(artist_id)
   const release = await Release.findByPk(id)
-  if (release && artistIds.length > 0) {
-    await release.setArtists(artistIds)
+  // Se sincroniza siempre que el formulario mande el campo, aunque venga
+  // vacío: con la condición anterior (`length > 0`) quitar el último artista
+  // vinculado no tenía efecto y el vínculo volvía a aparecer al recargar.
+  if (release && artist_id !== undefined) {
+    await release.setArtists(parseArtistIds(artist_id))
   }
 
   return Release.findOne({

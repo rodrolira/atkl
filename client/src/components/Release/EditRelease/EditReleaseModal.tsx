@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage, FieldProps, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Stack, TextField } from '@mui/material';
 import Button from '@/components/Button/Button';
+import ArtistCredits from '@/components/Release/ArtistCredits';
 import FileUploadRelease from '@/components/Upload/FileUploadRelease';
 import { useArtists } from '@/contexts/ArtistContext';
 import { useGenres } from '@/contexts/GenreContext';
@@ -11,6 +12,8 @@ import Title from '@/components/atoms/Title/Title';
 import { useTranslation } from 'react-i18next';
 import { Release } from '@/types/interfaces/Release';
 import { Artist } from '@/types/interfaces/Artist';
+import { unirCreditos } from '@/utils/creditos';
+import { mensajeDeError } from '@/utils/errores';
 
 const SOCIAL_FIELDS = [
   'bandcamp_link',
@@ -24,6 +27,8 @@ const SOCIAL_FIELDS = [
 const emptyValues = {
   title: '',
   artist_id: [] as number[],
+  // Línea de crédito completa, incluidos los artistas sin ficha en la base.
+  artist_credit: '',
   genre_id: '',
   release_date: '',
   description: '',
@@ -37,15 +42,25 @@ const emptyValues = {
   soundcloud_link: '',
 };
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  artist_id: Yup.array().min(1, 'At least one artist is required'),
-  cover_image_url: Yup.mixed(),
-  release_date: Yup.date().nullable(),
-  description: Yup.string(),
-  genre_id: Yup.string(),
-  release_type: Yup.string(),
-});
+/**
+ * Los mensajes salen de i18n porque el panel está en español y estaban
+ * escritos en inglés a mano, igual que pasaba en editar artista.
+ *
+ * `artist_id` ya no exige un mínimo: la mayoría del catálogo son invitados sin
+ * ficha en la base y exigir una ficha vinculada hacía imposible guardarlos. Lo
+ * obligatorio es el crédito, que incluye a los dos tipos de artista.
+ */
+const buildValidationSchema = (t: (key: string) => string) =>
+  Yup.object().shape({
+    title: Yup.string().required(t('validation.titleRequired')),
+    artist_id: Yup.array(),
+    artist_credit: Yup.string().trim().required(t('validation.artistRequired')),
+    cover_image_url: Yup.mixed(),
+    release_date: Yup.date().nullable(),
+    description: Yup.string(),
+    genre_id: Yup.string(),
+    release_type: Yup.string(),
+  });
 
 const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, onClose }) => {
   const { t } = useTranslation();
@@ -53,14 +68,21 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
   const { artists, fetchArtists } = useArtists();
   const { genres } = useGenres();
   const [initialValues, setInitialValues] = useState(emptyValues);
+  const [errorServidor, setErrorServidor] = useState<string | null>(null);
 
   useEffect(() => {
     const release = releases.find((item) => item.id === id);
     if (release) {
+      const vinculados = (release.artists || []) as Artist[];
       setInitialValues({
         ...emptyValues,
         title: release.title || '',
-        artist_id: (release.artists || []).map((artist: Artist) => artist.id).filter(Boolean) as number[],
+        artist_id: vinculados.map((artist) => artist.id).filter(Boolean) as number[],
+        // Si el release tiene fichas vinculadas pero el crédito está vacío, se
+        // arma con sus nombres: el crédito es la línea completa y de ahí sale
+        // lo que se ve cuando una ficha se borra.
+        artist_credit:
+          release.artist_credit || unirCreditos(vinculados.map((artist) => artist.artist_name)),
         genre_id: release.genre_id ? String(release.genre_id) : '',
         release_date: release.release_date ? String(release.release_date).slice(0, 10) : '',
         description: release.description || '',
@@ -81,16 +103,20 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
   }, [artists.length, fetchArtists]);
 
   const onSubmit = async (values: typeof emptyValues) => {
+    setErrorServidor(null);
     try {
       await updateRelease(id, values);
       onClose();
     } catch (error) {
+      // Antes el fallo solo iba a consola: el modal quedaba abierto sin decir
+      // nada y el botón se sentía muerto, igual que pasaba en editar artista.
       console.error('Error updating release:', error);
+      setErrorServidor(mensajeDeError(error, t('errors.updateRelease')));
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this release?')) {
+    if (window.confirm(t('delete_release_confirmation', { title: initialValues.title }))) {
       try {
         await deleteRelease(id);
         onClose();
@@ -105,7 +131,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
       <Formik
         initialValues={initialValues}
         enableReinitialize
-        validationSchema={validationSchema}
+        validationSchema={buildValidationSchema(t)}
         onSubmit={onSubmit}
       >
         {({ setFieldValue, isSubmitting, values }: FormikProps<typeof emptyValues>) => (
@@ -122,39 +148,13 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
               />
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
 
-              <div className="mb-4 flex items-center justify-center">
-                <InputLabel
-                  htmlFor="artist_id"
-                  className="block !text-gray-300 !font-bold mb-2 w-1/5"
-                >Artist:</InputLabel>
-                <FormControl fullWidth variant="outlined">
-                  <Field name="artist_id">
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        select
-                        id="artist_id"
-                        value={values.artist_id}
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        InputProps={{ className: '!text-start' }}
-                        SelectProps={{
-                          multiple: true,
-                          onChange: (event) => setFieldValue('artist_id', event.target.value),
-                        }}
-                      >
-                        {artists.map((artist: Artist) => (
-                          <MenuItem key={artist.id} value={artist.id}>
-                            {artist.artist_name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    )}
-                  </Field>
-                </FormControl>
-              </div>
-              <ErrorMessage name="artist_id" component="div" className="text-red-500 text-sm mt-1" />
+              <ArtistCredits
+                artists={artists}
+                artistIds={values.artist_id}
+                credit={values.artist_credit}
+                setFieldValue={setFieldValue}
+              />
+              <ErrorMessage name="artist_credit" component="div" className="error-message" />
 
               <FormControl fullWidth variant="outlined">
                 <InputLabel>Genre</InputLabel>
@@ -210,6 +210,10 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                 </Field>
               ))}
 
+              {errorServidor && (
+                <div className="error-message" role="alert">{errorServidor}</div>
+              )}
+
               <div className="flex items-center justify-between">
                 <Button
                   type="button"
@@ -217,14 +221,14 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                   className="btn"
                   variant="secondary"
                 >
-                  <p className="font-semibold">Cancel</p>
+                  <p className="font-semibold">{t('cancel')}</p>
                 </Button>
                 <button
                   type="submit"
                   className="btn btn-save h-10 mt-2"
                   disabled={isSubmitting}
                 >
-                  <p className="font-semibold">Save</p>
+                  <p className="font-semibold">{isSubmitting ? t('guardando') : t('save')}</p>
                 </button>
                 <Button
                   type="button"
@@ -232,7 +236,7 @@ const EditReleaseModal: React.FC<{ id: number; onClose: () => void }> = ({ id, o
                   className="btn"
                   onClick={handleDelete}
                 >
-                  <p className="font-semibold">Delete</p>
+                  <p className="font-semibold">{t('delete')}</p>
                 </Button>
               </div>
             </Stack>

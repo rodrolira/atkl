@@ -49,9 +49,12 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({ releases, onEdit, onDelet
                   {release.title}
                 </td>
                 <td className="px-4 py-3 text-metallic-gray text-sm">
-                  {release.artists?.length
-                    ? release.artists.map((artist: Artist) => artist.artist_name).join(', ')
-                    : release.artist_credit || '—'}
+                  {/* El crédito manda: es la línea completa e incluye a los
+                      invitados sin ficha. Las fichas vinculadas quedan como
+                      respaldo para los lanzamientos sin crédito guardado. */}
+                  {release.artist_credit
+                    || release.artists?.map((artist: Artist) => artist.artist_name).join(', ')
+                    || '—'}
                 </td>
                 <td className="px-4 py-3 w-1/4 text-white text-sm">
                   {formatReleaseDate(release.release_date)}
