@@ -11,6 +11,7 @@ import {
 } from '../controllers/releases.controller.js';
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js';
 import { cacheMiddleware } from '../middlewares/cacheMiddleware.js';
+import { subirImagen } from '../middlewares/subidaImagen.js';
 
 const router = express.Router();
 
@@ -30,9 +31,9 @@ const upload = multer({ storage });
 router.get('/releases', cacheMiddleware('releases'), getReleases);
 router.get('/releases/:id', cacheMiddleware('release'), getReleaseById);
 
-router.post('/releases', verifyTokenAdmin, upload.single('cover_image_url'), addRelease);
+router.post('/releases', verifyTokenAdmin, subirImagen(upload, 'cover_image_url'), addRelease);
 
-router.put('/releases/:id', verifyTokenAdmin, upload.single('cover_image_url'), updateRelease);
+router.put('/releases/:id', verifyTokenAdmin, subirImagen(upload, 'cover_image_url'), updateRelease);
 router.delete('/releases/:id', verifyTokenAdmin, deleteRelease);
 
 export default router;

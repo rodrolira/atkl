@@ -12,6 +12,13 @@ type ErrorDeApi = {
     data?: {
       message?: string;
       errores?: Array<{ campo?: string; mensaje?: string }>;
+      /**
+       * Forma que usa el manejador global de errores de app.js, distinta de la
+       * de las rutas. Es la que sale cuando falla un middleware antes del
+       * handler: el caso típico es multer cuando Cloudinary rechaza la subida,
+       * que se veía como "500" y el motivo quedaba solo en la consola.
+       */
+      error?: { message?: string };
     };
   };
   message?: string;
@@ -29,5 +36,5 @@ export const mensajeDeError = (error: unknown, respaldo: string): string => {
 
   // `message` de axios ("Request failed with status code 500") no le dice nada
   // a nadie: solo sirve el del servidor.
-  return datos?.message || respaldo;
+  return datos?.message || datos?.error?.message || respaldo;
 };

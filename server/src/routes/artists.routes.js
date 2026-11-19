@@ -20,6 +20,7 @@ import {
   updateArtist as updateArtistService,
 } from '../services/artistService.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
+import { subirImagen } from '../middlewares/subidaImagen.js'
 import {
   crearArtistaSchema,
   actualizarArtistaSchema,
@@ -76,7 +77,7 @@ router.get('/artists', getArtists)
 router.get('/artists/:id', getArtistById)
 router.get('/artists/:id/releases', getArtistReleases)
 
-router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, res) => {
+router.post('/artists', verifyTokenAdmin, subirImagen(upload, 'image'), async (req, res) => {
   try {
     const artist = await addArtistService(datosConImagen(req, crearArtistaSchema))
     res.status(201).json(artist)
@@ -85,7 +86,7 @@ router.post('/artists', verifyTokenAdmin, upload.single('image'), async (req, re
   }
 })
 
-router.put('/artists/:id', verifyTokenAdmin, upload.single('image'), async (req, res) => {
+router.put('/artists/:id', verifyTokenAdmin, subirImagen(upload, 'image'), async (req, res) => {
   try {
     const artist = await updateArtistService(
       req.params.id,
