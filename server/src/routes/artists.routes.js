@@ -1,8 +1,5 @@
 // routes/artists.routes.js
 import express from 'express'
-import multer from 'multer'
-import { CloudinaryStorage } from 'multer-storage-cloudinary'
-import cloudinary from '../../config/cloudinary.js'
 import {
   getArtists,
   deleteArtist,
@@ -62,22 +59,11 @@ const datosConImagen = (req, schema) => {
   return validarArtista(schema, { ...cuerpo, image: req.file?.path })
 }
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'artists',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-    public_id: (req, file) => `${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`,
-  },
-})
-
-const upload = multer({ storage })
-
 router.get('/artists', getArtists)
 router.get('/artists/:id', getArtistById)
 router.get('/artists/:id/releases', getArtistReleases)
 
-router.post('/artists', verifyTokenAdmin, subirImagen(upload, 'image'), async (req, res) => {
+router.post('/artists', verifyTokenAdmin, subirImagen('artists', 'image'), async (req, res) => {
   try {
     const artist = await addArtistService(datosConImagen(req, crearArtistaSchema))
     res.status(201).json(artist)
@@ -86,7 +72,7 @@ router.post('/artists', verifyTokenAdmin, subirImagen(upload, 'image'), async (r
   }
 })
 
-router.put('/artists/:id', verifyTokenAdmin, subirImagen(upload, 'image'), async (req, res) => {
+router.put('/artists/:id', verifyTokenAdmin, subirImagen('artists', 'image'), async (req, res) => {
   try {
     const artist = await updateArtistService(
       req.params.id,
