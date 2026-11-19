@@ -33,11 +33,16 @@ jest.mock('../src/middlewares/verifyTokenAdmin.js', () => ({
 /** Storage falso: devuelve una URL como lo haría Cloudinary. */
 const mockUrlSubida = 'https://fake.test/artists/foto.png'
 let mockStorageFalla = false
+let mockStorageRechaza = false
 
 jest.mock('multer-storage-cloudinary', () => ({
   CloudinaryStorage: class {
     _handleFile(req, file, cb) {
       file.stream.resume()
+      // Cloudinary rechazando la subida: credenciales que no coinciden.
+      if (mockStorageRechaza) {
+        return cb(new Error('Invalid Signature abc123'))
+      }
       // `path` ausente simula una subida que no devolvió URL.
       cb(null, mockStorageFalla ? { filename: 'foto' } : { path: mockUrlSubida, filename: 'foto' })
     }
@@ -55,6 +60,11 @@ import artistsRouter from '../src/routes/artists.routes.js'
 
 const app = express()
 app.use('/api', artistsRouter)
+// Mismo manejador que app.js: los errores de multer saltan el handler de la
+// ruta y terminan acá, así que sin esto no se vería el status que les toca.
+app.use((err, req, res, _next) => {
+  res.status(err.status || 500).json({ error: { message: err.message } })
+})
 
 const PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
@@ -64,6 +74,32 @@ const PNG = Buffer.from(
 beforeEach(() => {
   jest.clearAllMocks()
   mockStorageFalla = false
+  mockStorageRechaza = false
+})
+
+describe('subida rechazada por el storage', () => {
+  // El caso real: `api_secret mismatch` en Cloudinary devolvía "Invalid
+  // Signature ..." con un 500 pelado, y el formulario solo mostraba su texto
+  // de respaldo porque el motivo no llegaba en una forma que supiera leer.
+  test.each([
+    ['POST', '/api/artists'],
+    ['PUT', '/api/artists/11'],
+  ])('%s responde 502 diciendo que la imagen no se pudo subir', async (metodo, ruta) => {
+    mockStorageRechaza = true
+
+    const res = await request(app)
+      [metodo.toLowerCase()](ruta)
+      .field('artist_name', 'Nova')
+      .field('email', 'nova@example.com')
+      .attach('image', PNG, 'foto.png')
+
+    expect(res.status).toBe(502)
+    expect(res.body.error.message).toMatch(/No se pudo subir la imagen/)
+    // El detalle de Cloudinary se conserva: es lo que dice qué revisar.
+    expect(res.body.error.message).toMatch(/Invalid Signature/)
+    expect(artistService.addArtist).not.toHaveBeenCalled()
+    expect(artistService.updateArtist).not.toHaveBeenCalled()
+  })
 })
 
 describe('POST /api/artists', () => {
