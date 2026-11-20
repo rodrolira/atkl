@@ -29,6 +29,10 @@
   position: absolute;
   right: 10px;
   top: 10px;
+  /* El contenido del modal puede traer su propio z-index (EditArtistModal usa
+     z-50 en su contenedor): sin esto el hijo se pinta encima y se queda con
+     el click, con la X visible pero muerta. */
+  z-index: 1001;
   cursor: pointer;
   border: none;
   background: none;
