@@ -16,13 +16,14 @@ import { Artist } from '@/types/interfaces/Artist';
 import BandcampPlayer from './BandcampPlayer';
 import { Genre } from '@/types/interfaces/Genre';
 import { creditosSinFicha } from '@/utils/creditos';
+import { formatearFechaLanzamiento, fechaISOCorta } from '@/utils/fechas';
 
 interface ReleaseCardProps {
   release: Release;
 }
 
 const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [currentRelease, setCurrentRelease] = useState<Release | null>(release);
   const { setReleases, releases, deleteRelease } = useReleases();
   const { isAuthenticated: adminAuthenticated } = useAdminAuth();
@@ -39,6 +40,11 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
   // (no hay columna de audio en la BD), así que el botón de play nunca hizo
   // nada. Se reemplazó por el reproductor embebido de Bandcamp.
   const bandcampAlbumId = currentRelease?.bandcamp_album_id;
+
+  const fechaLanzamiento = useMemo(
+    () => formatearFechaLanzamiento(currentRelease?.release_date, i18n.language),
+    [currentRelease?.release_date, i18n.language]
+  );
 
   useEffect(() => {
     const releaseFromContext = releases.find((r) => r.id === release.id);
@@ -132,6 +138,16 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
             <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase line-clamp-2">{currentRelease.title}</h3>
             <p className="text-sm text-white">{currentRelease.genre?.name}</p>
             <p className="text-sm text-white">{currentRelease.release_type}</p>
+            {/* <time> y no un <p>: la fecha es dato, y asi la leen buscadores
+                y lectores de pantalla con el formato ISO del dateTime. */}
+            {fechaLanzamiento && (
+              <time
+                dateTime={fechaISOCorta(currentRelease.release_date) ?? undefined}
+                className="text-sm uppercase tracking-wider text-metallic-gray"
+              >
+                {fechaLanzamiento}
+              </time>
+            )}
 
             {artistLinks}
           </div>
