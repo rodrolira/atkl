@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useField } from 'formik';
+import RecorteImagen from './RecorteImagen';
 
 interface FileUploadComponentProps {
   name: string;
@@ -11,12 +12,29 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
   const [, meta] = useField(name);
   const [preview, setPreview] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [recortando, setRecortando] = useState(false);
+  // El archivo tal cual lo eligió el usuario: el recorte es opcional y se
+  // puede deshacer sin volver a buscar la foto en el disco.
+  const [original, setOriginal] = useState<File | null>(null);
+  const [recortada, setRecortada] = useState(false);
   const previewUrl = useRef<string | null>(null);
+  // La URL del original sobrevive al recorte: es la fuente que lee el cropper
+  // y la que hay que restaurar si vuelven a la imagen completa.
+  const originalUrl = useRef<string | null>(null);
 
-  useEffect(() => () => {
-    if (previewUrl.current) {
+  const liberarPreview = () => {
+    if (previewUrl.current && previewUrl.current !== originalUrl.current) {
       URL.revokeObjectURL(previewUrl.current);
     }
+    previewUrl.current = null;
+  };
+
+  useEffect(() => () => {
+    liberarPreview();
+    if (originalUrl.current) {
+      URL.revokeObjectURL(originalUrl.current);
+    }
+    // Solo limpieza al desmontar: las URLs viven en refs, no en estado.
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,14 +49,41 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
     }
     setFileError(null);
 
-    if (previewUrl.current) {
-      URL.revokeObjectURL(previewUrl.current);
+    liberarPreview();
+    if (originalUrl.current) {
+      URL.revokeObjectURL(originalUrl.current);
     }
 
     const objectUrl = URL.createObjectURL(file);
+    originalUrl.current = objectUrl;
     previewUrl.current = objectUrl;
     setPreview(objectUrl);
+    setOriginal(file);
+    setRecortada(false);
+    setRecortando(false);
+    // Sin tocar el recorte se sube la foto entera, como antes.
     setFieldValue(name, file);
+  };
+
+  const handleRecorte = (archivo: File) => {
+    liberarPreview();
+
+    const objectUrl = URL.createObjectURL(archivo);
+    previewUrl.current = objectUrl;
+    setPreview(objectUrl);
+    setRecortada(true);
+    setRecortando(false);
+    setFieldValue(name, archivo);
+  };
+
+  const handleImagenCompleta = () => {
+    if (!original || !originalUrl.current) return;
+
+    liberarPreview();
+    previewUrl.current = originalUrl.current;
+    setPreview(originalUrl.current);
+    setRecortada(false);
+    setFieldValue(name, original);
   };
 
   return (
@@ -61,7 +106,39 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ name, label, 
           file:uppercase file:tracking-wider file:text-black hover:file:bg-white"
       />
       {fileError && <p role="alert" className="error-message">{fileError}</p>}
-      {preview && <img src={preview} alt="Preview" className="mt-3 w-32 h-32 object-cover" />}
+
+      {preview && !recortando && (
+        <div className="mt-3 flex items-center gap-3">
+          <img src={preview} alt="Preview" className="w-32 h-32 object-cover" />
+          <div className="flex flex-col items-start gap-2">
+            <button
+              type="button"
+              onClick={() => setRecortando(true)}
+              className="text-xs font-semibold uppercase tracking-wider text-metallic-gray underline hover:text-white"
+            >
+              {recortada ? 'Cambiar recorte' : 'Elegir qué parte se sube'}
+            </button>
+            {recortada && (
+              <button
+                type="button"
+                onClick={handleImagenCompleta}
+                className="text-xs font-semibold uppercase tracking-wider text-metallic-gray underline hover:text-white"
+              >
+                Usar la imagen completa
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {recortando && originalUrl.current && original && (
+        <RecorteImagen
+          src={originalUrl.current}
+          nombreArchivo={original.name}
+          onConfirmar={handleRecorte}
+          onCancelar={() => setRecortando(false)}
+        />
+      )}
     </div>
   );
 };
