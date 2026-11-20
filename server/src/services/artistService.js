@@ -240,7 +240,9 @@ export const getArtistById = async (id) => {
  */
 export const getArtistReleases = async (id) => {
   const artist = await Artist.findByPk(id, {
+    // Mismo orden que el catalogo: lo mas nuevo primero. Ver getReleases.
     include: { model: Release, as: 'releases' },
+    order: [[{ model: Release, as: 'releases' }, 'release_date', 'DESC NULLS LAST']],
   })
 
   if (!artist) {
