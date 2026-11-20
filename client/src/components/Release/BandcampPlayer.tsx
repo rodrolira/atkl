@@ -68,9 +68,20 @@ const BandcampPlayer = ({ albumId, title, bandcampLink }: BandcampPlayerProps) =
     <div
       // bg-pure-white y no bg-surface: el embed es claro, y con las esquinas
       // redondeadas + overflow-hidden el fondo del contenedor asoma detrás.
+      //
+      // La opacidad va sobre el contenedor y no con `transparent=true` del
+      // embed: ese parámetro hace que el player no llene el ancho del iframe y
+      // asome el fondo oscuro al costado del bloque blanco. Acá el bloque
+      // entero se atenúa y el negro de la tarjeta se lee debajo.
+      //
+      // 90% y no menos porque el texto del embed no es nuestro y no se puede
+      // corregir: a esta opacidad la tracklist queda en 10,9:1 sobre el fondo
+      // atenuado y el rojo de los links no baja de 4,5:1. Al pasar el mouse o
+      // al entrar con teclado vuelve a opaco, que es cuando se lee en serio.
       className="group/bc overflow-hidden rounded-md border border-muted/25
-        bg-pure-white transition-colors duration-200
-        hover:border-accent/70 focus-within:border-accent"
+        bg-pure-white opacity-90 transition duration-200
+        hover:border-accent/70 hover:opacity-100
+        focus-within:border-accent focus-within:opacity-100"
     >
       <iframe
         // loading="lazy" importa: el catálogo monta 15 tarjetas y cada iframe es
