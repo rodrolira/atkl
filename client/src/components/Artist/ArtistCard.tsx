@@ -10,6 +10,7 @@ import ArtistLinks from './ArtistLinks';
 import BaseCard from '../Layout/BaseCard';
 import { useTranslation } from 'react-i18next';
 import { Artist } from '@/types/interfaces/Artist';
+import { imagenRecortada } from '@/utils/utils';
 
 interface ArtistCardProps {
   artist: Artist
@@ -22,10 +23,12 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const { t } = useTranslation();
 
-  // ✅ Usamos solo Cloudinary para las imágenes
-  const imageUrl = useMemo(() => {
-    return artist.imageUrl || artist.image || '/images/placeholder.svg';
-  }, [artist.imageUrl, artist.image]);
+  // La BD guarda la URL completa de Cloudinary. El recorte lo pedimos a
+  // Cloudinary y no al navegador: ver imagenRecortada.
+  const imageUrl = useMemo(
+    () => imagenRecortada(artist.imageUrl || artist.image) ?? '/images/placeholder.svg',
+    [artist.imageUrl, artist.image]
+  );
 
   // Manejo de eliminación de artista
   const handleDelete = useCallback(() => {
