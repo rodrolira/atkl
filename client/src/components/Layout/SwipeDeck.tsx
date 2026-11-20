@@ -129,14 +129,17 @@ const SwipeDeck: React.FC<SwipeDeckProps> = ({ children, label, perView = 1, tot
           [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
           focus-visible:outline-accent
-          md:grid md:grid-cols-2 md:gap-4 md:overflow-visible lg:grid-cols-3`}
+          md:grid md:auto-rows-fr md:grid-cols-2 md:gap-4 md:overflow-visible lg:grid-cols-3`}
       >
         {React.Children.map(children, (hijo, i) => (
           <li
             key={i}
             // snap-start + shrink-0 solo importan en móvil; desde md la grilla
             // los ignora y la tarjeta vuelve a ocupar su celda.
-            className={`${anchoItem} shrink-0 snap-start md:basis-auto md:shrink`}
+            // h-full para que la tarjeta ocupe toda la celda: con auto-rows-fr
+            // todas las filas miden lo mismo, pero sin esto la tarjeta se queda
+            // en su alto natural y la grilla vuelve a verse despareja.
+            className={`${anchoItem} h-full shrink-0 snap-start md:basis-auto md:shrink`}
           >
             {hijo}
           </li>

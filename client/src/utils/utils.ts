@@ -29,37 +29,3 @@ export const safeExternalUrl = (url?: string | null): string | null => {
 export const bandcampEmbedKind = (bandcampLink?: string | null): 'album' | 'track' =>
     bandcampLink && /\/track\/[^/]/.test(bandcampLink) ? 'track' : 'album';
 
-/**
- * Encabezado del embed grande (portada, título, play, barra de progreso) más el
- * colchón inferior. Medido sobre el embed real a 580px de ancho: con 170px
- * entra justo una fila y con 155px se corta.
- */
-const BANDCAMP_HEADER_PX = 143;
-/**
- * Alto de cada fila de la lista.
- *
- * El tema claro del embed usa filas más altas que el oscuro (33 contra 27), así
- * que este número va atado al `bgcol` de BandcampPlayer: si alguna vez se vuelve
- * al tema oscuro, hay que bajarlo a 27 o van a sobrar ~60px de blanco.
- *
- * Medido en el embed real buscando el alto mínimo sin scroll interno, a 350px y
- * a 480px de ancho (da igual): 1 track necesita 170 y 10 tracks 470. Con
- * 143 + n*33 da 176 y 473, que entran con unos pocos px de margen.
- */
-const BANDCAMP_TRACK_ROW_PX = 33;
-/**
- * Tope de filas que se muestran sin scroll. Más allá, la lista scrollea dentro
- * del propio iframe en vez de estirar la tarjeta sin límite. El release más
- * largo del sello hoy tiene 10 tracks.
- */
-const BANDCAMP_MAX_ROWS = 12;
-
-/**
- * El iframe de Bandcamp es cross-origin: no se puede medir su contenido ni
- * dejar que se autoajuste, así que el alto se calcula desde la cantidad de
- * tracks. Quedarse corto corta la lista sin aviso.
- */
-export const bandcampEmbedHeight = (trackCount?: number | null): number => {
-    const tracks = Math.max(1, Math.min(trackCount ?? 1, BANDCAMP_MAX_ROWS));
-    return BANDCAMP_HEADER_PX + tracks * BANDCAMP_TRACK_ROW_PX;
-};
