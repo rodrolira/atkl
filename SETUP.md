@@ -53,23 +53,35 @@ El backend lee `.env` desde la raíz del proyecto. Las variables obligatorias so
 | `ADMIN_USERNAME` | Usuario admin inicial | `admin` |
 | `ADMIN_EMAIL` | Email admin inicial | `admin@example.com` |
 | `ADMIN_PASSWORD` | Contraseña admin inicial | `tu-password` |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | `tu-cloud` |
-| `CLOUDINARY_API_KEY` | Cloudinary API key | `tu-api-key` |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret | `tu-api-secret` |
-| `AWS_BUCKET_NAME` | Bucket S3 (opcional) | `tu-bucket` |
-| `AWS_REGION` | Región S3 (opcional) | `us-east-1` |
-| `AWS_PUBLIC_KEY` | AWS Access Key ID (opcional) | `tu-access-key` |
-| `AWS_SECRET_KEY` | AWS Secret Access Key (opcional) | `tu-secret-key` |
+| `CLOUDINARY_URL` | Credenciales de Cloudinary en una sola cadena, tal como las da el panel | `cloudinary://key:secret@cloud` |
 
-Para el frontend, crea `client/.env` o `client/.env.local`:
+Para Cloudinary alcanza con `CLOUDINARY_URL`. Si preferís las tres sueltas
+(`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`), sirven
+igual, pero **si están las tres mandan sobre la URL**: tener las dos formas con
+valores distintos es la manera más fácil de pelearse con un "Invalid Signature".
+
+Para el frontend, `client/.env`:
 
 ```env
 VITE_API_URL=http://localhost:3000/api
-VITE_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
-VITE_CLOUDINARY_FOLDER=your-folder
+VITE_CLOUDINARY_CLOUD_NAME=tu-cloud
+VITE_CLOUDINARY_UPLOAD_PRESET=tu-preset-unsigned
+VITE_CLOUDINARY_FOLDER=tu-carpeta
 ```
 
 La URL debe terminar en `/api`, que es donde el backend monta las rutas.
+
+Solo las variables con prefijo `VITE_` llegan al navegador: cualquier secreto
+va en el `.env` de la raíz, nunca en `client/`.
+
+Archivos de entorno que usa el proyecto, y no más:
+
+| Archivo | Para qué |
+|---------|----------|
+| `.env` | Backend y base de datos. No se commitea. |
+| `.env.example` | Plantilla del anterior. Es el único que sí se commitea. |
+| `client/.env` | Variables `VITE_*` en desarrollo. |
+| `client/.env.production` | Solo pisa `VITE_API_URL` en el build de producción. |
 
 **Importante:** `SECRET` no tiene valor por defecto. Si no lo defines o usas `change-me`, el servidor no arrancará (ver `server/index.js`).
 
