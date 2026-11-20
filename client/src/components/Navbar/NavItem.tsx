@@ -26,6 +26,15 @@ const NavItem: React.FC<NavItemProps> = ({ linkId, text, isActive, to }) => {
 
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
+      // Home ya estando en Home: navegar a '/' no mueve la página, así que el
+      // ítem se sentía muerto desde cualquier sección.
+      if (to === '/' && location.pathname === '/') {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate('/', { replace: true });
+        return;
+      }
+
       if (!esSeccion) return; // navegación normal: que la maneje el router
 
       event.preventDefault();

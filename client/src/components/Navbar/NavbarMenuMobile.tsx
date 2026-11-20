@@ -109,6 +109,13 @@ const NavbarMenuMobile: React.FC = React.memo(() => {
       navigate(to, { replace: true });
       return;
     }
+    // Home ya estando en Home: navegar a '/' no mueve la página, así que el
+    // ítem se sentía muerto desde cualquier sección.
+    if (to === '/' && location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navigate('/', { replace: true });
+      return;
+    }
     navigate(to);
   };
 
