@@ -66,7 +66,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
   return (
     <>
-      <BaseCard>
+      <BaseCard className="flex h-full flex-col">
         <div className="w-full rounded-t-lg relative">
           <Link to={`/artists/${artist.id}`} className="block relative z-0" rel='preload'>
             <img
@@ -90,7 +90,9 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 
         {/* Tipografía más chica en móvil por el mismo motivo que la imagen: a
             24px un nombre como "Dolor de Cabeza" rompe la celda del carrusel. */}
-        <Link to={`/artists/${artist.id}`} className="inline-flex min-h-11 items-center">
+        {/* mx-auto: la tarjeta es flex column, y sin esto el nombre se pega a
+            la izquierda en vez de quedar centrado como el resto. */}
+        <Link to={`/artists/${artist.id}`} className="mx-auto inline-flex min-h-11 items-center">
           <p className="text-lg md:text-2xl font-bold tracking-tight text-white text-center mb-2 break-words">
             {artist.artist_name}
           </p>
@@ -100,7 +102,11 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
           {rolesText}
         </div>
 
-        <ArtistLinks artist={artist} />
+        {/* mt-auto: los links quedan al pie en todas las tarjetas, sin importar
+            si el nombre ocupa una línea o dos. */}
+        <div className="mt-auto">
+          <ArtistLinks artist={artist} />
+        </div>
       </BaseCard>
       {showEditModal && (
         <Modal onClose={closeEditModal}>

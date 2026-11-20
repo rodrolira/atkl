@@ -121,13 +121,20 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
   return (
     <>
-      <BaseCard className="border border-metallic-gray/30">
+      {/* h-full + columna: la celda de la grilla ya mide lo mismo para todas,
+          esto hace que la tarjeta la ocupe entera en vez de quedar corta. */}
+      <BaseCard className="flex h-full flex-col border border-metallic-gray/30">
         <div className="w-full rounded-t-lg overflow-hidden relative">
-          <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase">{currentRelease.title}</h3>
-          <p className="text-sm text-white">{currentRelease.genre?.name}</p>
-          <p className="text-sm text-white">{currentRelease.release_type}</p>
+          {/* Alto mínimo para que la portada arranque a la misma altura en
+              todas: el título puede ser de una o dos líneas, el género puede
+              faltar y los artistas son uno por línea. */}
+          <div className="flex min-h-[8.5rem] flex-col items-center justify-center px-2">
+            <h3 className="text-xl font-bold mt-2 text-white tracking-tight uppercase line-clamp-2">{currentRelease.title}</h3>
+            <p className="text-sm text-white">{currentRelease.genre?.name}</p>
+            <p className="text-sm text-white">{currentRelease.release_type}</p>
 
-          {artistLinks}
+            {artistLinks}
+          </div>
           <div className='relative w-full'>
             <img
               src={imageUrl}
@@ -143,7 +150,6 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
               albumId={bandcampAlbumId}
               title={currentRelease.title}
               bandcampLink={currentRelease.bandcamp_link}
-              trackCount={currentRelease.bandcamp_track_count}
             />
           )}
 
@@ -160,8 +166,13 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release }) => {
 
         </div>
 
-        <ReleaseLinks release={currentRelease} />
-        <div className="my-2">{memoizedButton}</div>
+        {/* mt-auto: el pie queda abajo de todo, así los botones de Comprar
+            quedan alineados entre tarjetas en vez de flotar donde termine
+            cada reproductor. */}
+        <div className="mt-auto">
+          <ReleaseLinks release={currentRelease} />
+          <div className="my-2">{memoizedButton}</div>
+        </div>
 
         {showEditModal && (
           <Modal onClose={closeEditModal}>

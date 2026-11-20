@@ -1,6 +1,20 @@
 import { useTranslation } from 'react-i18next';
-import { bandcampEmbedKind, bandcampEmbedHeight } from '@/utils/utils';
+import { bandcampEmbedKind } from '@/utils/utils';
 import { tokenHex } from '@/themes/tokens';
+
+/**
+ * Alto del embed, igual para todos los lanzamientos.
+ *
+ * Antes se calculaba por cantidad de tracks para que la lista entrara justa.
+ * El efecto era que cada tarjeta medía distinto —de 176px a 473px solo de
+ * reproductor— y la grilla quedaba dispareja. Con un alto fijo, la lista larga
+ * scrollea dentro del propio embed (verificado en el navegador con el release
+ * de 10 tracks).
+ *
+ * 275px es lo que ocupan 4 tracks sin scroll interno, que cubre 11 de los 15
+ * lanzamientos del catálogo.
+ */
+const ALTO_EMBED = 275;
 
 interface BandcampPlayerProps {
   albumId: string;
@@ -10,8 +24,6 @@ interface BandcampPlayerProps {
    * `track=`, además de servir de enlace de respaldo.
    */
   bandcampLink?: string;
-  /** Cantidad de tracks, para darle al iframe el alto justo. */
-  trackCount?: number | null;
 }
 
 /**
@@ -26,7 +38,7 @@ interface BandcampPlayerProps {
  * client/vercel.json y client/public/_headers). Con `frame-src 'none'` el
  * iframe se bloquea sin error visible.
  */
-const BandcampPlayer = ({ albumId, title, bandcampLink, trackCount }: BandcampPlayerProps) => {
+const BandcampPlayer = ({ albumId, title, bandcampLink }: BandcampPlayerProps) => {
   const { t } = useTranslation();
   const kind = bandcampEmbedKind(bandcampLink);
 
@@ -67,7 +79,7 @@ const BandcampPlayer = ({ albumId, title, bandcampLink, trackCount }: BandcampPl
         src={src}
         title={`${t('bandcamp_player')} — ${title}`}
         className="w-full border-0 block"
-        height={bandcampEmbedHeight(trackCount)}
+        height={ALTO_EMBED}
         seamless
       >
         <a href={bandcampLink ?? 'https://atklrecords.bandcamp.com'}>{title}</a>
