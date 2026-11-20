@@ -65,6 +65,20 @@ export const getReleases = async (page, limit) => {
       { model: Artist, as: 'artists' },
       { model: Genre, as: 'genre', attributes: ['id', 'name'] },
     ],
+    // Lo mas nuevo primero, que es como se lee un catalogo de sello.
+    //
+    // Va en la consulta y no en el cliente porque esto viene paginado: ordenar
+    // despues de cortar la pagina ordena 20 filas cualesquiera, no el catalogo.
+    //
+    // NULLS LAST para que un release al que todavia no le cargaron la fecha no
+    // se cuele arriba de todo (en Postgres los NULL son los mayores y en DESC
+    // irian primeros). El id desempata: sin un segundo criterio, dos releases
+    // con la misma fecha pueden cambiar de orden entre pagina y pagina y una
+    // fila aparece dos veces o ninguna.
+    order: [
+      ['release_date', 'DESC NULLS LAST'],
+      ['id', 'DESC'],
+    ],
     limit,
     offset,
   })
