@@ -4,6 +4,7 @@ import styles from './Home.module.css';
 import { useTranslation } from 'react-i18next';
 import Loading from '@/components/atoms/Loading/Loading';
 import ErrorBoundary from '@/components/Error/ErrorBoundary';
+import { scrollearASeccion } from '@/utils/scroll';
 // Usando React.lazy para cargar los componentes de forma perezosa
 const Navbar = React.lazy(() => import('@/components/Navbar/Navbar'));
 const ArtistsSection = React.lazy(() => import('@/components/sections/ArtistsSection'));
@@ -22,13 +23,14 @@ const Home: React.FC = memo(() => {
   // Location del DOM (window.location), no el de react-router.
   const { scrollToDemos } = (location.state ?? {}) as { scrollToDemos?: boolean };
 
+  // Las dos esperan a que la sección exista: son lazy y al llegar desde otra
+  // ruta todavía no están montadas cuando corre el efecto.
   useEffect(() => {
-    if (scrollToDemos) {
-      const demosSection = document.getElementById('demo');
-      if (demosSection) {
-        demosSection.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (!scrollToDemos) {
+      return;
     }
+
+    return scrollearASeccion('demo');
   }, [scrollToDemos]);
 
   useEffect(() => {
@@ -36,10 +38,7 @@ const Home: React.FC = memo(() => {
       return;
     }
 
-    const section = document.getElementById(location.hash.replace('#', ''));
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    return scrollearASeccion(location.hash.replace('#', ''));
   }, [location.hash]);
 
   return (
