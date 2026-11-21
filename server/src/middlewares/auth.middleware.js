@@ -1,6 +1,7 @@
 // middleware/auth.middleware.js
 import jwt from 'jsonwebtoken'
 import { loadEnv } from '../../config/loadEnv.js'
+import { isTokenRevoked } from './tokenBlacklist.js'
 
 loadEnv()
 
@@ -8,6 +9,11 @@ export const authenticate = (requiredRole = null) => (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
 
   if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  // Un token revocado por logout no vale aunque siga vigente. Ver tokenBlacklist.js.
+  if (isTokenRevoked(token)) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 

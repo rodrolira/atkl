@@ -2,6 +2,7 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import Admin from '../models/admin.model.js'
+import { revokeToken } from '../middlewares/tokenBlacklist.js'
 import {
   createAdmin as createAdminService,
   loginAdmin as loginAdminService,
@@ -102,6 +103,11 @@ export const loginAdminHandler = async (req, res) => {
 }
 
 export const logoutAdminHandler = (req, res) => {
+  // Revocar el token además de borrar la cookie: el cliente guarda el JWT en
+  // localStorage y lo manda por Authorization, así que borrar la cookie sola no
+  // lo invalidaba. Ahora el token queda inservible aunque no haya vencido.
+  const token = req.cookies?.token || req.headers.authorization?.split(' ')[1]
+  if (token) revokeToken(token)
   res.clearCookie('token')
   res.status(200).json({ message: 'Logout successful' })
 }

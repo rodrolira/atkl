@@ -5,6 +5,7 @@ import {
   profileUser as profileUserService,
   verifyTokenUser as verifyTokenUserService,
 } from '../services/authService.js'
+import { revokeToken } from '../middlewares/tokenBlacklist.js'
 
 export const register = async (req, res) => {
   try {
@@ -42,6 +43,8 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
+  const token = req.cookies?.token || req.headers.authorization?.split(' ')[1]
+  if (token) revokeToken(token)
   res.clearCookie('token')
   res.status(200).json({ message: 'Logged out successfully' })
 }
