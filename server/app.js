@@ -11,6 +11,7 @@ import releasesRoutes from './src/routes/releases.routes.js'
 import adminRoutes from './src/routes/admin.routes.js'
 import genreRoutes from './src/routes/genre.routes.js'
 import contactFormRoutes from './src/routes/contact-form.routes.js'
+import demoFormRoutes from './src/routes/demo-form.routes.js'
 import rolesRouter from './src/routes/roles.routes.js'
 import discographyRoutes from './src/routes/discography.routes.js'
 
@@ -98,6 +99,16 @@ const contactLimiter = rateLimit({
   message: { message: 'Demasiados envíos. Intenta de nuevo más tarde.' },
 })
 
+// Envío de demos: más estricto que el de contacto. Un demo se manda una vez,
+// no cinco, y cada envío es un correo a la casilla del sello.
+const demoLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 3,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { message: 'Demasiados envíos. Intenta de nuevo más tarde.' },
+})
+
 // Límite general de la API como red de seguridad.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -111,6 +122,7 @@ app.use('/api/register', authLimiter)
 app.use('/api/admin/login', authLimiter)
 app.use('/api/admin/register', authLimiter)
 app.use('/api/submit-form', contactLimiter)
+app.use('/api/submit-demo', demoLimiter)
 app.use('/api', apiLimiter)
 
 // Rutas públicas
@@ -119,6 +131,7 @@ app.use('/api', artistsRoutes)
 app.use('/api', releasesRoutes)
 app.use('/api', adminRoutes)
 app.use('/api', contactFormRoutes)
+app.use('/api', demoFormRoutes)
 app.use('/api', genreRoutes)
 app.use('/api', rolesRouter)
 app.use('/api', discographyRoutes)

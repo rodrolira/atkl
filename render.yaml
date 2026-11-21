@@ -53,8 +53,13 @@ services:
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
-      # Formulario de contacto. Opcionales: sin ellas el resto del sitio anda.
+      # Formularios de contacto y demos. Opcionales: sin ellas el resto del
+      # sitio anda (solo dejan de salir los correos).
       - key: EMAIL
         sync: false
       - key: EMAIL_APP_PASSWORD
         sync: false
+      # Casilla que recibe los demos. No es secreto, así que va fijo acá; si
+      # falta, demo-form.routes.js cae a EMAIL.
+      - key: DEMOS_EMAIL
+        value: atkl.demos@gmail.com

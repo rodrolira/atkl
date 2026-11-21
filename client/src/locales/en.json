@@ -152,6 +152,39 @@
   "contactSection": {
     "title": "Contact Us"
   },
+  "demoForm": {
+    "title": "Demos",
+    "intro": "Send us your track. Links only: upload it to private SoundCloud, Dropbox, Drive or WeTransfer and paste the URL.",
+    "optional": "opt.",
+    "artistName": "Artist name",
+    "email": "Email",
+    "country": "Country",
+    "trackTitle": "Track title",
+    "genre": "Genre",
+    "genreHint": "Hard techno, schranz, industrial…",
+    "bpm": "BPM",
+    "demoLink": "Demo link",
+    "demoLinkHint": "Private SoundCloud, Dropbox, Google Drive, WeTransfer. Must start with https://",
+    "socialLinks": "Socials",
+    "socialLinksHint": "Instagram, SoundCloud or Spotify",
+    "message": "Message",
+    "consent": "I confirm the track is original and that I hold all rights to submit it.",
+    "send": "Send demo",
+    "sending": "Sending…",
+    "success": "We got your demo. We'll get back to you if it fits the label.",
+    "errors": {
+      "artistName": "Artist name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "trackTitle": "Track title is required",
+      "demoLinkRequired": "Demo link is required",
+      "demoLinkHttps": "Enter a URL starting with https://",
+      "bpm": "BPM must be a whole number between 60 and 300",
+      "message": "Message can't exceed 1000 characters",
+      "consent": "You must confirm the track is yours and original",
+      "submit": "Couldn't send the demo. Please try again."
+    }
+  },
   "footer": {
     "title": "ATKL Records",
     "label": "Sitemap",

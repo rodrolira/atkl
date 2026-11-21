@@ -156,6 +156,39 @@
   "contactSection": {
     "title": "Contáctanos"
   },
+  "demoForm": {
+    "title": "Demos",
+    "intro": "Mandanos tu track. Solo links: subilo a SoundCloud privado, Dropbox, Drive o WeTransfer y pegá la URL.",
+    "optional": "opc.",
+    "artistName": "Nombre artístico",
+    "email": "Correo electrónico",
+    "country": "País",
+    "trackTitle": "Título del track",
+    "genre": "Género",
+    "genreHint": "Hard techno, schranz, industrial…",
+    "bpm": "BPM",
+    "demoLink": "Link del demo",
+    "demoLinkHint": "SoundCloud privado, Dropbox, Google Drive, WeTransfer. Tiene que empezar con https://",
+    "socialLinks": "Redes",
+    "socialLinksHint": "Instagram, SoundCloud o Spotify",
+    "message": "Mensaje",
+    "consent": "Confirmo que el tema es original y que tengo todos los derechos para enviarlo.",
+    "send": "Enviar demo",
+    "sending": "Enviando…",
+    "success": "Recibimos tu demo, te escribiremos si encaja con el sello.",
+    "errors": {
+      "artistName": "El nombre artístico es obligatorio",
+      "emailRequired": "El correo es obligatorio",
+      "emailInvalid": "Correo electrónico inválido",
+      "trackTitle": "El título del track es obligatorio",
+      "demoLinkRequired": "El link del demo es obligatorio",
+      "demoLinkHttps": "Ingresa una URL que empiece con https://",
+      "bpm": "El BPM tiene que ser un número entre 60 y 300",
+      "message": "El mensaje no puede pasar de 1000 caracteres",
+      "consent": "Tenés que confirmar que el tema es tuyo y original",
+      "submit": "No se pudo enviar el demo. Inténtalo de nuevo."
+    }
+  },
   "footer": {
     "title": "Sello Discográfico",
     "label": "Mapa del sitio",
