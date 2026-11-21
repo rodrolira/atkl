@@ -20,6 +20,10 @@ loadEnv()
 const app = express()
 const isProduction = process.env.NODE_ENV === 'production'
 
+// Sin la cabecera `X-Powered-By: Express`: revela el framework y su versión
+// aproximada, que es lo primero que mira un atacante para elegir exploits.
+app.disable('x-powered-by')
+
 // Detrás de Render/Vercel hace falta confiar en el proxy para que el rate limit
 // vea la IP real del cliente y no la del balanceador.
 app.set('trust proxy', 1)
