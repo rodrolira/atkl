@@ -13,7 +13,7 @@ Severidades: **crítica** (fuga de datos / compromiso), **alta** (bug o vuln ser
 
 | # | Hallazgo | Severidad | Estado |
 |---|----------|-----------|--------|
-| 0 | Secretos en el historial de git (JWT SECRET, DB, Cloudinary, Gmail) | **Crítica** | Rotación pendiente (manual) + limpieza de historial pendiente de tu OK |
+| 0 | Secretos en el historial de git (JWT SECRET, DB, Cloudinary, Gmail) | **Crítica** | ✅ Historial limpiado (local + remoto). Rotación de secretos pendiente (manual) |
 | 1 | El logout no invalidaba el token | **Alta** | ✅ Arreglado |
 | 2 | Fuga de errores crudos de Postgres en rutas `/:id` (sin auth) | **Media** | ✅ Arreglado |
 | 3 | `X-Powered-By: Express` expuesto | **Baja** | ✅ Arreglado |
@@ -31,7 +31,20 @@ Severidades: **crítica** (fuga de datos / compromiso), **alta** (bug o vuln ser
 
 ## 0. Secretos en el historial de git — CRÍTICA
 
-Confirmado: `.env` con credenciales reales estuvo commiteado. Hoy `.env` está en `.gitignore`, pero **el historial sigue conteniéndolos** (clonar el repo = tener los secretos).
+Confirmado: `.env` con credenciales reales estuvo commiteado. Hoy `.env` está en `.gitignore`, pero **el historial los contenía** (clonar el repo = tener los secretos).
+
+> **✅ Historial limpiado el 2026-11-21.** Se reescribió `master` con `git-filter-repo`
+> purgando de todo el historial `.env`, `server/.env`, `client/.env.development`,
+> `client/.env.production`, `.vscode/settings.json` y 10 archivos basura
+> `*:Zone.Identifier`. Se hizo `push --force` a `origin/master` y se borraron las
+> 10 ramas remotas obsoletas que todavía filtraban los `.env` (`sin-db`, `imgbot`,
+> `jit-pr-fix`×3, `jit-security-demo`×2, `cursor/*`×2, `fix/sitio-operativo-y-seguridad`).
+> Remoto verificado: **0 commits con secretos**. Backup espejo pre-reescritura en
+> `../atkl-backup-prehistoryclean.git`.
+>
+> **La limpieza NO sustituye a la rotación:** GitHub puede cachear commits viejos por
+> SHA un tiempo, y quien haya clonado/forkeado antes ya tiene los secretos. **Rotar es
+> lo único que de verdad los invalida** — ver checklist abajo (Cloudinary es urgente).
 
 ### Secretos expuestos (enmascarados)
 
@@ -71,23 +84,33 @@ Confirmado: `.env` con credenciales reales estuvo commiteado. Hoy `.env` está e
 - [ ] **AWS** (si esas claves existen todavía): desactivarlas en IAM. El proyecto ya no usa S3.
 - [ ] **Supabase** (si el proyecto sigue): rotar `anon key` / revisar. Ya no se usa en el código.
 
-### Limpiar el historial — opciones (NO ejecutadas, requieren tu OK)
+### Limpiar el historial — ✅ EJECUTADO el 2026-11-21
 
-Rotar invalida los secretos; limpiar el historial además los **borra del repo**. Dos caminos:
+Hecho con `git-filter-repo` (script único, sin instalación):
 
-1. **`git filter-repo`** (recomendado por el equipo de git):
-   `git filter-repo --path server/.env --path .env --path client/.env.development --path client/.env.production --invert-paths`
-   Reescribe todos los commits quitando esos archivos.
-2. **BFG Repo-Cleaner** (más simple para “borrar archivos/strings”):
-   `bfg --delete-files .env` o `bfg --replace-text secretos.txt`.
+```bash
+python git-filter-repo --force --invert-paths \
+  --path .env --path server/.env \
+  --path client/.env.development --path client/.env.production \
+  --path .vscode/settings.json \
+  --path-glob '*Zone.Identifier'
+git push --force origin master
+git push origin --delete sin-db imgbot jit-pr-fix-… cursor/… fix/sitio-operativo-y-seguridad
+```
 
-**Riesgos (los dos reescriben el historial):**
-- Cambian **todos los hashes de commit** → hay que `git push --force`. Cualquier clon/fork/PR abierto queda desincronizado.
-- Si alguien ya clonó el repo, **ya tiene los secretos**: la limpieza no los recupera. Por eso **rotar es lo que de verdad protege**; limpiar es higiene.
-- En GitHub, los commits viejos pueden seguir cacheados un tiempo; conviene abrir un ticket a soporte si era público.
-- Hacé un backup (`git clone --mirror`) antes.
+Detalle: se purgaron los 5 archivos con secretos + 10 archivos basura `*:Zone.Identifier`
+(metadatos NTFS de Windows que además hacían fallar a `fast-import`). Se borraron las 10
+ramas remotas obsoletas que seguían conteniendo los `.env`. Remoto verificado: 0 commits con
+secretos. Backup espejo en `../atkl-backup-prehistoryclean.git`.
 
-**Recomendación:** primero rotá (sobre todo Cloudinary). La limpieza del historial, cuando quieras, con `git filter-repo` y `--force` coordinado. Decime y lo preparo.
+**Lo que la limpieza NO resuelve (por eso la rotación es obligatoria):**
+- Cambió **todos los hashes de commit**. Si trabajás el repo desde otra máquina:
+  `git fetch --prune && git reset --hard origin/master` (o re-clonar). No vuelvas a pushear
+  desde un clon viejo o reintroducís el historial sucio.
+- Quien ya clonó/forkeó **ya tiene los secretos**; la limpieza no los recupera.
+- GitHub puede cachear los commits viejos por SHA un tiempo. Si el repo fue público, conviene
+  abrir un ticket a GitHub Support para purgar los refs del force-push.
+- **Rotar es lo único que invalida los secretos de verdad** (ver checklist arriba).
 
 ---
 
