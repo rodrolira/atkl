@@ -2,6 +2,7 @@
 import { Router } from 'express'
 import Discography from '../models/discography.model.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
+import { validarIdNumerico } from '../middlewares/validarIdNumerico.js'
 
 const router = Router()
 
@@ -54,7 +55,7 @@ router.get('/discography', async (req, res) => {
 })
 
 // Obtener un track por ID
-router.get('/discography/:id', async (req, res) => {
+router.get('/discography/:id', validarIdNumerico(), async (req, res) => {
     try {
         const track = await Discography.findByPk(req.params.id)
         if (!track) {
@@ -67,7 +68,7 @@ router.get('/discography/:id', async (req, res) => {
 })
 
 // Actualizar un track por ID
-router.put('/discography/:id', verifyTokenAdmin, async (req, res) => {
+router.put('/discography/:id', verifyTokenAdmin, validarIdNumerico(), async (req, res) => {
     try {
         const [updated] = await Discography.update(req.body, {
             where: { id: req.params.id }
@@ -84,7 +85,7 @@ router.put('/discography/:id', verifyTokenAdmin, async (req, res) => {
 })
 
 // Eliminar un track por ID
-router.delete('/discography/:id', verifyTokenAdmin, async (req, res) => {
+router.delete('/discography/:id', verifyTokenAdmin, validarIdNumerico(), async (req, res) => {
     try {
         const deleted = await Discography.destroy({
             where: { id: req.params.id }

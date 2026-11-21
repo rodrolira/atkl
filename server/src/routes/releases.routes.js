@@ -9,16 +9,17 @@ import {
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js';
 import { cacheMiddleware } from '../middlewares/cacheMiddleware.js';
 import { subirImagen } from '../middlewares/subidaImagen.js';
+import { validarIdNumerico } from '../middlewares/validarIdNumerico.js';
 
 const router = express.Router();
 
 // Rutas con caché para lecturas
 router.get('/releases', cacheMiddleware('releases'), getReleases);
-router.get('/releases/:id', cacheMiddleware('release'), getReleaseById);
+router.get('/releases/:id', validarIdNumerico(), cacheMiddleware('release'), getReleaseById);
 
 router.post('/releases', verifyTokenAdmin, subirImagen('releases', 'cover_image_url'), addRelease);
 
-router.put('/releases/:id', verifyTokenAdmin, subirImagen('releases', 'cover_image_url'), updateRelease);
-router.delete('/releases/:id', verifyTokenAdmin, deleteRelease);
+router.put('/releases/:id', verifyTokenAdmin, validarIdNumerico(), subirImagen('releases', 'cover_image_url'), updateRelease);
+router.delete('/releases/:id', verifyTokenAdmin, validarIdNumerico(), deleteRelease);
 
 export default router;

@@ -18,6 +18,7 @@ import {
 } from '../services/artistService.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 import { subirImagen } from '../middlewares/subidaImagen.js'
+import { validarIdNumerico } from '../middlewares/validarIdNumerico.js'
 import {
   crearArtistaSchema,
   actualizarArtistaSchema,
@@ -60,8 +61,8 @@ const datosConImagen = (req, schema) => {
 }
 
 router.get('/artists', getArtists)
-router.get('/artists/:id', getArtistById)
-router.get('/artists/:id/releases', getArtistReleases)
+router.get('/artists/:id', validarIdNumerico(), getArtistById)
+router.get('/artists/:id/releases', validarIdNumerico(), getArtistReleases)
 
 router.post('/artists', verifyTokenAdmin, subirImagen('artists', 'image'), async (req, res) => {
   try {
@@ -72,7 +73,7 @@ router.post('/artists', verifyTokenAdmin, subirImagen('artists', 'image'), async
   }
 })
 
-router.put('/artists/:id', verifyTokenAdmin, subirImagen('artists', 'image'), async (req, res) => {
+router.put('/artists/:id', verifyTokenAdmin, validarIdNumerico(), subirImagen('artists', 'image'), async (req, res) => {
   try {
     const artist = await updateArtistService(
       req.params.id,
@@ -87,6 +88,6 @@ router.put('/artists/:id', verifyTokenAdmin, subirImagen('artists', 'image'), as
   }
 })
 
-router.delete('/artists/:id', verifyTokenAdmin, deleteArtist)
+router.delete('/artists/:id', verifyTokenAdmin, validarIdNumerico(), deleteArtist)
 
 export default router
