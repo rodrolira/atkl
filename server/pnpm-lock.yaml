@@ -42,8 +42,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0(cloudinary@2.11.0)
       nodemailer:
-        specifier: ^6.9.15
-        version: 6.9.16
+        specifier: ^10.6.1
+        version: 10.6.1
       pg:
         specifier: ^8.13.0
         version: 8.13.1
@@ -466,9 +466,9 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
-  nodemailer@6.9.16:
-    resolution: {integrity: sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==}
-    engines: {node: '>=6.0.0'}
+  nodemailer@10.6.1:
+    resolution: {integrity: sha512-d7kfFfS/tR4Aca+SBvRaQ+MXKNv7d2JiRe5TxaRcFT/kYMh4GGPnW9aKksTIEvyEbA7d/7HYWE4YPDEHxzJj/g==}
+    engines: {node: '>=20.0.0'}
 
   nodemon@3.1.7:
     resolution: {integrity: sha512-hLj7fuMow6f0lbB0cD14Lz2xNjwsyruH251Pk4t/yIitCFJbmY1myuLlHm/q06aST4jg6EgAh74PIBBrRqpVAQ==}
@@ -1177,7 +1177,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  nodemailer@6.9.16: {}
+  nodemailer@10.6.1: {}
 
   nodemon@3.1.7:
     dependencies:
