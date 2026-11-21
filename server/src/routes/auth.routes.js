@@ -3,10 +3,15 @@
 import express from 'express'
 import * as userController from '../controllers/auth.controller.js'
 import { verifyTokenUser } from '../middlewares/auth.middleware.js'
+import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 
 const router = express.Router()
 
-router.post('/register', async (req, res) => {
+// Crear cuentas queda detrás de auth de admin: el producto no tiene registro
+// público (las páginas de signup están desactivadas en el cliente) y este
+// endpoint, abierto, dejaba que cualquiera llenara la tabla de usuarios. Las
+// cuentas de artista se crean por su propio flujo (POST /artists, ya admin).
+router.post('/register', verifyTokenAdmin, async (req, res) => {
   try {
     await userController.register(req, res)
   } catch (error) {
