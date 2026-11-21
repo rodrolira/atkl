@@ -18,12 +18,12 @@ Severidades: **crítica** (fuga de datos / compromiso), **alta** (bug o vuln ser
 | 2 | Fuga de errores crudos de Postgres en rutas `/:id` (sin auth) | **Media** | ✅ Arreglado |
 | 3 | `X-Powered-By: Express` expuesto | **Baja** | ✅ Arreglado |
 | 4 | Mass assignment + lote sin tope en `/api/discography` | **Media** | ✅ Arreglado |
-| 5 | Dependencias con CVE altos (sequelize SQLi, cloudinary, axios) | **Alta** | ✅ Parcial (lo seguro bumpeado; nodemailer/zod documentados) |
-| 6 | Token admin en `localStorage` + devuelto en el body | **Media** | Documentado (no arreglado: refactor de cliente) |
-| 7 | Registro público `/api/register` sin uso en el producto | **Baja** | Documentado |
-| 8 | `nodemailer`/`zod` con CVE pendientes (salto de major) | **Media** | Documentado |
+| 5 | Dependencias con CVE altos (sequelize SQLi, cloudinary, axios) | **Alta** | ✅ Arreglado |
+| 6 | Token admin en `localStorage` + devuelto en el body | **Media** | Tradeoff aceptado (arquitectura cross-site); mitigado por CSP |
+| 7 | Registro público `/api/register` sin uso en el producto | **Baja** | ✅ Arreglado (gateado tras admin) |
+| 8 | `nodemailer` con CVE (CRLF/DoS); `proxy-addr` spoofing | **Media/Crítica transitiva** | ✅ Arreglado (nodemailer 10, override proxy-addr); zod documentado |
 | 9 | `dangerouslySetInnerHTML` con texto de i18n | **Baja** | Verificado seguro |
-| 10 | 500 con mensaje crudo de Sequelize en rutas admin | **Baja** | Documentado |
+| 10 | 500 con mensaje crudo de Sequelize en rutas admin | **Baja** | ✅ Arreglado |
 
 **Verificado SIN problema:** JWT rechaza `alg:none` y secrets débiles/vacíos; subida de archivos valida el contenido real (Cloudinary rechaza SVG con script y PHP disfrazado de `.png`); todas las rutas de escritura montadas están tras `verifyTokenAdmin`; un token `role:admin` sin `adminId` (del login dual de usuario) no abre el panel; sin enumeración de usuarios (mismo mensaje y status); sin prototype pollution por el body; CORS no refleja orígenes arbitrarios; body limitado a 1 MB; paginación acotada (limit máx 100); inyección de operadores de Sequelize por query params no prospera; `app.set('trust proxy', 1)` correcto para Render; admin sembrado **sin contraseña por defecto** (exige `ADMIN_PASSWORD`).
 
@@ -150,41 +150,47 @@ secretos. Backup espejo en `../atkl-backup-prehistoryclean.git`.
 
 **Fix:** whitelist `CAMPOS_TRACK` aplicada a create/update/bulk; `/bulk` topado en 500 registros y migrado a `bulkCreate` (un INSERT). Verificado: `id:7777` → id real asignado por la base; lote de 600 → **400**. Commit `2f4c8d0`.
 
-## 5. Dependencias con CVE altos — ALTA ✅ (parcial)
+## 5. Dependencias con CVE altos — ALTA ✅
 
-`pnpm audit`: server 1 crítica / 23 altas / 31 moderadas; client 4 críticas / 50 altas (la mayoría del client son devDeps de build/test: vite, vitest, tinypool, rollup, postcss — no viajan al bundle).
+`pnpm audit` inicial: server 1 crítica / 23 altas / 31 moderadas; client 4 críticas / 50 altas (la mayoría del client son devDeps de build/test: vite, vitest, tinypool, rollup, postcss — no viajan al bundle).
 
-**Bumpeado (seguro, mismo major, tests + build en verde):**
+**Bumpeado (tests + build en verde):**
 - `sequelize` 6.37.5 → **6.37.8** — *SQL injection via JSON column cast type* (alta).
 - `cloudinary` 2.5.1 → **2.11.0** — *argument injection* por parámetros con `&` (alta).
-- `axios` (cliente) 1.7.9 → **1.21.1** — SSRF, fuga de credenciales en redirect, prototype pollution (altas).
+- `axios` (cliente) 1.7.9 → **1.21.1** — SSRF, fuga de credenciales en redirect, prototype pollution (altas). Commit `b49f690`.
+- `nodemailer` 6.9.16 → **10.6.1** — CRLF/header injection, DoS en addressparser, SMTP command injection. API estable, verificado. Commit siguiente.
+- `proxy-addr` → **override `>=2.0.8`** — *IP spoofing via IPv4-mapped IPv6* (crítica transitiva vía express, en el path de `trust proxy`).
 
-Commit `b49f690`. Ver #8 para lo pendiente.
+Audit del server después: **0 críticas** (de 1), 16 altas (de 23). Lo que queda son transitivas (brace-expansion, minimatch, qs, lodash vía sequelize) que exigirían overrides finos o express 5 (migración mayor) — fuera de alcance, bajo impacto real. Ver #8.
 
-## 6. Token admin en `localStorage` + en el body — MEDIA (documentado)
+## 6. Token admin en `localStorage` + en el body — MEDIA (tradeoff aceptado)
 
-El login admin setea una cookie `httpOnly` (bien) **pero además devuelve el token en el JSON**, y el cliente lo guarda en `localStorage` y lo manda por `Authorization`. Eso anula la protección de la cookie `httpOnly`: **un XSS puede leer el token**.
+El login admin devuelve el token en el JSON y el cliente lo guarda en `localStorage` y lo manda por `Authorization`. En teoría un XSS podría leerlo.
 
-No se arregló porque es un cambio arquitectónico del cliente (pasar a auth solo-cookie exige reescribir `AdminAuthContext`/`axios` y **sumar protección CSRF**, que hoy no hace falta porque no se usan cookies para autorizar). Mitigante actual: la CSP del front es estricta (sin `unsafe-eval`, `object-src 'none'`, `frame-ancestors 'none'`), lo que reduce la superficie de XSS. **Recomendación:** migrar a auth por cookie `httpOnly` + `SameSite=Strict` + token CSRF, y dejar de devolver el token en el body.
+**Por qué NO se migra a cookie-only:** el front (`atkl.vercel.app`) y la API (`atkl-api.onrender.com`) están en **sitios distintos**. Una cookie `SameSite=Lax`/`Strict` no viaja en las peticiones XHR cross-site del front a la API, así que la auth por cookie **requeriría `SameSite=None; Secure` + tokens CSRF** — más complejidad y más superficie, no menos. Para un SPA con API en otro dominio, el patrón bearer+`localStorage` es una elección legítima. (De hecho la cookie `httpOnly` que hoy también se setea es prácticamente peso muerto en este esquema cross-site.)
+
+**Mitigante real:** mantener el XSS fuera. La CSP del front es estricta (sin `unsafe-eval`, `object-src 'none'`, `frame-ancestors 'none'`, `script-src 'self'`), que es la defensa que corresponde acá. Se clasifica como **riesgo aceptado** dado el deploy cross-site.
 
 ## 7. Registro público `/api/register` — BAJA (documentado)
 
-`POST /api/register` crea usuarios sin autenticación (probado: **201**). Las páginas de login/registro de usuario están **comentadas** en `Routing.tsx`: el producto no tiene auth de usuario final, solo admin. Un `role:'user'` no puede escribir nada (todas las rutas de escritura exigen `role:'admin'` + `adminId`), así que el impacto es **spam de cuentas**, no escalada. **Recomendación:** si no vas a tener login de usuarios, sacá `/api/register`, `/api/login` (user) y `/api/profile` para reducir superficie.
+`POST /api/register` creaba usuarios **sin autenticación** (probado: 201). Las páginas de login/registro de usuario están comentadas en `Routing.tsx`: el producto no tiene auth de usuario final, solo admin. Un `role:'user'` no puede escribir nada (todas las rutas de escritura exigen `role:'admin'` + `adminId`), así que el impacto era **spam de cuentas**, no escalada.
 
-## 8. `nodemailer` / `zod` con CVE pendientes — MEDIA (documentado)
+**Fix:** `/api/register` queda detrás de `verifyTokenAdmin`. Sin token → **401**; con token admin → procede. Las cuentas de artista se siguen creando por su flujo propio (`POST /artists`, ya admin). El login de usuario (`/api/login`) queda abierto a propósito (autenticar no es crear). Verificado en vivo.
 
-- **`nodemailer` 6.9.16**: limpiar todos los CVE (CRLF en headers, DoS en `addressparser`, etc.) exige **≥10.1.4**, un salto de 4 majors. La API que usamos (`createTransport({service:'gmail'}).sendMail`) es estable, pero **no es verificable sin credenciales reales de Gmail**, así que no lo bumpeé a ciegas.
-- **`zod` 3.23.8**: el fix de DoS por colecciones grandes es de la rama 4.x (major con cambios de API). 
+## 8. `nodemailer` (y `zod`) — MEDIA ✅ (nodemailer) / documentado (zod)
 
-**Por qué el riesgo es bajo hoy:** el body está limitado a **1 MB**, los campos que entran a los correos están **saneados de CRLF** y validados con Zod (`max()` en todos), y los endpoints de correo tienen rate limit (3–5/h). **Recomendación:** planificar el bump de `nodemailer` a 10.x probando el envío real de contacto/demo con las credenciales de Gmail, en una rama aparte.
+- **`nodemailer` 6.9.16 → 10.6.1 ✅**: limpia CRLF/header injection, DoS en `addressparser`, SMTP command injection, bypass de validación de dominio. La API que usa el proyecto (`createTransport({service:'gmail'}).sendMail` con `from/to/subject/text/html/replyTo`) **no cambia** entre v6 y v10; verificado que el módulo carga, que `createTransport`/`sendMail` existen, y que los formularios de contacto/demo responden sin romper (500 controlado sin SMTP real, igual que antes).
+- **`zod` 3.23.8** (sin cambiar): el fix de DoS por colecciones grandes es de la rama **4.x** (major con cambios de API: `errorMap`, parse). `demo-form.routes.js` usa `errorMap`/`coerce`/`preprocess`/`refine`, que cambian en v4, así que el bump es un refactor con riesgo real. **Explotabilidad baja hoy:** body limitado a 1 MB, todos los campos con `max()`, y rate limit 3–5/h. **Recomendación:** migrar a zod 4 en una rama aparte con los tests del formulario.
 
 ## 9. `dangerouslySetInnerHTML` — BAJA (verificado seguro)
 
 `AboutSection.tsx` y `AboutPage.jsx` usan `dangerouslySetInnerHTML={{ __html: t('aboutSection.text') }}`. El contenido viene de los **archivos de i18n** (`locales/*.json`), no de entrada de usuario ni de la base. Sin superficie de XSS mientras las traducciones sigan siendo estáticas del repo. Los links de artistas/releases sí pasan por `safeExternalUrl` (rechaza `javascript:`/`data:`), correcto.
 
-## 10. 500 con mensaje de Sequelize en rutas admin — BAJA (documentado)
+## 10. 500 con mensaje de Sequelize en rutas admin — BAJA ✅
 
-Varios controladores (releases, discography) responden los 500 con `error.message` directo, sin pasar por el manejador global que sanea en producción. Ejemplo: crear un release sin `release_type` → `notNull Violation: Release.release_type cannot be null`. Son rutas **autenticadas** (solo el admin lo ve), por eso es baja. **Recomendación (defensa en profundidad):** que los controladores deriven los 500 a `next(error)` para que el manejador global los sanee en prod.
+Varios controladores (releases, artists, discography) respondían los 500 con `error.message` directo, sin pasar por el manejador global que sanea en producción. Ejemplo: crear un release sin `release_type` → `notNull Violation: Release.release_type cannot be null`. Rutas autenticadas (solo el admin), por eso es baja, pero igual delata esquema/motor.
+
+**Fix:** helper `mensajeSeguro(error)` — en producción generaliza los **5xx** a `Internal server error`; los **4xx** (mensajes para el usuario) y el modo desarrollo pasan tal cual. Aplicado a los controladores de releases/artists y a las rutas de discography. Verificado en vivo con `NODE_ENV=production`: el mismo 500 ahora devuelve `{"message":"Internal server error"}`.
 
 ---
 
@@ -192,12 +198,13 @@ Varios controladores (releases, discography) responden los 500 con `error.messag
 
 - SSRF en `scripts/importar-bandcamp.js`: la URL del sello está **hardcodeada** (`atklrecords.bandcamp.com`), no viene de entrada de usuario, y es un script de CLI, no un endpoint. Sin superficie SSRF.
 - `app.set('trust proxy', 1)`: correcto para Render (un hop de proxy). En el test local **sin** proxy, rotar `X-Forwarded-For` evadía el rate limit — pero eso es porque localmente no hay proxy que sobrescriba el header; en Render el proxy pone la IP real como último hop y `trust proxy:1` la toma, así que el spoofing no aplica en producción.
-- `/api/team`: las rutas existen (`team.routes.js`) pero **no están montadas** en `app.js`, y su controlador usa `prisma` (que no existe en el proyecto). Es código muerto, no una vulnerabilidad. Recomendación: borrarlo o cablearlo bien.
+- `/api/team`: las rutas existían (`team.routes.js`) pero **no estaban montadas** en `app.js`, y el controlador usaba `prisma` (que no existe en el proyecto). Código muerto y roto — **eliminado** (`team.routes.js` + `team_member.controller.js`). El modelo `teammember.model.js` se mantiene (sigue importado en `models/index.js`).
+- `*:Zone.Identifier`: se encontraron 10 archivos basura de NTFS (mark-of-the-web de Windows) en el historial que además bloqueaban `fast-import`. Purgados del historial y bloqueados en `.gitignore`.
 
 ## Verificación final
 
-- `npx jest` (server): **93 tests, 13 suites — verde** (se sumaron tests para cada fix).
+- `npx jest` (server): **99 tests, 15 suites — verde** (se sumaron tests para cada fix).
 - `pnpm build` (client): **OK**.
 - `pnpm lint` (client): **0 errores** (6 warnings preexistentes).
 - `pnpm exec vitest run` (client): **50 tests — verde**.
-- Smoke E2E contra la base de auditoría: login admin, CRUD de artistas y releases, validación de los formularios de contacto y demo — **OK**.
+- Smoke E2E contra la base de auditoría (incluye `NODE_ENV=production`): login admin, CRUD de artistas y releases, sanitización de 500, gating de `/api/register`, validación de los formularios de contacto y demo — **OK**.
