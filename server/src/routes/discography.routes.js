@@ -3,6 +3,7 @@ import { Router } from 'express'
 import Discography from '../models/discography.model.js'
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 import { validarIdNumerico } from '../middlewares/validarIdNumerico.js'
+import { mensajeSeguro } from '../utils/mensajeSeguro.js'
 
 const router = Router()
 
@@ -50,7 +51,7 @@ router.post('/discography/bulk', verifyTokenAdmin, async (req, res) => {
         const results = await Discography.bulkCreate(cleanedTracks)
         res.status(201).json(results)
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(400).json({ error: mensajeSeguro(error) })
     }
 })
 
@@ -60,7 +61,7 @@ router.post('/discography', verifyTokenAdmin, async (req, res) => {
         const track = await Discography.create(soloCamposPermitidos(req.body))
         res.status(201).json(track)
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(400).json({ error: mensajeSeguro(error) })
     }
 })
 
@@ -70,7 +71,7 @@ router.get('/discography', async (req, res) => {
         const tracks = await Discography.findAll()
         res.status(200).json(tracks)
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: mensajeSeguro(error) })
     }
 })
 
@@ -83,7 +84,7 @@ router.get('/discography/:id', validarIdNumerico(), async (req, res) => {
         }
         res.status(200).json(track)
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: mensajeSeguro(error) })
     }
 })
 
@@ -100,7 +101,7 @@ router.put('/discography/:id', verifyTokenAdmin, validarIdNumerico(), async (req
             res.status(404).json({ error: 'Track not found' })
         }
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: mensajeSeguro(error) })
     }
 })
 
@@ -116,7 +117,7 @@ router.delete('/discography/:id', verifyTokenAdmin, validarIdNumerico(), async (
             res.status(404).json({ error: 'Track not found' })
         }
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: mensajeSeguro(error) })
     }
 })
 

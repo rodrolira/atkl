@@ -19,6 +19,7 @@ import {
 import { verifyTokenAdmin } from '../middlewares/verifyTokenAdmin.js'
 import { subirImagen } from '../middlewares/subidaImagen.js'
 import { validarIdNumerico } from '../middlewares/validarIdNumerico.js'
+import { mensajeSeguro } from '../utils/mensajeSeguro.js'
 import {
   crearArtistaSchema,
   actualizarArtistaSchema,
@@ -35,7 +36,9 @@ const router = express.Router()
 const responderError = (res, error, contexto) => {
   const status = error.status ?? 500
   if (status >= 500) console.error(contexto, error)
-  res.status(status).json({ message: error.message, errores: error.errores })
+  // mensajeSeguro generaliza los 5xx en producción para no filtrar el error
+  // crudo de Sequelize/Postgres; los 4xx (con su `errores` por campo) pasan.
+  res.status(status).json({ message: mensajeSeguro(error), errores: error.errores })
 }
 
 /**

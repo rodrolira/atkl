@@ -6,13 +6,14 @@ import {
   updateRelease as updateReleaseService,
   deleteRelease as deleteReleaseService,
 } from '../services/releaseService.js'
+import { mensajeSeguro } from '../utils/mensajeSeguro.js'
 
 export const addRelease = async (req, res) => {
   try {
     const release = await addReleaseService(req.body, req.file ? req.file.path : null)
     res.status(201).json(release)
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: mensajeSeguro(error) })
   }
 }
 
@@ -23,7 +24,7 @@ export const getReleases = async (req, res) => {
     const result = await getReleasesService(page, limit)
     res.status(200).json(result)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: mensajeSeguro(error) })
   }
 }
 
@@ -32,7 +33,7 @@ export const getReleaseById = async (req, res) => {
     const release = await getReleaseByIdService(req.params.id)
     res.status(200).json(release)
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: mensajeSeguro(error) })
   }
 }
 
@@ -45,7 +46,7 @@ export const updateRelease = async (req, res) => {
     )
     res.status(200).json(release)
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: mensajeSeguro(error) })
   }
 }
 
@@ -54,6 +55,6 @@ export const deleteRelease = async (req, res) => {
     await deleteReleaseService(req.params.id)
     res.status(200).json({ message: 'Release deleted successfully' })
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message })
+    res.status(error.status || 500).json({ message: mensajeSeguro(error) })
   }
 }
