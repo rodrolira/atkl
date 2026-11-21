@@ -28,3 +28,6 @@ uploads
 !.env.example
 *.bak
 graphify-out/
+
+# Artefactos NTFS de Windows (mark-of-the-web); nunca deben commitearse
+*:Zone.Identifier
